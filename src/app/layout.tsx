@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/header/Header"
 import Footer from "@/components/footer/Footer"
 import { getCategories } from "@/network/api";
+import Script from "next/script";
 
 
 const geistSans = localFont({
@@ -43,6 +44,7 @@ export default async function RootLayout({
         {children}
         <hr/>
         <Footer/>
+        <Script src="https://analytics.nivarana.org/js/container_PLSD2pj6.js"/>
       </body>
     </html>
   );
