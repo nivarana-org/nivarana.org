@@ -7,6 +7,9 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      'sans': ["'Work Sans'", 'sans-serif']
+    },
     extend: {
       colors: {
         background: "var(--background)",
