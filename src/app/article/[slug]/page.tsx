@@ -2,9 +2,10 @@ import Article from "@/components/article"
 import Breadcrumbs from "@/components/article/Breadcrumbs"
 import Sidebar from "@/components/sidebar"
 import { getPost, incrementBlogViewCount } from "@/network/api"
+import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: Props) {
     const post = await getPost(params.slug);
     incrementBlogViewCount(params.slug);
     if (!post) {
@@ -22,4 +23,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 </div>
             </div>
         </div>)
+}
+
+
+type Props = {
+    params: { slug: string }
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const post = await getPost(params.slug);
+    return {
+        title: post.page_title,
+        description: post.meta_description ?? (await parent).description,
+        keywords: post.meta_keyword ?? (await parent).keywords
+    }
 }
