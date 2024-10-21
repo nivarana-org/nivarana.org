@@ -56,6 +56,7 @@ export const incrementBlogViewCount = (id: string) => {
           body: JSON.stringify({
             blog_id: id,
           }),
+          cache: "no-store",
         })
           .then((response) => response.json())
           .then((json) => {
