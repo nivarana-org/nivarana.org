@@ -7,7 +7,6 @@ import { notFound } from "next/navigation"
 
 export default async function Page({ params }: Props) {
     const post = await getPost(params.slug);
-    incrementBlogViewCount(params.slug);
     if (!post) {
         notFound()
     }
@@ -16,7 +15,7 @@ export default async function Page({ params }: Props) {
             <Breadcrumbs category={post.category} page_title={post.page_title} />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
                 <div className="lg:col-span-2">
-                    <Article data={post} />
+                    <Article data={post} slug={params.slug} />
                 </div>
                 <div className="lg:col-span-1">
                     <Sidebar />

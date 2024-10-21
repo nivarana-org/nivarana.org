@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
 import Breadcrumbs from './Breadcrumbs';
+import ViewCount from './ViewCount';
 
-function Article({ data }) {
+function Article({ data, slug }) {
   return (
   <>
       <div className="post post-single">
@@ -17,12 +18,7 @@ function Article({ data }) {
             <ul className="flex space-x-2 text-sm text-gray-500">
               <NAuthors authors_data={data.authors_data} author={data.author} />
               <li>{moment(data.created_at).format('MMMM DD, YYYY')}</li>
-              {data.total_views > 0 && (
-                <li className="inline-flex items-center">
-                  <i className="icon-eyeglass mr-2" />
-                  {data.total_views}
-                </li>
-              )}
+              <ViewCount slug={slug} count={data.total_views} />
             </ul>
           </div>
         </div>
