@@ -18,7 +18,7 @@ function Article({ data, slug }) {
             <ul className="flex space-x-2 text-sm text-gray-500">
               <NAuthors authors_data={data.authors_data} author={data.author} />
               <li>{moment(data.created_at).format('MMMM DD, YYYY')}</li>
-              <ViewCount slug={slug} count={data.total_views} />
+              <ViewCount id={data.id} count={data.total_views} />
             </ul>
           </div>
         </div>
