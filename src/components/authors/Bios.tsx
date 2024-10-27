@@ -36,7 +36,7 @@ export function AuthorBio({upload_image, path, author_name, description}) {
             </Link>
           </h4>
           {description != null && (
-            <p
+            <div
               className="mt-2"
               dangerouslySetInnerHTML={{
                 __html: description,
