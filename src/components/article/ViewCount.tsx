@@ -1,7 +1,7 @@
 'use client'
 
 import { incrementBlogViewCount } from "@/network/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ViewCount({ id, count: initialCount }) {
     const [count, setCount] = useState(initialCount);
