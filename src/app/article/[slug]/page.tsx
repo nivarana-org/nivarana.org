@@ -37,6 +37,9 @@ export async function generateMetadata(
     return {
         title: post.page_title,
         description: post.meta_description ?? (await parent).description,
-        keywords: post.meta_keyword ?? (await parent).keywords
+        keywords: post.meta_keyword ?? (await parent).keywords,
+        openGraph: {
+            images: [post.upload_image]
+        }
     }
 }
