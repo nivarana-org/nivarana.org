@@ -9,16 +9,10 @@ async function Page({ params }: Props) {
   return (
     <div className="max-w-screen-xl mx-auto">
       <AuthorDetails data={data} />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
-        <div className="lg:col-span-2">
-          {data.blogs.map((item, index) => (
-            <ArticlePreview {...item} key={item.path} />
-          ))}
-        </div>
-        <div className="lg:col-span-1">
-          <Sidebar />
-        </div>
-      </div>
+      <hr className='mb-3'/>
+      {data.blogs.map((item, index) => (
+        <ArticlePreview {...item} key={item.path} includeCategory={true} />
+      ))}
     </div>)
 }
 
@@ -52,7 +46,7 @@ function AuthorPic({ upload_image }) {
 
 async function AuthorDetails({ data }) {
   return (
-    <div className='mx-auto max-w-prose rounded border p-4'>
+    <div className='mr-auto p-4 mb-40'>
       <AuthorPic upload_image={data.upload_image} />
       <div
         className={
@@ -61,10 +55,10 @@ async function AuthorDetails({ data }) {
             : 'col-md-12 col-sm-12 details'
         }
       >
-        <h4 className="name mb-0">{data.author_name}</h4>
+        <h4 className="name mb-0 text-6xl mb-12">{data.author_name}</h4>
         {data.first_peragraph != null && (
           <p
-            className="mt-2"
+            className="mt-2 max-w-prose"
             dangerouslySetInnerHTML={{
               __html: data.first_peragraph,
             }}
@@ -72,7 +66,7 @@ async function AuthorDetails({ data }) {
         )}
         {data.description != null && (
           <p
-            className="mt-2"
+            className="mt-2 max-w-prose text-black"
             dangerouslySetInnerHTML={{
               __html: data.description,
             }}
