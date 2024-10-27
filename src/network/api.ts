@@ -3,9 +3,11 @@ const API = "https://blogsadmin.nivarana.org/api/"
 
 export const getPost = async (id: string) => {
   const res = await fetch(API + 'singleblogdata?blog_path=' + id)
-  const post = await res.json()
-  if (!post) return undefined
-  return post.data[0]
+  const posts = await res.json()
+  if (!posts) return undefined
+  const post = posts.data[0];
+  post.upload_image = "https://blogsadmin.nivarana.org/images/" + post.upload_image
+  return post
 }
 
 

@@ -24,7 +24,7 @@ function Article({ data, slug }) {
         </div>
         <div className="mt-6">
           <img
-            src={"https://blogsadmin.nivarana.org/images/" + data.upload_image}
+            src={data.upload_image}
             alt={data.image_text}
             className="w-full h-auto"
           />
