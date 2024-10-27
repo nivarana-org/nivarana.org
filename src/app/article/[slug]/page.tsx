@@ -1,7 +1,7 @@
 import Article from "@/components/article"
 import Breadcrumbs from "@/components/article/Breadcrumbs"
 import Sidebar from "@/components/sidebar"
-import { getPost, incrementBlogViewCount } from "@/network/api"
+import { getPost } from "@/network/api"
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
