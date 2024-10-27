@@ -1937,10 +1937,6 @@ section {
   margin-top: 30px;
 }
 
-.post-single ul li {
-  list-style-type: circle;
-}
-
 .single-cover {
   background-size: 100%; /* Set the background size to contain */
   background-position: center; /* Center the background image */

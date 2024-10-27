@@ -1,15 +1,8 @@
 import Link from "next/link"
 
 export function Author({ path, author_name }) {
-    return <li className="list-inline-item">
+    return <li className="list-inline-item border p-1 rounded hover:bg-cyan-200">
         <Link href={'/author/' + path}>
-            {/* {upload_image != null && (
-        <img
-          src={global.img_link + upload_image}
-          className="author"
-          alt="author"
-        />
-      )} */}
             {author_name}
         </Link>
     </li>

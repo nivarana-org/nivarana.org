@@ -1,8 +1,6 @@
 import moment from 'moment';
-import Link from 'next/link';
 import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
-import Breadcrumbs from './Breadcrumbs';
 import ViewCount from './ViewCount';
 
 function Article({ data, slug }) {
@@ -15,7 +13,7 @@ function Article({ data, slug }) {
             <p className="text-lg text-gray-600 p-2">{data.meta_description}</p>
           </div>
           <div className="flex items-center space-x-4 p-2">
-            <ul className="flex space-x-2 text-sm text-gray-500">
+            <ul className="flex space-x-2 text-sm text-gray-500 list-none items-center">
               <NAuthors authors_data={data.authors_data} author={data.author} />
               <li>{moment(data.created_at).format('MMMM DD, YYYY')}</li>
               <ViewCount id={data.id} count={data.total_views} />
