@@ -62,7 +62,7 @@ export const incrementBlogViewCount = (id: string) => {
         })
           .then((response) => response.json())
           .then((json) => {
-            return json;
+            return json['count'];
           })
       };
 
