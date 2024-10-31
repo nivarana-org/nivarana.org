@@ -17,6 +17,7 @@
     "next-auth": "^5.0.0-beta.25",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-share": "^5.1.0",
     "server-only": "^0.0.1",
     "sharp": "^0.33.5",
     "sonner": "^1.5.0"
@@ -35,6 +36,10 @@
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "sonner": {
+      "react": "19.0.0-rc-02c0e824-20241028",
+      "react-dom": "19.0.0-rc-02c0e824-20241028"
+    },
+    "react-share": {
       "react": "19.0.0-rc-02c0e824-20241028",
       "react-dom": "19.0.0-rc-02c0e824-20241028"
     }

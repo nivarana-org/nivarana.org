@@ -3,6 +3,7 @@ import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
 import ViewCount from './ViewCount';
 import Image from 'next/image';
+import PageShare from './PageShare';
 
 function Article({ data }) {
   return (
@@ -38,6 +39,8 @@ function Article({ data }) {
           dangerouslySetInnerHTML={{ __html: data.description }}
         ></div>
       </div>
+      <div className='text-black font-bold p-2'>Share</div>
+      <PageShare className="p-2" url={"https://nivarana.org/article/" + data.path} media={data.upload_image}></PageShare>
       <NAuthorsBio authors_data={data.authors_data} author={data.author} />
       </>
   );
