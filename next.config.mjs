@@ -34,7 +34,8 @@ const nextConfig = {
                 permanent: false
             },
         ]
-    }
+    },
+    serverExternalPackages: ['knex']
 };
 
 export default nextConfig;

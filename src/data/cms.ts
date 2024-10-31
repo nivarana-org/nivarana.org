@@ -1,35 +1,30 @@
 'use server';
 import 'server-only';
 
-import mariadb from "mariadb";
+import knex from "knex";
 
-const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  database: process.env.DATABASE,
-  password: process.env.DB_PASS,
-  connectionLimit: 5
+const db = knex({
+  client: 'mysql',
+  connection: {
+    host: process.env.DB_HOST,
+    port: 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DATABASE,
+  },
+  pool: { min: 0, max: 7 },
 });
 
-console.log("connecting mariadb");
-
-const execute = async (cb) => {
-  let conn;
-  try {
-    conn = await pool.getConnection();
-    return await cb(conn)
-  } catch (err) {
-    throw err;
-  } finally {
-    if (conn) conn.end();
-  }
+interface NewsletterSubscriber {
+  id: number;
+  user_email: string;
+  created_at: number;
+  updated_at: number;
 }
 
 const addNewsLetterSubscriber = async(email: string) => {
-  return await execute(async (conn) => {
-    await conn.query("INSERT INTO newsletters (user_email) value (?)", [email]);
-    return "Success!";
-  })
+  await db<NewsletterSubscriber>('newsletters').insert({user_email: email})
+  return "Success"
 }
 
 export const addNewsLetterSubscriberAction = async (prevState: {message: string}, formData: FormData) => {
