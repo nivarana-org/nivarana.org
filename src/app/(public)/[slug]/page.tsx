@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default function Page() {
     const [quote, setQuote] = useState<{quote: string, author: string}>();
 
     useEffect(() => {

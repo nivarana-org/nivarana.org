@@ -2,10 +2,11 @@
 import { useState } from "react";
 import ArticlePreview from "../article/ArticlePreview";
 import { getPostsOfPage } from "@/network/api";
+import { Post } from "@/types/nivarana";
 
 export default function LoadMore({ }) {
     const [page, setPage] = useState(2);
-    const [posts, setPosts] = useState<any[]>([]);
+    const [posts, setPosts] = useState<Post[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const loadMore = async () => {

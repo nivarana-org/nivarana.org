@@ -2,10 +2,11 @@ import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
 import { NAuthors } from '../authors/Authors';
+import { Post } from '@/types/nivarana';
 
 function ArticlePreview({
     path, authors_data, author, upload_image, page_title, meta_description, created_at, category, includeCategory = false
-}) {
+}: Post & {includeCategory?: boolean}) {
     return (
         <div className='flex flex-wrap'>
             {includeCategory ? <div className='p-3 grow-0 w-30'>

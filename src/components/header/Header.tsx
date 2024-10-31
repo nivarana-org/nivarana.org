@@ -59,7 +59,7 @@ const Dropdown = ({ title, children }) => {
 
 function MenuItem({ item }) {
     if (item.children && item.children.length > 0) return (
-        <Dropdown title={item.name} children={item.children} />
+        <Dropdown title={item.name}>{item.children}</Dropdown>
     )
     return <li className="max-lg:border-b max-lg:py-3">
         <Link href={`/category/${item.path}`} className="text-gray-500 hover:text-black block">{item.name}</Link>
@@ -75,7 +75,7 @@ function Header({ categories }) {
                 className='flex items-center lg:justify-center flex-wrap gap-5 relative py-3 px-10 border-gray-200 border-b lg:min-h-[80px] max-lg:min-h-[60px]'>
                 <div className='mx-auto flex flex-col items-center'>
                     <Link href="/"><Image src={logo} alt="logo" className='md:w-[170px] w-36' /></Link>
-                    <div className="hidden lg:block">India's Public Health Platform</div>
+                    <div className="hidden lg:block">India&apos;s Public Health Platform</div>
                 </div>
 
                 <div className="space-x-6 md:absolute md:right-10 flex items-center max-md:ml-auto">
@@ -109,7 +109,7 @@ function Header({ categories }) {
                 </div>
 
                 <div className='flex-auto flex lg:hidden'>
-                    <div className="text-center flex-auto">India's Public Health Platform</div>
+                    <div className="text-center flex-auto">India&apos;s Public Health Platform</div>
                     <button className="flex-initial" onClick={() => setCollapsed(false)}>
                         <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd"

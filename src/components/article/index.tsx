@@ -3,7 +3,7 @@ import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
 import ViewCount from './ViewCount';
 
-function Article({ data, slug }) {
+function Article({ data }) {
   return (
   <>
       <div className="post post-single">

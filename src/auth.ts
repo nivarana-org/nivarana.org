@@ -1,10 +1,10 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
+import Google, { GoogleProfile } from "next-auth/providers/google"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google({
-    profile(profile) {
-      const { email, email_verified, name, picture, given_name, family_name } = profile
+    profile(profile: GoogleProfile) {
+      const { email, name, picture } = profile
       if (process.env.ADMINS?.includes(email)) {
         return { role: "admin", email, name, picture }
       }

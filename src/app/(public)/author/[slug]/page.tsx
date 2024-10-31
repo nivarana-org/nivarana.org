@@ -1,5 +1,4 @@
 import ArticlePreview from '@/components/article/ArticlePreview';
-import Sidebar from '@/components/sidebar';
 import { getAuthorDetails } from '@/network/api';
 import { Metadata, ResolvingMetadata } from 'next';
 
@@ -11,7 +10,7 @@ async function Page(props: Props) {
     <div className="max-w-screen-xl mx-auto">
       <AuthorDetails data={data} />
       <hr className='mb-3'/>
-      {data.blogs.map((item, index) => (
+      {data.blogs.map((item) => (
         <ArticlePreview {...item} key={item.path} includeCategory={true} />
       ))}
     </div>)
