@@ -35,7 +35,16 @@ const nextConfig = {
             },
         ]
     },
-    serverExternalPackages: ['knex']
+    serverExternalPackages: ['knex'],
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'blogsadmin.nivarana.org',
+                port: '',
+            }
+        ]
+    }
 };
 
 export default nextConfig;

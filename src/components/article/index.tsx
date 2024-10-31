@@ -2,6 +2,7 @@ import moment from 'moment';
 import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
 import ViewCount from './ViewCount';
+import Image from 'next/image';
 
 function Article({ data }) {
   return (
@@ -21,9 +22,11 @@ function Article({ data }) {
           </div>
         </div>
         <div className="mt-6">
-          <img
+          <Image
             src={data.upload_image}
             alt={data.image_text}
+            width={640}
+            height={450}
             className="w-full h-auto"
           />
         </div>

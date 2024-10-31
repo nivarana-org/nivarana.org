@@ -1,4 +1,5 @@
 import { getPopularPosts } from "@/network/api"
+import Image from "next/image";
 import Link from "next/link";
 
 const PopularPosts = async () => {
@@ -9,7 +10,7 @@ const PopularPosts = async () => {
         <div className="widget rounded">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Popular Posts</h3>
-                <img src="/images/wave.svg" className="wave" alt="wave" />
+                <Image width={50} height={20} src="/images/wave.svg" className="wave" alt="wave" />
             </div>
             <div className="widget-content">
                 {posts.slice(0, 5).map((values, index) => {
@@ -18,9 +19,11 @@ const PopularPosts = async () => {
                             <div className="thumb circle">
                                 <Link href={'/article/' + values.path}>
                                     <div className="inner">
-                                        <img
+                                        <Image
                                             src={"https://blogsadmin.nivarana.org/images/" + values.upload_image}
                                             alt="post-title"
+                                            height={60}
+                                            width={60}
                                             style={{
                                                 height: '60px',
                                                 width: '60px',

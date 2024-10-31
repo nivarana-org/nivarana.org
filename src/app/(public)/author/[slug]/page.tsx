@@ -1,6 +1,7 @@
 import ArticlePreview from '@/components/article/ArticlePreview';
 import { getAuthorDetails } from '@/network/api';
 import { Metadata, ResolvingMetadata } from 'next';
+import Image from 'next/image';
 
 async function Page(props: Props) {
   const params = await props.params;
@@ -34,10 +35,11 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 function AuthorPic({ upload_image }) {
   if (upload_image === null) return;
   return <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
-    <img
-      src={global.img_link + data.upload_image}
+    <Image
+      src={"https://blogsadmin.nivarana.org/images/" + upload_image}
       className="author"
       alt="author"
+      fill={true}
     />
   </div>
 }

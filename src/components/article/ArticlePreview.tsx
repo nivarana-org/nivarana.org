@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { NAuthors } from '../authors/Authors';
 import { Post } from '@/types/nivarana';
+import Image from 'next/image';
 
 function ArticlePreview({
     path, authors_data, author, upload_image, page_title, meta_description, created_at, category, includeCategory = false
@@ -21,7 +22,7 @@ function ArticlePreview({
                 <div className="md:flex">
                     <div className="md:shrink-0">
                         <Link href={'/article/' + path}>
-                            <img className="h-48 w-full object-cover md:h-full md:w-80" src={"https://blogsadmin.nivarana.org/images/" + upload_image} />
+                            <Image width={640} height={454} className="h-48 w-full object-cover md:h-full md:w-80" src={"https://blogsadmin.nivarana.org/images/" + upload_image} alt="" />
                         </Link>
                     </div>
 

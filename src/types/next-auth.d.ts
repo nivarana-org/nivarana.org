@@ -18,3 +18,5 @@ declare module "@auth/core/jwt" {
         role: Role
     }
 }
+
+export default NextAuth

@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 export function NAuthorsBio({authors_data, author}) {
@@ -16,8 +17,9 @@ export function AuthorBio({upload_image, path, author_name, description}) {
     <div className="about-author my-4 padding-30 rounded row">
         {upload_image != null && (
           <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
-            <img
-              src={global.img_link + upload_image}
+            <Image
+              src={"https://blogsadmin.nivarana.org/images/" + upload_image}
+              fill={true}
               className="author"
               alt="author"
             />
