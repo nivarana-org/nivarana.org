@@ -38,3 +38,7 @@ export const addNewsLetterSubscriberAction = async (prevState: {message: string}
     return {error: "Couldn't add the email"};
   }
 }
+
+export const getSubscribers = async () => {
+  return await db<NewsletterSubscriber>('newsletters').select("user_email", "id").orderBy('id', 'desc')
+}

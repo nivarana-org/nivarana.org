@@ -1,5 +1,4 @@
 import { auth } from "@/auth"
-import Link from "next/link"
 
 export default async function Page() {
   const session = await auth()
@@ -7,7 +6,7 @@ export default async function Page() {
 
   return (
     <div>
-      <Link href="/admin/newsletter">Newsletter Subscribers</Link>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
     </div>
   )
 }
