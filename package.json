@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "mariadb": "^3.4.0",
     "moment": "^2.30.1",
     "next": "15.0.2",
+    "next-auth": "^5.0.0-beta.25",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "server-only": "^0.0.1",
     "sharp": "^0.33.5",
     "sonner": "^1.5.0"
   },
