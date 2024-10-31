@@ -22,21 +22,9 @@ interface NewsletterSubscriber {
   updated_at: number;
 }
 
-const addNewsLetterSubscriber = async(email: string) => {
+export const addNewsLetterSubscriber = async(email: string) => {
   await db<NewsletterSubscriber>('newsletters').insert({user_email: email})
   return "Success"
-}
-
-export const addNewsLetterSubscriberAction = async (prevState: {message: string}, formData: FormData) => {
-  const email = formData.get('email') || "";
-  try {
-    await addNewsLetterSubscriber(email);
-    return {message: "Added successfully"};
-  }
-  catch (e) {
-    if (e.code = "ER_DUP_ENTRY") return {error: "Email already subscribed"};
-    return {error: "Couldn't add the email"};
-  }
 }
 
 export const getSubscribers = async () => {

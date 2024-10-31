@@ -1,5 +1,5 @@
 'use client';
-import { addNewsLetterSubscriberAction } from '@/data/cms';
+import { addNewsLetterSubscriberAction } from '@/actions/newsletter';
 import { useActionState, useEffect } from 'react';
 import { toast, Toaster } from 'sonner';
 
