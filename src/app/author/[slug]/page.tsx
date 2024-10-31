@@ -3,7 +3,8 @@ import Sidebar from '@/components/sidebar';
 import { getAuthorDetails } from '@/network/api';
 import { Metadata, ResolvingMetadata } from 'next';
 
-async function Page({ params }: Props) {
+async function Page(props: Props) {
+  const params = await props.params;
   const slug = params.slug;
   const data = await getAuthorDetails(slug);
   return (
@@ -17,13 +18,11 @@ async function Page({ params }: Props) {
 }
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const params = await props.params;
   const slug = params.slug
   const data = await getAuthorDetails(slug);
   return {

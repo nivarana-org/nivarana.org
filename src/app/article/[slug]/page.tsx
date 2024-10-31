@@ -5,7 +5,8 @@ import { getPost } from "@/network/api"
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+    const params = await props.params;
     const post = await getPost(params.slug);
     if (!post) {
         notFound()
@@ -26,13 +27,11 @@ export default async function Page({ params }: Props) {
 
 
 type Props = {
-    params: { slug: string }
+    params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata(
-    { params }: Props,
-    parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
+    const params = await props.params;
     const post = await getPost(params.slug);
     return {
         title: post.page_title,

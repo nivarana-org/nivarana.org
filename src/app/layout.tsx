@@ -19,6 +19,8 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+export const fetchCache = 'default-cache'
+
 export const metadata: Metadata = {
   title: {
     template: '%s | Nivarana',
