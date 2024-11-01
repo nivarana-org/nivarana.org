@@ -22,7 +22,7 @@ import {
     WhatsappIcon,
 } from "react-share";
 
-export default function PageShare({ url, media }: { url: string }) {
+export default function PageShare({ url, media }: { url: string, media: string }) {
     return (
         <div className="flex gap-1">
             <EmailShareButton url={url}>
