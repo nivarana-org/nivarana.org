@@ -1,5 +1,6 @@
 "use server"
 import { addNewsLetterSubscriber } from "@/data/cms";
+import { addMember } from "@/network/mailchimp";
 
 function isKnexError(error: unknown): error is { code: string } {
     return error !== null && typeof error === "object" && "code" in error;
@@ -10,6 +11,7 @@ export const addNewsLetterSubscriberAction = async (prevState: { message: string
     if (typeof email !== 'string') return {message: "Not an email address"};
     try {
         await addNewsLetterSubscriber(email);
+        addMember(email);
         return { message: "Added successfully" };
     }
     catch (e) {

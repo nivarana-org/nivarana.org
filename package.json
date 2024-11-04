@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@tinymce/tinymce-react": "^5.1.1",
     "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
