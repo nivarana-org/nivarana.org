@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
 
-export const POST = async (req, res) => {
+export const POST = async (req) => {
   const formData = await req.formData();
 
   const file = formData.get("file");
@@ -11,8 +11,7 @@ export const POST = async (req, res) => {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filename = Date.now() + file.name.replaceAll(" ", "_");
-  console.log(filename);
+  const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
   try {
     await writeFile(
       path.join(process.cwd(), "public/uploads/" + filename),

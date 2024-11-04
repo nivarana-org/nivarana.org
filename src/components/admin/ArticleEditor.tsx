@@ -13,7 +13,7 @@ export default function ArticleEditor({initialValue}: Props) {
             console.log(editorRef.current.getContent());
         }
     };
-    const imageUploadHandler = async (blobInfo, progress, failure) =>{
+    const imageUploadHandler = async (blobInfo) =>{
         const formData = new FormData();
         formData.append('file', blobInfo.blob(), blobInfo.filename());
         const result = await fetch('/admin/api/image-upload', {body: formData, method: 'post'});
