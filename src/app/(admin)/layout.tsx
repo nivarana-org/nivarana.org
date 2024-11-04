@@ -1,4 +1,7 @@
+import "./globals.css";
 import { auth } from "@/auth";
+import Header from "@/components/admin/Header";
+import Sidebar from "@/components/admin/Sidebar";
 
 export default async function RootLayout({
   children,
@@ -6,15 +9,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  if (session?.user?.role === "admin") {
-    return (
-      <html lang="en">
-        <body>
-          {children}
-        </body>
-      </html>
-    );
-  } else {
-    return <>You are not allowed to view this page.</>
-  }
+  return (
+    <html lang="en">
+      <body>
+        <Header email={session?.user.email} picture={session?.user.picture}/>
+        <hr/>
+        {children}
+      </body>
+    </html>
+  );
 }

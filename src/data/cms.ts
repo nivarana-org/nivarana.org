@@ -22,6 +22,19 @@ interface NewsletterSubscriber {
   updated_at: number;
 }
 
+interface Article {
+  id: number;
+  path: string;
+  total_views: number;
+  page_name: string;
+  page_title: string;
+  category_name: string;
+  authors: string;
+  upload_image: string;
+  created_at: number;
+  updated_at: number;
+}
+
 export const addNewsLetterSubscriber = async(email: string) => {
   await db<NewsletterSubscriber>('newsletters').insert({user_email: email})
   return "Success"
@@ -29,4 +42,25 @@ export const addNewsLetterSubscriber = async(email: string) => {
 
 export const getSubscribers = async () => {
   return await db<NewsletterSubscriber>('newsletters').select("user_email", "id").orderBy('id', 'desc')
+}
+
+const getTableCount = async (table) => {
+  const result = await db(table).count('* as count');
+  return result[0].count;
+}
+
+export const getSubscribersCount = async () => {
+  return getTableCount('newsletters')
+}
+
+export const getArticlesCount = async () => {
+  return getTableCount('blogs');
+}
+
+export const getArticlesOverview = async () => {
+  return db<Article>('blogs').select("*")
+}
+
+export const getArticleFull = async (id: number) => {
+  return db<Article>('blogs').select("*").where({id}).first();
 }

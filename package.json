@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "^5.1.1",
     "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
     "moment": "^2.30.1",
@@ -40,6 +41,10 @@
       "react-dom": "19.0.0-rc-02c0e824-20241028"
     },
     "react-share": {
+      "react": "19.0.0-rc-02c0e824-20241028",
+      "react-dom": "19.0.0-rc-02c0e824-20241028"
+    },
+    "@tinymce/tinymce-react": {
       "react": "19.0.0-rc-02c0e824-20241028",
       "react-dom": "19.0.0-rc-02c0e824-20241028"
     }
