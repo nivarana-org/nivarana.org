@@ -1,4 +1,3 @@
-import { auth } from "@/auth"
 import { getArticlesCount, getSubscribersCount } from "@/data/cms"
 import Link from "next/link"
 
@@ -17,8 +16,6 @@ function DashboardItem({ name, count, link }: { name: string, count?: number, li
 }
 
 export default async function Page() {
-  const session = await auth()
-  if (!session) return <div>Not authenticated</div>
   const newsletterSubscriberCount = await getSubscribersCount();
   const articleCount = await getArticlesCount();
 
