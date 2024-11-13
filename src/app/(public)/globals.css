@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ul {
+    @apply list-disc
+  }
+  ol {
+    @apply list-decimal
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
