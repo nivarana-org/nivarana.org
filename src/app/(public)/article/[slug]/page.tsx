@@ -33,12 +33,14 @@ type Props = {
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
     const params = await props.params;
     const post = await getPost(params.slug);
+    if (!post) return {}
+    const imageUrl = `/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
     return {
         title: post.page_title,
         description: post.meta_description ?? (await parent).description,
         keywords: post.meta_keyword ?? (await parent).keywords,
         openGraph: {
-            images: [post.upload_image]
+            images: [imageUrl]
         }
     }
 }
