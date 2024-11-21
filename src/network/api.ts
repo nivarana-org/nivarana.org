@@ -5,6 +5,7 @@ export const getPost = async (id: string) => {
   const res = await fetch(API + 'singleblogdata?blog_path=' + id)
   const posts = await res.json()
   if (!posts) return undefined
+  if (posts.data.length === 0) return undefined;
   const post = posts.data[0];
   post.upload_image = "https://blogsadmin.nivarana.org/images/" + post.upload_image
   return post
