@@ -34,7 +34,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
     const params = await props.params;
     const post = await getPost(params.slug);
     if (!post) return {}
-    const imageUrl = `/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
+    const imageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
     return {
         title: post.page_title,
         description: post.meta_description ?? (await parent).description,
