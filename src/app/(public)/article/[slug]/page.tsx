@@ -1,13 +1,13 @@
 import Article from "@/components/article"
 import Breadcrumbs from "@/components/article/Breadcrumbs"
 import Sidebar from "@/components/sidebar"
-import { getPost } from "@/network/api"
+import { getArticleByPath } from "@/data/cms"
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    const post = await getPost(params.slug);
+    const post = await getArticleByPath(params.slug);
     if (!post) {
         notFound()
     }
@@ -32,7 +32,7 @@ type Props = {
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
     const params = await props.params;
-    const post = await getPost(params.slug);
+    const post = await getArticleByPath(params.slug);
     if (!post) return {}
     const imageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
     return {
