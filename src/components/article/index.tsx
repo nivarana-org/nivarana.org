@@ -1,10 +1,8 @@
 import moment from 'moment';
 import { NAuthors } from '../authors/Authors';
 import { NAuthorsBio } from '../authors/Bios';
-import ViewCount from './ViewCount';
 import Image from 'next/image';
 import PageShare from './PageShare';
-import { Suspense } from 'react';
 
 function Article({ data }) {
   return (
@@ -19,9 +17,6 @@ function Article({ data }) {
             <ul className="flex space-x-2 text-sm text-gray-500 list-none items-center">
               <NAuthors authors_data={data.authors_data} author={data.author} />
               <li>{moment(data.created_at).format('MMMM DD, YYYY')}</li>
-              <Suspense>
-                <ViewCount id={data.id} count={data.total_views} />
-              </Suspense>
             </ul>
           </div>
         </div>
