@@ -22,7 +22,7 @@ interface NewsletterSubscriber {
   updated_at: number;
 }
 
-interface Article {
+export interface Article {
   id: number;
   path: string;
   total_views: number;

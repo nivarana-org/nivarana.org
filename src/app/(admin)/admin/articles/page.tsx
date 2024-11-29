@@ -1,8 +1,28 @@
-import { getArticlesOverview } from "@/data/cms"
+import { Article, getArticlesOverview } from "@/data/cms"
 import Link from "next/link";
 
 import Table from "@mui/joy/Table"
-import { Button } from "@mui/joy";
+import { Box, Button } from "@mui/joy";
+
+function ArticleRow({ id, page_title, path }: Article) {
+    const adminLink = `/admin/articles/${id}`
+    const publicLink = `/article/${path}`
+    return (
+        <>
+            <td>
+                <Link href={adminLink}>
+                    {page_title}
+                </Link>
+            </td>
+            <td>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Link href={adminLink}><Button>Edit</Button></Link>
+                    <Link href={publicLink}><Button>Open</Button></Link>
+                </Box>
+            </td>
+        </>
+    )
+}
 
 export default async function Page({ }) {
     const articles = await getArticlesOverview();
@@ -14,16 +34,13 @@ export default async function Page({ }) {
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {articles.map(a => (
                     <tr key={a.id}>
-                        <td>
-                            <Link href={`/admin/articles/${a.id}`}>
-                                {a.page_title}
-                            </Link>
-                        </td>
+                        <ArticleRow {...a} />
                     </tr>
                 ))}
             </tbody>
