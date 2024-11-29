@@ -3,7 +3,7 @@ import { Table } from "@mui/joy";
 
 export default async function Page() {
     const subscribers = await getSubscribers();
-    return <><Table sx={{ '& thead :first-child': { width: '10%' } }}>
+    return <><Table sx={{ '& thead th:nth-of-type(1)': { width: '10%' } }}>
         <thead>
             <tr>
                 <th>ID</th>
