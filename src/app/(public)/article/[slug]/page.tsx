@@ -10,7 +10,7 @@ const cachedGetArticleByPath = cache((path: string) => getArticleByPath(path));
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    const post = await cachedGetArticleByPath(params.slug);
+    const post = await cachedGetArticleByPath(decodeURI(params.slug));
     if (!post) {
         notFound()
     }
@@ -35,7 +35,7 @@ type Props = {
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
     const params = await props.params;
-    const post = await cachedGetArticleByPath(params.slug);
+    const post = await cachedGetArticleByPath(decodeURI(params.slug));
     if (!post) return {}
     const imageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
     return {
