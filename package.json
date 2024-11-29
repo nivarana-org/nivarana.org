@@ -10,9 +10,11 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@mui/joy": "^5.0.0-beta.48",
     "@tinymce/tinymce-react": "^5.1.1",
-    
     "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
     "moment": "^2.30.1",
@@ -56,6 +58,18 @@
       "react-dom": "19.0.0-rc-66855b96-20241106"
     },
     "next-auth": {
+      "react": "19.0.0-rc-66855b96-20241106",
+      "react-dom": "19.0.0-rc-66855b96-20241106"
+    },
+    "@mui/joy": {
+      "react": "19.0.0-rc-66855b96-20241106",
+      "react-dom": "19.0.0-rc-66855b96-20241106"
+    },
+    "@emotion/react": {
+      "react": "19.0.0-rc-66855b96-20241106",
+      "react-dom": "19.0.0-rc-66855b96-20241106"
+    },
+    "@emotion/styled": {
       "react": "19.0.0-rc-66855b96-20241106",
       "react-dom": "19.0.0-rc-66855b96-20241106"
     }
