@@ -7,12 +7,14 @@ import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 import { cache } from "react"
 
-const cachedGetArticleByPath = cache((path: string) => getArticleByPath(path));
+const cachedGetArticleBySlug = cache((slug: string) => {
+    const path = normalizeAsOldSlugs(slug)
+    return getArticleByPath(path)
+});
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    const slug = normalizeAsOldSlugs(params.slug)
-    const post = await cachedGetArticleByPath(slug);
+    const post = await cachedGetArticleBySlug(params.slug);
     if (!post) {
         notFound()
     }
@@ -37,7 +39,7 @@ type Props = {
 
 export async function generateMetadata(props: Props, parent: ResolvingMetadata): Promise<Metadata> {
     const params = await props.params;
-    const post = await cachedGetArticleByPath(decodeURI(params.slug));
+    const post = await cachedGetArticleBySlug(params.slug);
     if (!post) return {}
     const imageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
     return {
