@@ -27,7 +27,8 @@
     "react-share": "^5.1.0",
     "server-only": "^0.0.1",
     "sharp": "^0.33.5",
-    "sonner": "^1.5.0"
+    "sonner": "^1.5.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",

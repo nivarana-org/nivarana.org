@@ -3,7 +3,7 @@ import 'server-only';
 
 import knex from "knex";
 
-const db = knex({
+export const db = knex({
   client: 'mysql',
   connection: {
     host: process.env.DB_HOST,
@@ -118,4 +118,8 @@ export const getArticleByPath = async (path: string): Promise<EnhancedArticle | 
   }
   enhancedPost.upload_image = "https://blogsadmin.nivarana.org/images/" + enhancedPost.upload_image
   return enhancedPost
+}
+
+export const getWebPushSubscriberCount = async () => {
+  return getTableCount('push_subscriptions')
 }

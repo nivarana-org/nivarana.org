@@ -1,4 +1,4 @@
-import { getArticlesCount, getSubscribersCount } from "@/data/cms"
+import { getArticlesCount, getSubscribersCount, getWebPushSubscriberCount } from "@/data/cms"
 import Link from "next/link"
 
 function DashboardItem({ name, count, link }: { name: string, count?: number, link: string }) {
@@ -16,12 +16,20 @@ function DashboardItem({ name, count, link }: { name: string, count?: number, li
 }
 
 export default async function Page() {
-  const newsletterSubscriberCount = await getSubscribersCount();
-  const articleCount = await getArticlesCount();
-
+  const [
+    newsletterSubscriberCount,
+    articleCount,
+    webNotificationSubscriberCount
+  ] = await Promise.all([
+    getSubscribersCount(),
+    getArticlesCount(),
+    getWebPushSubscriberCount(),
+  ])
+  
   return (
     <div className="p2 flex gap-2">
       <DashboardItem name="Newsletter Subscribers" link="/admin/newsletter" count={newsletterSubscriberCount}></DashboardItem>
+      <DashboardItem name="Web Notifications Subscribers" link="/admin/push-notifications" count={webNotificationSubscriberCount}></DashboardItem>
       <DashboardItem name="Articles" link="/admin/articles" count={articleCount}></DashboardItem>
     </div>
   )
