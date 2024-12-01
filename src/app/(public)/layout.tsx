@@ -21,14 +21,14 @@ const geistMono = localFont({
 });
 
 // Poppins
-const poppins = Poppins({
+export const poppins = Poppins({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
 });
 
 // Work Sans
-const workSans = Work_Sans({
+export const workSans = Work_Sans({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
