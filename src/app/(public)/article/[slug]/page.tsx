@@ -2,6 +2,7 @@ import Article from "@/components/article"
 import Breadcrumbs from "@/components/article/Breadcrumbs"
 import Sidebar from "@/components/sidebar"
 import { getArticleByPath } from "@/data/cms"
+import { normalizeAsOldSlugs } from "@/utils/normalizers"
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
 import { cache } from "react"
@@ -10,7 +11,8 @@ const cachedGetArticleByPath = cache((path: string) => getArticleByPath(path));
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    const post = await cachedGetArticleByPath(decodeURI(params.slug));
+    const slug = normalizeAsOldSlugs(params.slug)
+    const post = await cachedGetArticleByPath(slug);
     if (!post) {
         notFound()
     }
