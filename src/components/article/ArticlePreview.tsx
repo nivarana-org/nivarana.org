@@ -6,8 +6,8 @@ import { Post } from '@/types/nivarana';
 import Image from 'next/image';
 
 function ArticlePreview({
-    path, authors_data, author, upload_image, page_title, meta_description, created_at, category, includeCategory = false
-}: Post & {includeCategory?: boolean}) {
+    path, authors_data, author, upload_image, page_title, meta_description, created_at, category, aboveTheFold = false, includeCategory = false
+}: Post & {aboveTheFold?: boolean, includeCategory?: boolean}) {
     return (
         <div className='flex flex-wrap'>
             {includeCategory ? <div className='p-3 grow-0 w-30'>
@@ -22,7 +22,7 @@ function ArticlePreview({
                 <div className="md:flex">
                     <div className="md:shrink-0">
                         <Link href={'/article/' + path}>
-                            <Image width={640} height={454} className="h-48 w-full object-cover md:h-full md:w-80" src={"https://blogsadmin.nivarana.org/images/" + upload_image} alt="" />
+                            <Image width={320} height={225} className="h-48 w-full object-cover md:h-full md:w-80" src={"https://blogsadmin.nivarana.org/images/" + upload_image} alt="" priority={aboveTheFold} />
                         </Link>
                     </div>
 
