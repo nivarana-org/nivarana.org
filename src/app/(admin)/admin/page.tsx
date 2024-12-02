@@ -1,5 +1,8 @@
+import ClearCache from "@/components/admin/ClearCache"
 import { getArticlesCount, getSubscribersCount, getWebPushSubscriberCount } from "@/data/cms"
+import { revalidatePath } from "next/cache"
 import Link from "next/link"
+import { Suspense } from "react"
 
 function DashboardItem({ name, count, link }: { name: string, count?: number, link: string }) {
   return <Link href={link}>
@@ -12,7 +15,11 @@ function DashboardItem({ name, count, link }: { name: string, count?: number, li
       </div>
     </div>
   </Link>
+}
 
+async function clearCache() {
+  "use server"
+  revalidatePath('/', "layout")
 }
 
 export default async function Page() {
@@ -27,10 +34,18 @@ export default async function Page() {
   ])
   
   return (
-    <div className="p2 flex gap-2">
-      <DashboardItem name="Newsletter Subscribers" link="/admin/newsletter" count={newsletterSubscriberCount}></DashboardItem>
-      <DashboardItem name="Web Notifications Subscribers" link="/admin/push-notifications" count={webNotificationSubscriberCount}></DashboardItem>
-      <DashboardItem name="Articles" link="/admin/articles" count={articleCount}></DashboardItem>
+    <div>
+      <div className="p2 flex gap-2">
+        <DashboardItem name="Newsletter Subscribers" link="/admin/newsletter" count={newsletterSubscriberCount}></DashboardItem>
+        <DashboardItem name="Web Notifications Subscribers" link="/admin/push-notifications" count={webNotificationSubscriberCount}></DashboardItem>
+        <DashboardItem name="Articles" link="/admin/articles" count={articleCount}></DashboardItem>
+      </div>
+      <h2 className="mb-4 text-4xl">Actions</h2>
+      <div className="p2 flex gap-2">
+        <Suspense>
+          <ClearCache clearCache={clearCache}/>
+        </Suspense>
+      </div>
     </div>
   )
 }
