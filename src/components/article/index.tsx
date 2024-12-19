@@ -29,8 +29,8 @@ function Article({ data }) {
           <Image
             src={data.upload_image}
             alt={data.image_text}
-            width={640}
-            height={450}
+            width={1280}
+            height={900}
             className="w-full h-auto"
           />
         </div>
