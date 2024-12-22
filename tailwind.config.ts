@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      'sans': ["'Work Sans'", 'sans-serif']
+      'poppins': ['var(--font-poppins)', 'system-ui', '"Apple Color Emoji"', '"Segoe UI Emoji"', 'sans-serif'],
     },
     extend: {
       colors: {

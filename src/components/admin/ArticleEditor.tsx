@@ -42,7 +42,6 @@ export default function ArticleEditor({initialValue}: Props) {
                     images_upload_url: '/admin/api/image-upload',
                     automatic_uploads: true,
                     images_upload_handler: imageUploadHandler,
-                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                 }}
             />
             <button onClick={publish}>Save</button>

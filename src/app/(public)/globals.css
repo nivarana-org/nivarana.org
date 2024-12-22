@@ -24,7 +24,6 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
@@ -43,7 +42,6 @@ p {
 body {
   color: #8f9bad;
   background-color: #fff;
-  font-family: 'Poppins', sans-serif;
   font-size: 15px;
   line-height: 1.7;
   overflow-x: hidden;
@@ -639,7 +637,6 @@ h4,
 h5,
 h6 {
   color: #282828;
-  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   line-height: 1.4;
   margin: 20px 0;
@@ -818,7 +815,6 @@ body.down .header-classic .header-bottom.clone {
   color: #203656;
   font-size: 30px;
   font-weight: bold;
-  font-family: 'Poppins', sans-serif;
   line-height: 1;
   margin: 0px 0 5px;
 }
@@ -830,7 +826,6 @@ body.down .header-classic .header-bottom.clone {
 }
 
 .slogan {
-  font-family: 'Poppins', sans-serif;
   color: #9faabb;
   font-size: 14px;
 }
@@ -840,7 +835,6 @@ body.down .header-classic .header-bottom.clone {
 }
 
 .navbar-nav {
-  font-family: 'Poppins', sans-serif;
   font-size: 14px;
 }
 
@@ -1129,7 +1123,6 @@ body.down .header-classic .header-bottom.clone {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
-  font-family: 'Poppins', sans-serif;
 }
 
 .canvas-menu .vertical-menu li:after {
@@ -1181,7 +1174,6 @@ body.down .header-classic .header-bottom.clone {
 
 .canvas-menu .vertical-menu li a {
   color: #203656;
-  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 400;
   text-decoration: none;
@@ -1327,7 +1319,6 @@ section {
 /*                      POST                              
 /*=================================================================*/
 .post .category-badge {
-  font-family: 'Poppins', sans-serif;
   color: #fff;
   font-size: 13px;
   border-radius: 25px;
@@ -1423,7 +1414,6 @@ section {
 }
 
 .post .thumb img {
-  font-family: 'Poppins', sans-serif;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
@@ -1464,7 +1454,6 @@ section {
 .post .meta {
   font-size: 14px;
   color: #9faabb;
-  font-family: 'Poppins', sans-serif;
 }
 
 .post .meta a {
@@ -1612,7 +1601,6 @@ section {
   border: solid 2px #fff;
   border-radius: 50%;
   font-size: 12px;
-  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   height: 24px;
   line-height: 22px;
@@ -1979,7 +1967,6 @@ section {
 
 .single-cover .cover-content .breadcrumb .breadcrumb-item a {
   color: #fff;
-  font-family: 'Poppins', sans-serif;
 }
 
 .single-cover .cover-content .breadcrumb-item + .breadcrumb-item::before {
@@ -2603,7 +2590,6 @@ footer {
 footer .footer-inner {
   border-top: solid 1px #ebebeb;
   padding: 20px 0;
-  font-family: 'Poppins', sans-serif;
 }
 
 footer .footer-inner .copyright {
@@ -2685,12 +2671,10 @@ footer .footer-inner .copyright {
 .newsletter-privacy {
   font-size: 13px;
   display: block;
-  font-family: 'Poppins', sans-serif;
 }
 
 .ads-title {
   color: #c0c0c0;
-  font-family: 'Poppins', sans-serif;
   font-size: 12px;
   display: block;
   margin-bottom: 10px;
@@ -2814,7 +2798,6 @@ button:focus {
   color: #fff;
   border: 0;
   border-radius: 25px;
-  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;
@@ -2953,7 +2936,6 @@ button:focus {
   list-style: none;
   background-color: transparent;
   border-radius: 0;
-  font-family: 'Poppins', sans-serif;
 }
 
 .breadcrumb .breadcrumb-item {
@@ -2979,7 +2961,6 @@ button:focus {
   border: solid 1px #ebebeb;
   -webkit-box-shadow: none;
   box-shadow: none;
-  font-family: 'Poppins', sans-serif;
 }
 
 .form-control:focus {
@@ -3779,7 +3760,6 @@ button:focus {
   transition: all 0.1s ease-in 0.1s;
   float: left;
   font-weight: 400;
-  font-family: 'Poppins', sans-serif;
 }
 
 .icon-addon.addon-sm .form-controls:focus-visible {
@@ -3836,13 +3816,8 @@ button:focus {
 
 .lead {
   color: #282828;
-  font-family: 'Poppins', sans-serif;
 }
 
 .w-40{
   width: 40%;
-}
-
-.font_sans{
-  font-family: 'Work Sans', sans-serif;
 }
