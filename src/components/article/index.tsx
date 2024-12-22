@@ -34,9 +34,6 @@ function Article({ data }) {
             className="w-full h-auto"
           />
         </div>
-        <div className="post-content mt-4 p-2">
-          <p className="font-sans">{data.first_peragraph}</p>
-        </div>
         <div
           className="post-content mt-4 font-sans text-lg p-2"
           dangerouslySetInnerHTML={{ __html: data.description }}

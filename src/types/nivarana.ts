@@ -25,7 +25,6 @@ export type OldBackendPost = {
     page_title: string
     category_name: string
     authors: string[]
-    first_peragraph: string
     description: string
     upload_image: string
     image_text: string
