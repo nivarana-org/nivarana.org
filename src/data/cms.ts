@@ -11,6 +11,7 @@ export const db = knex({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DATABASE,
+    charset: 'utf8mb4',
   },
   pool: { min: 0, max: 7 },
 });
