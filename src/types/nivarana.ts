@@ -21,7 +21,6 @@ export type Post = {
 export type OldBackendPost = {
     total_views: number
     id: number
-    page_name: string
     page_title: string
     category_name: string
     authors: string[]

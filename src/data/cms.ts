@@ -27,7 +27,6 @@ export interface Article {
   id: number;
   path: string;
   total_views: number;
-  page_name: string;
   page_title: string;
   category_name: string;
   authors: string;
@@ -55,7 +54,6 @@ interface EnhancedArticle extends Article {
   id: number;
   path: string;
   total_views: number;
-  page_name: string;
   page_title: string;
   category_name: string;
   authors: string;
