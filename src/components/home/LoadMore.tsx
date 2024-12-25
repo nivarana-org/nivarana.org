@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ArticlePreview from "../article/ArticlePreview";
 import { getPostsOfPage } from "@/network/api";
 import { Post } from "@/types/nivarana";
@@ -9,6 +9,8 @@ export default function LoadMore({ }) {
     const [posts, setPosts] = useState<Post[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
+    const loaderRef = useRef(null);
     const loadMore = async () => {
         setLoading(true);
         const morePosts = await getPostsOfPage(page);
@@ -19,13 +21,41 @@ export default function LoadMore({ }) {
         } else {
             setHasMore(false);
         }
-        
     }
+
+    const loadDelayed = () => {
+        const timer = setTimeout(() => {
+            loadMore();
+        }, 3000)
+        return timer;
+    }
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const first = entries[0];
+            if (first.isIntersecting && hasMore && !loading) {
+              const timerId = loadDelayed();
+              setTimer(timerId)
+            }
+          },
+          {
+            threshold: 1.0,
+            rootMargin: '0px'
+          }
+        );
+
+        if (loaderRef.current) {
+          observer.observe(loaderRef.current);
+        }
+
+        return () => observer.disconnect();
+      }, [hasMore, loading, page]);
     return <>
         {posts.map((item) => (
             <ArticlePreview {...item} key={item.path} />
         ))}
-        <div className="flex flex-col items-center">
+        <div ref={loaderRef} className="flex flex-col items-center">
             <LoadButton loading={loading} loadMore={loadMore} hasMore={hasMore} />
         </div>
     </>
