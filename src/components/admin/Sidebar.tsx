@@ -1,3 +1,3 @@
 export default function Sidebar() {
-    return <>This side</>
+    return <>This side</>;
 }

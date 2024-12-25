@@ -1,3 +1,3 @@
 import CentralCircularLoader from "./[id]/loading";
 
-export default CentralCircularLoader
+export default CentralCircularLoader;

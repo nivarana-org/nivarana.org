@@ -1,6 +1,13 @@
-"use client"
+"use client";
 import { sendWebPushNotificationAction } from "@/actions/notifications";
-import { Button, FormControl, FormHelperText, FormLabel, Input, Stack } from "@mui/joy";
+import {
+    Button,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    Input,
+    Stack,
+} from "@mui/joy";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -14,13 +21,15 @@ function SubmitButton() {
     );
 }
 
-
 const initialState = {
-    message: ""
-}
+    message: "",
+};
 
 export function NotifyForm() {
-    const [state, formAction] = useActionState(sendWebPushNotificationAction, initialState);
+    const [state, formAction] = useActionState(
+        sendWebPushNotificationAction,
+        initialState,
+    );
     return (
         <form action={formAction}>
             <Stack spacing={2}>

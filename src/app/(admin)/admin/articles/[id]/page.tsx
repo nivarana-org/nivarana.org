@@ -9,10 +9,9 @@ export default async function Page(props: Props) {
             <div className="text-bold">{post?.page_title}</div>
             <ArticleEditor initialValue={post.description} />
         </div>
-    )
+    );
 }
-
 
 type Props = {
-    params: Promise<{ id: string }>
-}
+    params: Promise<{ id: string }>;
+};

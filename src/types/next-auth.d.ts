@@ -1,22 +1,22 @@
-import NextAuth from "next-auth"
+import NextAuth from "next-auth";
 
-type Role = "admin" | "user"
+type Role = "admin" | "user";
 
 declare module "next-auth" {
     interface Session {
         user: {
-            role: Role
-        }
+            role: Role;
+        };
     }
     interface User {
-        role: Role
+        role: Role;
     }
 }
 
 declare module "@auth/core/jwt" {
     interface JWT {
-        role: Role
+        role: Role;
     }
 }
 
-export default NextAuth
+export default NextAuth;
