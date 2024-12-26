@@ -8,6 +8,7 @@ type Category = {
 };
 
 export type Post = {
+    id: number;
     path: string;
     authors_data: Author[];
     author?: Author;
@@ -16,6 +17,7 @@ export type Post = {
     meta_description: string;
     created_at: string;
     category: Category;
+    description: string;
 };
 
 export type OldBackendPost = {

@@ -28,11 +28,15 @@ function ArticleRow({ id, page_title, path }: Article) {
 
 export default async function Page({}) {
     const articles = await getArticlesOverview();
+    const nextCount = Number(articles[0].id) + 1;
     return (
         <div className="flex flex-col gap-2 p-2">
-            <div className="p-2">
+            <div className="p-2 flex flex-row gap-2">
                 <Link href="/admin/articles/bulk-edit/">
                     <Button>Bulk Edit</Button>
+                </Link>
+                <Link href={`/admin/articles/${nextCount}`}>
+                    <Button>New Article</Button>
                 </Link>
             </div>
             <Table>

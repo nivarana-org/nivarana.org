@@ -1,3 +1,4 @@
+"use client";
 import { Editor } from "@tinymce/tinymce-react";
 
 // TinyMCE so the global var exists
@@ -51,5 +52,5 @@ import "tinymce/skins/content/default/content";
 import "tinymce/skins/ui/oxide/content";
 
 export default function BundledEditor(props) {
-    return <Editor licenseKey="your-license-key" {...props} />;
+    return <Editor licenseKey="gpl" {...props} />;
 }

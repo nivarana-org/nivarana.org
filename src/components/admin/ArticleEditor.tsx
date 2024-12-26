@@ -4,15 +4,11 @@ import BundledEditor from "./BundledEditor";
 
 type Props = {
     initialValue?: string;
+    value: string;
 };
 
-export default function ArticleEditor({ initialValue }: Props) {
+export default function ArticleEditor(props: Props) {
     const editorRef = useRef(null);
-    const publish = () => {
-        if (editorRef.current) {
-            console.log(editorRef.current.getContent());
-        }
-    };
     const imageUploadHandler = async (blobInfo) => {
         const formData = new FormData();
         formData.append("file", blobInfo.blob(), blobInfo.filename());
@@ -28,7 +24,6 @@ export default function ArticleEditor({ initialValue }: Props) {
             <BundledEditor
                 apiKey="gpl"
                 onInit={(_evt, editor) => (editorRef.current = editor)}
-                initialValue={initialValue}
                 init={{
                     height: 500,
                     menubar: false,
@@ -62,8 +57,8 @@ export default function ArticleEditor({ initialValue }: Props) {
                     automatic_uploads: true,
                     images_upload_handler: imageUploadHandler,
                 }}
+                {...props}
             />
-            <button onClick={publish}>Save</button>
         </>
     );
 }

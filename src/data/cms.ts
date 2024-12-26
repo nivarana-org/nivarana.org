@@ -28,6 +28,7 @@ export interface Article {
     path: string;
     total_views: number;
     page_title: string;
+    description: string;
     category_name: string;
     authors: string;
     upload_image: string;
@@ -102,6 +103,19 @@ export const getCategoryDetails = async (id: number | string) => {
 
 export const getAuthorsDetails = async (ids: string[]) => {
     return db("authors").select("*").whereIn("id", ids);
+};
+
+export const getAllAuthors = async () => {
+    return db("authors").select("id", "author_name").orderBy("id", "desc");
+};
+
+export const addOrEditPost = async (post: Article) => {
+    const timestamp = new Date(Date.now());
+    const query = db("blogs")
+        .insert({ ...post, created_at: timestamp, updated_at: timestamp })
+        .onConflict("id")
+        .merge({ ...post, updated_at: timestamp });
+    return await query;
 };
 
 export const getArticleByPath = async (
