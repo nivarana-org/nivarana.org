@@ -8,6 +8,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const authors = formData.get("authors");
     const category_name = formData.get("category");
     const meta_description = formData.get("intro");
+    const upload_image = formData.get("image");
     const post = {
         id,
         page_title,
@@ -15,6 +16,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         authors,
         category_name,
         meta_description,
+        upload_image,
     };
     try {
         await addOrEditPost(post);

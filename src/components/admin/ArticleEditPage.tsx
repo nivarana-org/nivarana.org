@@ -15,6 +15,7 @@ import { addOrEditPostAction } from "@/actions/post";
 import { Article } from "@/data/cms";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
+import ImagePicker from "./ImagePicker";
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
     ssr: false,
@@ -48,6 +49,7 @@ export default function ArticleEditPage({
             setAuthors(newValue);
         }
     };
+    const [image, setImage] = useState(post?.upload_image);
     const [description, setDescription] = useState(post?.description);
     return (
         <form
@@ -58,6 +60,7 @@ export default function ArticleEditPage({
                 data.append("id", `${post.id}`);
                 data.append("description", description);
                 data.append("authors", authors.join(","));
+                data.append("image", image);
                 addOrEditPostAction(data);
             }}
         >
@@ -134,6 +137,15 @@ export default function ArticleEditPage({
                     defaultValue={post?.meta_description}
                     minRows={4}
                 ></Textarea>
+            </FormControl>
+            <FormControl>
+                <FormLabel>Image</FormLabel>
+                <ImagePicker
+                    defaultValue={post?.upload_image}
+                    onChange={(newValue: string) => {
+                        setImage(newValue);
+                    }}
+                ></ImagePicker>
             </FormControl>
             <ArticleEditor
                 initialValue={post?.description}

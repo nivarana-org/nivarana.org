@@ -24,6 +24,7 @@ export const POST = async (req) => {
             Message: "Success",
             status: 201,
             link: "/uploads/" + filename,
+            filename,
         });
     } catch (error) {
         console.log("Error occured ", error);
