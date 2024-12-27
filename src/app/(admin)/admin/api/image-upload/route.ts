@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
+import { getExtension } from "@/utils/string";
 
 export const POST = async (req) => {
     const formData = await req.formData();
@@ -14,7 +15,10 @@ export const POST = async (req) => {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
+    // const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
+    const time = Math.floor(Date.now() / 1000);
+    const extension = getExtension(file.name);
+    const filename = `${time}.${extension}`;
     try {
         await writeFile(
             path.join(process.cwd(), "public/uploads/" + filename),

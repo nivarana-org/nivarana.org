@@ -9,3 +9,7 @@ export function sluggify(input) {
         .replace(/^-+/, "") // Trim - from start of text
         .replace(/-+$/, ""); // Trim - from end of text
 }
+
+export function getExtension(filename) {
+    return filename.split(".").pop();
+}
