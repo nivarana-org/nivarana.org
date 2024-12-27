@@ -101,6 +101,10 @@ export const getCategoryDetails = async (id: number | string) => {
     return db("categories").select("*").where({ id }).first();
 };
 
+export const getAllCategories = async () => {
+    return db("categories").select("id", "name").orderBy("id", "asc");
+};
+
 export const getAuthorsDetails = async (ids: string[]) => {
     return db("authors").select("*").whereIn("id", ids);
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleEditor from "./ArticleEditor";
 import {
     Button,
@@ -10,18 +10,28 @@ import {
     Input,
     Option,
     Select,
+    Textarea,
 } from "@mui/joy";
 import { addOrEditPostAction } from "@/actions/post";
 import { Article } from "@/data/cms";
+import { sluggify } from "@/utils/string";
 
 export default function ArticleEditPage({
     post,
     allAuthors,
+    allCategories,
 }: {
     post: Article;
+    allAuthors: { id: string; author_name: string }[];
+    allCategories: { id: string; name: string }[];
 }) {
     const [title, setTitle] = useState(post?.page_title || "");
     const [path, setPath] = useState(post?.path || "");
+    const [generatePath, setGeneratePath] = useState(!Boolean(post?.path));
+    useEffect(() => {
+        if (!generatePath) return;
+        setPath(sluggify(title));
+    }, [generatePath, title]);
     const [authors, setAuthors] = useState<string[]>(
         post?.authors?.split(",") ?? [],
     );
@@ -65,7 +75,10 @@ export default function ArticleEditPage({
                     readOnly={Boolean(post?.path)}
                     name="path"
                     value={path}
-                    onChange={(e) => setPath(e.target.value)}
+                    onChange={(e) => {
+                        setGeneratePath(false);
+                        setPath(e.target.value);
+                    }}
                 ></Input>
                 <FormHelperText>
                     {path
@@ -79,6 +92,7 @@ export default function ArticleEditPage({
                 <Select
                     defaultValue={authors}
                     multiple
+                    placeholder="Select one or more authors"
                     onChange={handleAuthorChange}
                 >
                     {allAuthors.map(
@@ -89,6 +103,32 @@ export default function ArticleEditPage({
                         ),
                     )}
                 </Select>
+            </FormControl>
+            <FormControl>
+                <FormLabel>Choose the category</FormLabel>
+                <Select
+                    defaultValue={post?.category_name}
+                    name="category"
+                    placeholder="Select a category"
+                    required
+                >
+                    {allCategories.map((c: { id: string; name: string }) => (
+                        <Option key={c.id} value={`${c.id}`}>
+                            {c.name}
+                        </Option>
+                    ))}
+                </Select>
+            </FormControl>
+            <FormControl>
+                <FormLabel>
+                    Introduction paragraph (previously called &quot;Meta
+                    Description&quot;
+                </FormLabel>
+                <Textarea
+                    name="intro"
+                    defaultValue={post?.meta_description}
+                    minRows={4}
+                ></Textarea>
             </FormControl>
             <ArticleEditor
                 initialValue={post?.description}
