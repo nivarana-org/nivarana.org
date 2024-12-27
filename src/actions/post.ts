@@ -22,7 +22,9 @@ export const addOrEditPostAction = async (formData: FormData) => {
     };
     try {
         await addOrEditPost(post);
+        return { status: true };
     } catch (err) {
         console.error(err);
+        return { status: false, message: err };
     }
 };

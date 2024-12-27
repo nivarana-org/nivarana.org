@@ -31,9 +31,11 @@ export default function ArticleEditPage({
     allAuthors: { id: string; author_name: string }[];
     allCategories: { id: string; name: string }[];
 }) {
+    const [submitting, setSubmitting] = useState(false);
     const [title, setTitle] = useState(post?.page_title || "");
     const [path, setPath] = useState(post?.path || "");
     const [generatePath, setGeneratePath] = useState(!Boolean(post?.path));
+    const [pathIsReadOnly, setPathReadOnly] = useState(Boolean(post?.path));
     useEffect(() => {
         if (!generatePath) return;
         setPath(sluggify(title));
@@ -54,7 +56,7 @@ export default function ArticleEditPage({
     return (
         <form
             className="p-2"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
                 e.preventDefault();
                 if (!image) {
                     alert("Please select image");
@@ -65,7 +67,19 @@ export default function ArticleEditPage({
                 data.append("description", description);
                 data.append("authors", authors.join(","));
                 data.append("image", image);
-                addOrEditPostAction(data);
+                setSubmitting(true);
+                const { status, message } = await addOrEditPostAction(data);
+                setSubmitting(false);
+                if (!status) {
+                    alert(message);
+                } else {
+                    setPathReadOnly(true);
+                    if (
+                        confirm("Post updated successfully. Open the post now?")
+                    ) {
+                        window.open(`/article/${path}`);
+                    }
+                }
             }}
         >
             <FormControl>
@@ -84,7 +98,7 @@ export default function ArticleEditPage({
             <FormControl>
                 <FormLabel>Slug/Link/Path</FormLabel>
                 <Input
-                    readOnly={Boolean(post?.path)}
+                    readOnly={pathIsReadOnly}
                     name="path"
                     value={path}
                     onChange={(e) => {
@@ -156,7 +170,9 @@ export default function ArticleEditPage({
                 value={description}
                 onEditorChange={(newValue, editor) => setDescription(newValue)}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={submitting}>
+                {submitting ? "Submitting..." : "Submit"}
+            </Button>
         </form>
     );
 }
