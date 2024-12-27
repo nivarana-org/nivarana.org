@@ -168,7 +168,7 @@ export default function ArticleEditPage({
             <ArticleEditor
                 initialValue={post?.description}
                 value={description}
-                onEditorChange={(newValue, editor) => setDescription(newValue)}
+                onEditorChange={(newValue) => setDescription(newValue)}
             />
             <Button type="submit" disabled={submitting}>
                 {submitting ? "Submitting..." : "Submit"}

@@ -1,7 +1,6 @@
 "use client";
 import { getImages } from "@/network/api";
 import { Box, Button, Grid } from "@mui/joy";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const getImageURL = (filename) => {
@@ -35,7 +34,7 @@ export default function ImagePicker({
                     height={100}
                     width={100}
                 ></img>
-                <button onClick={(e) => setSelected("")}>Remove/Change</button>
+                <button onClick={() => setSelected("")}>Remove/Change</button>
             </Grid>
         );
 
@@ -53,6 +52,7 @@ export default function ImagePicker({
         setImages(await getImages());
         setUploading(false);
     };
+    if (uploading) return <div>Uploading...</div>;
     return (
         <Grid>
             <Button variant="contained" component="label">
@@ -88,7 +88,7 @@ export default function ImagePicker({
                                   src={i.url}
                                   height={55}
                                   width={80}
-                                  onClick={(e) => {
+                                  onClick={() => {
                                       setSelected(i.filename);
                                       onChange(i.filename);
                                   }}
