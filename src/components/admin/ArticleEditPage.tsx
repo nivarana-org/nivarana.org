@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import ArticleEditor from "./ArticleEditor";
 import {
     Button,
     Divider,
@@ -15,6 +14,12 @@ import {
 import { addOrEditPostAction } from "@/actions/post";
 import { Article } from "@/data/cms";
 import { sluggify } from "@/utils/string";
+import dynamic from "next/dynamic";
+
+const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
+    ssr: false,
+    loading: () => <p>Loading editor....</p>,
+});
 
 export default function ArticleEditPage({
     post,
