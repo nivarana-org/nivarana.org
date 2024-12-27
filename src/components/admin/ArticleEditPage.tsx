@@ -56,6 +56,10 @@ export default function ArticleEditPage({
             className="p-2"
             onSubmit={(e) => {
                 e.preventDefault();
+                if (!image) {
+                    alert("Please select image");
+                    return;
+                }
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
                 data.append("description", description);

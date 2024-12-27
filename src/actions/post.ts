@@ -9,8 +9,10 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const category_name = formData.get("category");
     const meta_description = formData.get("intro");
     const upload_image = formData.get("image");
+    const path = formData.get("path");
     const post = {
         id,
+        path,
         page_title,
         description,
         authors,

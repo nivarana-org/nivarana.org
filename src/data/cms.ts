@@ -90,7 +90,7 @@ export const getArticlesCount = async () => {
 };
 
 export const getArticlesOverview = async () => {
-    return db<Article>("blogs").select("*").orderBy("created_at", "desc");
+    return db<Article>("blogs").select("*").orderBy("id", "desc");
 };
 
 export const getArticleFull = async (id: number) => {

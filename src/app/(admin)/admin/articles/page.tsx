@@ -3,12 +3,27 @@ import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
+import Image from "next/image";
 
-function ArticleRow({ id, page_title, path }: Article) {
+function ArticleRow({
+    id,
+    page_title,
+    path,
+    upload_image,
+    total_views,
+}: Article) {
     const adminLink = `/admin/articles/${id}`;
     const publicLink = `/article/${path}`;
     return (
         <>
+            <td>
+                <Image
+                    src={`/uploads/${upload_image}`}
+                    alt=""
+                    height={55}
+                    width={80}
+                ></Image>
+            </td>
             <td>
                 <Link href={adminLink}>{page_title}</Link>
             </td>
@@ -22,6 +37,7 @@ function ArticleRow({ id, page_title, path }: Article) {
                     </Link>
                 </Box>
             </td>
+            <td>{total_views}</td>
         </>
     );
 }
@@ -39,11 +55,13 @@ export default async function Page({}) {
                     <Button>New Article</Button>
                 </Link>
             </div>
-            <Table>
+            <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Title</th>
                         <th>Actions</th>
+                        <th>Views</th>
                     </tr>
                 </thead>
                 <tbody>
