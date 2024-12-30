@@ -97,6 +97,15 @@ export const getArticleFull = async (id: number) => {
     return db<Article>("blogs").select("*").where({ id }).first();
 };
 
+export const searchArticles = async (query: string) => {
+    return db<Article>("blogs")
+        .select("*")
+        .whereRaw(
+            "MATCH(page_title, description, meta_description) AGAINST (?)",
+            [query],
+        );
+};
+
 export const getCategoryDetails = async (id: number | string) => {
     return db("categories").select("*").where({ id }).first();
 };
@@ -110,7 +119,9 @@ export const getAuthorsDetails = async (ids: string[]) => {
 };
 
 export const getAllAuthors = async () => {
-    return db("authors").select("id", "author_name").orderBy("id", "desc");
+    return db("authors")
+        .select("id", "author_name", "path")
+        .orderBy("id", "desc");
 };
 
 export const addOrEditPost = async (post: Article) => {
