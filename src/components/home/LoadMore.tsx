@@ -1,19 +1,22 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import ArticlePreview from "../article/ArticlePreview";
-import { getPostsOfPage } from "@/network/api";
 import { Post } from "@/types/nivarana";
+import { getArticlesPaginated } from "@/data/cms";
 
 const usePosts = (startPage: number) => {
     const [page, setPage] = useState(startPage);
     const [posts, setPosts] = useState<Post[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [shouldAutoLoad, setAutoLoad] = useState(false);
+
     const loadMore = async () => {
         if (!hasMore) return;
         if (loading) return;
         setLoading(true);
-        const morePosts = await getPostsOfPage(`${page}`);
+        setAutoLoad(true);
+        const morePosts = await getArticlesPaginated(page);
         if (morePosts.length > 0) {
             setPosts((posts) => [...posts, ...morePosts]);
             setPage((page) => page + 1);
@@ -22,11 +25,11 @@ const usePosts = (startPage: number) => {
             setHasMore(false);
         }
     };
-    const loadDelayed = () => {
-        const timer = setTimeout(() => {
+
+    const autoLoad = () => {
+        if (shouldAutoLoad) {
             loadMore();
-        }, 3000);
-        return timer;
+        }
     };
 
     return {
@@ -34,12 +37,12 @@ const usePosts = (startPage: number) => {
         hasMore,
         loading,
         loadMore,
-        loadDelayed,
+        autoLoad,
     };
 };
 
 export default function LoadMore({}) {
-    const { posts, hasMore, loading, loadMore, loadDelayed } = usePosts(2);
+    const { posts, hasMore, loading, loadMore, autoLoad } = usePosts(1);
     const loaderRef = useRef(null);
 
     useEffect(() => {
@@ -47,7 +50,7 @@ export default function LoadMore({}) {
             (entries) => {
                 const first = entries[0];
                 if (first.isIntersecting) {
-                    loadDelayed();
+                    autoLoad();
                 }
             },
             {
@@ -61,7 +64,7 @@ export default function LoadMore({}) {
         return () => {
             observer.disconnect();
         };
-    }, [loadDelayed]);
+    }, [autoLoad]);
     return (
         <>
             {posts.map((item) => (

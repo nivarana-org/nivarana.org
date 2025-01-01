@@ -1,10 +1,10 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import LoadMore from "@/components/home/LoadMore";
 import Sidebar from "@/components/sidebar";
-import { getPostsOfPage } from "@/network/api";
+import { getArticlesPaginated } from "@/data/cms";
 
 export default async function Home() {
-    const initialPosts = await getPostsOfPage("0");
+    const initialPosts = await getArticlesPaginated(0);
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">

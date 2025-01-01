@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-export function Author({ path, author_name }) {
+export function Author({ path, author_name, name }) {
     return (
         <li className="list-inline-item border p-1 rounded hover:bg-cyan-200">
-            <Link href={"/author/" + path}>{author_name}</Link>
+            <Link href={"/author/" + path}>{name || author_name}</Link>
         </li>
     );
 }

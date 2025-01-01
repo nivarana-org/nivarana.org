@@ -69,6 +69,11 @@ export const getAuthorDetails = async (id: string) => {
     return data.data[0];
 };
 
+/**
+ * @deprecated this should not be used please
+ * @param page the page number
+ * @returns list of posts
+ */
 export const getPostsOfPage = async (page: string) => {
     const res = await fetch(API + "fetch_category_post?page=" + page);
     const data = await res.json();

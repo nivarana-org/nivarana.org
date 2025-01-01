@@ -45,13 +45,13 @@ interface Category {
     path: string;
 }
 
-interface Author {
+export interface Author {
     id: number;
     name: string;
     path: string;
     description: string;
 }
-interface EnhancedArticle extends Article {
+export interface EnhancedArticle extends Article {
     id: number;
     path: string;
     total_views: number;
@@ -91,6 +91,49 @@ export const getArticlesCount = async () => {
 
 export const getArticlesOverview = async () => {
     return db<Article>("blogs").select("*").orderBy("id", "desc");
+};
+
+export const getArticlesPaginated = async (
+    page = 0,
+    per_page = 10,
+): Promise<EnhancedArticle[]> => {
+    const blogsQuery = db("blogs")
+        .select(
+            "blogs.id",
+            "blogs.page_title",
+            "blogs.path",
+            "blogs.description",
+            "blogs.upload_image",
+            "blogs.meta_title",
+            "blogs.meta_description",
+            "blogs.created_at",
+            "blogs.updated_at",
+            db.raw(
+                `(
+            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'name', a.author_name, 'path', a.path))
+            FROM authors a
+            WHERE FIND_IN_SET(a.id, blogs.authors)
+          ) as authors_data`,
+            ),
+            db.raw(
+                `(
+            SELECT JSON_OBJECT('id', c.id, 'name', c.name, 'path', c.path)
+            FROM categories c
+            WHERE c.id = blogs.category_name
+          ) as category`,
+            ),
+        )
+        .orderBy("id", "desc")
+        .limit(per_page)
+        .offset(page * per_page);
+    const blogs = (await blogsQuery).map(
+        ({ authors_data, category, ...rest }) => ({
+            authors_data: JSON.parse(authors_data),
+            category: JSON.parse(category),
+            ...rest,
+        }),
+    );
+    return blogs;
 };
 
 export const getArticleFull = async (id: number) => {

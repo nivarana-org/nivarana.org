@@ -15,7 +15,7 @@ export type Post = {
     upload_image: string;
     page_title: string;
     meta_description: string;
-    created_at: string;
+    created_at: number;
     category: Category;
     description: string;
 };

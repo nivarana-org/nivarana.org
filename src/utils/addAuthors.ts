@@ -1,13 +1,16 @@
-export const addAuthors = (articles, authors) => {
+import { Article, Author } from "@/data/cms";
+
+export const addAuthors = (articles: Article[], authors: Author[]) => {
+    const initial: { [index: number]: Author } = {};
     const authorsById = authors.reduce((agg, curr) => {
         agg[curr.id] = curr;
         return agg;
-    }, {});
-    return articles.map((post) => {
+    }, initial);
+    const enhancedArticles = articles.map((post) => {
         const authors_data = post?.authors
             ?.split(",")
-            ?.map((author) => authorsById[author]);
-        post.authors_data = authors_data;
-        return post;
+            ?.map((author) => authorsById[Number(author)]);
+        return { ...post, authors_data };
     });
+    return enhancedArticles;
 };
