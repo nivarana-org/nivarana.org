@@ -39,7 +39,7 @@ export default async function Page() {
     ]);
 
     return (
-        <div>
+        <div className="max-w-screen-md mx-auto">
             <div className="p2 flex gap-2">
                 <DashboardItem
                     name="Newsletter Subscribers"
