@@ -51,7 +51,7 @@ export default function ArticleEditor(props: Props) {
                         "undo redo | blocks | " +
                         "bold italic forecolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "link image | " +
+                        "link image hr | " +
                         "removeformat | help",
                     images_upload_url: "/admin/api/image-upload",
                     automatic_uploads: true,
