@@ -29,10 +29,9 @@ export default function ImagePicker({
                 <img
                     alt="Representative image"
                     src={getImageURLFromFileName(selected)}
-                    height={100}
-                    width={100}
+                    height="50vh"
                 ></img>
-                <button onClick={() => setSelected("")}>Remove/Change</button>
+                <Button onClick={() => setSelected("")}>Change</Button>
             </Grid>
         );
 

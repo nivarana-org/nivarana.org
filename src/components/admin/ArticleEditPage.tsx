@@ -55,7 +55,7 @@ export default function ArticleEditPage({
     const [description, setDescription] = useState(post?.description);
     return (
         <form
-            className="p-2"
+            className="p-4 max-w-screen-sm mx-auto"
             onSubmit={async (e) => {
                 e.preventDefault();
                 if (!image) {
@@ -83,7 +83,7 @@ export default function ArticleEditPage({
             }}
         >
             <FormControl>
-                <FormLabel>Post Title</FormLabel>
+                <FormLabel className="font-bold">Post Title</FormLabel>
                 <Input
                     name="title"
                     value={title}
@@ -94,7 +94,7 @@ export default function ArticleEditPage({
                     This is the publicly visible title
                 </FormHelperText>
             </FormControl>
-            <Divider></Divider>
+            <Divider className="my-4"></Divider>
             <FormControl>
                 <FormLabel>Slug/Link/Path</FormLabel>
                 <Input
@@ -113,8 +113,10 @@ export default function ArticleEditPage({
                 </FormHelperText>
             </FormControl>
 
+            <Divider className="my-4"></Divider>
+
             <FormControl>
-                <FormLabel>Choose the authors</FormLabel>
+                <FormLabel className="font-bold">Choose the authors</FormLabel>
                 <Select
                     defaultValue={authors}
                     multiple
@@ -130,8 +132,11 @@ export default function ArticleEditPage({
                     )}
                 </Select>
             </FormControl>
+
+            <Divider className="my-4"></Divider>
+
             <FormControl>
-                <FormLabel>Choose the category</FormLabel>
+                <FormLabel className="font-bold">Choose the category</FormLabel>
                 <Select
                     defaultValue={post?.category_name}
                     name="category"
@@ -145,6 +150,9 @@ export default function ArticleEditPage({
                     ))}
                 </Select>
             </FormControl>
+
+            <Divider className="my-4"></Divider>
+
             <FormControl>
                 <FormLabel>
                     Introduction paragraph (previously called &quot;Meta
@@ -156,8 +164,11 @@ export default function ArticleEditPage({
                     minRows={4}
                 ></Textarea>
             </FormControl>
+
+            <Divider className="my-4"></Divider>
+
             <FormControl>
-                <FormLabel>Image</FormLabel>
+                <FormLabel className="font-bold">Image</FormLabel>
                 <ImagePicker
                     defaultValue={post?.upload_image}
                     onChange={(newValue: string) => {
@@ -165,11 +176,17 @@ export default function ArticleEditPage({
                     }}
                 ></ImagePicker>
             </FormControl>
+
+            <Divider className="my-4"></Divider>
+
             <ArticleEditor
                 initialValue={post?.description}
                 value={description}
                 onEditorChange={(newValue) => setDescription(newValue)}
             />
+
+            <Divider className="my-4"></Divider>
+
             <Button type="submit" disabled={submitting}>
                 {submitting ? "Submitting..." : "Submit"}
             </Button>
