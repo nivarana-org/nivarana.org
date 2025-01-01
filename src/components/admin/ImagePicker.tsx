@@ -1,11 +1,8 @@
 "use client";
 import { getImages } from "@/network/api";
+import { getImageURLFromFileName } from "@/utils/paths";
 import { Box, Button, Grid } from "@mui/joy";
 import { useEffect, useState } from "react";
-
-const getImageURL = (filename) => {
-    return `/uploads/${filename}`;
-};
 
 export default function ImagePicker({
     defaultValue,
@@ -30,7 +27,7 @@ export default function ImagePicker({
             <Grid>
                 <img
                     alt="Representative image"
-                    src={getImageURL(selected)}
+                    src={getImageURLFromFileName(selected)}
                     height={100}
                     width={100}
                 ></img>

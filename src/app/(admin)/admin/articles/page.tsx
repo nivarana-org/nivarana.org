@@ -4,6 +4,7 @@ import Link from "next/link";
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
 import Image from "next/image";
+import { getImageURLFromFileName } from "@/utils/paths";
 
 function ArticleRow({
     id,
@@ -18,7 +19,7 @@ function ArticleRow({
         <>
             <td>
                 <Image
-                    src={`/uploads/${upload_image}`}
+                    src={getImageURLFromFileName(upload_image)}
                     alt=""
                     height={55}
                     width={80}
