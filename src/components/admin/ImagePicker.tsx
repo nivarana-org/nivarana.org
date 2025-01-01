@@ -1,8 +1,9 @@
 "use client";
 import { getImages } from "@/network/api";
 import { getImageURLFromFileName } from "@/utils/paths";
-import { Box, Button, Grid } from "@mui/joy";
+import { Box, Button, Grid, Modal } from "@mui/joy";
 import { useEffect, useState } from "react";
+import { uploadImage } from "./image";
 
 export default function ImagePicker({
     defaultValue,
@@ -35,65 +36,73 @@ export default function ImagePicker({
             </Grid>
         );
 
-    const uploadImage = async (file) => {
+    const handleUploadImage = async (file) => {
         setUploading(true);
-        console.log(file);
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-        const result = await fetch("/admin/api/images/upload", {
-            body: formData,
-            method: "post",
-        });
-        const data = await result.json();
+        const data = await uploadImage(file);
         setSelected(data.filename);
         setImages(await getImages());
         setUploading(false);
     };
-    if (uploading) return <div>Uploading...</div>;
     return (
-        <Grid>
-            <Button variant="contained" component="label">
-                Upload New Image
-                <input
-                    onChange={(e) => {
-                        if (e.target.files === null) return;
-                        uploadImage(e.target.files[0]);
+        <Modal open={!selected}>
+            <Grid>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "80%",
+                        height: "80%",
+                        bgcolor: "background.paper",
+                        boxShadow: 24,
+                        p: 4,
+                        display: "grid",
+                        gridTemplateColumns:
+                            "repeat(auto-fit, minmax(150px, 1fr))",
+                        gap: 2,
+                        overflow: "auto",
                     }}
-                    type="file"
-                    hidden
-                ></input>
-            </Button>
-            <Box
-                sx={{
-                    display: "flex",
-                    gap: 1,
-                    py: 1,
-                    overflow: "auto",
-                    width: "100%",
-                    scrollSnapType: "x mandatory",
-                    "& > *": {
-                        scrollSnapAlign: "center",
-                    },
-                    "::-webkit-scrollbar": { display: "none" },
-                }}
-            >
-                {images
-                    ? images?.map((i) => {
-                          return (
-                              <img
-                                  key={i.filename}
-                                  src={i.url}
-                                  height={55}
-                                  width={80}
-                                  onClick={() => {
-                                      setSelected(i.filename);
-                                      onChange(i.filename);
-                                  }}
-                              ></img>
-                          );
-                      })
-                    : null}
-            </Box>
-        </Grid>
+                >
+                    {uploading ? (
+                        <div>Uploading...</div>
+                    ) : (
+                        <Button component="label">
+                            Upload New Image
+                            <input
+                                onChange={(e) => {
+                                    if (e.target.files === null) return;
+                                    handleUploadImage(e.target.files[0]);
+                                }}
+                                type="file"
+                                hidden
+                            ></input>
+                        </Button>
+                    )}
+                    {images
+                        ? images?.map((i) => {
+                              return (
+                                  <Box
+                                      key={i.filename}
+                                      component="img"
+                                      src={i.url}
+                                      alt={`Image ${i.filename}`}
+                                      sx={{
+                                          width: "100%",
+                                          height: "auto", // Maintain aspect ratio
+                                          objectFit: "cover", // Fill the grid cell neatly
+                                          borderRadius: 1, // Optional: Add rounded corners
+                                      }}
+                                      onClick={() => {
+                                          setSelected(i.filename);
+                                          onChange(i.filename);
+                                      }}
+                                  />
+                              );
+                          })
+                        : null}
+                </Box>
+            </Grid>
+        </Modal>
     );
 }
