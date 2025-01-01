@@ -43,7 +43,7 @@ export default function ImagePicker({
         console.log(file);
         const formData = new FormData();
         formData.append("file", file, file.name);
-        const result = await fetch("/admin/api/image-upload", {
+        const result = await fetch("/admin/api/images/upload", {
             body: formData,
             method: "post",
         });

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "path";
 import fs from "node:fs";
+import { getImageUploadDirectory } from "./setup";
 
 const sortFiles = (files) => {
     return files.sort((a, b) => {
@@ -13,8 +14,7 @@ const sortFiles = (files) => {
 };
 
 export const GET = async () => {
-    const uploadsDirectory = path.join(process.cwd(), "public", "uploads");
-
+    const uploadsDirectory = getImageUploadDirectory();
     const files = await fs.readdirSync(uploadsDirectory);
     const sortedFiles = sortFiles(files);
 

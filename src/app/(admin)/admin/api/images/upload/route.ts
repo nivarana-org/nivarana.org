@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { getExtension } from "@/utils/string";
+import { getImageUploadDirectory } from "../setup";
+import { getImageURLFromFileName } from "@/utils/paths";
 
 export const POST = async (req) => {
     const formData = await req.formData();
@@ -19,15 +21,14 @@ export const POST = async (req) => {
     const time = Math.floor(Date.now() / 1000);
     const extension = getExtension(file.name);
     const filename = `${time}.${extension}`;
+    const uploadsDirectory = getImageUploadDirectory();
+    const filePath = path.join(uploadsDirectory, filename);
     try {
-        await writeFile(
-            path.join(process.cwd(), "public/uploads/" + filename),
-            buffer,
-        );
+        await writeFile(filePath, buffer);
         return NextResponse.json({
             Message: "Success",
             status: 201,
-            link: "/uploads/" + filename,
+            link: getImageURLFromFileName(filename),
             filename,
         });
     } catch (error) {

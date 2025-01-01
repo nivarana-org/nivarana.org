@@ -12,7 +12,7 @@ export default function ArticleEditor(props: Props) {
     const imageUploadHandler = async (blobInfo) => {
         const formData = new FormData();
         formData.append("file", blobInfo.blob(), blobInfo.filename());
-        const result = await fetch("/admin/api/image-upload", {
+        const result = await fetch("/admin/api/images/upload", {
             body: formData,
             method: "post",
         });
@@ -53,7 +53,7 @@ export default function ArticleEditor(props: Props) {
                         "alignright alignjustify | bullist numlist outdent indent | " +
                         "link image hr | " +
                         "removeformat | help",
-                    images_upload_url: "/admin/api/image-upload",
+                    images_upload_url: "/admin/api/images/upload",
                     automatic_uploads: true,
                     images_upload_handler: imageUploadHandler,
                 }}
