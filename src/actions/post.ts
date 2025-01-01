@@ -1,5 +1,6 @@
 "use server";
 import { addOrEditPost } from "@/data/cms";
+import { revalidatePath } from "next/cache";
 
 export const addOrEditPostAction = async (formData: FormData) => {
     const id = formData.get("id");
@@ -22,9 +23,15 @@ export const addOrEditPostAction = async (formData: FormData) => {
     };
     try {
         await addOrEditPost(post);
+        clearCache();
         return { status: true };
     } catch (err) {
         console.error(err);
         return { status: false, message: err };
     }
 };
+
+
+export async function clearCache() {
+    revalidatePath("/", "layout");
+}

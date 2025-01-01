@@ -1,10 +1,10 @@
+import { clearCache } from "@/actions/post";
 import ClearCache from "@/components/admin/ClearCache";
 import {
     getArticlesCount,
     getSubscribersCount,
     getWebPushSubscriberCount,
 } from "@/data/cms";
-import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -25,11 +25,6 @@ function DashboardItem({
             </div>
         </Link>
     );
-}
-
-async function clearCache() {
-    "use server";
-    revalidatePath("/", "layout");
 }
 
 export default async function Page() {
