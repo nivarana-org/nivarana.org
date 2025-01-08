@@ -199,6 +199,14 @@ export const getArticleByPath = async (
     return enhancedPost;
 };
 
+export const getPageByPath = async (path: string) => {
+    const page = await db("static_pages")
+        .select("*")
+        .where({ page_name: path })
+        .first();
+    return page;
+};
+
 export const getWebPushSubscriberCount = async () => {
     return getTableCount("push_subscriptions");
 };

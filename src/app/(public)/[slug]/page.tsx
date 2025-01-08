@@ -1,22 +1,35 @@
-"use client";
+import RandomQuote from "@/components/sprinkle/random-quote";
+import { getPageByPath } from "@/data/cms";
+import { Metadata } from "next";
+import { cache } from "react";
 
-import { useEffect, useState } from "react";
+type Props = {
+    params: Promise<{ slug: string }>;
+};
 
-export default function Page() {
-    const [quote, setQuote] = useState<{ quote: string; author: string }>();
+const cachedGetPageBySlug = cache((slug: string) => {
+    return getPageByPath(slug);
+});
 
-    useEffect(() => {
-        fetch("https://quotes-api-self.vercel.app/quote")
-            .then((d) => d.json())
-            .then((q) => setQuote(q));
-    }, []);
+export async function generateMetadata(props: Props): Promise<Metadata> {
+    const params = await props.params;
+    const post = await cachedGetPageBySlug(params.slug);
+    if (!post) return {};
+    return {
+        title: post.page_title,
+    };
+}
 
-    if (!quote) return;
-
+export default async function Page(props: Props) {
+    const params = await props.params;
+    const page = await cachedGetPageBySlug(params.slug);
+    if (!page) {
+        return <RandomQuote />;
+    }
     return (
-        <div className="max-w-prose mx-auto">
-            <h1>&quot;{quote?.quote}&quot;</h1>
-            <h2 className="ml-40">{quote?.author}</h2>
+        <div className="max-w-prose mx-auto pt-5">
+            <h1 className="font-4xl">{page.page_title}</h1>
+            <p dangerouslySetInnerHTML={{ __html: page.description }}></p>
         </div>
     );
 }
