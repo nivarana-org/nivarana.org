@@ -39,6 +39,7 @@ export default function ImagePicker({
         setUploading(true);
         const data = await uploadImage(file);
         setSelected(data.filename);
+        onChange(data.filename);
         setImages(await getImages());
         setUploading(false);
     };
