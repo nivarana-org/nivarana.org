@@ -27,7 +27,7 @@ export default function ImagePicker({
         return (
             <Grid>
                 <img
-                    alt="Representative image"
+                    alt={`Representative image named ${selected}`}
                     src={getImageURLFromFileName(selected)}
                     height="50vh"
                 ></img>
@@ -84,7 +84,7 @@ export default function ImagePicker({
                                   <Box
                                       key={i.filename}
                                       component="img"
-                                      src={i.url}
+                                      src={getImageURLFromFileName(i.filename)}
                                       alt={`Image ${i.filename}`}
                                       sx={{
                                           width: "100%",
