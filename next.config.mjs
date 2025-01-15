@@ -44,6 +44,11 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'blogsadmin.nivarana.org',
                 port: '',
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost',
+                port: '8000'
             }
         ]
     }
