@@ -190,6 +190,7 @@ export default function ArticleEditPage({
             <Button type="submit" disabled={submitting}>
                 {submitting ? "Submitting..." : "Submit"}
             </Button>
+            <div className="my-96"></div>
         </form>
     );
 }
