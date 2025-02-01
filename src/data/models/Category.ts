@@ -17,5 +17,22 @@ export default class Category extends Model {
                 to: "blogs.id",
             },
         },
+        parent: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: Category,
+            join: {
+                from: "categories.parent_id",
+                to: "categories.id",
+            },
+        },
+
+        children: {
+            relation: Model.HasManyRelation,
+            modelClass: Category,
+            join: {
+                from: "categories.id",
+                to: "categories.parent_id",
+            },
+        },
     });
 }

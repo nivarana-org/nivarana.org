@@ -4,8 +4,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
-import { getCategories } from "@/network/api";
 import Script from "next/script";
+import { getCategories } from "@/data/cms";
 
 const poppins = localFont({
     src: [

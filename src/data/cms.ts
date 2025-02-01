@@ -321,10 +321,17 @@ export const getPopularPosts = async () => {
 };
 
 export const getRandomPosts = async () => {
-    return Blog.query().orderByRaw('RAND()').limit(5);
-}
+    return Blog.query().orderByRaw("RAND()").limit(5);
+};
 
 export const incrementBlogViewCount = async (id: number) => {
     const post = await Blog.query().findById(id).increment("total_views", 1);
-    return post?.total_views
-}
+    return post?.total_views;
+};
+
+export const getCategories = async () => {
+    const categories = await Category.query()
+        .withGraphFetched("children.[children.^]")
+        .where("parent_id", 0);
+    return JSON.parse(JSON.stringify(categories));
+};
