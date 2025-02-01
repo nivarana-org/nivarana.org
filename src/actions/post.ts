@@ -6,7 +6,10 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const id = formData.get("id");
     const page_title = formData.get("title");
     const description = formData.get("description");
-    const authors = formData.get("authors");
+    const authors = (formData
+        .get("authors") as string)
+        ?.split(",")
+        ?.map((a: string) => Number(a));
     const category_name = formData.get("category");
     const meta_description = formData.get("intro");
     const upload_image = formData.get("image");
@@ -30,7 +33,6 @@ export const addOrEditPostAction = async (formData: FormData) => {
         return { status: false, message: err };
     }
 };
-
 
 export async function clearCache() {
     revalidatePath("/", "layout");

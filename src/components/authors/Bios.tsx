@@ -15,9 +15,10 @@ export function NAuthorsBio({ authors_data, author }) {
     }
 }
 export function AuthorBio({ upload_image, path, author_name, description }) {
+    const showImage = false;
     return (
         <div className="about-author my-4 padding-30 rounded row">
-            {upload_image != null && (
+            {upload_image != null && showImage && (
                 <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
                     <Image
                         src={

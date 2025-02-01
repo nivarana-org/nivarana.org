@@ -7,6 +7,7 @@ import Image from "next/image";
 
 function ArticlePreview({
     path,
+    authors,
     authors_data,
     author,
     upload_image,
@@ -59,7 +60,7 @@ function ArticlePreview({
                         </Link>
                         <ul className="flex space-x-4 text-gray-500 text-sm mt-3 items-center">
                             <NAuthors
-                                authors_data={authors_data}
+                                authors_data={authors ?? authors_data}
                                 author={author}
                             />
                             <li>{moment(created_at).format("MMM DD, YYYY")}</li>

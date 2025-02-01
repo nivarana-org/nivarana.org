@@ -1,19 +1,27 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
-import { getAuthorDetails } from "@/network/api";
+import { getAuthorByPath } from "@/data/cms";
+import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
+import { cache } from "react";
+
+const cachedGetAuthorBySlug = cache((slug: string) => {
+    const path = normalizeAsOldSlugs(slug);
+    return getAuthorByPath(path);
+});
 
 async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
-    const data = await getAuthorDetails(slug);
+    const author = await cachedGetAuthorBySlug(slug);
     return (
         <div className="max-w-screen-xl mx-auto">
-            <AuthorDetails data={data} />
+            <AuthorDetails data={author} />
             <hr className="mb-3" />
-            {data.blogs.map((item) => (
+            {author.articles.map((item) => (
                 <ArticlePreview
                     {...item}
+                    category={item.categories[0]}
                     key={item.path}
                     includeCategory={true}
                 />
@@ -32,20 +40,20 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const params = await props.params;
     const slug = params.slug;
-    const data = await getAuthorDetails(slug);
+    const data = await cachedGetAuthorBySlug(slug);
     return {
-        title: data.author_name,
-        description: data.meta_description ?? (await parent).description,
-        keywords: data.meta_keyword ?? (await parent).keywords,
+        title: data.name,
+        description: data?.description ?? (await parent).description,
+        keywords: ["author"],
     };
 }
 
-function AuthorPic({ upload_image }) {
-    if (upload_image === null) return;
+function AuthorPic({ image }) {
+    if (image === null) return;
     return (
         <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
             <Image
-                src={"https://blogsadmin.nivarana.org/images/" + upload_image}
+                src={"https://blogsadmin.nivarana.org/images/" + image}
                 className="author"
                 alt="author"
                 fill={true}
@@ -57,20 +65,20 @@ function AuthorPic({ upload_image }) {
 async function AuthorDetails({ data }) {
     return (
         <div className="mr-auto p-4 mb-40">
-            <AuthorPic upload_image={data.upload_image} />
+            <AuthorPic image={data.image} />
             <div
                 className={
-                    data.upload_image != null
+                    data.image != null
                         ? "col-md-10 col-sm-10 details"
                         : "col-md-12 col-sm-12 details"
                 }
             >
-                <h4 className="name mb-0 text-6xl mb-12">{data.author_name}</h4>
-                {data.first_peragraph != null && (
+                <h4 className="name mb-0 text-6xl mb-12">{data.name}</h4>
+                {data.title != null && (
                     <p
                         className="mt-2 max-w-prose"
                         dangerouslySetInnerHTML={{
-                            __html: data.first_peragraph,
+                            __html: data.title,
                         }}
                     />
                 )}

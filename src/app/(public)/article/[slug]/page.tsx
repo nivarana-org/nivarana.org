@@ -21,7 +21,7 @@ export default async function Page(props: Props) {
     return (
         <div className="max-w-screen-xl mx-auto">
             <Breadcrumbs
-                category={post.category}
+                category={post.category[0]}
                 page_title={post.page_title}
             />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">

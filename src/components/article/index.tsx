@@ -5,6 +5,7 @@ import Image from "next/image";
 import PageShare from "./PageShare";
 import { Suspense } from "react";
 import ViewCountUpdateOnly from "./ViewUpdateOnly";
+import { getImageURLFromFileName } from "@/utils/paths";
 
 function Article({ data }) {
     return (
@@ -41,7 +42,7 @@ function Article({ data }) {
                 </div>
                 <div className="mt-6">
                     <Image
-                        src={data.upload_image}
+                        src={getImageURLFromFileName(data.upload_image)}
                         alt={data.image_text}
                         width={1280}
                         height={900}

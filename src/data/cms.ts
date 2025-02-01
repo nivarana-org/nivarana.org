@@ -2,6 +2,7 @@
 import "server-only";
 
 import knex from "knex";
+import { Author, Blog } from "./models";
 
 export const db = knex({
     client: "mysql",
@@ -30,7 +31,7 @@ export interface Article {
     page_title: string;
     description: string;
     category_name: string;
-    authors: string;
+    authors: number[];
     upload_image: string;
     created_at: number;
     updated_at: number;
@@ -45,11 +46,14 @@ interface Category {
     path: string;
 }
 
-export interface Author {
+export interface AuthorOld {
     id: number;
     name: string;
+    email: string;
     path: string;
     description: string;
+    title: string;
+    image: string;
 }
 export interface EnhancedArticle extends Article {
     id: number;
@@ -57,12 +61,12 @@ export interface EnhancedArticle extends Article {
     total_views: number;
     page_title: string;
     category_name: string;
-    authors: string;
+    authors: number[];
     upload_image: string;
     created_at: number;
     updated_at: number;
     category: Category;
-    authors_data: Author[];
+    authors_data: AuthorOld[];
 }
 
 export const addNewsLetterSubscriber = async (email: string) => {
@@ -93,6 +97,17 @@ export const getArticlesOverview = async () => {
     return db<Article>("blogs").select("*").orderBy("id", "desc");
 };
 
+export const getAuthorsOverview = async () => {
+    return db<Author>("authors")
+        .select({
+            id: "id",
+            name: "author_name",
+            path: "path",
+            email: "author_email",
+        })
+        .orderBy("id", "desc");
+};
+
 export const getArticlesPaginated = async (
     page = 0,
     per_page = 10,
@@ -110,10 +125,17 @@ export const getArticlesPaginated = async (
             "blogs.updated_at",
             db.raw(
                 `(
-            SELECT JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'name', a.author_name, 'path', a.path))
-            FROM authors a
-            WHERE FIND_IN_SET(a.id, blogs.authors)
-          ) as authors_data`,
+                    SELECT JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'id', a.id, 
+                            'name', a.author_name, 
+                            'path', a.path
+                        )
+                    )
+                    FROM authors a
+                    JOIN post_relations pr ON a.id = pr.relation_id
+                    WHERE pr.post_id = blogs.id AND pr.relation_type = 'author'
+                ) as authors_data`,
             ),
             db.raw(
                 `(
@@ -161,6 +183,22 @@ export const getAuthorsDetails = async (ids: string[]) => {
     return db("authors").select("*").whereIn("id", ids);
 };
 
+export const getAuthor = async (id: number) => {
+    const author = await db<Author>("authors")
+        .select({
+            id: "id",
+            name: "author_name",
+            path: "path",
+            email: "author_email",
+            description: "description",
+            title: "first_peragraph",
+            image: "upload_image",
+        })
+        .where({ id })
+        .first();
+    return author;
+};
+
 export const getAllAuthors = async () => {
     return db("authors")
         .select("id", "author_name", "path")
@@ -169,34 +207,51 @@ export const getAllAuthors = async () => {
 
 export const addOrEditPost = async (post: Article) => {
     const timestamp = new Date(Date.now());
-    const query = db("blogs")
-        .insert({ ...post, created_at: timestamp, updated_at: timestamp })
+
+    // Start transaction
+    return await db.transaction(async (trx) => {
+        // Upsert into blogs table
+        const { authors, ...rest } = post;
+
+        const [postId] = await trx("blogs")
+            .insert({ ...rest, created_at: timestamp, updated_at: timestamp })
+            .onConflict("id")
+            .merge({ ...rest, updated_at: timestamp })
+            .returning("id");
+
+        // Prepare the authors data for `post_relations`
+        const authorRelations = authors.map((authorId) => ({
+            post_id: postId,
+            relation_id: authorId,
+            relation_type: "author",
+        }));
+
+        // Update post_relations
+        await trx("post_relations")
+            .where({ post_id: postId, relation_type: "author" })
+            .delete();
+        if (authorRelations.length > 0) {
+            await trx("post_relations").insert(authorRelations);
+        }
+
+        return postId;
+    });
+};
+export const addOrEditAuthor = async (author: Author) => {
+    const timestamp = new Date(Date.now());
+    const query = db("authors")
+        .insert({ ...author, created_at: timestamp, updated_at: timestamp })
         .onConflict("id")
-        .merge({ ...post, updated_at: timestamp });
+        .merge({ ...author, updated_at: timestamp });
     return await query;
 };
 
-export const getArticleByPath = async (
-    path: string,
-): Promise<EnhancedArticle | undefined> => {
-    const post = await db<Article>("blogs").select("*").where({ path }).first();
-    if (!post) return;
-    const category_id = post?.category_name;
-    const authors_ids = post?.authors.split(",");
-    const categoryRequest = getCategoryDetails(category_id);
-    const authorsRequest = getAuthorsDetails(authors_ids);
-    const [category, authors] = await Promise.all([
-        categoryRequest,
-        authorsRequest,
-    ]);
-    const enhancedPost: EnhancedArticle = {
-        ...post,
-        category,
-        authors_data: authors,
-    };
-    enhancedPost.upload_image =
-        "https://blogsadmin.nivarana.org/images/" + enhancedPost.upload_image;
-    return enhancedPost;
+export const getArticleByPath = async (path: string) => {
+    const article = await Blog.query()
+        .where("path", path)
+        .first()
+        .withGraphFetched('[authors as authors_data, categories as category]');
+    return article;
 };
 
 export const getPageByPath = async (path: string) => {
@@ -205,6 +260,19 @@ export const getPageByPath = async (path: string) => {
         .where({ page_name: path })
         .first();
     return page;
+};
+
+export const getAuthorByPath = async (path: string) => {
+    const author = await Author.query()
+        .where("path", path)
+        .first()
+        .withGraphFetched({
+            articles: {
+                categories: true,
+                authors: true,
+            },
+        });
+    return author;
 };
 
 export const getWebPushSubscriberCount = async () => {
