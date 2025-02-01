@@ -323,3 +323,8 @@ export const getPopularPosts = async () => {
 export const getRandomPosts = async () => {
     return Blog.query().orderByRaw('RAND()').limit(5);
 }
+
+export const incrementBlogViewCount = async (id: number) => {
+    const post = await Blog.query().findById(id).increment("total_views", 1);
+    return post?.total_views
+}
