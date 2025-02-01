@@ -86,11 +86,6 @@ export const getCategories = async () => {
     return data.data;
 };
 
-export const getCategoryPosts = async (category: string) => {
-    const res = await fetch(API + "fetch_blogs_category?category=" + category);
-    const data = await res.json();
-    return data;
-};
 
 export const getImages = async () => {
     const res = await fetch("/admin/api/images");

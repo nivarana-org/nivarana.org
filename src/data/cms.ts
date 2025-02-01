@@ -3,6 +3,7 @@ import "server-only";
 
 import knex from "knex";
 import { Author, Blog } from "./models";
+import Category from "./models/Category";
 
 export const db = knex({
     client: "mysql",
@@ -292,6 +293,19 @@ export const getAuthorByPath = async (path: string) => {
             },
         });
     return author;
+};
+
+export const getCategoryByPath = async (path: string) => {
+    const category = await Category.query()
+        .where("path", path)
+        .first()
+        .withGraphFetched({
+            articles: {
+                categories: true,
+                authors: true,
+            },
+        });
+    return category;
 };
 
 export const getWebPushSubscriberCount = async () => {

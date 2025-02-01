@@ -1,22 +1,28 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Sidebar from "@/components/sidebar";
-import { getCategoryPosts } from "@/network/api";
+import { getCategoryByPath } from "@/data/cms";
 import { Metadata, ResolvingMetadata } from "next";
+import { cache } from "react";
+
+const cachedGetCategroyBySlug = cache((path: string) => {
+    return getCategoryByPath(path);
+});
+
 
 async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
-    const data = await getCategoryPosts(slug);
+    const category = await cachedGetCategroyBySlug(slug);
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
                 <div className="lg:col-span-2">
                     <div className="text-center text-black mb-8">
                         <div className="font-bold text-4xl mx-auto">
-                            {data.category_name.name}
+                            {category.name}
                         </div>
                     </div>
-                    {data.data.map((item) => (
+                    {category.articles.map((item) => (
                         <ArticlePreview {...item} key={item.path} />
                     ))}
                 </div>
@@ -38,12 +44,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const params = await props.params;
     const slug = params.slug;
-    const data = await getCategoryPosts(slug);
+    const category = await cachedGetCategroyBySlug(slug);
     return {
-        title: data.category_name.name,
+        title: category.name,
         description:
-            data.category_name.meta_description ?? (await parent).description,
-        keywords: data.category_name.meta_keyword ?? (await parent).keywords,
+            category.meta_description ?? (await parent).description,
+        keywords: category.meta_keyword ?? (await parent).keywords,
     };
 }
 
