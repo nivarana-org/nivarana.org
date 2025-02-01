@@ -51,6 +51,8 @@ import "tinymce/plugins/emoticons/js/emojis";
 import "tinymce/skins/content/default/content";
 import "tinymce/skins/ui/oxide/content";
 
+import "./DfnPlugin";
+
 export default function BundledEditor(props) {
     return <Editor licenseKey="gpl" {...props} />;
 }

@@ -23,13 +23,17 @@ export default function ArticleEditor(props: Props) {
         <>
             <BundledEditor
                 apiKey="gpl"
-                onInit={(_evt, editor) => (editorRef.current = editor)}
+                onInit={(_evt, editor) => {
+                    editorRef.current = editor
+                }}
                 init={{
-                    height: 500,
-                    menubar: false,
+                    height: 600,
+                    menubar: true,
                     plugins: [
                         "advlist",
                         "autolink",
+                        "autoresize",
+                        "dfn",
                         "lists",
                         "link",
                         "image",
@@ -48,11 +52,14 @@ export default function ArticleEditor(props: Props) {
                         "wordcount",
                     ],
                     toolbar:
-                        "undo redo | blocks | " +
-                        "bold italic forecolor | alignleft aligncenter " +
-                        "alignright alignjustify | bullist numlist outdent indent | " +
-                        "link image hr | " +
-                        "removeformat | help",
+                        "undo redo blocks " +
+                        "bold italic forecolor alignleft aligncenter " +
+                        "alignright alignjustify bullist numlist outdent indent " +
+                        "link image hr anchor dfn " +
+                        "removeformat help",
+                    toolbar_mode: 'wrap',
+                    toolbar_sticky: true,
+                    min_height: 600,
                     images_upload_url: "/admin/api/images/upload",
                     automatic_uploads: true,
                     images_upload_handler: imageUploadHandler,
