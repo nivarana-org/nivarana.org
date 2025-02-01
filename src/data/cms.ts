@@ -214,7 +214,13 @@ export const addOrEditPost = async (post: Article) => {
         const { authors, categories, ...rest } = post;
 
         const [postId] = await trx("blogs")
-            .insert({ ...rest, created_at: timestamp, updated_at: timestamp })
+            .insert({
+                authors: authors.join(","),
+                category_name: categories[0],
+                ...rest,
+                created_at: timestamp,
+                updated_at: timestamp,
+            })
             .onConflict("id")
             .merge({ ...rest, updated_at: timestamp })
             .returning("id");
@@ -294,4 +300,4 @@ export const getWebPushSubscriberCount = async () => {
 
 export const getPeopleCount = async () => {
     return getTableCount("authors");
-}
+};
