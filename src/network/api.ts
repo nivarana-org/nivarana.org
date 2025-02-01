@@ -1,29 +1,6 @@
 const API = "https://blogsadmin.nivarana.org/api/";
 // const API = "http:localhost:8000/api/"
 
-export const getPost = async (id: string) => {
-    const res = await fetch(API + "singleblogdata?blog_path=" + id);
-    const posts = await res.json();
-    if (!posts) return undefined;
-    if (posts.data.length === 0) return undefined;
-    const post = posts.data[0];
-    post.upload_image =
-        "https://blogsadmin.nivarana.org/images/" + post.upload_image;
-    return post;
-};
-
-export const addNewsLetterSubscriber = (email: string) => {
-    return fetch(API + "newsletters_add", {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email,
-        }),
-    }).then((res) => res.json());
-};
 
 export const getPopularPosts = () => {
     return fetch(API + "fetch_popular_post", {
@@ -63,22 +40,7 @@ export const incrementBlogViewCount = (id: string) => {
         });
 };
 
-export const getAuthorDetails = async (id: string) => {
-    const res = await fetch(API + "fetch_author?blog_path=" + id);
-    const data = await res.json();
-    return data.data[0];
-};
 
-/**
- * @deprecated this should not be used please
- * @param page the page number
- * @returns list of posts
- */
-export const getPostsOfPage = async (page: string) => {
-    const res = await fetch(API + "fetch_category_post?page=" + page);
-    const data = await res.json();
-    return data.data.data;
-};
 
 export const getCategories = async () => {
     const res = await fetch(API + "category");
