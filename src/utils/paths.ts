@@ -3,5 +3,5 @@ export const getImageURLFromFileName = (filename: string) => {
     if (definedPrefix) {
         return `${definedPrefix}${filename}`;
     }
-    return `/images/${filename}`;
+    return `https://nivarana.org/images/${filename}`;
 };
