@@ -1,10 +1,9 @@
-import { getLatestPosts } from "@/network/api";
+import { getRandomPosts } from "@/data/cms";
 import Image from "next/image";
 import Link from "next/link";
 
 const RecentPosts = async () => {
-    const recentPostsResponse = await getLatestPosts();
-    const posts = recentPostsResponse.data;
+    const posts = await getRandomPosts();
     if (posts.length === 0) return;
     return (
         <div className="widget rounded">

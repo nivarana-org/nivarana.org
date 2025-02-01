@@ -1,10 +1,9 @@
-import { getPopularPosts } from "@/network/api";
+import { getPopularPosts } from "@/data/cms";
 import Image from "next/image";
 import Link from "next/link";
 
 const PopularPosts = async () => {
-    const popularPostsResponse = await getPopularPosts();
-    const posts = popularPostsResponse.data;
+    const posts = await getPopularPosts();
     if (posts.length === 0) return;
     return (
         <div className="widget rounded">

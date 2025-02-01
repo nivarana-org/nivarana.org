@@ -315,3 +315,11 @@ export const getWebPushSubscriberCount = async () => {
 export const getPeopleCount = async () => {
     return getTableCount("authors");
 };
+
+export const getPopularPosts = async () => {
+    return Blog.query().orderBy("total_views", "desc").limit(5);
+};
+
+export const getRandomPosts = async () => {
+    return Blog.query().orderByRaw('RAND()').limit(5);
+}
