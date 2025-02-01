@@ -1,4 +1,4 @@
-import {  Model } from "objection";
+import { Model } from "objection";
 import Author from "./Author";
 import Category from "./Category";
 

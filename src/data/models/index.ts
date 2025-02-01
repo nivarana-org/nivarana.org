@@ -14,8 +14,7 @@ const db = knex({
     pool: { min: 0, max: 7 },
 });
 
-
 Model.knex(db);
 
-export {default as Blog } from "./Blog";
-export {default as Author} from "./Author";
+export { default as Blog } from "./Blog";
+export { default as Author } from "./Author";

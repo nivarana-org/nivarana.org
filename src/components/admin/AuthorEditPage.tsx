@@ -20,11 +20,7 @@ const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
     loading: () => <p>Loading editor....</p>,
 });
 
-export default function AuthorEditPage({
-    author,
-}: {
-    author: Author;
-}) {
+export default function AuthorEditPage({ author }: { author: Author }) {
     const [submitting, setSubmitting] = useState(false);
     const [name, setName] = useState(author?.name || "");
     const [path, setPath] = useState(author?.path || "");
@@ -53,7 +49,9 @@ export default function AuthorEditPage({
                 } else {
                     setPathReadOnly(true);
                     if (
-                        confirm("Author updated successfully. Open the public page now?")
+                        confirm(
+                            "Author updated successfully. Open the public page now?",
+                        )
                     ) {
                         window.open(`/author/${path}`);
                     }
@@ -94,9 +92,7 @@ export default function AuthorEditPage({
             <Divider className="my-4"></Divider>
 
             <FormControl>
-                <FormLabel>
-                    Title
-                </FormLabel>
+                <FormLabel>Title</FormLabel>
                 <Textarea
                     name="intro"
                     defaultValue={author?.title}

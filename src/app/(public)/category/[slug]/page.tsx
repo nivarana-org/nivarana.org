@@ -8,7 +8,6 @@ const cachedGetCategroyBySlug = cache((path: string) => {
     return getCategoryByPath(path);
 });
 
-
 async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
@@ -47,8 +46,7 @@ export async function generateMetadata(
     const category = await cachedGetCategroyBySlug(slug);
     return {
         title: category.name,
-        description:
-            category.meta_description ?? (await parent).description,
+        description: category.meta_description ?? (await parent).description,
         keywords: category.meta_keyword ?? (await parent).keywords,
     };
 }

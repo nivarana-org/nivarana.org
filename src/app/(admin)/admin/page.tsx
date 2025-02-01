@@ -55,7 +55,7 @@ export default async function Page() {
                     count={peopleCount}
                 ></DashboardItem>
             </div>
-            <hr/>
+            <hr />
             <div className="my-2 p2 flex gap-2">
                 <DashboardItem
                     name="Newsletter Subscribers"

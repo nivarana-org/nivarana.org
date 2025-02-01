@@ -4,7 +4,7 @@ import { getAuthor } from "@/data/cms";
 export default async function Page(props: Props) {
     const params = await props.params;
     const authorId = Number(params.id);
-    const rawAuthor = await getAuthor(authorId)
+    const rawAuthor = await getAuthor(authorId);
     const author = rawAuthor
         ? { ...rawAuthor }
         : {
@@ -13,11 +13,7 @@ export default async function Page(props: Props) {
               id: authorId,
               image: "logo.png",
           };
-    return (
-        <AuthorEditPage
-            author={author}
-        />
-    );
+    return <AuthorEditPage author={author} />;
 }
 
 type Props = {

@@ -24,7 +24,7 @@ export default function ArticleEditor(props: Props) {
             <BundledEditor
                 apiKey="gpl"
                 onInit={(_evt, editor) => {
-                    editorRef.current = editor
+                    editorRef.current = editor;
                 }}
                 init={{
                     height: 600,
@@ -57,7 +57,7 @@ export default function ArticleEditor(props: Props) {
                         "alignright alignjustify bullist numlist outdent indent " +
                         "link image hr anchor dfn " +
                         "removeformat help",
-                    toolbar_mode: 'wrap',
+                    toolbar_mode: "wrap",
                     toolbar_sticky: true,
                     min_height: 600,
                     images_upload_url: "/admin/api/images/upload",

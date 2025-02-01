@@ -146,7 +146,7 @@ export const getArticlesPaginated = async (
           ) as category`,
             ),
         )
-        .where('status', "PUBLISHED")
+        .where("status", "PUBLISHED")
         .orderBy("id", "desc")
         .limit(per_page)
         .offset(page * per_page);
@@ -167,7 +167,7 @@ export const getArticleFull = async (id: number) => {
 export const searchArticles = async (query: string) => {
     return db<Article>("blogs")
         .select("*")
-        .where('status', "PUBLISHED")
+        .where("status", "PUBLISHED")
         .andWhereRaw(
             "MATCH(page_title, description, meta_description) AGAINST (?)",
             [query],
@@ -271,7 +271,7 @@ export const addOrEditAuthor = async (author: Author) => {
 export const getArticleByPath = async (path: string) => {
     const article = await Blog.query()
         .where("path", path)
-        .andWhere('status', 'PUBLISHED')
+        .andWhere("status", "PUBLISHED")
         .first()
         .withGraphFetched("[authors as authors_data, categories as category]");
     return article;
@@ -291,7 +291,7 @@ export const getAuthorByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
-                $modify: ['onlyPublished'],
+                $modify: ["onlyPublished"],
                 categories: true,
                 authors: true,
             },
@@ -305,7 +305,7 @@ export const getCategoryByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
-                $modify: ['onlyPublished'],
+                $modify: ["onlyPublished"],
                 categories: true,
                 authors: true,
             },
@@ -322,11 +322,14 @@ export const getPeopleCount = async () => {
 };
 
 export const getPopularPosts = async () => {
-    return Blog.query().modify('onlyPublished').orderBy("total_views", "desc").limit(5);
+    return Blog.query()
+        .modify("onlyPublished")
+        .orderBy("total_views", "desc")
+        .limit(5);
 };
 
 export const getRandomPosts = async () => {
-    return Blog.query().modify('onlyPublished').orderByRaw("RAND()").limit(5);
+    return Blog.query().modify("onlyPublished").orderByRaw("RAND()").limit(5);
 };
 
 export const incrementBlogViewCount = async (id: number) => {
@@ -347,5 +350,5 @@ export const publishScheduledPostsNeedingPublication = async () => {
         .andWhere("status", "!=", "PUBLISHED")
         .patch({ status: "PUBLISHED" })
         .returning("id");
-    return JSON.parse(JSON.stringify(scheduled))
+    return JSON.parse(JSON.stringify(scheduled));
 };

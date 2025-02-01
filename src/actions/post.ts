@@ -28,9 +28,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         meta_description,
         upload_image,
         status,
-        scheduled_time: scheduledTime
-            ? new Date(scheduledTime)
-            : null,
+        scheduled_time: scheduledTime ? new Date(scheduledTime) : null,
     };
     try {
         await addOrEditPost(post);

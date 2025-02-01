@@ -4,11 +4,7 @@ import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
 import { Author, getAuthorsOverview } from "@/data/cms";
 
-function AuthorRow({
-    id,
-    name,
-    path
-}: Author) {
+function AuthorRow({ id, name, path }: Author) {
     const adminLink = `/admin/people/${id}`;
     const publicLink = `/author/${path}`;
     return (

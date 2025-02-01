@@ -8,14 +8,14 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
     const description = formData.get("description");
     const upload_image = formData.get("image");
     const path = formData.get("path");
-    const first_peragraph = formData.get("title")
+    const first_peragraph = formData.get("title");
     const author = {
         id,
         path,
         author_name,
         description,
         upload_image,
-        first_peragraph
+        first_peragraph,
     };
     try {
         await addOrEditAuthor(author);
@@ -27,8 +27,7 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
     }
 };
 
-
 export async function clearCache(path: string) {
     revalidatePath("/", "layout");
-    revalidatePath(`/author/${path}`, "page")
+    revalidatePath(`/author/${path}`, "page");
 }
