@@ -1,4 +1,5 @@
 import { getRandomPosts } from "@/data/cms";
+import { getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,10 +26,9 @@ const RecentPosts = async () => {
                                 <Link href={"/article/" + values.path}>
                                     <div className="inner">
                                         <Image
-                                            src={
-                                                "https://blogsadmin.nivarana.org/images/" +
-                                                values.upload_image
-                                            }
+                                            src={getImageURLFromFileName(
+                                                values.upload_image,
+                                            )}
                                             alt="post-title"
                                             width={60}
                                             height={60}

@@ -1,3 +1,4 @@
+import { getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,10 +22,7 @@ export function AuthorBio({ upload_image, path, author_name, description }) {
             {upload_image != null && showImage && (
                 <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
                     <Image
-                        src={
-                            "https://blogsadmin.nivarana.org/images/" +
-                            upload_image
-                        }
+                    src={getImageURLFromFileName(upload_image)}
                         fill={true}
                         className="author"
                         alt="author"

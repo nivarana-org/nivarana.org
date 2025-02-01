@@ -1,6 +1,7 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import { getAuthorByPath } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
+import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
@@ -53,7 +54,7 @@ function AuthorPic({ image }) {
     return (
         <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
             <Image
-                src={"https://blogsadmin.nivarana.org/images/" + image}
+                src={getImageURLFromFileName(image)}
                 className="author"
                 alt="author"
                 fill={true}
@@ -73,7 +74,9 @@ async function AuthorDetails({ data }) {
                         : "col-md-12 col-sm-12 details"
                 }
             >
-                <h4 className="name mb-0 text-6xl mb-12">{data.name ?? data.author_name}</h4>
+                <h4 className="name mb-0 text-6xl mb-12">
+                    {data.name ?? data.author_name}
+                </h4>
                 {data.title != null && (
                     <p
                         className="mt-2 max-w-prose"

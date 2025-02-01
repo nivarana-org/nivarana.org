@@ -4,6 +4,7 @@ import React from "react";
 import { NAuthors } from "../authors/Authors";
 import { Post } from "@/types/nivarana";
 import Image from "next/image";
+import { getImageURLFromFileName } from "@/utils/paths";
 
 function ArticlePreview({
     path,
@@ -38,10 +39,7 @@ function ArticlePreview({
                                 width={320}
                                 height={225}
                                 className="h-48 w-full object-cover md:h-full md:w-80"
-                                src={
-                                    "https://blogsadmin.nivarana.org/images/" +
-                                    upload_image
-                                }
+                                src={getImageURLFromFileName(upload_image)}
                                 alt=""
                                 priority={aboveTheFold}
                             />
