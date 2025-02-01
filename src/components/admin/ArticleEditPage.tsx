@@ -16,11 +16,19 @@ import { Article } from "@/data/cms";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
 import ImagePicker from "./ImagePicker";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import moment from "moment";
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
     ssr: false,
     loading: () => <p>Loading editor....</p>,
 });
+
+const statuses = [
+    { id: "DRAFT", name: "Draft" },
+    { id: "SCHEDULED", name: "Scheduled" },
+    { id: "PUBLISHED", name: "Published" },
+];
 
 export default function ArticleEditPage({
     post,
@@ -34,6 +42,18 @@ export default function ArticleEditPage({
     const [submitting, setSubmitting] = useState(false);
     const [title, setTitle] = useState(post?.page_title || "");
     const [path, setPath] = useState(post?.path || "");
+    const [selectedStatus, setSelectedStatus] = useState(
+        post?.status || "DRAFT",
+    );
+    const [scheduledTime, setScheduledTime] = useState(
+        moment(post?.scheduled_time) || null,
+    );
+    const handleStatusChange = (event, newValue) => {
+        setSelectedStatus(newValue);
+        if (newValue !== "SCHEDULED") {
+            setScheduledTime(null);
+        }
+    };
     const [generatePath, setGeneratePath] = useState(!Boolean(post?.path));
     const [pathIsReadOnly, setPathReadOnly] = useState(Boolean(post?.path));
     useEffect(() => {
@@ -67,6 +87,10 @@ export default function ArticleEditPage({
                 data.append("description", description);
                 data.append("authors", authors.join(","));
                 data.append("image", image);
+                data.append("status", selectedStatus);
+                if (selectedStatus === "SCHEDULED") {
+                    data.append("scheduled_time", scheduledTime);
+                }
                 setSubmitting(true);
                 const { status, message } = await addOrEditPostAction(data);
                 setSubmitting(false);
@@ -74,10 +98,23 @@ export default function ArticleEditPage({
                     alert(message);
                 } else {
                     setPathReadOnly(true);
-                    if (
-                        confirm("Post updated successfully. Open the post now?")
-                    ) {
-                        window.open(`/article/${path}`);
+                    switch (selectedStatus) {
+                        case "SCHEDULED":
+                            alert(
+                                `Post has been scheduled to go live ${moment(scheduledTime).fromNow()}. You can close this window.`,
+                            );
+                            break;
+                        case "PUBLISHED":
+                            if (
+                                confirm(
+                                    "Post updated successfully. Open the post now?",
+                                )
+                            ) {
+                                window.open(`/article/${path}`);
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
             }}
@@ -187,8 +224,41 @@ export default function ArticleEditPage({
 
             <Divider className="my-4"></Divider>
 
+            <FormControl>
+                <FormLabel className="font-bold">Status</FormLabel>
+                <Select
+                    value={selectedStatus}
+                    onChange={handleStatusChange}
+                    name="status"
+                    placeholder="Ready?"
+                    required
+                >
+                    {statuses.map((c: { id: string; name: string }) => (
+                        <Option key={c.id} value={`${c.id}`}>
+                            {c.name}
+                        </Option>
+                    ))}
+                </Select>
+            </FormControl>
+
+            {selectedStatus === "SCHEDULED" && (
+                <FormControl>
+                    <FormLabel className="font-bold">
+                        Scheduled for time
+                    </FormLabel>
+                    <DateTimePicker
+                        value={scheduledTime}
+                        onChange={setScheduledTime}
+                        renderInput={(props) => <input {...props} />}
+                        required
+                    />
+                </FormControl>
+            )}
+
+            <Divider className="my-4"></Divider>
+
             <Button type="submit" disabled={submitting}>
-                {submitting ? "Submitting..." : "Submit"}
+                {submitting ? "Saving..." : "Save"}
             </Button>
             <div className="my-96"></div>
         </form>

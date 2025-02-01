@@ -1,4 +1,4 @@
-import { Model } from "objection";
+import {  Model } from "objection";
 import Author from "./Author";
 import Category from "./Category";
 
@@ -30,6 +30,11 @@ export default class Blog extends Model {
                 },
                 to: "categories.id",
             },
-        }
+        },
     });
+    static modifiers = {
+        onlyPublished(builder) {
+            builder.where("status", "PUBLISHED");
+        },
+    };
 }

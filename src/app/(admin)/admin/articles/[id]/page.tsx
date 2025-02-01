@@ -16,6 +16,7 @@ export default async function Page(props: Props) {
               description: "",
               id: postId,
               upload_image: "logo.png",
+              status: "DRAFT",
           };
     const allAuthors = rowAllAuthors.map((a) => ({ ...a }));
     const allCategories = rowAllCategories.map((c) => ({ ...c }));

@@ -146,6 +146,7 @@ export const getArticlesPaginated = async (
           ) as category`,
             ),
         )
+        .where('status', "PUBLISHED")
         .orderBy("id", "desc")
         .limit(per_page)
         .offset(page * per_page);
@@ -166,7 +167,8 @@ export const getArticleFull = async (id: number) => {
 export const searchArticles = async (query: string) => {
     return db<Article>("blogs")
         .select("*")
-        .whereRaw(
+        .where('status', "PUBLISHED")
+        .andWhereRaw(
             "MATCH(page_title, description, meta_description) AGAINST (?)",
             [query],
         );
@@ -269,6 +271,7 @@ export const addOrEditAuthor = async (author: Author) => {
 export const getArticleByPath = async (path: string) => {
     const article = await Blog.query()
         .where("path", path)
+        .andWhere('status', 'PUBLISHED')
         .first()
         .withGraphFetched("[authors as authors_data, categories as category]");
     return article;
@@ -288,6 +291,7 @@ export const getAuthorByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
+                $modify: ['onlyPublished'],
                 categories: true,
                 authors: true,
             },
@@ -301,6 +305,7 @@ export const getCategoryByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
+                $modify: ['onlyPublished'],
                 categories: true,
                 authors: true,
             },
@@ -317,11 +322,11 @@ export const getPeopleCount = async () => {
 };
 
 export const getPopularPosts = async () => {
-    return Blog.query().orderBy("total_views", "desc").limit(5);
+    return Blog.query().modify('onlyPublished').orderBy("total_views", "desc").limit(5);
 };
 
 export const getRandomPosts = async () => {
-    return Blog.query().orderByRaw("RAND()").limit(5);
+    return Blog.query().modify('onlyPublished').orderByRaw("RAND()").limit(5);
 };
 
 export const incrementBlogViewCount = async (id: number) => {
@@ -334,4 +339,13 @@ export const getCategories = async () => {
         .withGraphFetched("children.[children.^]")
         .where("parent_id", 0);
     return JSON.parse(JSON.stringify(categories));
+};
+
+export const publishScheduledPostsNeedingPublication = async () => {
+    const scheduled = await Blog.query()
+        .where("scheduled_time", "<", new Date())
+        .andWhere("status", "!=", "PUBLISHED")
+        .patch({ status: "PUBLISHED" })
+        .returning("id");
+    return JSON.parse(JSON.stringify(scheduled))
 };
