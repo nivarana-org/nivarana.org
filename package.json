@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "prepare": "husky install"
+    "addhusky": "npx husky init"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
