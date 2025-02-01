@@ -6,6 +6,7 @@ import PageShare from "./PageShare";
 import { Suspense } from "react";
 import ViewCountUpdateOnly from "./ViewUpdateOnly";
 import { getImageURLFromFileName } from "@/utils/paths";
+import BodyWithPopover from "./BodyWithPopover";
 
 function Article({ data }) {
     return (
@@ -49,10 +50,7 @@ function Article({ data }) {
                         className="w-full h-auto"
                     />
                 </div>
-                <div
-                    className="post-content mt-4 font-sans text-lg p-2"
-                    dangerouslySetInnerHTML={{ __html: data.description }}
-                ></div>
+                <BodyWithPopover body={data.description} />
             </div>
             <div className="text-black font-bold p-2">Share</div>
             <PageShare

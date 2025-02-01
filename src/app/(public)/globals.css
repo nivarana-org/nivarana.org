@@ -3821,3 +3821,13 @@ button:focus {
 .w-40{
   width: 40%;
 }
+
+dfn {
+  font-style: normal;
+  border-bottom: 1px dotted #007bff;
+  cursor: pointer;
+}
+
+dfn:hover {
+  color: #0056b3;
+}
