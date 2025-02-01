@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import logo from "../../../public/images/logo.png";
+import logo from "../../../public/assets/logo.png";
 import { NivaranaSocialMedia } from "../social";
 
 const Dropdown = ({ title, children }) => {

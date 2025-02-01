@@ -32,7 +32,7 @@ function NewsletterBox() {
             <div className="widget-header text-center">
                 <h3 className="widget-title">Newsletter</h3>
                 <Image
-                    src="/images/wave.svg"
+                    src="/assets/wave.svg"
                     className="wave"
                     alt="wave"
                     width={50}

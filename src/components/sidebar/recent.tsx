@@ -12,7 +12,7 @@ const RecentPosts = async () => {
                 <Image
                     width={50}
                     height={20}
-                    src="/images/wave.svg"
+                    src="/assets/wave.svg"
                     className="wave"
                     alt="wave"
                 />

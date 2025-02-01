@@ -78,7 +78,7 @@ export function PushNotificationManager() {
             <div className="widget-header text-center">
                 <h3 className="widget-title">Push Notifications</h3>
                 <Image
-                    src="/images/wave.svg"
+                    src="/assets/wave.svg"
                     className="wave"
                     alt="wave"
                     width={50}
