@@ -291,3 +291,7 @@ export const getAuthorByPath = async (path: string) => {
 export const getWebPushSubscriberCount = async () => {
     return getTableCount("push_subscriptions");
 };
+
+export const getPeopleCount = async () => {
+    return getTableCount("authors");
+}

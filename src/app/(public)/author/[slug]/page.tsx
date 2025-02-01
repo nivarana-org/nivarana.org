@@ -73,7 +73,7 @@ async function AuthorDetails({ data }) {
                         : "col-md-12 col-sm-12 details"
                 }
             >
-                <h4 className="name mb-0 text-6xl mb-12">{data.name}</h4>
+                <h4 className="name mb-0 text-6xl mb-12">{data.name ?? data.author_name}</h4>
                 {data.title != null && (
                     <p
                         className="mt-2 max-w-prose"

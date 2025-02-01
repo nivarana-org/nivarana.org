@@ -2,6 +2,7 @@ import { clearCache } from "@/actions/post";
 import ClearCache from "@/components/admin/ClearCache";
 import {
     getArticlesCount,
+    getPeopleCount,
     getSubscribersCount,
     getWebPushSubscriberCount,
 } from "@/data/cms";
@@ -32,10 +33,12 @@ export default async function Page() {
         newsletterSubscriberCount,
         articleCount,
         webNotificationSubscriberCount,
+        peopleCount,
     ] = await Promise.all([
         getSubscribersCount(),
         getArticlesCount(),
         getWebPushSubscriberCount(),
+        getPeopleCount(),
     ]);
 
     return (
@@ -55,6 +58,11 @@ export default async function Page() {
                     name="Articles"
                     link="/admin/articles"
                     count={articleCount}
+                ></DashboardItem>
+                <DashboardItem
+                    name="People"
+                    link="/admin/people"
+                    count={peopleCount}
                 ></DashboardItem>
             </div>
             <h2 className="mb-4 text-4xl">Actions</h2>
