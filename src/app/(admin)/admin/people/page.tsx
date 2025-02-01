@@ -7,7 +7,6 @@ import { Author, getAuthorsOverview } from "@/data/cms";
 function AuthorRow({
     id,
     name,
-    email,
     path
 }: Author) {
     const adminLink = `/admin/people/${id}`;
