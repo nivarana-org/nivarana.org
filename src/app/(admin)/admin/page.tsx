@@ -43,17 +43,7 @@ export default async function Page() {
 
     return (
         <div className="max-w-screen-md mx-auto">
-            <div className="p2 flex gap-2">
-                <DashboardItem
-                    name="Newsletter Subscribers"
-                    link="/admin/newsletter"
-                    count={newsletterSubscriberCount}
-                ></DashboardItem>
-                <DashboardItem
-                    name="Web Notifications Subscribers"
-                    link="/admin/push-notifications"
-                    count={webNotificationSubscriberCount}
-                ></DashboardItem>
+            <div className="my-2 p2 flex gap-2">
                 <DashboardItem
                     name="Articles"
                     link="/admin/articles"
@@ -63,6 +53,19 @@ export default async function Page() {
                     name="People"
                     link="/admin/people"
                     count={peopleCount}
+                ></DashboardItem>
+            </div>
+            <hr/>
+            <div className="my-2 p2 flex gap-2">
+                <DashboardItem
+                    name="Newsletter Subscribers"
+                    link="/admin/newsletter"
+                    count={newsletterSubscriberCount}
+                ></DashboardItem>
+                <DashboardItem
+                    name="Web Notifications Subscribers"
+                    link="/admin/push-notifications"
+                    count={webNotificationSubscriberCount}
                 ></DashboardItem>
             </div>
             <h2 className="mb-4 text-4xl">Actions</h2>
