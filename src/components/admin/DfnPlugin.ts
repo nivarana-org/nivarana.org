@@ -148,7 +148,7 @@
             split: true,
             deep: true,
             attributes: { title: "%value" },
-            onmatch: (node, _fmt, _itemName) => {
+            onmatch: (node) => {
                 return isDefined(node);
             },
         });

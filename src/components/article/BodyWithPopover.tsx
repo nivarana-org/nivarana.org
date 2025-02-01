@@ -40,7 +40,7 @@ export default function BodyWithPopover({ body }: { body: string }) {
                     <Typography fontSize="sm">{selectedDefinition}</Typography>
                     <div
                         style={{ cursor: "pointer" }}
-                        onClick={e => setSelectedDefinition(null)}
+                        onClick={() => setSelectedDefinition(null)}
                     >
                         X
                     </div>
