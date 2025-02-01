@@ -211,7 +211,7 @@ export const addOrEditPost = async (post: Article) => {
     // Start transaction
     return await db.transaction(async (trx) => {
         // Upsert into blogs table
-        const { authors, ...rest } = post;
+        const { authors, categories, ...rest } = post;
 
         const [postId] = await trx("blogs")
             .insert({ ...rest, created_at: timestamp, updated_at: timestamp })
@@ -234,6 +234,19 @@ export const addOrEditPost = async (post: Article) => {
             await trx("post_relations").insert(authorRelations);
         }
 
+        const categoryRelations = categories.map((categoryId) => ({
+            post_id: postId,
+            relation_id: categoryId,
+            relation_type: "category",
+        }));
+
+        await trx("post_relations")
+            .where({ post_id: postId, relation_type: "category" })
+            .delete();
+        if (categoryRelations.length > 0) {
+            await trx("post_relations").insert(categoryRelations);
+        }
+
         return postId;
     });
 };
@@ -250,7 +263,7 @@ export const getArticleByPath = async (path: string) => {
     const article = await Blog.query()
         .where("path", path)
         .first()
-        .withGraphFetched('[authors as authors_data, categories as category]');
+        .withGraphFetched("[authors as authors_data, categories as category]");
     return article;
 };
 
