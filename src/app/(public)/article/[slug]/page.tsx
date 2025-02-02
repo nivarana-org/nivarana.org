@@ -3,6 +3,7 @@ import Breadcrumbs from "@/components/article/Breadcrumbs";
 import Sidebar from "@/components/sidebar";
 import { getArticleByPath } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
+import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
@@ -47,13 +48,14 @@ export async function generateMetadata(
     const params = await props.params;
     const post = await cachedGetArticleBySlug(params.slug);
     if (!post) return {};
-    const imageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(post.upload_image)}&w=1200&q=75`;
+    const imageUrl = getImageURLFromFileName(post.upload_image);
+    const optimizedImageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(imageUrl)}&w=1200&q=75`;
     return {
         title: post.page_title,
         description: post.meta_description ?? (await parent).description,
         keywords: post.meta_keyword ?? (await parent).keywords,
         openGraph: {
-            images: [imageUrl],
+            images: [optimizedImageUrl],
         },
     };
 }
