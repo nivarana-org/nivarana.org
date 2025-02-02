@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import logo from "../../../public/assets/logo.png";
+import logo from "../../../public/assets/nivarana-black.png";
 import { NivaranaSocialMedia } from "../social";
 
 const Dropdown = ({ title, children }) => {
@@ -87,13 +87,10 @@ function Header({ categories }) {
                     <Link href="/">
                         <Image
                             src={logo}
-                            alt="logo"
-                            className="md:w-[170px] w-36"
+                            alt="India's Public Health Platform"
+                            className="md:w-[300px] w-48"
                         />
                     </Link>
-                    <div className="hidden lg:block">
-                        India&apos;s Public Health Platform
-                    </div>
                 </div>
 
                 <div className="space-x-6 md:absolute md:right-10 flex items-center max-md:ml-auto">
@@ -139,9 +136,10 @@ function Header({ categories }) {
                 </div>
 
                 <div className="flex-auto flex lg:hidden">
-                    <div className="text-center flex-auto">
+                    {/* <div className="text-center flex-auto">
                         India&apos;s Public Health Platform
-                    </div>
+                    </div> */}
+                    <div className="flex-auto"></div>
                     <button
                         className="flex-initial"
                         onClick={() => setCollapsed(false)}
