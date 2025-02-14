@@ -10,8 +10,7 @@ type Category = {
 export type Post = {
     id: number;
     path: string;
-    authors_data: Author[];
-    author?: Author;
+    authors: Author[];
     upload_image: string;
     page_title: string;
     meta_description: string;
@@ -35,9 +34,9 @@ export type OldBackendPost = {
     path: string;
     created_at: string;
     updated_at: string;
-    authors_data: {
+    authors: {
         id: number;
-        author_name: string;
+        name: string;
         author_views: number;
         first_peragraph: string;
         description: string;

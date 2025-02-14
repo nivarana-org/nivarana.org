@@ -1,21 +1,11 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Search from "@/components/search/search";
-import { getAllAuthors, searchArticles } from "@/data/cms";
-import { addAuthors } from "@/utils/addAuthors";
+import { searchArticles } from "@/data/cms";
 
 type Props = {
     searchParams?: Promise<{
         q?: string;
     }>;
-};
-
-const retrieveArticles = async (q: string) => {
-    const articles = await searchArticles(q);
-    if (articles.length > 0) {
-        const enhanced = addAuthors(articles, await getAllAuthors());
-        return [...enhanced];
-    }
-    return [];
 };
 
 const Results = ({ results }) => {
@@ -37,7 +27,7 @@ const Results = ({ results }) => {
 export default async function SearchPage(props: Props) {
     const searchParams = await props.searchParams;
     const q = searchParams?.q;
-    const result = q ? await retrieveArticles(q) : [];
+    const result = q ? await searchArticles(q) : [];
     return (
         <div className="p-2">
             <h1 className="text-bold text-3xl text-center">Search</h1>

@@ -36,7 +36,7 @@ export default function ArticleEditPage({
     allCategories,
 }: {
     post: Article;
-    allAuthors: { id: string; author_name: string }[];
+    allAuthors: { id: string; name: string }[];
     allCategories: { id: string; name: string }[];
 }) {
     const [submitting, setSubmitting] = useState(false);
@@ -160,13 +160,11 @@ export default function ArticleEditPage({
                     placeholder="Select one or more authors"
                     onChange={handleAuthorChange}
                 >
-                    {allAuthors.map(
-                        (a: { id: string; author_name: string }) => (
-                            <Option key={a.id} value={`${a.id}`}>
-                                {a.author_name}
-                            </Option>
-                        ),
-                    )}
+                    {allAuthors.map((a: { id: string; name: string }) => (
+                        <Option key={a.id} value={`${a.id}`}>
+                            {a.name}
+                        </Option>
+                    ))}
                 </Select>
             </FormControl>
 

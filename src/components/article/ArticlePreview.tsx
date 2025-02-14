@@ -9,8 +9,6 @@ import { getImageURLFromFileName } from "@/utils/paths";
 function ArticlePreview({
     path,
     authors,
-    authors_data,
-    author,
     upload_image,
     page_title,
     meta_description,
@@ -57,10 +55,7 @@ function ArticlePreview({
                             </p>
                         </Link>
                         <ul className="flex space-x-4 text-gray-500 text-sm mt-3 items-center">
-                            <NAuthors
-                                authors_data={authors ?? authors_data}
-                                author={author}
-                            />
+                            <NAuthors authors={authors} />
                             <li>{moment(created_at).format("MMM DD, YYYY")}</li>
                         </ul>
                     </div>

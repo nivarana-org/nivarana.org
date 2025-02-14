@@ -41,12 +41,6 @@ export interface Article {
     meta_description: string;
 }
 
-interface Category {
-    id: number;
-    name: string;
-    path: string;
-}
-
 export interface AuthorOld {
     id: number;
     name: string;
@@ -67,7 +61,7 @@ export interface EnhancedArticle extends Article {
     created_at: number;
     updated_at: number;
     category: Category;
-    authors_data: AuthorOld[];
+    authors: AuthorOld[];
 }
 
 export const addNewsLetterSubscriber = async (email: string) => {
@@ -102,9 +96,9 @@ export const getAuthorsOverview = async () => {
     return db<Author>("authors")
         .select({
             id: "id",
-            name: "author_name",
+            name: "name",
             path: "path",
-            email: "author_email",
+            email: "email",
         })
         .orderBy("id", "desc");
 };
@@ -129,14 +123,14 @@ export const getArticlesPaginated = async (
                     SELECT JSON_ARRAYAGG(
                         JSON_OBJECT(
                             'id', a.id, 
-                            'name', a.author_name, 
+                            'name', a.name, 
                             'path', a.path
                         )
                     )
                     FROM authors a
                     JOIN post_relations pr ON a.id = pr.relation_id
                     WHERE pr.post_id = blogs.id AND pr.relation_type = 'author'
-                ) as authors_data`,
+                ) as authors`,
             ),
             db.raw(
                 `(
@@ -150,13 +144,11 @@ export const getArticlesPaginated = async (
         .orderBy("id", "desc")
         .limit(per_page)
         .offset(page * per_page);
-    const blogs = (await blogsQuery).map(
-        ({ authors_data, category, ...rest }) => ({
-            authors_data: JSON.parse(authors_data),
-            category: JSON.parse(category),
-            ...rest,
-        }),
-    );
+    const blogs = (await blogsQuery).map(({ authors, category, ...rest }) => ({
+        authors: JSON.parse(authors),
+        category: JSON.parse(category),
+        ...rest,
+    }));
     return blogs;
 };
 
@@ -165,13 +157,14 @@ export const getArticleFull = async (id: number) => {
 };
 
 export const searchArticles = async (query: string) => {
-    return db<Article>("blogs")
-        .select("*")
+    const articles = await Blog.query()
         .where("status", "PUBLISHED")
         .andWhereRaw(
             "MATCH(page_title, description, meta_description) AGAINST (?)",
             [query],
-        );
+        )
+        .withGraphFetched("[authors, categories as category]");
+    return articles;
 };
 
 export const getCategoryDetails = async (id: number | string) => {
@@ -190,12 +183,12 @@ export const getAuthor = async (id: number) => {
     const author = await db<Author>("authors")
         .select({
             id: "id",
-            name: "author_name",
+            name: "name",
             path: "path",
-            email: "author_email",
+            email: "email",
             description: "description",
-            title: "first_peragraph",
-            image: "upload_image",
+            title: "title",
+            image: "image",
         })
         .where({ id })
         .first();
@@ -203,9 +196,7 @@ export const getAuthor = async (id: number) => {
 };
 
 export const getAllAuthors = async () => {
-    return db("authors")
-        .select("id", "author_name", "path")
-        .orderBy("id", "desc");
+    return db("authors").select("id", "name", "path").orderBy("id", "desc");
 };
 
 export const addOrEditPost = async (post: Article) => {
@@ -273,7 +264,7 @@ export const getArticleByPath = async (path: string) => {
         .where("path", path)
         .andWhere("status", "PUBLISHED")
         .first()
-        .withGraphFetched("[authors as authors_data, categories as category]");
+        .withGraphFetched("[authors, categories as category]");
     return article;
 };
 

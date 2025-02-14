@@ -23,10 +23,7 @@ function Article({ data }) {
                     </div>
                     <div className="flex items-center space-x-4 p-2">
                         <ul className="flex space-x-2 text-sm text-gray-500 list-none items-center">
-                            <NAuthors
-                                authors_data={data.authors_data}
-                                author={data.author}
-                            />
+                            <NAuthors authors={data.authors} />
                             <li>
                                 {moment(data.created_at).format(
                                     "MMMM DD, YYYY",
@@ -58,10 +55,7 @@ function Article({ data }) {
                 url={"https://nivarana.org/article/" + data.path}
                 media={data.upload_image}
             ></PageShare>
-            <NAuthorsBio
-                authors_data={data.authors_data}
-                author={data.author}
-            />
+            <NAuthorsBio authors={data.authors} />
         </>
     );
 }

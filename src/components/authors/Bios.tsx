@@ -2,27 +2,23 @@ import { getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
 
-export function NAuthorsBio({ authors_data, author }) {
-    if (authors_data) {
-        return (
-            <>
-                {authors_data.map((a) => (
-                    <AuthorBio {...a} key={a.id} />
-                ))}
-            </>
-        );
-    } else {
-        return <AuthorBio {...author} />;
-    }
+export function NAuthorsBio({ authors }) {
+    return (
+        <>
+            {authors.map((a) => (
+                <AuthorBio {...a} key={a.id} />
+            ))}
+        </>
+    );
 }
-export function AuthorBio({ upload_image, path, author_name, description }) {
+export function AuthorBio({ image, path, name, description }) {
     const showImage = false;
     return (
         <div className="about-author my-4 padding-30 rounded row">
-            {upload_image != null && showImage && (
+            {image != null && showImage && (
                 <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
                     <Image
-                        src={getImageURLFromFileName(upload_image)}
+                        src={getImageURLFromFileName(image)}
                         fill={true}
                         className="author"
                         alt="author"
@@ -31,13 +27,13 @@ export function AuthorBio({ upload_image, path, author_name, description }) {
             )}
             <div
                 className={
-                    upload_image != null
+                    image != null
                         ? "col-md-10 col-sm-10 details"
                         : "col-md-12 col-sm-12 details"
                 }
             >
                 <h4 className="name mb-0">
-                    <Link href={"/author/" + path}>{author_name}</Link>
+                    <Link href={"/author/" + path}>{name}</Link>
                 </h4>
                 {description != null && (
                     <div
