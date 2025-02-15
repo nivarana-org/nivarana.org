@@ -107,7 +107,7 @@ export const getArticlesPaginated = async (
     page = 0,
     per_page = 10,
 ): Promise<EnhancedArticle[]> => {
-    const blogsQuery = db("blogs")
+    const articles = await Blog.query()
         .select(
             "blogs.id",
             "blogs.page_title",
@@ -118,38 +118,12 @@ export const getArticlesPaginated = async (
             "blogs.meta_description",
             "blogs.created_at",
             "blogs.updated_at",
-            db.raw(
-                `(
-                    SELECT JSON_ARRAYAGG(
-                        JSON_OBJECT(
-                            'id', a.id, 
-                            'name', a.name, 
-                            'path', a.path
-                        )
-                    )
-                    FROM authors a
-                    JOIN post_relations pr ON a.id = pr.relation_id
-                    WHERE pr.post_id = blogs.id AND pr.relation_type = 'author'
-                ) as authors`,
-            ),
-            db.raw(
-                `(
-            SELECT JSON_OBJECT('id', c.id, 'name', c.name, 'path', c.path)
-            FROM categories c
-            WHERE c.id = blogs.category_name
-          ) as category`,
-            ),
         )
         .where("status", "PUBLISHED")
+        .withGraphFetched("[authors, categories as category]")
         .orderBy("id", "desc")
-        .limit(per_page)
-        .offset(page * per_page);
-    const blogs = (await blogsQuery).map(({ authors, category, ...rest }) => ({
-        authors: JSON.parse(authors),
-        category: JSON.parse(category),
-        ...rest,
-    }));
-    return blogs;
+        .page(page, per_page);
+    return articles.results.map((article) => article.toJSON());
 };
 
 export const getArticleFull = async (id: number) => {
