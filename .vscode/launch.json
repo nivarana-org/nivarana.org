@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Run everything",
+            "configurations": ["Image Server", "Next.js", "Browser"]
+        }
+    ],
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Next.js",
+            "runtimeExecutable": "next",
+            "cwd": "${workspaceFolder}",
+            "args": ["dev", "--turbopack"],
+            "env": {
+                "NODE_ENV": "development"
+            }
+        },
+        {
+            "name": "Image Server",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/.bin/http-server",
+            "args": ["../uploads", "-p", "8000"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "name": "Browser",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
