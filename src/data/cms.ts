@@ -286,6 +286,9 @@ export const getAuthorByPath = async (path: string) => {
                 categories: true,
                 authors: true,
             },
+        })
+        .modifyGraph("articles", (builder) => {
+            builder.orderBy("created_at", "desc");
         });
     return author;
 };
@@ -300,6 +303,9 @@ export const getCategoryByPath = async (path: string) => {
                 categories: true,
                 authors: true,
             },
+        })
+        .modifyGraph("articles", (builder) => {
+            builder.orderBy("created_at", "desc");
         });
     return category;
 };
