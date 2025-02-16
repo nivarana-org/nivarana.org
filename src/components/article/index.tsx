@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import ViewCountUpdateOnly from "./ViewUpdateOnly";
 import { getImageURLFromFileName } from "@/utils/paths";
 import BodyWithPopover from "./BodyWithPopover";
+import PageTranslate from "./PageTranslate";
 
 function Article({ data }) {
     return (
@@ -29,6 +30,11 @@ function Article({ data }) {
                                     "MMMM DD, YYYY",
                                 )}
                             </li>
+                            <PageTranslate
+                                url={
+                                    "https://nivarana.org/article/" + data.path
+                                }
+                            />
                             <Suspense>
                                 <ViewCountUpdateOnly
                                     id={data.id}
