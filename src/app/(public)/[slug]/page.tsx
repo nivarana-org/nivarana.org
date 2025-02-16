@@ -14,9 +14,9 @@ const cachedGetPageBySlug = cache((slug: string) => {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
-    if (params.slug === "hindi") {
+    if (params.slug === "hindi" || params.slug === "हिन्दी") {
         return {
-            title: "Hindi",
+            title: "हिन्दी",
         };
     }
     const post = await cachedGetPageBySlug(params.slug);
@@ -28,7 +28,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    if (params.slug === "hindi") {
+    if (params.slug === "hindi" || params.slug === "हिन्दी") {
         return <LanguageSpecificHome></LanguageSpecificHome>;
     }
     const page = await cachedGetPageBySlug(params.slug);
