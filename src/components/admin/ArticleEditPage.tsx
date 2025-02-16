@@ -223,6 +223,41 @@ export default function ArticleEditPage({
             <Divider className="my-4"></Divider>
 
             <FormControl>
+                <FormLabel className="font-bold">Language</FormLabel>
+                <Select
+                    defaultValue={post?.language || "en"}
+                    name="language"
+                    placeholder="Select a language"
+                    required
+                >
+                    <Option value="en">English</Option>
+                    <Option value="as">Assamese</Option>
+                    <Option value="bn">Bengali</Option>
+                    <Option value="gu">Gujarati</Option>
+                    <Option value="hi">Hindi</Option>
+                    <Option value="kn">Kannada</Option>
+                    <Option value="ks">Kashmiri</Option>
+                    <Option value="ml">Malayalam</Option>
+                    <Option value="mr">Marathi</Option>
+                    <Option value="ne">Nepali</Option>
+                    <Option value="or">Odia</Option>
+                    <Option value="pa">Punjabi</Option>
+                    <Option value="sa">Sanskrit</Option>
+                    <Option value="sd">Sindhi</Option>
+                    <Option value="ta">Tamil</Option>
+                    <Option value="te">Telugu</Option>
+                    <Option value="ur">Urdu</Option>
+                    <Option value="bh">Bihari</Option>
+                    <Option value="bo">Bodo</Option>
+                    <Option value="doi">Dogri</Option>
+                    <Option value="mai">Maithili</Option>
+                    <Option value="mni">Manipuri</Option>
+                </Select>
+            </FormControl>
+
+            <Divider className="my-4"></Divider>
+
+            <FormControl>
                 <FormLabel className="font-bold">Status</FormLabel>
                 <Select
                     value={selectedStatus}
