@@ -4,6 +4,7 @@ import {
     getArticlesCount,
     getPeopleCount,
     getSubscribersCount,
+    getTotalViewsCount,
     getWebPushSubscriberCount,
 } from "@/data/cms";
 import Link from "next/link";
@@ -16,15 +17,22 @@ function DashboardItem({
 }: {
     name: string;
     count?: number;
-    link: string;
+    link?: string;
 }) {
+    if (link)
+        return (
+            <Link href={link}>
+                <div className="p-4 bg-cyan-100 hover:bg-cyan-400 text-center">
+                    <div>{count ? <div>{count}</div> : null}</div>
+                    <div>{name}</div>
+                </div>
+            </Link>
+        );
     return (
-        <Link href={link}>
-            <div className="p-4 bg-cyan-100 hover:bg-cyan-400 text-center">
-                <div>{count ? <div>{count}</div> : null}</div>
-                <div>{name}</div>
-            </div>
-        </Link>
+        <div className="p-4 bg-cyan-400 text-center">
+            <div>{count ? <div>{count}</div> : null}</div>
+            <div>{name}</div>
+        </div>
     );
 }
 
@@ -34,11 +42,13 @@ export default async function Page() {
         articleCount,
         webNotificationSubscriberCount,
         peopleCount,
+        viewsCount,
     ] = await Promise.all([
         getSubscribersCount(),
         getArticlesCount(),
         getWebPushSubscriberCount(),
         getPeopleCount(),
+        getTotalViewsCount(),
     ]);
 
     return (
@@ -53,6 +63,11 @@ export default async function Page() {
                     name="People"
                     link="/admin/people"
                     count={peopleCount}
+                ></DashboardItem>
+                <div></div>
+                <DashboardItem
+                    name="Total Views"
+                    count={viewsCount}
                 ></DashboardItem>
             </div>
             <hr />

@@ -308,6 +308,11 @@ export const incrementBlogViewCount = async (id: number) => {
     return post?.total_views;
 };
 
+export const getTotalViewsCount = async () => {
+    const views = await Blog.query().sum("total_views");
+    return views[0]["sum(`total_views`)"];
+};
+
 export const getCategories = async () => {
     const categories = await Category.query()
         .withGraphFetched("children.[children.^]")
