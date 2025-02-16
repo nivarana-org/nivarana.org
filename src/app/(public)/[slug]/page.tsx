@@ -1,3 +1,4 @@
+import LanguageSpecificHome from "@/components/home/LanguageSpecific";
 import RandomQuote from "@/components/sprinkle/random-quote";
 import { getPageByPath } from "@/data/cms";
 import { Metadata } from "next";
@@ -13,6 +14,11 @@ const cachedGetPageBySlug = cache((slug: string) => {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
+    if (params.slug === "hindi") {
+        return {
+            title: "Hindi",
+        };
+    }
     const post = await cachedGetPageBySlug(params.slug);
     if (!post) return {};
     return {
@@ -22,6 +28,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
     const params = await props.params;
+    if (params.slug === "hindi") {
+        return <LanguageSpecificHome></LanguageSpecificHome>;
+    }
     const page = await cachedGetPageBySlug(params.slug);
     if (!page) {
         return <RandomQuote />;

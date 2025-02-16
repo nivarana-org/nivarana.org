@@ -126,6 +126,31 @@ export const getArticlesPaginated = async (
     return articles.results.map((article) => article.toJSON());
 };
 
+export const getArticlesFilteredAndPaginated = async (
+    page = 0,
+    per_page = 10,
+    language = "en",
+): Promise<EnhancedArticle[]> => {
+    const articles = await Blog.query()
+        .select(
+            "blogs.id",
+            "blogs.page_title",
+            "blogs.path",
+            "blogs.description",
+            "blogs.upload_image",
+            "blogs.meta_title",
+            "blogs.meta_description",
+            "blogs.created_at",
+            "blogs.updated_at",
+        )
+        .where("status", "PUBLISHED")
+        .where("language", language)
+        .withGraphFetched("[authors, categories as category]")
+        .orderBy("id", "desc")
+        .page(page, per_page);
+    return articles.results.map((article) => article.toJSON());
+};
+
 export const getArticleFull = async (id: number) => {
     return db<Article>("blogs").select("*").where({ id }).first();
 };
