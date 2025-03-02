@@ -36,7 +36,7 @@ export default async function Page(props: Props) {
         return <RandomQuote />;
     }
     return (
-        <div className="max-w-prose mx-auto pt-5">
+        <div className="max-w-prose mx-auto p-5">
             <h1 className="font-4xl">{page.page_title}</h1>
             <p dangerouslySetInnerHTML={{ __html: page.description }}></p>
         </div>
