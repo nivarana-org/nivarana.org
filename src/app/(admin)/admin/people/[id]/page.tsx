@@ -11,7 +11,7 @@ export default async function Page(props: Props) {
               name: "",
               description: "",
               id: authorId,
-              image: "logo.png",
+              image: "author.png",
           };
     return <AuthorEditPage author={author} />;
 }
