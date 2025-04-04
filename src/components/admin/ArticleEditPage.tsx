@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Divider,
@@ -34,10 +34,12 @@ export default function ArticleEditPage({
     post,
     allAuthors,
     allCategories,
+    allTags,
 }: {
     post: Article;
     allAuthors: { id: string; name: string }[];
     allCategories: { id: string; name: string }[];
+    allTags: { id: string; name: string }[];
 }) {
     const [submitting, setSubmitting] = useState(false);
     const [title, setTitle] = useState(post?.page_title || "");
@@ -61,7 +63,7 @@ export default function ArticleEditPage({
         setPath(sluggify(title));
     }, [generatePath, title]);
     const [authors, setAuthors] = useState<string[]>(
-        post?.authors?.split(",") ?? [],
+        post?.authors?.map((a) => `${a.id}`) ?? [],
     );
     const handleAuthorChange = (
         event: React.SyntheticEvent | null,
@@ -69,6 +71,17 @@ export default function ArticleEditPage({
     ) => {
         if (newValue) {
             setAuthors(newValue);
+        }
+    };
+    const [tags, setTags] = useState<string[]>(
+        post?.tags?.map((t) => `${t.id}`) ?? [],
+    );
+    const handleTagChange = (
+        event: React.SyntheticEvent | null,
+        newValue: Array<string> | null,
+    ) => {
+        if (newValue) {
+            setTags(newValue);
         }
     };
     const [image, setImage] = useState(post?.upload_image);
@@ -86,6 +99,7 @@ export default function ArticleEditPage({
                 data.append("id", `${post.id}`);
                 data.append("description", description);
                 data.append("authors", authors.join(","));
+                data.append("tags", JSON.stringify(tags));
                 data.append("image", image);
                 data.append("status", selectedStatus);
                 if (selectedStatus === "SCHEDULED") {
@@ -181,6 +195,23 @@ export default function ArticleEditPage({
                     {allCategories.map((c: { id: string; name: string }) => (
                         <Option key={c.id} value={`${c.id}`}>
                             {c.name}
+                        </Option>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel className="font-bold">Choose the hashtags</FormLabel>
+                <Select
+                    defaultValue={tags}
+                    onChange={handleTagChange}
+                    multiple
+                    name="tags"
+                    placeholder="Select hashtags"
+                >
+                    {allTags.map((t: { id: string; name: string }) => (
+                        <Option key={t.id} value={`${t.id}`}>
+                            {t.name}
                         </Option>
                     ))}
                 </Select>

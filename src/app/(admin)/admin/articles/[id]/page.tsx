@@ -1,16 +1,23 @@
 import ArticleEditPage from "@/components/admin/ArticleEditPage";
-import { getAllAuthors, getAllCategories, getArticleFull } from "@/data/cms";
+import {
+    getAllAuthors,
+    getAllCategories,
+    getAllTags,
+    getArticleFullWithRelations,
+} from "@/data/cms";
 
 export default async function Page(props: Props) {
     const params = await props.params;
     const postId = Number(params.id);
-    const [rowPost, rowAllAuthors, rowAllCategories] = await Promise.all([
-        getArticleFull(postId),
-        getAllAuthors(),
-        getAllCategories(),
-    ]);
+    const [rowPost, rowAllAuthors, rowAllCategories, rowAllTags] =
+        await Promise.all([
+            getArticleFullWithRelations(postId),
+            getAllAuthors(),
+            getAllCategories(),
+            getAllTags(),
+        ]);
     const post = rowPost
-        ? { ...rowPost }
+        ? JSON.parse(JSON.stringify(rowPost))
         : {
               page_title: "",
               description: "",
@@ -20,11 +27,13 @@ export default async function Page(props: Props) {
           };
     const allAuthors = rowAllAuthors.map((a) => ({ ...a }));
     const allCategories = rowAllCategories.map((c) => ({ ...c }));
+    const allTags = rowAllTags.map((t) => ({ ...t }));
     return (
         <ArticleEditPage
             post={post}
             allAuthors={allAuthors}
             allCategories={allCategories}
+            allTags={allTags}
         />
     );
 }

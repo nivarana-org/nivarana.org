@@ -9,6 +9,9 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const authors = (formData.get("authors") as string)
         ?.split(",")
         ?.map((a: string) => Number(a));
+    const tags = JSON.parse(formData.get("tags") as string).map((t: string) =>
+        Number(t),
+    );
     const categories = formData
         .get("category")
         ?.split(",")
@@ -25,6 +28,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         page_title,
         description,
         authors,
+        tags,
         categories,
         meta_description,
         upload_image,

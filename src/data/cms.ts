@@ -4,6 +4,7 @@ import "server-only";
 import knex from "knex";
 import { Author, Blog } from "./models";
 import Category from "./models/Category";
+import Tag from "./models/Tag";
 
 export const db = knex({
     client: "mysql",
@@ -33,6 +34,7 @@ export interface Article {
     description: string;
     category_name: string;
     authors: number[];
+    tags: number[];
     upload_image: string;
     created_at: number;
     updated_at: number;
@@ -120,7 +122,7 @@ export const getArticlesPaginated = async (
             "blogs.updated_at",
         )
         .where("status", "PUBLISHED")
-        .withGraphFetched("[authors, categories as category]")
+        .withGraphFetched("[authors, categories as category, tags]")
         .orderBy("id", "desc")
         .page(page, per_page);
     return articles.results.map((article) => article.toJSON());
@@ -145,7 +147,7 @@ export const getArticlesFilteredAndPaginated = async (
         )
         .where("status", "PUBLISHED")
         .where("language", language)
-        .withGraphFetched("[authors, categories as category]")
+        .withGraphFetched("[authors, categories as category, tags]")
         .orderBy("id", "desc")
         .page(page, per_page);
     return articles.results.map((article) => article.toJSON());
@@ -155,6 +157,14 @@ export const getArticleFull = async (id: number) => {
     return db<Article>("blogs").select("*").where({ id }).first();
 };
 
+export const getArticleFullWithRelations = async (id: number) => {
+    const article = await Blog.query()
+        .where("id", id)
+        .first()
+        .withGraphFetched("[authors, categories as category, tags]");
+    return article;
+};
+
 export const searchArticles = async (query: string) => {
     const articles = await Blog.query()
         .where("status", "PUBLISHED")
@@ -162,7 +172,7 @@ export const searchArticles = async (query: string) => {
             "MATCH(page_title, description, meta_description) AGAINST (?)",
             [query],
         )
-        .withGraphFetched("[authors, categories as category]");
+        .withGraphFetched("[authors, categories as category, tags]");
     return articles;
 };
 
@@ -204,7 +214,7 @@ export const addOrEditPost = async (post: Article) => {
     // Start transaction
     return await db.transaction(async (trx) => {
         // Upsert into blogs table
-        const { authors, categories, ...rest } = post;
+        const { authors, categories, tags, ...rest } = post;
 
         const [postId] = await trx("blogs")
             .insert({
@@ -246,6 +256,18 @@ export const addOrEditPost = async (post: Article) => {
             await trx("post_relations").insert(categoryRelations);
         }
 
+        const tagRelations = tags.map((tagId) => ({
+            post_id: postId,
+            relation_id: tagId,
+            relation_type: "tag",
+        }));
+        await trx("post_relations")
+            .where({ post_id: postId, relation_type: "tag" })
+            .delete();
+        if (tagRelations.length > 0) {
+            await trx("post_relations").insert(tagRelations);
+        }
+
         return postId;
     });
 };
@@ -263,7 +285,7 @@ export const getArticleByPath = async (path: string) => {
         .where("path", path)
         .andWhere("status", "PUBLISHED")
         .first()
-        .withGraphFetched("[authors, categories as category]");
+        .withGraphFetched("[authors, categories as category, tags]");
     return article;
 };
 
@@ -283,6 +305,7 @@ export const getAuthorByPath = async (path: string) => {
             articles: {
                 $modify: ["onlyPublished"],
                 categories: true,
+                tags: true,
                 authors: true,
             },
         })
@@ -300,6 +323,7 @@ export const getCategoryByPath = async (path: string) => {
             articles: {
                 $modify: ["onlyPublished"],
                 categories: true,
+                tags: true,
                 authors: true,
             },
         })
@@ -352,4 +376,27 @@ export const publishScheduledPostsNeedingPublication = async () => {
         .patch({ status: "PUBLISHED" })
         .returning("id");
     return JSON.parse(JSON.stringify(scheduled));
+};
+
+export const getAllTags = async () => {
+    const tags = await Tag.query();
+    return JSON.parse(JSON.stringify(tags));
+};
+
+export const getTagByPath = async (path: string) => {
+    const tag = await Tag.query()
+        .where("path", path)
+        .first()
+        .withGraphFetched({
+            articles: {
+                $modify: ["onlyPublished"],
+                categories: true,
+                authors: true,
+                tags: true,
+            },
+        })
+        .modifyGraph("articles", (builder) => {
+            builder.orderBy("created_at", "desc");
+        });
+    return tag;
 };
