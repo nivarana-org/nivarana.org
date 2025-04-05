@@ -236,7 +236,7 @@ export default function ArticleEditPage({
             <FormControl>
                 <FormLabel className="font-bold">Image</FormLabel>
                 <ImagePicker
-                    defaultValue={post?.upload_image}
+                    defaultValue={image}
                     onChange={(newValue: string) => {
                         setImage(newValue);
                     }}
