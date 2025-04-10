@@ -6,7 +6,7 @@ const Footer = () => {
         <footer>
             <div className="p-2 flex flex-wrap space-x-4 items-center mb-6 justify-evenly">
                 <div className="mr-2 mb-5">
-                    © 2024 Nivarana. All Rights Reserved.
+                    © {new Date().getFullYear()} Nivarana. All Rights Reserved.
                 </div>
                 <div className="flex space-x-4 mb-5">
                     <Link href="/contact">Contact Us</Link>
