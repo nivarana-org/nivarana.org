@@ -36,6 +36,8 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
     "@types/node": "^22.14.0",
     "@types/react": "19.1",
     "@types/react-dom": "19.1",
