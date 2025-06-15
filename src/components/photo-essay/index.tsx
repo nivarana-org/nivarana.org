@@ -9,6 +9,7 @@ import BodyWithPopover from "./BodyWithPopover";
 import PageTranslate from "./PageTranslate";
 
 import Link from "next/link";
+import ZoomableImage from "./ZoomableImage";
 
 function Author({ path, name }) {
     return (
@@ -26,13 +27,9 @@ function PhotoChapter({ title, body, image }) {
     return (
         <>
             {image ? (
-                <Image
+                <ZoomableImage
                     src={getImageURLFromFileName(image)}
-                    alt={"Sorry, we are in the process of creating alt"}
-                    width={1280}
-                    height={900}
-                    className="inset-0 h-full w-full object-cover"
-                />
+                ></ZoomableImage>
             ) : null}
             {title ? (
                 <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2">
