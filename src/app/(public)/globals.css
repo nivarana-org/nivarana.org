@@ -642,20 +642,21 @@ h6 {
   margin: 20px 0;
 }
 
-a {
+.post-content a {
   color: #045d51;
   outline: 0;
-  text-decoration: none;
+  text-decoration: underline;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 
-a:hover {
+.post-content a:hover {
   color: #203656;
+  text-decoration: none;
 }
 
-a:focus {
+.post-content a:focus {
   outline: 0;
 }
 
