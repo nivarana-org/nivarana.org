@@ -25,16 +25,21 @@ function NAuthors({ authors }) {
 function PhotoChapter({ title, body, image }) {
     return (
         <>
-            <Image
-                src={getImageURLFromFileName(image)}
-                alt={"Sorry, we are in the process of creating alt"}
-                width={1280}
-                height={900}
-                className="inset-0 h-full w-full object-cover"
-            />
-            <div className="max-w-4xl mx-auto text-4xl text-black mt-8">
-                {title}
-            </div>
+            {image ? (
+                <Image
+                    src={getImageURLFromFileName(image)}
+                    alt={"Sorry, we are in the process of creating alt"}
+                    width={1280}
+                    height={900}
+                    className="inset-0 h-full w-full object-cover"
+                />
+            ) : null}
+            {title ? (
+                <div className="max-w-4xl mx-auto text-4xl text-black mt-8">
+                    {title}
+                </div>
+            ) : null}
+
             <BodyWithPopover body={body} />
         </>
     );
