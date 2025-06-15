@@ -14,6 +14,7 @@ export default async function BrowsePage() {
                         id={article.id}
                         path={article.path}
                         title={article.page_title}
+                        type={article.type}
                         imageUrl={getImageURLFromFileName(article.upload_image)}
                     />
                 ))}
