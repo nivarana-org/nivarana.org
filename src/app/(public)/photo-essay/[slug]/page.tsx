@@ -13,6 +13,7 @@ const cachedGetArticleBySlug = cache((slug: string) => {
 
 export default async function Page(props: Props) {
     const params = await props.params;
+    const searchParams = await props.searchParams;
     const post = await cachedGetArticleBySlug(params.slug);
     if (!post) {
         notFound();
@@ -20,7 +21,7 @@ export default async function Page(props: Props) {
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="lg:col-span-2">
-                <PhotoEssay data={post} />
+                <PhotoEssay data={post} chapter={searchParams.chapter ?? "0"} />
             </div>
         </div>
     );
@@ -28,6 +29,7 @@ export default async function Page(props: Props) {
 
 type Props = {
     params: Promise<{ slug: string }>;
+    searchParams: Promise<{ chapter: string }>;
 };
 
 export async function generateMetadata(
