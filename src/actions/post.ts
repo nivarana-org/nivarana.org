@@ -22,6 +22,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const status = formData.get("status");
     const scheduledTime = formData.get("scheduled_time");
     const language = formData.get("language");
+    const type = formData.get("type");
     const post = {
         id,
         path,
@@ -35,6 +36,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         status,
         scheduled_time: scheduledTime ? new Date(scheduledTime) : null,
         language,
+        type,
     };
     try {
         await addOrEditPost(post);

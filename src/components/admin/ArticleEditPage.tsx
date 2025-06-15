@@ -18,6 +18,7 @@ import dynamic from "next/dynamic";
 import ImagePicker from "./ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
+import PhotoEssayEditor from "./PhotoEssayEditor";
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
     ssr: false,
@@ -35,11 +36,13 @@ export default function ArticleEditPage({
     allAuthors,
     allCategories,
     allTags,
+    type,
 }: {
     post: Article;
     allAuthors: { id: string; name: string }[];
     allCategories: { id: string; name: string }[];
     allTags: { id: string; name: string }[];
+    type: "article" | "photo-essay";
 }) {
     const [submitting, setSubmitting] = useState(false);
     const [title, setTitle] = useState(post?.page_title || "");
@@ -85,7 +88,9 @@ export default function ArticleEditPage({
         }
     };
     const [image, setImage] = useState(post?.upload_image);
-    const [description, setDescription] = useState(post?.description);
+    const [description, setDescription] = useState(
+        type === "article" ? post?.description : JSON.parse(post?.description),
+    );
     return (
         <form
             className="p-4 max-w-screen-sm mx-auto"
@@ -97,7 +102,13 @@ export default function ArticleEditPage({
                 }
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
-                data.append("description", description);
+                data.append(
+                    "description",
+                    type === "article"
+                        ? description
+                        : JSON.stringify(description),
+                );
+                data.append("type", type);
                 data.append("authors", authors.join(","));
                 data.append("tags", JSON.stringify(tags));
                 data.append("image", image);
@@ -124,7 +135,7 @@ export default function ArticleEditPage({
                                     "Post updated successfully. Open the post now?",
                                 )
                             ) {
-                                window.open(`/article/${path}`);
+                                window.open(`/${type}/${path}`);
                             }
                             break;
                         default:
@@ -245,11 +256,18 @@ export default function ArticleEditPage({
 
             <Divider className="my-4"></Divider>
 
-            <ArticleEditor
-                initialValue={post?.description}
-                value={description}
-                onEditorChange={(newValue) => setDescription(newValue)}
-            />
+            {type === "article" ? (
+                <ArticleEditor
+                    initialValue={post?.description}
+                    value={description}
+                    onEditorChange={(newValue) => setDescription(newValue)}
+                />
+            ) : (
+                <PhotoEssayEditor
+                    value={description}
+                    onEditorChange={(newValue) => setDescription(newValue)}
+                />
+            )}
 
             <Divider className="my-4"></Divider>
 
