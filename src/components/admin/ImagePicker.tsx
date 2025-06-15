@@ -12,6 +12,7 @@ export default function ImagePicker({
     defaultValue: string;
     onChange: (string) => void;
 }) {
+    const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(defaultValue);
     const [uploading, setUploading] = useState(false);
     const [images, setImages] = useState<{ filename: string; url: string }[]>(
@@ -23,15 +24,19 @@ export default function ImagePicker({
             setImages(images);
         })();
     }, []);
-    if (selected)
+    if (!open)
         return (
             <Grid>
-                <img
-                    alt={`Representative image named ${selected}`}
-                    src={getImageURLFromFileName(selected)}
-                    height="50vh"
-                ></img>
-                <Button onClick={() => setSelected("")}>Change</Button>
+                {selected ? (
+                    <img
+                        alt={`Representative image named ${selected}`}
+                        src={getImageURLFromFileName(selected)}
+                        height="50vh"
+                    ></img>
+                ) : (
+                    <div>No image selected</div>
+                )}
+                <Button onClick={() => setOpen(true)}>Change</Button>
             </Grid>
         );
 
@@ -39,12 +44,13 @@ export default function ImagePicker({
         setUploading(true);
         const data = await uploadImage(file);
         setSelected(data.filename);
+        setOpen(false);
         onChange(data.filename);
         setImages(await getImages());
         setUploading(false);
     };
     return (
-        <Modal open={!selected}>
+        <Modal open={open}>
             <Grid>
                 <Box
                     sx={{
@@ -95,6 +101,7 @@ export default function ImagePicker({
                                       }}
                                       onClick={() => {
                                           setSelected(i.filename);
+                                          setOpen(false);
                                           onChange(i.filename);
                                       }}
                                   />

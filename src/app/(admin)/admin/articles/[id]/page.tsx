@@ -13,7 +13,7 @@ const getEmptyDescription = (type: PostType) => {
         case "article":
             return "";
         case "photo-essay":
-            return JSON.stringify({ chapters: [{ title: "" }] });
+            return JSON.stringify({ chapters: [{ title: "", body: "" }] });
     }
 };
 
