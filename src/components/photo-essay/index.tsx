@@ -10,6 +10,7 @@ import PageTranslate from "./PageTranslate";
 
 import Link from "next/link";
 import ZoomableImage from "./ZoomableImage";
+import { Button } from "@mui/joy";
 
 function Author({ path, name }) {
     return (
@@ -150,21 +151,24 @@ function PhotoEssay({ data, chapter }) {
                     <PhotoChapter {...chapters[0]} />
 
                     <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
-                        <Link
-                            href={{
-                                query: { chapter: "1" },
-                            }}
-                        >
-                            Start
-                        </Link>
-
-                        <Link
-                            href={{
-                                query: { chapter: "all" },
-                            }}
-                        >
-                            View in Single Page
-                        </Link>
+                        <Button>
+                            <Link
+                                href={{
+                                    query: { chapter: "all" },
+                                }}
+                            >
+                                View in Single Page
+                            </Link>
+                        </Button>
+                        <Button>
+                            <Link
+                                href={{
+                                    query: { chapter: "1" },
+                                }}
+                            >
+                                Start
+                            </Link>
+                        </Button>
                     </div>
                 </div>
                 <div className="max-w-2xl mx-auto">
@@ -186,26 +190,29 @@ function PhotoEssay({ data, chapter }) {
                 <PhotoChapter {...chapters[page]} />
 
                 <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
-                    <Link
-                        href={{
-                            query: { chapter: `${page - 1}` },
-                        }}
-                    >
-                        Previous
-                    </Link>
-
-                    {!lastPage ? (
+                    <Button>
                         <Link
                             href={{
-                                query: { chapter: `${page + 1}` },
+                                query: { chapter: `${page - 1}` },
                             }}
                         >
-                            Next
+                            Previous
                         </Link>
+                    </Button>
+
+                    {!lastPage ? (
+                        <Button>
+                            <Link
+                                href={{
+                                    query: { chapter: `${page + 1}` },
+                                }}
+                            >
+                                Next
+                            </Link>
+                        </Button>
                     ) : null}
                 </div>
             </div>
-            <div className="text-black font-bold p-2">Share</div>
             <div className="max-w-2xl mx-auto">
                 <div className="text-black font-bold p-2">Share</div>
                 <PageShare
