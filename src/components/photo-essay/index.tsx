@@ -11,6 +11,7 @@ import PageTranslate from "./PageTranslate";
 import Link from "next/link";
 import ZoomableImage from "./ZoomableImage";
 import { Button } from "@mui/joy";
+import ScrollToTop from "./ScrollToTop";
 
 function Author({ path, name }) {
     return (
@@ -187,6 +188,7 @@ function PhotoEssay({ data, chapter }) {
         <>
             <div className="post post-single">
                 <div className="mt-6"></div>
+                <ScrollToTop />
                 <PhotoChapter {...chapters[page]} />
 
                 <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
@@ -210,7 +212,17 @@ function PhotoEssay({ data, chapter }) {
                                 Next
                             </Link>
                         </Button>
-                    ) : null}
+                    ) : (
+                        <Button>
+                            <Link
+                                href={{
+                                    query: { chapter: `0` },
+                                }}
+                            >
+                                Restart
+                            </Link>
+                        </Button>
+                    )}
                 </div>
             </div>
             <div className="max-w-2xl mx-auto">
