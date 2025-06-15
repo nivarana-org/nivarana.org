@@ -35,7 +35,7 @@ function PhotoChapter({ title, body, image }) {
                 />
             ) : null}
             {title ? (
-                <div className="max-w-4xl mx-auto text-4xl text-black mt-8">
+                <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2">
                     {title}
                 </div>
             ) : null}
