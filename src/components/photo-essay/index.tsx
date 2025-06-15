@@ -193,7 +193,7 @@ function PhotoEssay({ data, chapter }) {
                 <div className="mt-6"></div>
                 <ScrollToTop />
                 <ClearChapter></ClearChapter>
-                <PhotoChapter {...chapters[page]} />
+                <PhotoChapter key={page} {...chapters[page]} />
 
                 <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
                     <Button>
