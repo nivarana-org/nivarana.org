@@ -10,14 +10,14 @@ interface ArticleCardProps {
     imageUrl: string;
 }
 
-export function ArticleCard({ path, title, imageUrl }: ArticleCardProps) {
+export function ArticleCard({ path, type, title, imageUrl }: ArticleCardProps) {
     const [isActive, setIsActive] = useState(false);
     const router = useRouter();
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         if (isActive) {
-            router.push(`/article/${path}`);
+            router.push(`/${type}/${path}`);
         } else {
             setIsActive(true);
         }
@@ -25,7 +25,7 @@ export function ArticleCard({ path, title, imageUrl }: ArticleCardProps) {
 
     return (
         <a
-            href={`/article/${path}`}
+            href={`/${type}/${path}`}
             onClick={handleClick}
             onMouseEnter={() => setIsActive(true)}
             onMouseLeave={() => setIsActive(false)}

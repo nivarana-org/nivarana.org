@@ -12,9 +12,10 @@ function ArticleRow({
     path,
     upload_image,
     total_views,
+    type,
 }: Article) {
     const adminLink = `/admin/articles/${id}`;
-    const publicLink = `/article/${path}`;
+    const publicLink = `/${type}/${path}`;
     return (
         <>
             <td>

@@ -74,9 +74,7 @@ function PhotoEssay({ data }) {
                                 )}
                             </li>
                             <PageTranslate
-                                url={
-                                    "https://nivarana.org/article/" + data.path
-                                }
+                                url={`https://nivarana.org/${data.type}/${data.path}`}
                             />
                             <Suspense>
                                 <ViewCountUpdateOnly
@@ -95,7 +93,7 @@ function PhotoEssay({ data }) {
             <div className="text-black font-bold p-2">Share</div>
             <PageShare
                 className="p-2"
-                url={"https://nivarana.org/article/" + data.path}
+                url={`https://nivarana.org/${data.type}/${data.path}`}
                 media={data.upload_image}
             ></PageShare>
             <NAuthorsBio authors={data.authors} />

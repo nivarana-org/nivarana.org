@@ -170,7 +170,7 @@ export default function ArticleEditPage({
                 ></Input>
                 <FormHelperText>
                     {path
-                        ? `The article will be publicly accessible at https://nivarana.org/article/${path}`
+                        ? `The article will be publicly accessible at https://nivarana.org/${type}/${path}`
                         : "The link to the article"}
                 </FormHelperText>
             </FormControl>

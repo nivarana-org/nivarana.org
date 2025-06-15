@@ -11,6 +11,7 @@ function ArticlePreview({
     authors,
     upload_image,
     page_title,
+    type,
     meta_description,
     created_at,
     category,
@@ -32,7 +33,7 @@ function ArticlePreview({
             <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl mb-3 grow shrink:0 hover:drop-shadow-xl">
                 <div className="md:flex">
                     <div className="md:shrink-0">
-                        <Link href={"/article/" + path}>
+                        <Link href={`/${type}/${path}`}>
                             <Image
                                 width={320}
                                 height={225}
@@ -46,7 +47,7 @@ function ArticlePreview({
 
                     <div className="p-8">
                         {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{categro}</div> */}
-                        <Link href={"/article/" + path}>
+                        <Link href={`/${type}/${path}`}>
                             <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
                                 {page_title}
                             </div>

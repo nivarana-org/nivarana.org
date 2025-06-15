@@ -23,7 +23,7 @@ const RecentPosts = async () => {
                     return (
                         <div className="post post-list-sm circle" key={index}>
                             <div className="thumb circle">
-                                <Link href={"/article/" + values.path}>
+                                <Link href={`/${values.type}/${values.path}`}>
                                     <div className="inner">
                                         <Image
                                             src={getImageURLFromFileName(
@@ -41,7 +41,7 @@ const RecentPosts = async () => {
                                 </Link>
                             </div>
                             <div className="details clearfix">
-                                <Link href={"/article/" + values.path}>
+                                <Link href={`/${values.type}/${values.path}`}>
                                     <h6 className="post-title my-0 text-black">
                                         {values.page_title}
                                     </h6>

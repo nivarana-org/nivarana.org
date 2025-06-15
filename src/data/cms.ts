@@ -120,6 +120,7 @@ export const getArticlesPaginated = async (
             "blogs.meta_description",
             "blogs.created_at",
             "blogs.updated_at",
+            "blogs.type",
         )
         .where("status", "PUBLISHED")
         .withGraphFetched("[authors, categories as category, tags]")
@@ -144,6 +145,7 @@ export const getArticlesFilteredAndPaginated = async (
             "blogs.meta_description",
             "blogs.created_at",
             "blogs.updated_at",
+            "blogs.type",
         )
         .where("status", "PUBLISHED")
         .where("language", language)
