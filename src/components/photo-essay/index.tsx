@@ -1,12 +1,12 @@
 import moment from "moment";
 import { NAuthorsBio } from "../authors/Bios";
 import Image from "next/image";
-import PageShare from "./PageShare";
+import PageShare from "@/components/blocks/PageShare";
 import { Suspense } from "react";
-import ViewCountUpdateOnly from "./ViewUpdateOnly";
+import ViewCountUpdateOnly from "@/components/blocks/ViewUpdateOnly";
 import { getImageURLFromFileName } from "@/utils/paths";
 import BodyWithPopover from "./BodyWithPopover";
-import PageTranslate from "./PageTranslate";
+import PageTranslate from "@/components/blocks/PageTranslate";
 
 import Link from "next/link";
 import ZoomableImage from "./ZoomableImage";
