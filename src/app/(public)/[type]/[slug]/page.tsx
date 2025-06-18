@@ -22,10 +22,8 @@ export default async function Page(props: Props) {
     if (!post) {
         notFound();
     }
-    console.log(post.type)
-    console.log(postType)
     if (post.type !== postType) {
-        redirect(`/${post.type}/${params.slug}`)
+        redirect(`/${post.type}/${params.slug}`);
     }
     if (postType === "article")
         return (
