@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { cache } from "react";
 
 type Props = {
-    params: Promise<{ slug: string }>;
+    params: Promise<{ type: string }>;
 };
 
 const cachedGetPageBySlug = cache((slug: string) => {
@@ -14,12 +14,12 @@ const cachedGetPageBySlug = cache((slug: string) => {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     const params = await props.params;
-    if (params.slug === "hindi" || params.slug === "हिन्दी") {
+    if (params.type === "hindi" || params.type === "हिन्दी") {
         return {
             title: "हिन्दी",
         };
     }
-    const post = await cachedGetPageBySlug(params.slug);
+    const post = await cachedGetPageBySlug(params.type);
     if (!post) return {};
     return {
         title: post.page_title,
@@ -28,10 +28,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    if (params.slug === "hindi" || params.slug === "हिन्दी") {
+    if (params.type === "hindi" || params.type === "हिन्दी") {
         return <LanguageSpecificHome></LanguageSpecificHome>;
     }
-    const page = await cachedGetPageBySlug(params.slug);
+    const page = await cachedGetPageBySlug(params.type);
     if (!page) {
         return <RandomQuote />;
     }
