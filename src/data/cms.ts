@@ -273,6 +273,30 @@ export const addOrEditPost = async (post: Article) => {
         return postId;
     });
 };
+
+export const editPostCategory = async (postId: number, categoryId: number) => {
+    return await db.transaction(async (trx) => {
+        await trx("post_relations")
+            .where({ post_id: postId, relation_type: "category" })
+            .update("relation_id", categoryId);
+        await trx("blogs")
+            .where({ id: postId })
+            .update("category_name", `${categoryId}`);
+    });
+};
+
+export const addCategory = async (name: string, path: string) => {
+    return await db("categories").insert({
+        name,
+        path,
+        parent_id: 0,
+        meta_title: name,
+        meta_keyword: name,
+        meta_description: name,
+        sort_order: 0,
+    });
+};
+
 export const addOrEditAuthor = async (author: Author) => {
     const timestamp = new Date(Date.now());
     const query = db("authors")
@@ -362,6 +386,11 @@ export const incrementBlogViewCount = async (id: number) => {
 export const getTotalViewsCount = async () => {
     const views = await Blog.query().sum("total_views");
     return views[0]["sum(`total_views`)"];
+};
+
+export const getCategoriesTable = async () => {
+    const categories = await Category.query().withGraphFetched("articles");
+    return categories;
 };
 
 export const getCategories = async () => {
