@@ -14,7 +14,4 @@ const compat = new FlatCompat({
 
 export default defineConfig([{
     extends: compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
-    rules: {
-        "no-console": "error"
-    }
 }]);
