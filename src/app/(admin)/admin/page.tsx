@@ -83,6 +83,14 @@ export default async function Page() {
                     count={webNotificationSubscriberCount}
                 ></DashboardItem>
             </div>
+            <hr />
+            <div className="my-2 p2 flex gap-2">
+                <DashboardItem
+                    name="Categories"
+                    link="/admin/categories"
+                ></DashboardItem>
+                <DashboardItem name="Tags" link="/admin/tags"></DashboardItem>
+            </div>
             <h2 className="mb-4 text-4xl">Actions</h2>
             <div className="p2 flex gap-2">
                 <Suspense>
