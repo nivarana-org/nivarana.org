@@ -409,6 +409,33 @@ export const publishScheduledPostsNeedingPublication = async () => {
     return JSON.parse(JSON.stringify(scheduled));
 };
 
+export const getAllArticlesAndTags = async () => {
+    const articles = await Blog.query().withGraphFetched("[tags]");
+    return articles;
+};
+
+export const editPostTags = async (postId, tags) => {
+    return await db.transaction(async (trx) => {
+        const tagRelations = tags.map((tagId) => ({
+            post_id: postId,
+            relation_id: tagId,
+            relation_type: "tag",
+        }));
+        await trx("post_relations")
+            .where({ post_id: postId, relation_type: "tag" })
+            .delete();
+        if (tagRelations.length > 0) {
+            await trx("post_relations").insert(tagRelations);
+        }
+
+        return postId;
+    });
+};
+
+export const addTag = async (name, path) => {
+    return await Tag.query().insert({ name, path });
+};
+
 export const getAllTags = async () => {
     const tags = await Tag.query();
     return JSON.parse(JSON.stringify(tags));
