@@ -17,7 +17,7 @@
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^7.0.1",
-    "@mui/x-date-pickers": "^7.25.0",
+    "@mui/x-date-pickers": "^8.5.3",
     "@tinymce/tinymce-react": "^6.0.0",
     "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
