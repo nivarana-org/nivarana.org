@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@config "../../../tailwind.config.ts";
 
 .post-content ul {
   @apply list-disc md:list-outside ml-4 pl-2 md:p-6
