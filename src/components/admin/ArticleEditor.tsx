@@ -62,6 +62,7 @@ export default function ArticleEditor(props: Props) {
                     min_height: 600,
                     images_upload_url: "/admin/api/images/upload",
                     automatic_uploads: true,
+                    promotion: false,
                     images_upload_handler: imageUploadHandler,
                 }}
                 {...props}
