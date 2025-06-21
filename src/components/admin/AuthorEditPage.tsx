@@ -34,7 +34,7 @@ export default function AuthorEditPage({ author }: { author: Author }) {
     const [description, setDescription] = useState(author?.description);
     return (
         <form
-            className="p-4 max-w-screen-sm mx-auto"
+            className="p-4 max-w-(--breakpoint-sm) mx-auto"
             onSubmit={async (e) => {
                 e.preventDefault();
                 const data = new FormData(e.currentTarget);

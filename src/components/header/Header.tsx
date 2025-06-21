@@ -101,11 +101,11 @@ function Header({ categories }) {
             <div className="flex flex-wrap py-3.5 px-4">
                 <div
                     id="collapseMenu"
-                    className={`w-full lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 ${collapsed ? "hidden" : "block"}`}
+                    className={`w-full lg:block! max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 ${collapsed ? "hidden" : "block"}`}
                 >
                     <button
                         onClick={() => setCollapsed(true)}
-                        className="lg:hidden absolute top-2 right-4 z-[100] rounded-full bg-white p-3"
+                        className="lg:hidden absolute top-2 right-4 z-100 rounded-full bg-white p-3"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

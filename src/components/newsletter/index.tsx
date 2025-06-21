@@ -28,7 +28,7 @@ function NewsletterBox() {
     }, [state]);
 
     return (
-        <div className="widget rounded">
+        <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Newsletter</h3>
                 <Image

@@ -93,7 +93,7 @@ export default function ArticleEditPage({
     );
     return (
         <form
-            className="p-4 max-w-screen-sm mx-auto"
+            className="p-4 max-w-(--breakpoint-sm) mx-auto"
             onSubmit={async (e) => {
                 e.preventDefault();
                 if (!image) {

@@ -16,7 +16,7 @@ async function Page(props: Props) {
     const slug = params.slug;
     const author = await cachedGetAuthorBySlug(slug);
     return (
-        <div className="max-w-screen-xl mx-auto">
+        <div className="max-w-(--breakpoint-xl) mx-auto">
             <AuthorDetails data={author} />
             <hr className="mb-3" />
             {author.articles.map((item) => (

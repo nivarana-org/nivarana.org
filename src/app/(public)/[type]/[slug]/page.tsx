@@ -27,7 +27,7 @@ export default async function Page(props: Props) {
     }
     if (postType === "article")
         return (
-            <div className="max-w-screen-xl mx-auto">
+            <div className="max-w-(--breakpoint-xl) mx-auto">
                 <Breadcrumbs
                     category={post.category[0]}
                     page_title={post.page_title}
@@ -44,7 +44,7 @@ export default async function Page(props: Props) {
         );
     if (postType === "photo-essay")
         return (
-            <div className="max-w-screen-xl mx-auto">
+            <div className="max-w-(--breakpoint-xl) mx-auto">
                 <div className="lg:col-span-2">
                     <PhotoEssay
                         data={post}

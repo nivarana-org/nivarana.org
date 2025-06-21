@@ -52,7 +52,7 @@ export default async function Page() {
     ]);
 
     return (
-        <div className="max-w-screen-md mx-auto">
+        <div className="max-w-(--breakpoint-md) mx-auto">
             <div className="my-2 p2 flex gap-2">
                 <DashboardItem
                     name="Articles"

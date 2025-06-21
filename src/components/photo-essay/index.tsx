@@ -16,7 +16,7 @@ import ClearChapter from "./ClearChapter";
 
 function Author({ path, name }) {
     return (
-        <li className="list-inline-item border p-1 rounded text-white hover:bg-cyan-200">
+        <li className="list-inline-item border p-1 rounded-sm text-white hover:bg-cyan-200">
             <Link href={"/author/" + path}>{name}</Link>
         </li>
     );
@@ -64,7 +64,7 @@ function PhotoEssay({ data, chapter }) {
                             height={900}
                             className="absolute inset-0 h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
+                        <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
                             {data.page_title}
                         </h3>
@@ -123,7 +123,7 @@ function PhotoEssay({ data, chapter }) {
                             height={900}
                             className="absolute inset-0 h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
+                        <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
                             {data.page_title}
                         </h3>

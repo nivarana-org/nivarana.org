@@ -20,7 +20,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
     return (
         <form
-            className="relative flex flex-1 flex-shrink-0"
+            className="relative flex flex-1 shrink-0"
             onSubmit={(e) => {
                 e.preventDefault();
                 const data = new FormData(e.currentTarget);

@@ -7,7 +7,7 @@ const PopularPosts = async () => {
     const posts = await getPopularPosts();
     if (posts.length === 0) return;
     return (
-        <div className="widget rounded">
+        <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Popular Posts</h3>
                 <Image

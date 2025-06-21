@@ -74,7 +74,7 @@ export function PushNotificationManager() {
     }
 
     return (
-        <div className="widget rounded">
+        <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Push Notifications</h3>
                 <Image

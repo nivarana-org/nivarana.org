@@ -14,7 +14,7 @@ export function NAuthorsBio({ authors }) {
 export function AuthorBio({ image, path, name, description }) {
     const showImage = false;
     return (
-        <div className="about-author my-4 padding-30 rounded row">
+        <div className="about-author my-4 padding-30 rounded-sm row">
             {image != null && showImage && (
                 <div className="col-md-2 col-sm-2 thumb d-flex justify-content-center align-items-center">
                     <Image
