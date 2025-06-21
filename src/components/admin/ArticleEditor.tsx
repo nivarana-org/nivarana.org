@@ -1,6 +1,8 @@
 "use client";
 import { useRef } from "react";
-import BundledEditor from "./BundledEditor";
+import dynamic from "next/dynamic";
+
+const BundledEditor = dynamic(() => import("./BundledEditor"), { ssr: false });
 
 type Props = {
     initialValue?: string;
