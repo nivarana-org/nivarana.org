@@ -8,6 +8,7 @@ import ViewCountUpdateOnly from "@/components/blocks/ViewUpdateOnly";
 import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 import BodyWithPopover from "./BodyWithPopover";
 import PageTranslate from "@/components/blocks/PageTranslate";
+import Link from "next/link";
 
 function Article({ data }) {
     return (
@@ -16,6 +17,11 @@ function Article({ data }) {
                 <div className="flex flex-col justify-end bg-maybe text-nivarana-charcoal">
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
+                        <div className="uppercase p-1 text-nivarana-charcoal text-xl">
+                            <Link href={`/category/${data.category[0].path}`}>
+                                {data.category[0].name}
+                            </Link>
+                        </div>
                         <h1 className="text-3xl xl:text-5xl font-bold">
                             {data.page_title}
                         </h1>
