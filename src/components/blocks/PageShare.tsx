@@ -30,7 +30,7 @@ export default function PageShare({
     media: string;
 }) {
     return (
-        <div className="flex gap-1">
+        <div className="flex flex-wrap justify-start md:justify-center gap-1">
             <EmailShareButton url={url}>
                 <EmailIcon size={32} round={true}></EmailIcon>
             </EmailShareButton>

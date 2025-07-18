@@ -370,12 +370,17 @@ export const getPeopleCount = async () => {
 export const getPopularPosts = async () => {
     return Blog.query()
         .modify("onlyPublished")
+        .withGraphFetched("[authors, categories as category, tags]")
         .orderBy("total_views", "desc")
         .limit(5);
 };
 
 export const getRandomPosts = async () => {
-    return Blog.query().modify("onlyPublished").orderByRaw("RAND()").limit(5);
+    return Blog.query()
+        .modify("onlyPublished")
+        .withGraphFetched("[authors, categories as category, tags]")
+        .orderByRaw("RAND()")
+        .limit(5);
 };
 
 export const incrementBlogViewCount = async (id: number) => {

@@ -1,5 +1,5 @@
 import { getRandomPosts } from "@/data/cms";
-import { getImageURLFromFileName } from "@/utils/paths";
+import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,37 +19,59 @@ const RecentPosts = async () => {
                 />
             </div>
             <div className="widget-content">
-                {posts.slice(0, 5).map((values, index) => {
-                    return (
-                        <div className="post post-list-sm circle" key={index}>
-                            <div className="thumb circle">
-                                <Link href={`/${values.type}/${values.path}`}>
-                                    <div className="inner">
-                                        <Image
-                                            src={getImageURLFromFileName(
-                                                values.upload_image,
-                                            )}
-                                            alt="post-title"
-                                            width={60}
-                                            height={60}
-                                            style={{
-                                                height: "60px",
-                                                width: "60px",
-                                            }}
-                                        />
+                {posts
+                    .slice(0, 5)
+                    .map(
+                        (
+                            { upload_image, page_title, path, type, category },
+                            index,
+                        ) => {
+                            return (
+                                <div
+                                    className="post post-list-sm circle"
+                                    key={index}
+                                >
+                                    <div className="thumb circle">
+                                        <Link
+                                            href={getArticleSlug({
+                                                category: category[0],
+                                                path,
+                                                type,
+                                            })}
+                                        >
+                                            <div className="inner">
+                                                <Image
+                                                    src={getImageURLFromFileName(
+                                                        upload_image,
+                                                    )}
+                                                    alt="post-title"
+                                                    width={60}
+                                                    height={60}
+                                                    style={{
+                                                        height: "60px",
+                                                        width: "60px",
+                                                    }}
+                                                />
+                                            </div>
+                                        </Link>
                                     </div>
-                                </Link>
-                            </div>
-                            <div className="details clearfix">
-                                <Link href={`/${values.type}/${values.path}`}>
-                                    <h6 className="post-title my-0 text-black">
-                                        {values.page_title}
-                                    </h6>
-                                </Link>
-                            </div>
-                        </div>
-                    );
-                })}
+                                    <div className="details clearfix">
+                                        <Link
+                                            href={getArticleSlug({
+                                                category: category[0],
+                                                path,
+                                                type,
+                                            })}
+                                        >
+                                            <h6 className="post-title my-0 text-black">
+                                                {page_title}
+                                            </h6>
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        },
+                    )}
             </div>
         </div>
     );

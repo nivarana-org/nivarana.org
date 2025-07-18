@@ -4,7 +4,7 @@ import React from "react";
 import { NAuthors } from "../authors/Authors";
 import { Post } from "@/types/nivarana";
 import Image from "next/image";
-import { getImageURLFromFileName } from "@/utils/paths";
+import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 
 function ArticlePreview({
     path,
@@ -33,7 +33,13 @@ function ArticlePreview({
             <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl mb-3 grow shrink:0 hover:drop-shadow-xl">
                 <div className="md:flex">
                     <div className="md:shrink-0">
-                        <Link href={`/${type}/${path}`}>
+                        <Link
+                            href={getArticleSlug({
+                                type,
+                                path,
+                                category: category[0],
+                            })}
+                        >
                             <Image
                                 width={320}
                                 height={225}
@@ -47,7 +53,13 @@ function ArticlePreview({
 
                     <div className="p-8">
                         {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{categro}</div> */}
-                        <Link href={`/${type}/${path}`}>
+                        <Link
+                            href={getArticleSlug({
+                                type,
+                                path,
+                                category: category[0],
+                            })}
+                        >
                             <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
                                 {page_title}
                             </div>

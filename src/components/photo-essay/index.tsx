@@ -4,7 +4,7 @@ import Image from "next/image";
 import PageShare from "@/components/blocks/PageShare";
 import { Suspense } from "react";
 import ViewCountUpdateOnly from "@/components/blocks/ViewUpdateOnly";
-import { getImageURLFromFileName } from "@/utils/paths";
+import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 import BodyWithPopover from "./BodyWithPopover";
 import PageTranslate from "@/components/blocks/PageTranslate";
 
@@ -80,7 +80,7 @@ function PhotoEssay({ data, chapter }) {
                                     )}
                                 </li>
                                 <PageTranslate
-                                    url={`https://nivarana.org/${data.type}/${data.path}`}
+                                    url={getArticlePublicURL(data)}
                                 />
                                 <Suspense>
                                     <ViewCountUpdateOnly
@@ -101,7 +101,7 @@ function PhotoEssay({ data, chapter }) {
                     <div className="text-black font-bold p-2">Share</div>
                     <PageShare
                         className="p-2"
-                        url={`https://nivarana.org/${data.type}/${data.path}`}
+                        url={getArticlePublicURL(data)}
                         media={data.upload_image}
                     ></PageShare>
                 </div>
@@ -139,7 +139,7 @@ function PhotoEssay({ data, chapter }) {
                                     )}
                                 </li>
                                 <PageTranslate
-                                    url={`https://nivarana.org/${data.type}/${data.path}`}
+                                    url={getArticlePublicURL(data)}
                                 />
                                 <Suspense>
                                     <ViewCountUpdateOnly
@@ -179,7 +179,7 @@ function PhotoEssay({ data, chapter }) {
                     <div className="text-black font-bold p-2">Share</div>
                     <PageShare
                         className="p-2"
-                        url={`https://nivarana.org/${data.type}/${data.path}`}
+                        url={getArticlePublicURL(data)}
                         media={data.upload_image}
                     ></PageShare>
                 </div>
@@ -233,7 +233,7 @@ function PhotoEssay({ data, chapter }) {
                 <div className="text-black font-bold p-2">Share</div>
                 <PageShare
                     className="p-2"
-                    url={`https://nivarana.org/${data.type}/${data.path}`}
+                    url={getArticlePublicURL(data)}
                     media={data.upload_image}
                 ></PageShare>
             </div>

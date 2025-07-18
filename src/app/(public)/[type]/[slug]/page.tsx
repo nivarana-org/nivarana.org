@@ -1,5 +1,4 @@
 import Article from "@/components/article";
-import Breadcrumbs from "@/components/article/Breadcrumbs";
 import PhotoEssay from "@/components/photo-essay";
 import Sidebar from "@/components/sidebar";
 import { getArticleByPath } from "@/data/cms";
@@ -17,32 +16,25 @@ const cachedGetArticleBySlug = cache((slug: string) => {
 export default async function Page(props: Props) {
     const params = await props.params;
     const searchParams = await props.searchParams;
-    const postType = params.type;
+    const requestedCategory = params.type;
     const post = await cachedGetArticleBySlug(params.slug);
     if (!post) {
         notFound();
     }
-    if (post.type !== postType) {
-        redirect(`/${post.type}/${params.slug}`);
+    const actualCategory = post.category[0].path;
+    if (actualCategory !== requestedCategory) {
+        redirect(`/${actualCategory}/${params.slug}`);
     }
-    if (postType === "article")
+    if (post.type === "article")
         return (
-            <div className="max-w-(--breakpoint-xl) mx-auto">
-                <Breadcrumbs
-                    category={post.category[0]}
-                    page_title={post.page_title}
-                />
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
-                    <div className="lg:col-span-2">
-                        <Article data={post} />
-                    </div>
-                    <div className="lg:col-span-1">
-                        <Sidebar />
-                    </div>
+            <div>
+                <Article data={post} />
+                <div className="lg:col-span-1">
+                    <Sidebar />
                 </div>
             </div>
         );
-    if (postType === "photo-essay")
+    if (post.type === "photo-essay")
         return (
             <div className="max-w-(--breakpoint-xl) mx-auto">
                 <div className="lg:col-span-2">
