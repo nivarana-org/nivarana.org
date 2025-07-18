@@ -22,7 +22,7 @@ async function Page(props: Props) {
             {author.articles.map((item) => (
                 <ArticlePreview
                     {...item}
-                    category={item.categories[0]}
+                    category={item.categories}
                     key={item.path}
                     includeCategory={true}
                 />
