@@ -4,14 +4,14 @@ import { getCategoryByPath } from "@/data/cms";
 import { Metadata, ResolvingMetadata } from "next";
 import { cache } from "react";
 
-const cachedGetCategroyBySlug = cache((path: string) => {
+const cachedGetCategoryBySlug = cache((path: string) => {
     return getCategoryByPath(path);
 });
 
 async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
-    const category = await cachedGetCategroyBySlug(slug);
+    const category = await cachedGetCategoryBySlug(slug);
     return (
         <div className="max-w-(--breakpoint-xl) mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
@@ -43,7 +43,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const params = await props.params;
     const slug = params.slug;
-    const category = await cachedGetCategroyBySlug(slug);
+    const category = await cachedGetCategoryBySlug(slug);
     return {
         title: category.name,
         description: category.meta_description ?? (await parent).description,
