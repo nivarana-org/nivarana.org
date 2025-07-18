@@ -14,6 +14,7 @@ function ArticlePreview({
     meta_description,
     created_at,
     category,
+    categories,
     type,
     aboveTheFold = false,
     includeCategory = false,
@@ -37,7 +38,9 @@ function ArticlePreview({
                             href={getArticleSlug({
                                 type,
                                 path,
-                                category: category[0],
+                                category: category
+                                    ? category[0]
+                                    : categories[0],
                             })}
                         >
                             <Image
@@ -57,7 +60,9 @@ function ArticlePreview({
                             href={getArticleSlug({
                                 type,
                                 path,
-                                category: category[0],
+                                category: category
+                                    ? category[0]
+                                    : categories[0],
                             })}
                         >
                             <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
