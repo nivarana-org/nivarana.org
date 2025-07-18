@@ -3,73 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import logo from "../../../public/assets/nivarana-black.png";
-import { NivaranaSocialMedia } from "../social";
 
-const Dropdown = ({ title, children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-    };
-
-    return (
-        <div>
-            {/* Dropdown trigger button */}
-            <button
-                onClick={handleToggle}
-                className="flex text-gray-500 hover:text-black max-lg:border-b max-lg:py-3"
-            >
-                {title}
-                {/* Arrow icon */}
-                <svg
-                    className={`w-4 h-4 ml-2 transition-transform transform ${
-                        isOpen ? "rotate-180" : "rotate-0"
-                    }`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
-            </button>
-
-            {/* Dropdown menu */}
-            <div
-                className={`sm:absolute mt-2 w-48 p-3 bg-white rounded-md shadow-lg ${
-                    isOpen ? "block" : "hidden"
-                }`}
-            >
-                <ul className="py-2">
-                    {children.map((item) => (
-                        <li
-                            key={item.path}
-                            className="text-gray-500 hover:text-black border-b max-lg:py-3"
-                        >
-                            <Link href={`/category/${item.path}`}>
-                                {item.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
-};
-
-function MenuItem({ item }) {
-    if (item.children && item.children.length > 0)
-        return <Dropdown title={item.name}>{item.children}</Dropdown>;
+function MenuItem({ item, postNavigate }) {
     return (
         <li className="max-lg:border-b max-lg:py-3">
             <Link
                 href={`/category/${item.path}`}
                 className="text-gray-500 hover:text-black block"
+                onNavigate={postNavigate}
             >
                 {item.name}
             </Link>
@@ -91,10 +32,6 @@ function Header({ categories }) {
                             className="md:w-[300px] w-48"
                         />
                     </Link>
-                </div>
-
-                <div className="space-x-6 md:absolute md:right-10 flex items-center max-md:ml-auto">
-                    <NivaranaSocialMedia />
                 </div>
             </section>
 
@@ -130,15 +67,16 @@ function Header({ categories }) {
                             </Link>
                         </li>
                         {categories.map((item) => (
-                            <MenuItem item={item} key={item.path} />
+                            <MenuItem
+                                item={item}
+                                key={item.path}
+                                postNavigate={() => setCollapsed(true)}
+                            />
                         ))}
                     </ul>
                 </div>
 
                 <div className="flex-auto flex lg:hidden">
-                    {/* <div className="text-center flex-auto">
-                        India&apos;s Public Health Platform
-                    </div> */}
                     <div className="flex-auto"></div>
                     <button
                         className="flex-initial"
