@@ -1,5 +1,4 @@
 import moment from "moment";
-import { NAuthors } from "../authors/Authors";
 import { NAuthorsBio } from "../authors/Bios";
 import Image from "next/image";
 import PageShare from "@/components/blocks/PageShare";
@@ -13,19 +12,21 @@ import Link from "next/link";
 function Article({ data }) {
     return (
         <>
-            <div className="flex flex-col lg:flex-row">
+            <div className="flex flex-col md:flex-row">
                 <div className="flex flex-col justify-end bg-maybe text-nivarana-charcoal">
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
-                        <div className="uppercase p-1 text-nivarana-charcoal text-xl">
+                        <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
                             <Link href={`/category/${data.category[0].path}`}>
                                 {data.category[0].name}
                             </Link>
                         </div>
-                        <h1 className="text-3xl xl:text-5xl font-bold">
+                        <h1 className="text-xl lg:text-3xl xl:text-5xl font-bold">
                             {data.page_title}
                         </h1>
-                        <p className="mt-6 text-xl">{data.meta_description}</p>
+                        <p className="mt-6 lg:text-xl">
+                            {data.meta_description}
+                        </p>
                     </div>
                 </div>
                 <div>
@@ -38,15 +39,22 @@ function Article({ data }) {
                     />
                 </div>
             </div>
-            <div className="flex flex-col lg:flex-row max-w-7xl gap-x-8">
+            <div className="flex flex-col md:flex-row max-w-7xl gap-x-8">
                 {/* Authors */}
-                <div className="px-2 basis-2xs">
-                    <NAuthors authors={data.authors} />
-                    <div>
+                <div className="px-2 mt-4 py-2 md:basis-2xs">
+                    {data.authors.map((a) => (
+                        <div
+                            key={a.id}
+                            className="p-1 hover:bg-cyan-200 text-black text-xl"
+                        >
+                            <Link href={"/author/" + a.path}>{a.name}</Link>
+                        </div>
+                    ))}
+                    <div className="p-1">
                         Published:{" "}
                         {moment(data.created_at).format("MMMM DD, YYYY")}
                     </div>
-                    <div className="flex justify-center">
+                    <div className="flex">
                         <PageTranslate url={getArticlePublicURL(data)} />
                     </div>
                     <Suspense>
@@ -55,22 +63,22 @@ function Article({ data }) {
                             count={data.total_views}
                         />
                     </Suspense>
-                    <PageShare
-                        className="p-2"
-                        url={getArticlePublicURL(data)}
-                        media={data.upload_image}
-                    ></PageShare>
+                    <div className="hidden md:block bg-amber-50 max-w-12">
+                        <PageShare
+                            url={getArticlePublicURL(data)}
+                            media={data.upload_image}
+                            style="vertical"
+                        ></PageShare>
+                    </div>
                 </div>
                 {/* Post */}
-                <div className="basis-3xl">
+                <div className="md:basis-3xl">
                     <BodyWithPopover body={data.description} />
                 </div>
                 {/* Side */}
-                <div className="px-2 basis-2xs"></div>
+                <div className="px-2 md:basis-2xs"></div>
             </div>
-            <div className="text-black font-bold p-2">Share</div>
             <PageShare
-                className="p-2"
                 url={getArticlePublicURL(data)}
                 media={data.upload_image}
             ></PageShare>

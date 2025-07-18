@@ -25,12 +25,18 @@ import {
 export default function PageShare({
     url,
     media,
+    style,
 }: {
     url: string;
     media: string;
+    style?: "vertical" | "horizontal";
 }) {
+    const classes =
+        style === "vertical"
+            ? "p-2 max-w-10"
+            : "p-2 flex flex-wrap justify-start md:justify-center gap-1";
     return (
-        <div className="flex flex-wrap justify-start md:justify-center gap-1">
+        <div className={classes}>
             <EmailShareButton url={url}>
                 <EmailIcon size={32} round={true}></EmailIcon>
             </EmailShareButton>

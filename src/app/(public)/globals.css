@@ -81,14 +81,6 @@ img {
   position: relative;
 }
 
-.text-black {
-  color: #203656;
-  transition: all 0.3s ease-in-out;
-}
-
-.text-black:hover {
-  color: #045d51;
-}
 
 /*=================================================================*/
 /*                      Preloader                              
