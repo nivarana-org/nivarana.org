@@ -29,7 +29,6 @@ export default function WordCloudClient({ wordCloud }) {
                                 verticalAlign: "middle",
                                 display: "inline-block",
                                 color: color || "#000", // You can define a color palette
-                                opacity: tag.count / wordCloud[0].value + 0.2, // Example: opacity based on count
                             }}
                         >
                             {tag.value}
