@@ -5,6 +5,15 @@ import Tag from "./Tag";
 
 export default class Blog extends Model {
     static tableName = "blogs";
+    static get virtualAttributes() {
+        return ["published_time"];
+    }
+    published_time() {
+        if (this.scheduled_time > this.created_at) {
+            return this.scheduled_time;
+        }
+        return this.created_at;
+    }
     static relationMappings = () => ({
         authors: {
             relation: Model.ManyToManyRelation,

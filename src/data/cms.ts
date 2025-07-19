@@ -398,6 +398,23 @@ export const getCategoriesTable = async () => {
     return categories;
 };
 
+export const getCategoriesForFrontPage = async () => {
+    const categories = await Category.query()
+        .where({ parent_id: 0 })
+        .select("categories.*") // Select all category columns
+        .leftJoinRelated("articles") // Join with articles to access their times
+        .groupBy("categories.id") // Group by category ID to use MAX aggregate
+        .withGraphFetched("articles.[categories as category,authors]");
+    categories.forEach((c) => {
+        c.articles.reverse();
+    });
+    categories.sort(
+        (a, b) =>
+            b.articles[0].published_time() - a.articles[0].published_time(),
+    );
+    return categories.map((c) => c.toJSON());
+};
+
 export const getCategories = async () => {
     const categories = await Category.query()
         .withGraphFetched("children.[children.^]")
