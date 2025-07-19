@@ -53,9 +53,13 @@ function Header({ categories }) {
                     animate={{ scale: 1 }}
                     className="z-10"
                 >
-                    {" "}
-                    {/* Add z-10 to ensure logo is on top */}
-                    <Image src={logo} alt="Nivarana Logo" className="w-48" />
+                    <Link href="/">
+                        <Image
+                            src={logo}
+                            alt="Nivarana Logo"
+                            className="w-48"
+                        />
+                    </Link>
                 </motion.div>
 
                 <div className="self-end">
