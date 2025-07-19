@@ -5,6 +5,7 @@ import logo from "../../../public/assets/logo.png";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import MenuToggleButton from "./MenuToggleButton";
+import Search from "../search/sidebar-search";
 
 const menuVariants = {
     hidden: {
@@ -46,7 +47,7 @@ const desktopMenuVariants = {
 function Header({ categories }) {
     const [showCategories, setShowCategories] = useState(false);
     return (
-        <header className="p-4 shadow-md">
+        <header className="p-4 shadow-md text-nivarana-charcoal bg-nivarana-white">
             <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
                 <motion.div
                     initial={{ scale: 0 }}
@@ -82,9 +83,10 @@ function Header({ categories }) {
                             {categories.map((c) => (
                                 <li
                                     key={c.path}
-                                    className="py-2 px-4 bg-white rounded-md shadow-sm"
+                                    className="py-2 px-4 bg-white rounded-md shadow-sm uppercase"
                                 >
                                     <Link
+                                        className="block"
                                         href={`/category/${c.path}`}
                                         onNavigate={() =>
                                             setShowCategories(false)
@@ -94,6 +96,19 @@ function Header({ categories }) {
                                     </Link>
                                 </li>
                             ))}
+                            <li className="py-2 px-4 bg-white rounded-md shadow-sm uppercase">
+                                <Link
+                                    onNavigate={() => setShowCategories(false)}
+                                    href="/hindi"
+                                    className="block"
+                                >
+                                    हिंदी
+                                </Link>
+                            </li>
+                            <Search
+                                placeholder="Find articles"
+                                postSubmit={() => setShowCategories(false)}
+                            />
                         </motion.ul>
                     )}
                 </AnimatePresence>
@@ -108,13 +123,17 @@ function Header({ categories }) {
                     {categories.map((c) => (
                         <li
                             key={c.path}
-                            className="py-2 px-4 hover:text-blue-600 transition-colors"
+                            className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase"
                         >
                             <Link href={`/category/${c.path}`}>{c.name}</Link>
                         </li>
                     ))}
+                    <li className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase">
+                        <Link href="/hindi">हिंदी</Link>
+                    </li>
                 </motion.ul>
             </div>
+            <div className="h-1 bg-nivarana-green mt-4"></div>
         </header>
     );
 }

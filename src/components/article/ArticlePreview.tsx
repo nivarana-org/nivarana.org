@@ -31,7 +31,7 @@ function ArticlePreview({
                     </Link>
                 </div>
             ) : null}
-            <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-4xl mb-3 grow shrink:0 hover:drop-shadow-xl">
+            <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-4xl mb-3 grow shrink:0 hover:drop-shadow-xl">
                 <div className="md:flex">
                     <div className="md:shrink-0">
                         <Link

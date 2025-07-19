@@ -15,7 +15,7 @@ function Article({ data }) {
     return (
         <>
             <div className="flex flex-col md:flex-row">
-                <div className="flex flex-col justify-end bg-maybe text-nivarana-charcoal">
+                <div className="flex flex-col justify-end bg-nivarana-white text-nivarana-charcoal">
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
                         <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">

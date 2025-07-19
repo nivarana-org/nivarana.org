@@ -4,7 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchIcon } from "./search-icon";
 
-export default function Search({ placeholder }: { placeholder: string }) {
+export default function Search({
+    placeholder,
+    postSubmit,
+}: {
+    placeholder: string;
+    postSubmit?: () => void;
+}) {
     const searchParams = useSearchParams();
     const { replace } = useRouter();
 
@@ -26,6 +32,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
                 const data = new FormData(e.currentTarget);
                 const q = data.get("q");
                 handleSearch(q);
+                postSubmit();
             }}
         >
             <label htmlFor="search" className="sr-only">
