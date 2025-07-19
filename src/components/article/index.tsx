@@ -8,6 +8,7 @@ import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 import BodyWithPopover from "./BodyWithPopover";
 import PageTranslate from "@/components/blocks/PageTranslate";
 import Link from "next/link";
+import ProgressTracker from "./ProgressTracker";
 
 function Article({ data }) {
     return (
@@ -77,6 +78,7 @@ function Article({ data }) {
                 </div>
                 {/* Side */}
                 <div className="px-2 md:basis-2xs"></div>
+                <ProgressTracker></ProgressTracker>
             </div>
             <PageShare
                 url={getArticlePublicURL(data)}
