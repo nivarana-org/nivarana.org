@@ -463,18 +463,17 @@ export const fetchWordCloud = async (db) => {
     let allText = "";
 
     blogs.forEach((blog) => {
-        allText += blog.description.replace(/(<([^>]+)>)/gi, "") + " ";
+        allText +=
+            " " +
+            blog.description
+                .toLowerCase()
+                .replace(/(<([^>]+)>)/gi, "")
+                .replace(/^[^a-z]+|[^a-z]+$/g, " ");
     });
 
-    const words = allText
-        .toLowerCase()
-        .split(/\s+/)
-        .filter((word) => {
-            word = word.replace(/^[^a-z]+|[^a-z]+$/g, "");
-            return (
-                word.length > 2 && /^[a-z]+$/.test(word) && !stopWords.has(word)
-            );
-        });
+    const words = allText.split(/\s+/).filter((word) => {
+        return word.length > 2 && /^[a-z]+$/.test(word) && !stopWords.has(word);
+    });
 
     // Count word frequencies
     const wordCounts = {};
