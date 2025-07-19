@@ -9,6 +9,7 @@ import BodyWithPopover from "./BodyWithPopover";
 import PageTranslate from "@/components/blocks/PageTranslate";
 import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
+import * as motion from "motion/react-client";
 
 function Article({ data }) {
     return (
@@ -64,13 +65,17 @@ function Article({ data }) {
                             count={data.total_views}
                         />
                     </Suspense>
-                    <div className="hidden md:block bg-amber-50 max-w-12">
+                    <motion.div
+                        className="hidden md:block md:sticky top-0 bg-nivarana-white/50 max-w-12"
+                        initial={{ translateX: "-10px", opacity: 0 }}
+                        whileInView={{ translateX: 0, opacity: 1 }}
+                    >
                         <PageShare
                             url={getArticlePublicURL(data)}
                             media={data.upload_image}
                             style="vertical"
                         ></PageShare>
-                    </div>
+                    </motion.div>
                 </div>
                 {/* Post */}
                 <div className="md:basis-3xl">
