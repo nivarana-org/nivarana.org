@@ -394,7 +394,9 @@ export const getTotalViewsCount = async () => {
 };
 
 export const getCategoriesTable = async () => {
-    const categories = await Category.query().withGraphFetched("articles");
+    const categories = await Category.query()
+        .where({ parent_id: 0 })
+        .withGraphFetched("articles");
     return categories;
 };
 
