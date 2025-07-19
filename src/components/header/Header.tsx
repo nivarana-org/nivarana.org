@@ -1,101 +1,115 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../../public/assets/logo.png";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import logo from "../../../public/assets/nivarana-black.png";
+import MenuToggleButton from "./MenuToggleButton";
 
-function MenuItem({ item, postNavigate }) {
-    return (
-        <li className="max-lg:border-b max-lg:py-3">
-            <Link
-                href={`/category/${item.path}`}
-                className="text-gray-500 hover:text-black block"
-                onNavigate={postNavigate}
-            >
-                {item.name}
-            </Link>
-        </li>
-    );
-}
+const menuVariants = {
+    hidden: {
+        height: 0,
+        opacity: 0,
+        y: -20, // Start slightly above for the slide down effect
+        transition: {
+            duration: 0.3,
+            ease: "easeOut",
+        },
+    },
+    visible: {
+        height: "auto",
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.3,
+            ease: "easeIn",
+        },
+    },
+};
+
+const desktopMenuVariants = {
+    hidden: {
+        x: "-100%", // Start off-screen to the left
+        opacity: 0,
+    },
+    visible: {
+        x: "0%",
+        opacity: 1,
+        transition: {
+            delay: 0.2, // Small delay after logo animation
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+};
 
 function Header({ categories }) {
-    const [collapsed, setCollapsed] = useState(true);
-
+    const [showCategories, setShowCategories] = useState(false);
     return (
-        <header className="shadow-md bg-white font-sans tracking-wide relative z-50">
-            <section className="flex items-center lg:justify-center flex-wrap gap-5 relative py-3 px-10 border-gray-200 border-b lg:min-h-[80px] max-lg:min-h-[60px]">
-                <div className="mx-auto flex flex-col items-center">
-                    <Link href="/">
-                        <Image
-                            src={logo}
-                            alt="India's Public Health Platform"
-                            className="md:w-[300px] w-48"
-                        />
-                    </Link>
-                </div>
-            </section>
-
-            <div className="flex flex-wrap py-3.5 px-4">
-                <div
-                    id="collapseMenu"
-                    className={`w-full lg:block! max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 ${collapsed ? "hidden" : "block"}`}
+        <header className="p-4 shadow-md">
+            <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
+                <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="z-10"
                 >
-                    <button
-                        onClick={() => setCollapsed(true)}
-                        className="lg:hidden absolute top-2 right-4 z-100 rounded-full bg-white p-3"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 fill-black"
-                            viewBox="0 0 320.591 320.591"
-                        >
-                            <path
-                                d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
-                                data-original="#000000"
-                            ></path>
-                            <path
-                                d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
-                                data-original="#000000"
-                            ></path>
-                        </svg>
-                    </button>
+                    {" "}
+                    {/* Add z-10 to ensure logo is on top */}
+                    <Image src={logo} alt="Nivarana Logo" className="w-48" />
+                </motion.div>
 
-                    <ul className="lg:flex lg:justify-center lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md z-50">
-                        <li className="mb-6 hidden max-lg:block">
-                            <Link href="/">
-                                <Image src={logo} alt="logo" className="w-36" />
-                            </Link>
+                <div className="self-end">
+                    <MenuToggleButton
+                        isOpen={showCategories}
+                        toggleMenu={() => setShowCategories(!showCategories)}
+                    ></MenuToggleButton>
+                </div>
+
+                {/* Mobile Menu - AnimatePresence for mount/unmount animations */}
+                <AnimatePresence>
+                    {showCategories && (
+                        <motion.ul
+                            className="lg:hidden flex flex-col gap-4 mt-4 w-full"
+                            variants={menuVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden" // Define exit animation
+                        >
+                            {categories.map((c) => (
+                                <li
+                                    key={c.path}
+                                    className="py-2 px-4 bg-white rounded-md shadow-sm"
+                                >
+                                    <Link
+                                        href={`/category/${c.path}`}
+                                        onNavigate={() =>
+                                            setShowCategories(false)
+                                        }
+                                    >
+                                        {c.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </motion.ul>
+                    )}
+                </AnimatePresence>
+
+                {/* Desktop Menu */}
+                <motion.ul
+                    className="hidden lg:flex lg:flex-row gap-4 ml-auto" // ml-auto to push to the right
+                    variants={desktopMenuVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {categories.map((c) => (
+                        <li
+                            key={c.path}
+                            className="py-2 px-4 hover:text-blue-600 transition-colors"
+                        >
+                            <Link href={`/category/${c.path}`}>{c.name}</Link>
                         </li>
-                        {categories.map((item) => (
-                            <MenuItem
-                                item={item}
-                                key={item.path}
-                                postNavigate={() => setCollapsed(true)}
-                            />
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="flex-auto flex lg:hidden">
-                    <div className="flex-auto"></div>
-                    <button
-                        className="flex-initial"
-                        onClick={() => setCollapsed(false)}
-                    >
-                        <svg
-                            className="w-7 h-7"
-                            fill="#000"
-                            viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                clipRule="evenodd"
-                            ></path>
-                        </svg>
-                    </button>
-                </div>
+                    ))}
+                </motion.ul>
             </div>
         </header>
     );
