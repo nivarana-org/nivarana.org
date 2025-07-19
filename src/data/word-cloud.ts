@@ -1,6 +1,3 @@
-import * as cheerio from "cheerio";
-import natural from "natural";
-
 export const stopWords = new Set([
     "a",
     "an",
@@ -458,30 +455,26 @@ export const stopWords = new Set([
     "parth",
     "sharma",
     "gayatri",
+    "&nbsp;",
 ]);
-
-const tokenizer = new natural.WordTokenizer();
 
 export const fetchWordCloud = async (db) => {
     const blogs = await db("blogs").select("description");
     let allText = "";
 
     blogs.forEach((blog) => {
-        // Strip HTML tags
-        const $ = cheerio.load(blog.description);
-        allText += $.text() + " ";
+        allText += blog.description.replace(/(<([^>]+)>)/gi, "") + " ";
     });
 
-    // Tokenize, lowercase, and filter stop words
-    const words = tokenizer
-        .tokenize(allText)
-        .map((word) => word.toLowerCase())
-        .filter(
-            (word) =>
-                !stopWords.has(word) &&
-                word.length > 2 &&
-                /^[a-z]+$/.test(word),
-        ); // filter short words and non-alphabetic
+    const words = allText
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((word) => {
+            word = word.replace(/^[^a-z]+|[^a-z]+$/g, "");
+            return (
+                word.length > 2 && /^[a-z]+$/.test(word) && !stopWords.has(word)
+            );
+        });
 
     // Count word frequencies
     const wordCounts = {};
