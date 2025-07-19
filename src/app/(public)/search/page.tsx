@@ -34,7 +34,7 @@ export default async function SearchPage(props: Props) {
             <div className="max-w-64 mx-auto mb-4">
                 <Search placeholder="enter text to search" />
             </div>
-            <Results results={result} />
+            {q && <Results results={result} />}
         </div>
     );
 }

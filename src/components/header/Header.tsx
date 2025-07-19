@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import MenuToggleButton from "./MenuToggleButton";
 import Search from "../search/sidebar-search";
+import SearchIcon from "./SearchButton";
 
 const menuVariants = {
     hidden: {
@@ -115,7 +116,7 @@ function Header({ categories }) {
 
                 {/* Desktop Menu */}
                 <motion.ul
-                    className="hidden lg:flex lg:flex-row gap-4 ml-auto" // ml-auto to push to the right
+                    className="hidden lg:flex lg:flex-row flex-nowrap gap-4 ml-auto" // ml-auto to push to the right
                     variants={desktopMenuVariants}
                     initial="hidden"
                     animate="visible"
@@ -130,6 +131,11 @@ function Header({ categories }) {
                     ))}
                     <li className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase">
                         <Link href="/hindi">हिंदी</Link>
+                    </li>
+                    <li className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase">
+                        <Link href="/search">
+                            <SearchIcon></SearchIcon>
+                        </Link>
                     </li>
                 </motion.ul>
             </div>

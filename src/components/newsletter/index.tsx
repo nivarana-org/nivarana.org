@@ -8,7 +8,7 @@ function SubmitButton({ isPending }: { isPending: boolean }) {
         <button
             type="submit"
             aria-disabled={isPending}
-            className="btn btn-default btn-full"
+            className="bg-nivarana-white px-4 py-1 rounded cursor-pointer"
         >
             {isPending ? "Signing up..." : "Sign Up"}
         </button>
@@ -27,34 +27,30 @@ function NewsletterBox() {
     }, [state]);
 
     return (
-        <div className="widget rounded-sm">
-            <div className="widget-header text-center">
-                <h3 className="widget-title">Newsletter</h3>
-            </div>
-            <div className="widget-content">
-                <form action={formAction}>
-                    <label htmlFor="email" className="sr-only">
-                        Enter Email
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        className="w-100 text-center form-control"
-                        placeholder="Email address..."
-                    />
-                    <span className="newsletter-privacy text-center mt-3">
-                        By signing up, you agree to our Terms.
-                    </span>
+        <div className="">
+            <h3 className="text-lg">Newsletter</h3>
+            <form action={formAction}>
+                <label htmlFor="email" className="sr-only">
+                    Enter Email
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="form-control"
+                    placeholder="Email address..."
+                />
+                <span className="mt-3">
+                    By signing up, you agree to our Terms.
+                </span>
 
-                    <SubmitButton isPending={isPending} />
-                    <Toaster position="bottom-right"></Toaster>
-                    <p aria-live="polite" className="sr-only" role="status">
-                        {state?.message}
-                    </p>
-                </form>
-            </div>
+                <SubmitButton isPending={isPending} />
+                <Toaster position="bottom-right"></Toaster>
+                <p aria-live="polite" className="sr-only" role="status">
+                    {state?.message}
+                </p>
+            </form>
         </div>
     );
 }

@@ -73,24 +73,22 @@ export function PushNotificationManager() {
     }
 
     return (
-        <div className="widget rounded-sm">
-            <div className="widget-header text-center">
-                <h3 className="widget-title">Push Notifications</h3>
-            </div>
+        <div className="mt-4">
+            <h3 className="text-lg">Push Notifications</h3>
             <div className="widget-content">
                 {subscription ? (
                     <>
                         <p>You are subscribed to push notifications.</p>
-                        <div className="flex flex-row">
+                        <div className="flex flex-row flex-wrap gap-2">
                             <button
                                 onClick={unsubscribeFromPush}
-                                className="btn btn-default"
+                                className="bg-nivarana-white cursor-pointer rounded py-1 px-4"
                             >
                                 Unsubscribe
                             </button>
                             <button
                                 onClick={sendTestNotification}
-                                className="btn btn-default"
+                                className="bg-nivarana-white cursor-pointer rounded py-1 px-4"
                             >
                                 Test Notification
                             </button>
@@ -101,7 +99,7 @@ export function PushNotificationManager() {
                         <p>You are not subscribed to push notifications.</p>
                         <button
                             onClick={subscribeToPush}
-                            className="btn btn-default btn-full"
+                            className="bg-nivarana-white cursor-pointer rounded py-1 px-4"
                         >
                             Subscribe
                         </button>

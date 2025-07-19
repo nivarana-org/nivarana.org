@@ -10,6 +10,8 @@ import PageTranslate from "@/components/blocks/PageTranslate";
 import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
+import NewsletterBox from "../newsletter";
+import { PushNotificationManager } from "../notifications";
 
 function Article({ data }) {
     return (
@@ -23,7 +25,7 @@ function Article({ data }) {
                                 {data.category[0].name}
                             </Link>
                         </div>
-                        <h1 className="text-xl lg:text-3xl xl:text-5xl font-bold">
+                        <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
                             {data.page_title}
                         </h1>
                         <p className="mt-6 lg:text-xl">
@@ -78,11 +80,17 @@ function Article({ data }) {
                     </motion.div>
                 </div>
                 {/* Post */}
-                <div className="md:basis-3xl">
+                <div className="md:basis-xl md:shrink-0">
                     <BodyWithPopover body={data.description} />
                 </div>
                 {/* Side */}
-                <div className="px-2 md:basis-2xs"></div>
+                <aside className="px-2 md:basis-3xs self-end mb-10">
+                    <p className="text-xl">Subscribe to Nivarana</p>
+                    <NewsletterBox></NewsletterBox>
+                    <Suspense>
+                        <PushNotificationManager />
+                    </Suspense>
+                </aside>
                 <ProgressTracker></ProgressTracker>
             </div>
             <PageShare
