@@ -5,6 +5,7 @@ import knex from "knex";
 import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
+import { fetchWordCloud } from "./word-cloud";
 
 export const db = knex({
     client: "mysql",
@@ -492,4 +493,8 @@ export const getRedirect = async (path) => {
         .where({ source: path })
         .first();
     return redirects;
+};
+
+export const getWordCloud = async () => {
+    return fetchWordCloud(db);
 };
