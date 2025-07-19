@@ -10,13 +10,6 @@ const PopularPosts = async () => {
         <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Popular Posts</h3>
-                <Image
-                    width={50}
-                    height={20}
-                    src="/assets/wave.svg"
-                    className="wave"
-                    alt="wave"
-                />
             </div>
             <div className="widget-content">
                 {posts

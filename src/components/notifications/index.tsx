@@ -4,7 +4,6 @@ import {
     subscribeUser,
     unsubscribeUser,
 } from "@/actions/notifications";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 function urlBase64ToUint8Array(base64String: string) {
@@ -77,13 +76,6 @@ export function PushNotificationManager() {
         <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Push Notifications</h3>
-                <Image
-                    src="/assets/wave.svg"
-                    className="wave"
-                    alt="wave"
-                    width={50}
-                    height={20}
-                />
             </div>
             <div className="widget-content">
                 {subscription ? (

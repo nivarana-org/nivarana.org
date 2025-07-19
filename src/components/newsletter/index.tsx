@@ -1,6 +1,5 @@
 "use client";
 import { addNewsLetterSubscriberAction } from "@/actions/newsletter";
-import Image from "next/image";
 import { useActionState, useEffect } from "react";
 import { toast, Toaster } from "sonner";
 
@@ -31,13 +30,6 @@ function NewsletterBox() {
         <div className="widget rounded-sm">
             <div className="widget-header text-center">
                 <h3 className="widget-title">Newsletter</h3>
-                <Image
-                    src="/assets/wave.svg"
-                    className="wave"
-                    alt="wave"
-                    width={50}
-                    height={20}
-                />
             </div>
             <div className="widget-content">
                 <form action={formAction}>

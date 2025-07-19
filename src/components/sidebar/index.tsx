@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import NewsletterBox from "../newsletter";
 import { PushNotificationManager } from "../notifications";
 import PopularPosts from "./popular";
-import RecentPosts from "./recent";
 import Search from "../search/sidebar-search";
 
 function Sidebar() {
@@ -14,7 +13,6 @@ function Sidebar() {
             <Suspense>
                 <PushNotificationManager />
             </Suspense>
-            <RecentPosts></RecentPosts>
         </div>
     );
 }
