@@ -183,7 +183,10 @@ export const getCategoryDetails = async (id: number | string) => {
 };
 
 export const getAllCategories = async () => {
-    return db("categories").select("id", "name").orderBy("id", "asc");
+    return db("categories")
+        .select("id", "name")
+        .orderBy("id", "asc")
+        .where({ parent_id: 0 });
 };
 
 export const getAuthorsDetails = async (ids: string[]) => {
