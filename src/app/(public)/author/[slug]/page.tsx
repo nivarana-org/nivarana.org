@@ -1,9 +1,10 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
-import { getAuthorByPath } from "@/data/cms";
+import { getAuthorByPath, getRedirect } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 const cachedGetAuthorBySlug = cache((slug: string) => {
@@ -15,6 +16,14 @@ async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
     const author = await cachedGetAuthorBySlug(slug);
+    if (!author) {
+        const { destination } = await getRedirect(`/author/${slug}`);
+        if (destination) {
+            redirect(destination);
+        } else {
+            notFound();
+        }
+    }
     return (
         <div className="max-w-(--breakpoint-xl) mx-auto">
             <AuthorDetails data={author} />

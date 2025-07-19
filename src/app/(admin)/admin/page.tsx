@@ -90,6 +90,10 @@ export default async function Page() {
                     link="/admin/categories"
                 ></DashboardItem>
                 <DashboardItem name="Tags" link="/admin/tags"></DashboardItem>
+                <DashboardItem
+                    name="Redirects"
+                    link="/admin/redirects"
+                ></DashboardItem>
             </div>
             <h2 className="mb-4 text-4xl">Actions</h2>
             <div className="p2 flex gap-2">

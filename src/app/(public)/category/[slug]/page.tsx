@@ -1,7 +1,8 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Sidebar from "@/components/sidebar";
-import { getCategoryByPath } from "@/data/cms";
+import { getCategoryByPath, getRedirect } from "@/data/cms";
 import { Metadata, ResolvingMetadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 const cachedGetCategoryBySlug = cache((path: string) => {
@@ -12,6 +13,14 @@ async function Page(props: Props) {
     const params = await props.params;
     const slug = params.slug;
     const category = await cachedGetCategoryBySlug(slug);
+    if (!category) {
+        const { destination } = await getRedirect(`/category/${slug}`);
+        if (destination) {
+            redirect(destination);
+        } else {
+            notFound();
+        }
+    }
     return (
         <div className="max-w-(--breakpoint-xl) mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">

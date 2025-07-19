@@ -485,3 +485,11 @@ export const getTagByPath = async (path: string) => {
         });
     return tag;
 };
+
+export const getRedirect = async (path) => {
+    const redirects = await db("redirects")
+        .select("*")
+        .where({ source: path })
+        .first();
+    return redirects;
+};
