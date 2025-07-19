@@ -8,9 +8,9 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-nivarana-charcoal: #272624;
-  --color-nivarana-green: #577d26;
-  --color-nivarana-white: #aeafae;
+  --color-nivarana-charcoal: var(--nivarana-charcoal);
+  --color-nivarana-green: var(--nivarana-green);
+  --color-nivarana-white: var(--nivarana-white);
   --color-maybe: #d7d7d7;
 }
 
@@ -47,6 +47,9 @@
   :root {
     --background: #ffffff;
     --foreground: #171717;
+    --nivarana-charcoal: #272624;
+    --nivarana-green: #577d26;
+    --nivarana-white: #aeafae;
   }
 
   body {
