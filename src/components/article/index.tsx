@@ -36,7 +36,7 @@ function Article({ data }) {
                 <div>
                     <Image
                         src={getImageURLFromFileName(data.upload_image)}
-                        alt={data.image_text}
+                        alt={"Representative image for " + data.page_title}
                         width={1280}
                         height={900}
                         className="w-full h-auto"
