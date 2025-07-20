@@ -1,9 +1,7 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import { getAuthorByPath, getRedirect } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
-import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
-import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
@@ -58,25 +56,9 @@ export async function generateMetadata(
     };
 }
 
-function AuthorPic({ image }) {
-    if (image === null) return;
-    return (
-        <div className="">
-            <Image
-                src={getImageURLFromFileName(image)}
-                className="author"
-                alt="author"
-                height={400}
-                width={200}
-            />
-        </div>
-    );
-}
-
 async function AuthorDetails({ data }) {
     return (
-        <div className="mr-auto p-4 mb-40">
-            <AuthorPic image={data.image} />
+        <div className="mr-auto p-4 mb-10">
             <h4 className="name mb-0 text-6xl mb-12">{data.name}</h4>
             {data.title != null && (
                 <p
