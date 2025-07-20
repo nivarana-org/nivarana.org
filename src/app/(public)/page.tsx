@@ -83,45 +83,10 @@ async function LatestArticle({ a }) {
                         {a.meta_description}
                     </p>
                 )}
-                {/* Authors and Published Time */}
-                {(a.authors || a.published_time) && (
-                    <div className="text-sm text-gray-500 mt-3 flex flex-wrap items-center gap-x-2">
-                        {a.authors && (
-                            <span>
-                                By{" "}
-                                <span className="font-medium text-gray-700">
-                                    {a.authors.map((author, index) => (
-                                        <span
-                                            key={author.id}
-                                            className="inline-flex items-center"
-                                        >
-                                            <Link
-                                                href={`/author/${author.path}`}
-                                                className="p-1 rounded-sm hover:bg-cyan-200 hover:text-cyan-800 transition-colors duration-200"
-                                            >
-                                                {author.name}
-                                            </Link>
-                                            {index < a.authors.length - 1 &&
-                                                " and "}
-                                        </span>
-                                    ))}
-                                </span>
-                            </span>
-                        )}
-                        {a.published_time && (
-                            <>
-                                {a.authors && (
-                                    <span className="hidden sm:inline">|</span>
-                                )}{" "}
-                                <span>
-                                    {moment(a.published_time).format(
-                                        "MMMM DD, YYYY",
-                                    )}
-                                </span>
-                            </>
-                        )}
-                    </div>
-                )}
+                <AuthorsAndPublishedTime
+                    authors={a.authors}
+                    published_time={a.published_time}
+                ></AuthorsAndPublishedTime>
             </div>
         </div>
     );
@@ -161,44 +126,53 @@ async function RestArticles({ a }) {
                         {a.page_title}
                     </h4>
                 </Link>
-                {/* Authors and Published Time for smaller articles */}
-                {(a.authors || a.published_time) && (
-                    <div className="text-xs text-gray-500 mt-1">
-                        {a.authors && (
-                            <span>
-                                By{" "}
-                                <span className="font-medium">
-                                    {a.authors.map((author, index) => (
-                                        <span
-                                            key={author.id}
-                                            className="inline-flex items-center"
-                                        >
-                                            <Link
-                                                href={`/author/${author.path}`}
-                                                className="p-1 rounded-sm hover:bg-cyan-200 hover:text-cyan-800 transition-colors duration-200"
-                                            >
-                                                {author.name}
-                                            </Link>
-                                            {index < a.authors.length - 1 &&
-                                                " and "}
-                                        </span>
-                                    ))}
-                                </span>
-                            </span>
-                        )}
-                        {a.published_time && (
-                            <>
-                                {a.authors && " | "}
-                                <span>
-                                    {moment(a.published_time).format(
-                                        "MMM DD, YYYY",
-                                    )}
-                                </span>
-                            </>
-                        )}
-                    </div>
-                )}
+                <div className="text-xs">
+                    <AuthorsAndPublishedTime
+                        authors={a.authors}
+                        published_time={a.published_time}
+                    ></AuthorsAndPublishedTime>
+                </div>
             </div>
         </div>
+    );
+}
+
+function AuthorsAndPublishedTime({ authors, published_time }) {
+    return (
+        <>
+            {(authors || published_time) && (
+                <div className="text-gray-500 mt-1">
+                    {authors && (
+                        <span>
+                            By{" "}
+                            <span className="font-medium">
+                                {authors.map((author, index) => (
+                                    <span
+                                        key={author.id}
+                                        className="inline-flex items-center"
+                                    >
+                                        <Link
+                                            href={`/author/${author.path}`}
+                                            className="p-1 rounded-sm hover:bg-cyan-200 hover:text-cyan-800 transition-colors duration-200"
+                                        >
+                                            {author.name}
+                                        </Link>
+                                        {index < authors.length - 1 && " and "}
+                                    </span>
+                                ))}
+                            </span>
+                        </span>
+                    )}
+                    {published_time && (
+                        <>
+                            {authors && " | "}
+                            <span>
+                                {moment(published_time).format("MMM DD, YYYY")}
+                            </span>
+                        </>
+                    )}
+                </div>
+            )}
+        </>
     );
 }
