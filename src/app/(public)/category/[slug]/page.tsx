@@ -28,6 +28,13 @@ async function Page(props: Props) {
                     <div className="uppercase text-black mb-8 font-bold text-4xl mx-auto">
                         {category.name}
                     </div>
+                    <div
+                        className="mx-auto mb-4 border-b-2"
+                        dangerouslySetInnerHTML={{
+                            __html: category.meta_description,
+                        }}
+                    ></div>
+
                     {category.articles.map((item) => (
                         <ArticlePreview {...item} key={item.path} />
                     ))}
