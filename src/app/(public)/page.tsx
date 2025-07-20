@@ -4,6 +4,7 @@ import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import * as motion from "motion/react-client";
 
 export default async function Home() {
     const categories = await getCategoriesForFrontPage();
@@ -36,6 +37,13 @@ async function Category({ c }) {
                     {c.articles.slice(1, 5).map((a) => (
                         <RestArticles key={a.path} a={a}></RestArticles>
                     ))}
+                    <motion.div
+                        whileHover={{ translateX: -10 }}
+                        whileTap={{ translateX: -10 }}
+                        className="flex flex-row justify-end-safe px-2"
+                    >
+                        <Link href={`/category/${c.path}`}>Read More →</Link>
+                    </motion.div>
                 </div>
             </div>
         </div>
