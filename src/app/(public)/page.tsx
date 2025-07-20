@@ -61,7 +61,7 @@ async function LatestArticle({ a }) {
                 })}
                 className="block" // Ensure Link behaves like a block to contain image
             >
-                <div className="relative w-full max-h-100 pt-[56.25%]">
+                <div className="relative w-full max-h-100 pt-[70%]">
                     <Image
                         src={getImageURLFromFileName(a.upload_image)}
                         alt={a.page_title}
@@ -111,7 +111,7 @@ async function RestArticles({ a }) {
                 })}
                 className="flex-shrink-0 mr-3 block"
             >
-                <div className="relative w-24 h-16">
+                <div className="relative w-23 h-16 lg:w-42 lg:h-30">
                     <Image
                         src={getImageURLFromFileName(a.upload_image)}
                         alt={a.page_title}
