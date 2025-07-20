@@ -37,6 +37,7 @@ export default class Blog extends Model {
                     from: "post_relations.post_id",
                     to: "post_relations.relation_id",
                     filter: { relation_type: "category" },
+                    extra: ["order"],
                 },
                 to: "categories.id",
             },

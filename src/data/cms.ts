@@ -235,10 +235,11 @@ export const addOrEditPost = async (post: Article) => {
             .returning("id");
 
         // Prepare the authors data for `post_relations`
-        const authorRelations = authors.map((authorId) => ({
+        const authorRelations = authors.map((authorId, index) => ({
             post_id: postId,
             relation_id: authorId,
             relation_type: "author",
+            order: index + 1,
         }));
 
         // Update post_relations
@@ -249,10 +250,11 @@ export const addOrEditPost = async (post: Article) => {
             await trx("post_relations").insert(authorRelations);
         }
 
-        const categoryRelations = categories.map((categoryId) => ({
+        const categoryRelations = categories.map((categoryId, index) => ({
             post_id: postId,
             relation_id: categoryId,
             relation_type: "category",
+            order: index + 1,
         }));
 
         await trx("post_relations")
@@ -262,10 +264,11 @@ export const addOrEditPost = async (post: Article) => {
             await trx("post_relations").insert(categoryRelations);
         }
 
-        const tagRelations = tags.map((tagId) => ({
+        const tagRelations = tags.map((tagId, index) => ({
             post_id: postId,
             relation_id: tagId,
             relation_type: "tag",
+            order: index + 1,
         }));
         await trx("post_relations")
             .where({ post_id: postId, relation_type: "tag" })
@@ -315,7 +318,12 @@ export const getArticleByPath = async (path: string) => {
         .where("path", path)
         .andWhere("status", "PUBLISHED")
         .first()
-        .withGraphFetched("[authors, categories as category, tags]");
+        .withGraphFetched(
+            "[authors(ordered), categories(ordered) as category, tags(ordered)]",
+        )
+        .modifiers({
+            ordered: (builder) => builder.orderBy("post_relations.order"),
+        });
     return article;
 };
 
@@ -410,7 +418,10 @@ export const getCategoriesForFrontPage = async () => {
         .select("categories.*") // Select all category columns
         .leftJoinRelated("articles") // Join with articles to access their times
         .groupBy("categories.id") // Group by category ID to use MAX aggregate
-        .withGraphFetched("articles.[categories as category,authors]");
+        .withGraphFetched("articles.[categories as category,authors(ordered)]")
+        .modifiers({
+            ordered: (builder) => builder.orderBy("post_relations.order"),
+        });
     categories.forEach((c) => {
         c.articles.reverse();
     });
