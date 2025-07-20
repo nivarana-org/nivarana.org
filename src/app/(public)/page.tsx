@@ -26,14 +26,14 @@ async function Category({ c }) {
             <h2 className="text-3xl md:text-4xl font-bold uppercase mb-6 text-gray-900 border-b-2 border-gray-900 inline-block pb-1">
                 <Link href={`/category/${c.path}`}>{c.name}</Link>
             </h2>
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-6 justify-between">
                 {/* Prominent Latest Article */}
                 {c.articles[0] && (
                     <LatestArticle a={c.articles[0]}></LatestArticle>
                 )}
 
                 {/* Other 4 Less Prominent Articles */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 lg:w-1/3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 lg:w-1/3 grow-1">
                     {c.articles.slice(1, 5).map((a) => (
                         <RestArticles key={a.path} a={a}></RestArticles>
                     ))}
@@ -52,7 +52,7 @@ async function Category({ c }) {
 
 async function LatestArticle({ a }) {
     return (
-        <div className="group flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden lg:w-2/3">
+        <div className="group flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden lg:w-2/3 xl:w-2xl ">
             <Link
                 href={getArticleSlug({
                     category: a.category[0],
@@ -61,7 +61,7 @@ async function LatestArticle({ a }) {
                 })}
                 className="block" // Ensure Link behaves like a block to contain image
             >
-                <div className="relative w-full pt-[56.25%]">
+                <div className="relative w-full max-h-100 pt-[56.25%]">
                     <Image
                         src={getImageURLFromFileName(a.upload_image)}
                         alt={a.page_title}
