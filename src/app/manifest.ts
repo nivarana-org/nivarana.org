@@ -19,8 +19,8 @@ export default function manifest(): MetadataRoute.Manifest {
             },
         ],
         start_url: "/",
-        theme_color: "#ffffff",
-        background_color: "#ffffff",
+        theme_color: "#aeafae",
+        background_color: "#aeafae",
         display: "standalone",
     };
 }
