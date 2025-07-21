@@ -64,12 +64,16 @@ function Header({ categories }) {
                     </Link>
                 </motion.div>
 
-                <div className="self-end">
+                <motion.div
+                    initial={{ y: "50%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    className="self-end"
+                >
                     <MenuToggleButton
                         isOpen={showCategories}
                         toggleMenu={() => setShowCategories(!showCategories)}
                     ></MenuToggleButton>
-                </div>
+                </motion.div>
 
                 {/* Mobile Menu - AnimatePresence for mount/unmount animations */}
                 <AnimatePresence>
@@ -139,7 +143,11 @@ function Header({ categories }) {
                     </li>
                 </motion.ul>
             </div>
-            <div className="h-1 bg-nivarana-green mt-4"></div>
+            <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="h-1 bg-nivarana-green mt-4"
+            ></motion.div>
         </header>
     );
 }
