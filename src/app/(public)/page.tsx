@@ -5,6 +5,7 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import * as motion from "motion/react-client";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default async function Home() {
     const categories = await getCategoriesForFrontPage();
@@ -23,9 +24,11 @@ export default async function Home() {
 async function Category({ c }) {
     return (
         <div className="pb-8 border-b border-gray-300 last:border-b-0">
-            <h2 className="text-3xl md:text-4xl font-bold uppercase mb-6 text-gray-900 border-b-2 border-gray-900 inline-block pb-1">
-                <Link href={`/category/${c.path}`}>{c.name}</Link>
-            </h2>
+            <ViewTransition name={`category-title-${c.path}`}>
+                <h2 className="text-3xl md:text-4xl font-bold uppercase mb-6 text-gray-900 border-b-2 border-gray-900 inline-block pb-1">
+                    <Link href={`/category/${c.path}`}>{c.name}</Link>
+                </h2>
+            </ViewTransition>
             <div className="flex flex-col lg:flex-row gap-6 justify-between">
                 {/* Prominent Latest Article */}
                 {c.articles[0] && (
@@ -61,15 +64,17 @@ async function LatestArticle({ a }) {
                 })}
                 className="block" // Ensure Link behaves like a block to contain image
             >
-                <div className="relative w-full max-h-100 pt-[70%]">
-                    <Image
-                        src={getImageURLFromFileName(a.upload_image)}
-                        alt={a.page_title}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 66vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
-                    />
-                </div>
+                <ViewTransition name={`page-lead-image-${a.path}`}>
+                    <div className="relative w-full max-h-100 pt-[70%]">
+                        <Image
+                            src={getImageURLFromFileName(a.upload_image)}
+                            alt={a.page_title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 66vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
+                        />
+                    </div>
+                </ViewTransition>
             </Link>
             <div className="p-5 flex flex-col justify-between flex-grow">
                 <Link
@@ -80,9 +85,11 @@ async function LatestArticle({ a }) {
                     })}
                     className="block" // Ensure Link behaves like a block for the heading
                 >
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
-                        {a.page_title}
-                    </h3>
+                    <ViewTransition name={`page-title-${a.path}`}>
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
+                            {a.page_title}
+                        </h3>
+                    </ViewTransition>
                 </Link>
 
                 {/* Meta Description (Excerpt) */}
@@ -111,15 +118,17 @@ async function RestArticles({ a }) {
                 })}
                 className="flex-shrink-0 mr-3 block"
             >
-                <div className="relative w-23 h-16 lg:w-42 lg:h-30">
-                    <Image
-                        src={getImageURLFromFileName(a.upload_image)}
-                        alt={a.page_title}
-                        fill
-                        sizes="(max-width: 1024px) 33vw, 10vw"
-                        className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
-                    />
-                </div>
+                <ViewTransition name={`page-lead-image-${a.path}`}>
+                    <div className="relative w-23 h-16 lg:w-42 lg:h-30">
+                        <Image
+                            src={getImageURLFromFileName(a.upload_image)}
+                            alt={a.page_title}
+                            fill
+                            sizes="(max-width: 1024px) 33vw, 10vw"
+                            className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
+                        />
+                    </div>
+                </ViewTransition>
             </Link>
             <div className="flex flex-col flex-grow">
                 <Link
@@ -130,9 +139,11 @@ async function RestArticles({ a }) {
                     })}
                     className="block"
                 >
-                    <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-3 group-hover:underline transition-colors duration-200">
-                        {a.page_title}
-                    </h4>
+                    <ViewTransition name={`page-title-${a.path}`}>
+                        <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-3 group-hover:underline transition-colors duration-200">
+                            {a.page_title}
+                        </h4>
+                    </ViewTransition>
                 </Link>
                 <div className="text-xs">
                     <AuthorsAndPublishedTime

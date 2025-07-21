@@ -12,6 +12,7 @@ import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import NewsletterBox from "../newsletter";
 import { PushNotificationManager } from "../notifications";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 function Article({ data }) {
     return (
@@ -20,28 +21,38 @@ function Article({ data }) {
                 <div className="flex flex-col justify-end bg-nivarana-white text-nivarana-charcoal">
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
-                        <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
-                            <Link href={`/category/${data.category[0].path}`}>
-                                {data.category[0].name}
-                            </Link>
-                        </div>
-                        <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
-                            {data.page_title}
-                        </h1>
+                        <ViewTransition
+                            name={`category-title-${data.category[0].path}`}
+                        >
+                            <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
+                                <Link
+                                    href={`/category/${data.category[0].path}`}
+                                >
+                                    {data.category[0].name}
+                                </Link>
+                            </div>
+                        </ViewTransition>
+                        <ViewTransition name={`page-title-${data.path}`}>
+                            <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
+                                {data.page_title}
+                            </h1>
+                        </ViewTransition>
                         <p className="mt-6 lg:text-xl">
                             {data.meta_description}
                         </p>
                     </div>
                 </div>
-                <div className="w-full md:w-1/2 md:shrink-0">
-                    <Image
-                        src={getImageURLFromFileName(data.upload_image)}
-                        alt={"Representative image for " + data.page_title}
-                        width={2000}
-                        height={1414}
-                        className="w-full h-auto"
-                    />
-                </div>
+                <ViewTransition name={`page-lead-image-${data.path}`}>
+                    <div className="w-full md:w-1/2 md:shrink-0">
+                        <Image
+                            src={getImageURLFromFileName(data.upload_image)}
+                            alt={"Representative image for " + data.page_title}
+                            width={2000}
+                            height={1414}
+                            className="w-full h-auto"
+                        />
+                    </div>
+                </ViewTransition>
             </div>
             <div className="flex flex-col md:flex-row max-w-7xl gap-x-8">
                 {/* Authors */}
