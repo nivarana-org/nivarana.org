@@ -31,7 +31,7 @@ const menuVariants = {
 
 const desktopMenuVariants = {
     hidden: {
-        x: "-100%", // Start off-screen to the left
+        x: "100%", // Start off-screen to the left
         opacity: 0,
     },
     visible: {
