@@ -29,7 +29,7 @@ async function Page(props: Props) {
                         {category.name}
                     </div>
                     <div
-                        className="mx-auto mb-4 border-b-2"
+                        className="mx-auto mb-8 border-b-2"
                         dangerouslySetInnerHTML={{
                             __html: category.meta_description,
                         }}
