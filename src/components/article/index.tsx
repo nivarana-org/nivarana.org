@@ -33,7 +33,7 @@ function Article({ data }) {
                         </p>
                     </div>
                 </div>
-                <div className="w-1/2 shrink-0">
+                <div className="w-full md:w-1/2 md:shrink-0">
                     <Image
                         src={getImageURLFromFileName(data.upload_image)}
                         alt={"Representative image for " + data.page_title}
