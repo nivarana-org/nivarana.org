@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    allowedDevOrigins: ['freedom.tail167e0.ts.net'],
     experimental: {
         viewTransition: true,
     },
