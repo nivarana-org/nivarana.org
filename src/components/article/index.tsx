@@ -37,7 +37,7 @@ function Article({ data }) {
                                 {data.page_title}
                             </h1>
                         </ViewTransition>
-                        <p className="mt-6 lg:text-xl">
+                        <p className="mt-6 text-sm lg:text-xl">
                             {data.meta_description}
                         </p>
                     </div>
