@@ -6,7 +6,11 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: "Nivarana",
         icons: [
             { src: "/favicon.ico", type: "image/x-icon" },
-            { src: "/assets/logo-2025.png", sizes: "any", type: "image/png" },
+            {
+                src: "/assets/logo-2025-square.png",
+                sizes: "any",
+                type: "image/png",
+            },
         ],
         start_url: "/",
         theme_color: "#aeafae",
