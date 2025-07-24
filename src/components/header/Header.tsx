@@ -1,13 +1,13 @@
 import Link from "next/link";
 import HeaderClient from "./Header-client";
-import * as motion from "motion/react-client";
+import { div as MotionDiv, ul as MotionUl } from "motion/react-client";
 import Image from "next/image";
 import SearchIcon from "./SearchButton";
 import logo from "../../../public/assets/logo.png";
 
 function LogoComponent() {
     return (
-        <motion.div
+        <MotionDiv
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="z-10"
@@ -15,7 +15,7 @@ function LogoComponent() {
             <Link href="/">
                 <Image src={logo} alt="Nivarana Logo" className="w-48" />
             </Link>
-        </motion.div>
+        </MotionDiv>
     );
 }
 
@@ -37,7 +37,7 @@ const desktopMenuVariants = {
 
 function DesktopMenuComponent({ categories }) {
     return (
-        <motion.ul
+        <MotionUl
             className="hidden lg:flex lg:flex-row flex-nowrap gap-4 ml-auto" // ml-auto to push to the right
             variants={desktopMenuVariants}
             initial="hidden"
@@ -59,7 +59,7 @@ function DesktopMenuComponent({ categories }) {
                     <SearchIcon></SearchIcon>
                 </Link>
             </li>
-        </motion.ul>
+        </MotionUl>
     );
 }
 
@@ -73,11 +73,11 @@ export default async function Header({ categories }) {
                     categories={categories}
                 ></DesktopMenuComponent>
             </div>
-            <motion.div
+            <MotionDiv
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 className="h-1 bg-nivarana-green mt-4"
-            ></motion.div>
+            ></MotionDiv>
         </header>
     );
 }
