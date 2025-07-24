@@ -94,14 +94,16 @@ async function LatestArticle({ a }) {
 
                 {/* Meta Description (Excerpt) */}
                 {a.meta_description && (
-                    <p className="text-gray-700 mt-3 text-lg line-clamp-3">
+                    <p className="text-gray-700 mt-3 text-md md:text-base md:line-clamp-4">
                         {a.meta_description}
                     </p>
                 )}
-                <AuthorsAndPublishedTime
-                    authors={a.authors}
-                    published_time={a.published_time}
-                ></AuthorsAndPublishedTime>
+                <div className="text-xs">
+                    <AuthorsAndPublishedTime
+                        authors={a.authors}
+                        published_time={a.published_time}
+                    ></AuthorsAndPublishedTime>
+                </div>
             </div>
         </div>
     );
@@ -140,7 +142,7 @@ async function RestArticles({ a }) {
                     className="block"
                 >
                     <ViewTransition name={`page-title-${a.path}`}>
-                        <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-3 group-hover:underline transition-colors duration-200">
+                        <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-4 group-hover:underline transition-colors duration-200">
                             {a.page_title}
                         </h4>
                     </ViewTransition>
@@ -163,7 +165,7 @@ function AuthorsAndPublishedTime({ authors, published_time }) {
                 <div className="text-gray-500 mt-1">
                     {authors && (
                         <span>
-                            By{" "}
+                            By
                             <span className="font-medium">
                                 {authors.map((author, index) => (
                                     <span
