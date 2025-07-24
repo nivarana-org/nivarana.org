@@ -2,13 +2,17 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: "Nivarana",
+        name: "Nivarana — India's Public Health Platform",
         short_name: "Nivarana",
         icons: [
-            { src: "/favicon.ico", type: "image/x-icon" },
             {
                 src: "/assets/logo-2025-square.png",
-                sizes: "any",
+                sizes: "512x512",
+                type: "image/png",
+            },
+            {
+                src: "/assets/logo-2025-square-192x192.png",
+                sizes: "192x192",
                 type: "image/png",
             },
         ],
