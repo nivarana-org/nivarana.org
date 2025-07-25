@@ -21,14 +21,14 @@ function LogoComponent() {
 
 const desktopMenuVariants = {
     hidden: {
-        x: "100%", // Start off-screen to the left
+        x: "100%",
         opacity: 0,
     },
     visible: {
         x: "0%",
         opacity: 1,
         transition: {
-            delay: 0.2, // Small delay after logo animation
+            delay: 0.2,
             duration: 0.5,
             ease: "easeOut",
         },

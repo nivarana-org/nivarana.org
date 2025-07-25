@@ -456,6 +456,7 @@ export const stopWords = new Set([
     "sharma",
     "gayatri",
     "&nbsp;",
+    "image",
 ]);
 
 export const fetchWordCloud = async (db) => {
