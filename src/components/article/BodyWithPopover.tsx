@@ -10,7 +10,7 @@ export default function BodyWithPopover({ body }: { body: string }) {
     return (
         <>
             <div
-                className="post-content mt-4 font-sans text-lg p-2"
+                className="post-content mt-4 text-lg p-2"
                 dangerouslySetInnerHTML={{ __html: body }}
                 onClick={(e) => {
                     const target = e.target as HTMLElement;

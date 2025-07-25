@@ -10,7 +10,7 @@ import { unstable_ViewTransition as ViewTransition } from "react";
 export default async function Home() {
     const categories = await getCategoriesForFrontPage();
     return (
-        <div className="max-w-screen-xl mx-auto py-8 px-4 font-serif">
+        <div className="max-w-screen-xl mx-auto py-8 px-4">
             <div className="flex flex-col gap-12">
                 {categories.map((c) => (
                     <Category key={c.path} c={c}></Category>

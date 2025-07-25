@@ -1,9 +1,8 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-*: initial;
-  --font-poppins:
-    var(--font-poppins), system-ui, 'Apple Color Emoji', 'Segoe UI Emoji',
+  --font-body:
+    "Poppins", "Poppins Fallback", system-ui, 'Apple Color Emoji', 'Segoe UI Emoji',
     sans-serif;
 
   --color-background: var(--background);
@@ -23,6 +22,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -112,6 +112,7 @@ dfn:hover {
   z-index: 1000;
   cursor: pointer;
 }
+
 .zoomed-image {
   max-width: 90vw;
   max-height: 90vh;
