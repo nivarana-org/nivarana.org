@@ -50,7 +50,8 @@
     --nivarana-charcoal: #272624;
     --nivarana-green: #778d4c;
     --nivarana-blue: #1a5461;
-    --nivarana-white: #f5f5de;
+    --nivarana-background-white: #f5f5de;
+    --nivarana-white: #d9d3bf;
   }
 
   body {
