@@ -8,7 +8,7 @@ function SubmitButton({ isPending }: { isPending: boolean }) {
         <button
             type="submit"
             aria-disabled={isPending}
-            className="bg-nivarana-white px-4 py-1 rounded cursor-pointer"
+            className="bg-nivarana-blue text-white px-4 py-1 rounded cursor-pointer"
         >
             {isPending ? "Signing up..." : "Sign Up"}
         </button>

@@ -73,11 +73,6 @@ export default async function Header({ categories }) {
                     categories={categories}
                 ></DesktopMenuComponent>
             </div>
-            <MotionDiv
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="h-1 bg-nivarana-green mt-4"
-            ></MotionDiv>
         </header>
     );
 }
