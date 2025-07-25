@@ -15,7 +15,7 @@ export default function ProgressTracker() {
                 right: 0,
                 height: 10,
                 originX: 0,
-                backgroundColor: "var(--nivarana-green)",
+                backgroundColor: "var(--color-nivarana-green)",
             }}
         />
     );

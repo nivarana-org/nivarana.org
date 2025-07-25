@@ -5,12 +5,12 @@
     "Poppins", "Poppins Fallback", system-ui, 'Apple Color Emoji', 'Segoe UI Emoji',
     sans-serif;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-nivarana-charcoal: var(--nivarana-charcoal);
-  --color-nivarana-green: var(--nivarana-green);
-  --color-nivarana-white: var(--nivarana-white);
-  --color-maybe: #d7d7d7;
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-nivarana-charcoal: #272624;
+  --color-nivarana-green: #778d4c;
+  --color-nivarana-blue: #1a5461;
+  --color-nivarana-white: #d9bb9b;
 }
 
 /*
@@ -40,23 +40,9 @@
   .post-content ul {
     @apply list-disc md:list-outside ml-4 pl-2 md:p-6;
   }
+
   .post-content ol {
     @apply list-decimal md:list-outside ml-4 pl-2 md:p-6;
-  }
-
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --nivarana-charcoal: #272624;
-    --nivarana-green: #778d4c;
-    --nivarana-blue: #1a5461;
-    --nivarana-background-white: #f5f5de;
-    --nivarana-white: #d9bb9b;
-  }
-
-  body {
-    color: var(--foreground);
-    background: var(--background);
   }
 }
 
@@ -71,7 +57,7 @@ img {
 }
 
 .post-content a {
-  color: var(--nivarana-green);
+  color: var(--color-nivarana-green);
   outline: 0;
   text-decoration: underline;
   -webkit-transition: all 0.2s ease-in-out;
@@ -80,7 +66,7 @@ img {
 }
 
 .post-content a:hover {
-  color: var(--nivarana-charcoal);
+  color: var(--color-nivarana-charcoal);
   text-decoration: none;
 }
 

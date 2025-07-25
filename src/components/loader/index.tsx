@@ -20,7 +20,7 @@ function Loader() {
     const box = {
         width: 100,
         height: 100,
-        backgroundColor: "var(--nivarana-green)",
+        backgroundColor: "var(--color-nivarana-green)",
         borderRadius: 5,
     };
     return (
