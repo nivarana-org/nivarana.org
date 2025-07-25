@@ -62,7 +62,7 @@ async function LatestArticle({ a }) {
                     path: a.path,
                     type: a.type,
                 })}
-                className="block" // Ensure Link behaves like a block to contain image
+                className="block"
             >
                 <ViewTransition name={`page-lead-image-${a.path}`}>
                     <div className="relative w-full max-h-100 pt-[70%]">
@@ -83,7 +83,7 @@ async function LatestArticle({ a }) {
                         path: a.path,
                         type: a.type,
                     })}
-                    className="block" // Ensure Link behaves like a block for the heading
+                    className="block"
                 >
                     <ViewTransition name={`page-title-${a.path}`}>
                         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
