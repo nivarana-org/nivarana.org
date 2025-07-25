@@ -11,7 +11,6 @@ import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import NewsletterBox from "../newsletter";
-import { PushNotificationManager } from "../notifications";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
 function Article({ data }) {
@@ -98,9 +97,6 @@ function Article({ data }) {
                 <aside className="px-2 md:basis-3xs self-end mb-10">
                     <p className="text-xl">Subscribe to Nivarana</p>
                     <NewsletterBox></NewsletterBox>
-                    <Suspense>
-                        <PushNotificationManager />
-                    </Suspense>
                 </aside>
                 <ProgressTracker></ProgressTracker>
             </div>
