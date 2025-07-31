@@ -53,7 +53,7 @@ function PhotoEssay({ data, chapter }) {
         return (
             <>
                 <div className="post post-single">
-                    <div className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
+                    <div className="h-full relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
                             src={getImageURLFromFileName(data.upload_image)}
                             alt={
@@ -62,7 +62,7 @@ function PhotoEssay({ data, chapter }) {
                             }
                             width={1280}
                             height={900}
-                            className="absolute inset-0 h-full w-full object-cover"
+                            className="h-dvh w-full md:w-auto absolute inset-0  object-cover"
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
@@ -112,7 +112,7 @@ function PhotoEssay({ data, chapter }) {
         return (
             <>
                 <div className="post post-single">
-                    <div className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
+                    <div className="h-dvh relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
                             src={getImageURLFromFileName(data.upload_image)}
                             alt={
@@ -121,7 +121,7 @@ function PhotoEssay({ data, chapter }) {
                             }
                             width={1280}
                             height={900}
-                            className="absolute inset-0 h-full w-full object-cover"
+                            className="h-full w-full md:max-h-dvh my-auto absolute inset-0 object-cover"
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
