@@ -59,7 +59,7 @@ function Article({ data }) {
                     {data.authors.map((a) => (
                         <div
                             key={a.id}
-                            className="p-1 hover:bg-cyan-200 text-black text-xl"
+                            className="p-1 hover:bg-cyan-200 text-black text-md font-bold"
                         >
                             <Link href={"/author/" + a.path}>{a.name}</Link>
                         </div>
