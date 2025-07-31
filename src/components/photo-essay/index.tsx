@@ -155,24 +155,21 @@ function PhotoEssay({ data, chapter }) {
                     <PhotoChapter {...chapters[0]} />
 
                     <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
-                        <Button>
-                            <Link
-                                href={{
-                                    query: { chapter: "all" },
-                                }}
-                            >
-                                View in Single Page
-                            </Link>
-                        </Button>
-                        <Button>
-                            <Link
-                                href={{
-                                    query: { chapter: "1" },
-                                }}
-                            >
-                                Start
-                            </Link>
-                        </Button>
+                        <Link
+                            href={{
+                                query: { chapter: "all" },
+                            }}
+                        >
+                            <Button>View in Single Page</Button>
+                        </Link>
+
+                        <Link
+                            href={{
+                                query: { chapter: "1" },
+                            }}
+                        >
+                            <Button>Start</Button>
+                        </Link>
                     </div>
                 </div>
                 <div className="max-w-2xl mx-auto">
@@ -196,36 +193,30 @@ function PhotoEssay({ data, chapter }) {
                 <PhotoChapter key={page} {...chapters[page]} />
 
                 <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
-                    <Button>
-                        <Link
-                            href={{
-                                query: { chapter: `${page - 1}` },
-                            }}
-                        >
-                            Previous
-                        </Link>
-                    </Button>
+                    <Link
+                        href={{
+                            query: { chapter: `${page - 1}` },
+                        }}
+                    >
+                        <Button>Previous</Button>
+                    </Link>
 
                     {!lastPage ? (
-                        <Button>
-                            <Link
-                                href={{
-                                    query: { chapter: `${page + 1}` },
-                                }}
-                            >
-                                Next
-                            </Link>
-                        </Button>
+                        <Link
+                            href={{
+                                query: { chapter: `${page + 1}` },
+                            }}
+                        >
+                            <Button>Next</Button>
+                        </Link>
                     ) : (
-                        <Button>
-                            <Link
-                                href={{
-                                    query: { chapter: `0` },
-                                }}
-                            >
-                                Restart
-                            </Link>
-                        </Button>
+                        <Link
+                            href={{
+                                query: { chapter: `0` },
+                            }}
+                        >
+                            <Button>Restart</Button>
+                        </Link>
                     )}
                 </div>
             </div>
