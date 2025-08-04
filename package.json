@@ -17,12 +17,12 @@
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^7.0.1",
-    "@mui/x-date-pickers": "^8.5.3",
-    "@tinymce/tinymce-react": "^6.0.0",
+    "@mui/x-date-pickers": "^8.9.2",
+    "@tinymce/tinymce-react": "^6.3.0",
     "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
     "moment": "^2.30.1",
-    "motion": "^12.23.9",
+    "motion": "^12.23.12",
     "mysql": "^2.18.1",
     "next": "15.4.2-canary.29",
     "next-auth": "^5.0.0-beta.25",
@@ -33,30 +33,30 @@
     "react-tagcloud": "^2.3.3",
     "server-only": "^0.0.1",
     "sharp": "^0.34.0",
-    "sonner": "^2.0.3",
-    "tinymce": "^8.0.0",
+    "sonner": "^2.0.7",
+    "tinymce": "^8.0.1",
     "use-debounce": "^10.0.4",
     "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.29.0",
+    "@eslint/js": "^9.32.0",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^24.1.0",
     "@types/react": "19.1.9",
     "@types/react-dom": "19.1.7",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.24.0",
+    "eslint": "^9.32.0",
     "eslint-config-next": "15.4.2-canary.29",
     "eslint-config-prettier": "^10.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
-    "lint-staged": "^16.1.2",
+    "lint-staged": "^16.1.4",
     "postcss": "^8",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.10",
-    "typescript": "^5",
+    "typescript": "^5.9.2",
     "vite-tsconfig-paths": "^5.1.0",
     "vitest": "^3.1.1"
   },
@@ -66,6 +66,9 @@
   },
   "overrides": {
     "@types/react": "19.1.9",
-    "@types/react-dom": "19.1.7"
+    "@types/react-dom": "19.1.7",
+    "next-auth": {
+      "next": "15.4.2-canary.29"
+    }
   }
 }
