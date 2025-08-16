@@ -1,0 +1,13 @@
+
+[{
+ "relation": ["delegate_permission/common.handle_all_urls"],
+ "target": {
+   "namespace": "android_app",
+   "package_name": "org.nivarana.web",
+   "sha256_cert_fingerprints": [
+    "09:DD:1B:B3:3C:37:C4:BA:13:AF:50:A0:58:79:47:A3:09:79:11:E7:4F:5B:1C:B0:62:E0:F2:17:3B:D4:BD:15",
+    "AA:6A:60:61:40:73:D7:A2:B3:6F:EB:A7:BB:FA:50:2A:91:25:52:C8:3F:F3:DE:98:08:12:5F:A7:86:B4:65:59"
+   ]
+ }
+}]
+
