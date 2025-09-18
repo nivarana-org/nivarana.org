@@ -16,6 +16,9 @@ type GetURLData = {
 };
 
 export const getArticlePublicURL = (data: GetURLData) => {
+    if (Array.isArray(data.category)) {
+        data.category = data.category[0];
+    }
     return `https://nivarana.org${getArticleSlug(data)}`;
 };
 
