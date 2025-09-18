@@ -2,6 +2,15 @@
 const nextConfig = {
     allowedDevOrigins: ['freedom.tail167e0.ts.net'],
     experimental: {
+        // since we're on tailwind, inlining should be fine
+        // as there's only one set of css
+        // PROBLEM: Fonts aren't created in build
+        // inlineCss: true,
+
+        // to allow frequent builds on server without worry
+        turbopackPersistentCaching: true,
+
+        // let's appear fancy in chrome at least
         viewTransition: true,
     },
     typescript: {
