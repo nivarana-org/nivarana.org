@@ -14,9 +14,9 @@ async function Page(props: Props) {
     const slug = params.slug;
     const category = await cachedGetCategoryBySlug(slug);
     if (!category) {
-        const { destination } = await getRedirect(`/category/${slug}`);
-        if (destination) {
-            redirect(destination);
+        const result = await getRedirect(`/category/${slug}`);
+        if (result && result.destination) {
+            redirect(result.destination);
         } else {
             notFound();
         }

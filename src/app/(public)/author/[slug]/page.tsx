@@ -15,9 +15,9 @@ async function Page(props: Props) {
     const slug = params.slug;
     const author = await cachedGetAuthorBySlug(slug);
     if (!author) {
-        const { destination } = await getRedirect(`/author/${slug}`);
-        if (destination) {
-            redirect(destination);
+        const result = await getRedirect(`/author/${slug}`);
+        if (result && result.destination) {
+            redirect(result.destination);
         } else {
             notFound();
         }
