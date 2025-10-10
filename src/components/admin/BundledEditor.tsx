@@ -10,7 +10,7 @@ import "tinymce/themes/silver";
 // Toolbar icons
 import "tinymce/icons/default";
 // Editor styles
-import "tinymce/skins/ui/oxide/skin";
+import "tinymce/skins/ui/oxide/skin.js";
 
 // importing the plugin js.
 // if you use a plugin that is not listed here the editor will fail to load
@@ -48,8 +48,8 @@ import "tinymce/plugins/wordcount";
 import "tinymce/plugins/emoticons/js/emojis";
 
 // Content styles, including inline UI like fake cursors
-import "tinymce/skins/content/default/content";
-import "tinymce/skins/ui/oxide/content";
+import "tinymce/skins/content/default/content.js";
+import "tinymce/skins/ui/oxide/content.js";
 
 import "./DfnPlugin";
 
