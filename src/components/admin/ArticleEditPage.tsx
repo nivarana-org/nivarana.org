@@ -13,12 +13,13 @@ import {
 } from "@mui/joy";
 import { addOrEditPostAction } from "@/actions/post";
 import { Article } from "@/data/cms";
-import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
 import ImagePicker from "./ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import PhotoEssayEditor from "./PhotoEssayEditor";
+import { useImmerReducer } from "use-immer";
+import { articleEditReducer } from "./article-edit-path-title-reducer";
 
 const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
     ssr: false,
@@ -45,8 +46,11 @@ export default function ArticleEditPage({
     type: "article" | "photo-essay";
 }) {
     const [submitting, setSubmitting] = useState(false);
-    const [title, setTitle] = useState(post?.page_title || "");
-    const [path, setPath] = useState(post?.path || "");
+    const [values, dispatch] = useImmerReducer(articleEditReducer, {
+        title: post?.page_title || "",
+        path: post?.path || "",
+        pathIsReadOnly: Boolean(post?.path),
+    });
     const [selectedStatus, setSelectedStatus] = useState(
         post?.status || "DRAFT",
     );
@@ -59,12 +63,7 @@ export default function ArticleEditPage({
             setScheduledTime(null);
         }
     };
-    const [generatePath, setGeneratePath] = useState(!Boolean(post?.path));
-    const [pathIsReadOnly, setPathReadOnly] = useState(Boolean(post?.path));
-    useEffect(() => {
-        if (!generatePath) return;
-        setPath(sluggify(title));
-    }, [generatePath, title]);
+
     const [authors, setAuthors] = useState<string[]>(
         post?.authors?.map((a) => `${a.id}`) ?? [],
     );
@@ -122,7 +121,7 @@ export default function ArticleEditPage({
                 if (!status) {
                     alert(message);
                 } else {
-                    setPathReadOnly(true);
+                    dispatch({ type: "freeze-path" });
                     switch (selectedStatus) {
                         case "SCHEDULED":
                             alert(
@@ -135,7 +134,7 @@ export default function ArticleEditPage({
                                     "Post updated successfully. Open the post now?",
                                 )
                             ) {
-                                window.open(`/${type}/${path}`);
+                                window.open(`/${type}/${values.path}`);
                             }
                             break;
                         default:
@@ -148,8 +147,10 @@ export default function ArticleEditPage({
                 <FormLabel className="font-bold">Post Title</FormLabel>
                 <Input
                     name="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={values.title}
+                    onChange={(e) =>
+                        dispatch({ type: "title", value: e.target.value })
+                    }
                     className="text-bold"
                 ></Input>
                 <FormHelperText>
@@ -160,17 +161,16 @@ export default function ArticleEditPage({
             <FormControl>
                 <FormLabel>Slug/Link/Path</FormLabel>
                 <Input
-                    readOnly={pathIsReadOnly}
+                    readOnly={values.pathIsReadOnly}
                     name="path"
-                    value={path}
+                    value={values.path}
                     onChange={(e) => {
-                        setGeneratePath(false);
-                        setPath(e.target.value);
+                        dispatch({ type: "path", value: e.target.value });
                     }}
                 ></Input>
                 <FormHelperText>
-                    {path
-                        ? `The article will be publicly accessible at https://nivarana.org/${type}/${path}`
+                    {values.path
+                        ? `The article will be publicly accessible at https://nivarana.org/${type}/${values.path}`
                         : "The link to the article"}
                 </FormHelperText>
             </FormControl>
