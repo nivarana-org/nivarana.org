@@ -70,7 +70,8 @@ const nextConfig = {
             }
         ],
         dangerouslyAllowLocalIP: true
-    }
+    },
+    reactCompiler: true
 };
 
 export default nextConfig;
