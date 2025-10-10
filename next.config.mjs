@@ -7,8 +7,8 @@ const nextConfig = {
         // PROBLEM: Fonts aren't created in build
         // inlineCss: true,
 
-        // to allow frequent builds on server without worry
-        turbopackPersistentCaching: true,
+        // to allow frequent builds on dev without worry
+        turbopackFileSystemCacheForDev: true,
 
         // let's appear fancy in chrome at least
         viewTransition: true,
@@ -68,7 +68,8 @@ const nextConfig = {
                 hostname: 'nivarana.org',
                 port: '',
             }
-        ]
+        ],
+        dangerouslyAllowLocalIP: true
     }
 };
 

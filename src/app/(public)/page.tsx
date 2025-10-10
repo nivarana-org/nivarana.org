@@ -5,7 +5,7 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import * as motion from "motion/react-client";
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { ViewTransition } from "react";
 
 export default async function Home() {
     const categories = await getCategoriesForFrontPage();

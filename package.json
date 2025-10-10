@@ -12,23 +12,21 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@fontsource/inter": "^5.1.0",
+    "@emotion/styled": "^11.14.1",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^7.0.1",
     "@mui/x-date-pickers": "^8.9.2",
     "@tinymce/tinymce-react": "^6.3.0",
-    "bootstrap": "^5.3.3",
     "knex": "^3.1.0",
     "moment": "^2.30.1",
     "motion": "^12.23.12",
     "mysql": "^2.18.1",
-    "next": "15.5.1-canary.7",
+    "next": "16.0.0-canary.0",
     "next-auth": "^5.0.0-beta.25",
     "objection": "^3.1.5",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "react-share": "^5.1.0",
     "react-tagcloud": "^2.3.3",
     "server-only": "^0.0.1",
@@ -43,15 +41,15 @@
     "@eslint/js": "^9.32.0",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^24.1.0",
-    "@types/react": "19.1.11",
-    "@types/react-dom": "19.1.7",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
+    "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.32.0",
-    "eslint-config-next": "15.5.1-canary.7",
+    "eslint-config-next": "16.0.0-canary.0",
     "eslint-config-prettier": "^10.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
+    "jsdom": "^27.0.0",
     "lint-staged": "^16.1.4",
     "postcss": "^8",
     "prettier": "^3.4.2",
@@ -65,10 +63,10 @@
     "*.{js,tsx,ts,css,md}": "prettier --write"
   },
   "overrides": {
-    "@types/react": "19.1.11",
-    "@types/react-dom": "19.1.7",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.1",
     "next-auth": {
-      "next": "15.5.1-canary.7"
+      "next": "16.0.0-canary.0"
     }
   }
 }

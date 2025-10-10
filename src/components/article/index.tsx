@@ -11,7 +11,7 @@ import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import NewsletterBox from "../newsletter";
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { ViewTransition } from "react";
 
 function Article({ data }) {
     return (
