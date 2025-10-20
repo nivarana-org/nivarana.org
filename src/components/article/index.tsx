@@ -10,7 +10,6 @@ import PageTranslate from "@/components/blocks/PageTranslate";
 import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
-import NewsletterBox from "../newsletter";
 import { ViewTransition } from "react";
 
 function Article({ data }) {
@@ -95,8 +94,42 @@ function Article({ data }) {
                 </div>
                 {/* Side */}
                 <aside className="px-2 md:basis-3xs self-end mb-10">
-                    <p className="text-xl">Subscribe to Nivarana</p>
-                    <NewsletterBox></NewsletterBox>
+                    Follow Nivarana on{" "}
+                    <a
+                        className="text-blue-800"
+                        href="https://whatsapp.com/channel/0029Vb1kL5V9xVJjvHk25V0u"
+                    >
+                        WhatsApp
+                    </a>
+                    ,{" "}
+                    <a
+                        className="text-blue-800"
+                        href="https://in.linkedin.com/company/nivaranaforindia"
+                    >
+                        LinkedIn
+                    </a>
+                    ,{" "}
+                    <a
+                        className="text-blue-800"
+                        href="https://www.instagram.com/nivarana_for_india"
+                    >
+                        Instagram
+                    </a>
+                    , and{" "}
+                    <a
+                        className="text-blue-800"
+                        href="https://twitter.com/Nivarana4India"
+                    >
+                        X
+                    </a>{" "}
+                    for updates. Also subscribe on{" "}
+                    <a
+                        className="text-blue-800"
+                        href="https://youtube.com/@nivarana4India?feature=shared"
+                    >
+                        YouTube
+                    </a>
+                    .
                 </aside>
                 <ProgressTracker></ProgressTracker>
             </div>
