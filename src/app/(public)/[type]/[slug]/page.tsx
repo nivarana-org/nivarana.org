@@ -1,7 +1,7 @@
 import Article from "@/components/article";
 import PhotoEssay from "@/components/photo-essay";
 import Sidebar from "@/components/sidebar";
-import { getArticleByPath } from "@/data/cms";
+import { getArticleByPath, getRedirect } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
@@ -19,7 +19,15 @@ export default async function Page(props: Props) {
     const requestedCategory = params.type;
     const post = await cachedGetArticleBySlug(params.slug);
     if (!post) {
-        notFound();
+        const paths = [params.slug, normalizeAsOldSlugs(params.slug)];
+        for (const path of paths) {
+            const result = await getRedirect(path);
+            if (result && result.destination) {
+                return redirect(result.destination);
+            }
+        }
+
+        return notFound();
     }
     const actualCategory = post.category[0].path;
     if (actualCategory !== requestedCategory) {

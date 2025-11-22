@@ -509,3 +509,15 @@ export const getRedirect = async (path) => {
 export const getWordCloud = async () => {
     return fetchWordCloud(db);
 };
+
+export const changeArticlePath = async (oldPath: string, newPath: string) => {
+    const result = await Blog.query()
+        .where({ path: oldPath })
+        .update({ path: newPath });
+    await db("redirects").insert({
+        source: oldPath,
+        destination: `/article/${newPath}`,
+        type: "permanent",
+    });
+    return result;
+};
