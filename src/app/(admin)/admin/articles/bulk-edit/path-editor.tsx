@@ -1,6 +1,7 @@
 "use client";
 
 import { changeArticlePath } from "@/data/cms";
+import { sluggify } from "@/utils/string";
 import { Button } from "@mui/joy";
 import Link from "next/link";
 import { useState } from "react";
@@ -25,6 +26,13 @@ export function PathEditor({ id, title, path }: Props) {
                 size={100}
                 type="text"
             ></input>
+            <Button
+                onClick={(e) => {
+                    setPath(sluggify(title));
+                }}
+            >
+                Sluggify
+            </Button>
             <Button
                 onClick={(e) => {
                     changeArticlePath(originalPath, currentPath);
