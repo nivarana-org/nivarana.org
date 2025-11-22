@@ -1,7 +1,7 @@
 import Article from "@/components/article";
 import PhotoEssay from "@/components/photo-essay";
 import Sidebar from "@/components/sidebar";
-import { getArticleByPath, getRedirect } from "@/data/cms";
+import { getArticleByPath, getRedirect, searchArticles } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Metadata, ResolvingMetadata } from "next";
@@ -25,6 +25,12 @@ export default async function Page(props: Props) {
             if (result && result.destination) {
                 return redirect(result.destination);
             }
+        }
+        const searchResult = await searchArticles(params.slug);
+        if (searchResult.length > 0) {
+            const slug = searchResult[0].path;
+            const category = searchResult[0].category;
+            return redirect(`/${category.name}/${slug}`, "replace");
         }
 
         return notFound();
