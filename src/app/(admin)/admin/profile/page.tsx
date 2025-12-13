@@ -1,8 +1,11 @@
-import { auth } from "@/auth";
+import { auth } from "@/utils/auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 
 export default async function Page() {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
     if (!session) return <div>Not authenticated</div>;
 
     return (

@@ -6,6 +6,7 @@ import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
 import { fetchWordCloud } from "./word-cloud";
+import { asAdmin } from "./authorization";
 
 export const db = knex({
     client: "mysql",
@@ -72,11 +73,11 @@ export const addNewsLetterSubscriber = async (email: string) => {
     return "Success";
 };
 
-export const getSubscribers = async () => {
+export const getSubscribers = asAdmin(async () => {
     return await db<NewsletterSubscriber>("newsletters")
         .select("user_email", "id")
         .orderBy("id", "desc");
-};
+});
 
 const getTableCount = async (table) => {
     const result = await db(table).count("* as count");
@@ -214,7 +215,7 @@ export const getAllAuthors = async () => {
     return db("authors").select("id", "name", "path").orderBy("id", "desc");
 };
 
-export const addOrEditPost = async (post: Article) => {
+export const addOrEditPost = asAdmin(async (post: Article) => {
     const timestamp = new Date(Date.now());
 
     // Start transaction
@@ -279,9 +280,9 @@ export const addOrEditPost = async (post: Article) => {
 
         return postId;
     });
-};
+});
 
-export const editPostCategory = async (postId: number, categoryId: number) => {
+export const editPostCategory = asAdmin( async (postId: number, categoryId: number) => {
     return await db.transaction(async (trx) => {
         await trx("post_relations")
             .where({ post_id: postId, relation_type: "category" })
@@ -290,9 +291,9 @@ export const editPostCategory = async (postId: number, categoryId: number) => {
             .where({ id: postId })
             .update("category_name", `${categoryId}`);
     });
-};
+});
 
-export const addCategory = async (name: string, path: string) => {
+export const addCategory = asAdmin(async (name: string, path: string) => {
     return await db("categories").insert({
         name,
         path,
@@ -302,16 +303,16 @@ export const addCategory = async (name: string, path: string) => {
         meta_description: name,
         sort_order: 0,
     });
-};
+});
 
-export const addOrEditAuthor = async (author: Author) => {
+export const addOrEditAuthor = asAdmin(async (author: Author) => {
     const timestamp = new Date(Date.now());
     const query = db("authors")
         .insert({ ...author, created_at: timestamp, updated_at: timestamp })
         .onConflict("id")
         .merge({ ...author, updated_at: timestamp });
     return await query;
-};
+});
 
 export const getArticleByPath = async (path: string) => {
     const article = await Blog.query()
@@ -453,7 +454,7 @@ export const getAllArticlesAndTags = async () => {
     return articles;
 };
 
-export const editPostTags = async (postId, tags) => {
+export const editPostTags = asAdmin(async (postId, tags) => {
     return await db.transaction(async (trx) => {
         const tagRelations = tags.map((tagId) => ({
             post_id: postId,
@@ -469,11 +470,11 @@ export const editPostTags = async (postId, tags) => {
 
         return postId;
     });
-};
+});
 
-export const addTag = async (name, path) => {
+export const addTag = asAdmin(async (name, path) => {
     return await Tag.query().insert({ name, path });
-};
+});
 
 export const getAllTags = async () => {
     const tags = await Tag.query();
@@ -510,7 +511,7 @@ export const getWordCloud = async () => {
     return fetchWordCloud(db);
 };
 
-export const changeArticlePath = async (oldPath: string, newPath: string) => {
+export const changeArticlePath = asAdmin(async (oldPath: string, newPath: string) => {
     const result = await Blog.query()
         .where({ path: oldPath })
         .update({ path: newPath });
@@ -520,4 +521,4 @@ export const changeArticlePath = async (oldPath: string, newPath: string) => {
         type: "permanent",
     });
     return result;
-};
+});
