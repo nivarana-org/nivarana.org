@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { customSession } from "better-auth/plugins";
+import { headers } from "next/headers";
 
 export const auth = betterAuth({
     plugins: [
@@ -23,3 +24,10 @@ export const auth = betterAuth({
         },
     },
 });
+
+export const getRole = async () => {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+    return session?.user?.role;
+};

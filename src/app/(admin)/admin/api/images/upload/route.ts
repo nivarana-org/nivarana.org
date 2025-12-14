@@ -1,11 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { getExtension } from "@/utils/string";
 import { getImageUploadDirectory } from "../setup";
 import { getImageURLFromFileName } from "@/utils/paths";
+import { getRole } from "@/utils/auth";
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
+    if ((await getRole()) !== "admin") {
+        return NextResponse.json(
+            { error: "You are not an admin" },
+            { status: 403 },
+        );
+    }
     const formData = await req.formData();
 
     const file = formData.get("file");
