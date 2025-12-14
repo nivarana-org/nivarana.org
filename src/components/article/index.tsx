@@ -92,7 +92,7 @@ function Article({ data }) {
                 {/* Post */}
                 <div className="md:basis-xl md:shrink-0">
                     <AudioPlayer
-                        src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
+                        src={getImageURLFromFileName(`audio/${data.id}.wav`)}
                     />
                     <BodyWithPopover body={data.description} />
                 </div>

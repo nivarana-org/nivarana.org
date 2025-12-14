@@ -71,6 +71,8 @@ function getMimeType(filename: string): string | null {
             return "application/pdf";
         case ".mp3":
             return "audio/mpeg";
+        case ".wav":
+            return "audio/wav";
         default:
             return null;
     }
