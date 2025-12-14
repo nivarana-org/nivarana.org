@@ -9,16 +9,17 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await auth.api.getSession({headers: await headers()});
+    const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
-      redirect("/sign-in")
+        redirect("/sign-in");
     }
     if (session && session.user.role !== "admin") {
-      return (
-        <div>
-          Sorry, you're not allowed to log-in
-        </div>
-      )
+        return (
+            <div>
+                Sorry, you're not allowed to log-in. If this is a mistake, talk
+                to you-know-who
+            </div>
+        );
     }
     return (
         <ClientRoot>
