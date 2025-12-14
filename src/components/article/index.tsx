@@ -11,6 +11,7 @@ import Link from "next/link";
 import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
+import AudioPlayer from "./AudioPlayer";
 
 function Article({ data }) {
     return (
@@ -90,6 +91,9 @@ function Article({ data }) {
                 </div>
                 {/* Post */}
                 <div className="md:basis-xl md:shrink-0">
+                    <AudioPlayer
+                        src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
+                    />
                     <BodyWithPopover body={data.description} />
                 </div>
                 {/* Side */}

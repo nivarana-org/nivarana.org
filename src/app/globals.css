@@ -88,3 +88,7 @@
   }
 
 }
+
+.audio-player.rap-container {
+    max-width: 100%;
+}

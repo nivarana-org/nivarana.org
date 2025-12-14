@@ -3,16 +3,24 @@ import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { getImageUploadDirectory } from "@/app/(admin)/admin/api/images/setup";
 
+const safe_subdirs = ["audio"];
+
+const sanitizedFile = (filePathSegments: string[]) => {
+    const fileName = filePathSegments[filePathSegments.length - 1];
+    const subdir = filePathSegments[filePathSegments.length - 2];
+    const dynamicFilesDir = getImageUploadDirectory();
+    const fullFilePath = safe_subdirs.includes(subdir)
+        ? path.join(dynamicFilesDir, subdir, fileName)
+        : path.join(dynamicFilesDir, fileName);
+    return { fileName, fullFilePath };
+};
+
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ path: string[] }> },
 ) {
     const { path: filePathSegments } = await params;
-    const fileName = filePathSegments[filePathSegments.length - 1];
-
-    const dynamicFilesDir = getImageUploadDirectory();
-
-    const fullFilePath = path.join(dynamicFilesDir, fileName);
+    const { fileName, fullFilePath } = sanitizedFile(filePathSegments);
 
     try {
         await fs.access(fullFilePath);
@@ -61,6 +69,8 @@ function getMimeType(filename: string): string | null {
             return "image/svg+xml";
         case ".pdf":
             return "application/pdf";
+        case ".mp3":
+            return "audio/mpeg";
         default:
             return null;
     }
