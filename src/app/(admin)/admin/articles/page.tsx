@@ -56,6 +56,9 @@ export default async function Page({}) {
                 <Link href={`/admin/articles/${nextCount}`}>
                     <Button>New Article</Button>
                 </Link>
+                <Link href={`/admin/articles/${nextCount}?type=photo-essay`}>
+                    <Button>New Photo Essay</Button>
+                </Link>
             </div>
             <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
                 <thead>
