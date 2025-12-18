@@ -4,6 +4,7 @@ import { getImageURLFromFileName } from "@/utils/paths";
 import { Box, Button, Grid, Modal } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { uploadImage } from "./image";
+import Image from "next/image";
 
 export default function ImagePicker({
     defaultValue,
@@ -88,17 +89,12 @@ export default function ImagePicker({
                     {images
                         ? images?.map((i) => {
                               return (
-                                  <Box
+                                  <Image
                                       key={i.filename}
-                                      component="img"
                                       src={getImageURLFromFileName(i.filename)}
                                       alt={`Image ${i.filename}`}
-                                      sx={{
-                                          width: "100%",
-                                          height: "auto", // Maintain aspect ratio
-                                          objectFit: "cover", // Fill the grid cell neatly
-                                          borderRadius: 1, // Optional: Add rounded corners
-                                      }}
+                                      width="200"
+                                      height="200"
                                       onClick={() => {
                                           setSelected(i.filename);
                                           setOpen(false);
