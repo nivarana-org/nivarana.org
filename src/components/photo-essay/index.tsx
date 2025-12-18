@@ -131,7 +131,7 @@ function PhotoEssay({ data, chapter }) {
                             {data.meta_description}
                         </div>
                         <div className="z-10 flex space-x-4 p-2 text-xl font-bold text-white">
-                            <ul className="z-10 flex  space-x-2 list-none items-center">
+                            <ul className="z-10 flex  space-x-2 list-none items-center flex-wrap">
                                 <NAuthors authors={data.authors} />
                                 <li>
                                     {moment(data.created_at).format(
