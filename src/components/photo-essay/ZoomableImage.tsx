@@ -14,7 +14,7 @@ const ZoomableImage = ({ src }) => {
                     alt={"Sorry, we are in the process of creating alt"}
                     width={1280}
                     height={900}
-                    className="inset-0 h-dvh w-full md:w-auto mx-auto object-cover"
+                    className="inset-0 w-full md:w-auto mx-auto object-cover"
                 />
             </div>
             {zoomedImage && (
