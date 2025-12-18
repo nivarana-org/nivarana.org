@@ -153,9 +153,6 @@ export default function ArticleEditPage({
                     }
                     className="text-bold"
                 ></Input>
-                <FormHelperText>
-                    This is the publicly visible title
-                </FormHelperText>
             </FormControl>
             <Divider className="my-4"></Divider>
             <FormControl>
@@ -168,11 +165,6 @@ export default function ArticleEditPage({
                         dispatch({ type: "path", value: e.target.value });
                     }}
                 ></Input>
-                <FormHelperText>
-                    {values.path
-                        ? `The article will be publicly accessible at https://nivarana.org/${type}/${values.path}`
-                        : "The link to the article"}
-                </FormHelperText>
             </FormControl>
 
             <Divider className="my-4"></Divider>
