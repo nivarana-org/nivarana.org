@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "addhusky": "npx husky init"
+    "addhusky": "npx husky init",
+    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,6 +29,7 @@
     "mysql2": "^3.16.0",
     "next": "16.1.0-canary.30",
     "objection": "^3.1.5",
+    "radash": "^12.1.1",
     "react": "19.2.3",
     "react-audio-play": "^1.0.4",
     "react-dom": "19.2.3",
@@ -55,6 +57,7 @@
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "kysely-codegen": "^0.19.0",
     "lint-staged": "^16.1.4",
     "postcss": "^8",
     "prettier": "^3.4.2",
