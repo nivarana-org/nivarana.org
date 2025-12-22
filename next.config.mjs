@@ -7,8 +7,6 @@ const nextConfig = {
         // PROBLEM: Fonts aren't created in build
         // inlineCss: true,
 
-        turbopackUseBuiltinBabel: true,
-
         // let's appear fancy in chrome at least
         viewTransition: true,
     },
