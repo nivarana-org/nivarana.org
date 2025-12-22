@@ -44,6 +44,8 @@ function Article({ data }) {
                 <ViewTransition name={`page-lead-image-${data.path}`}>
                     <div className="w-full md:w-1/2 md:shrink-0">
                         <Image
+                            priority
+                            fetchPriority="high"
                             src={getImageURLFromFileName(data.upload_image)}
                             alt={"Representative image for " + data.page_title}
                             width={2000}
