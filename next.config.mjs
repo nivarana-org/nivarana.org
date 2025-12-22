@@ -7,9 +7,6 @@ const nextConfig = {
         // PROBLEM: Fonts aren't created in build
         // inlineCss: true,
 
-        // to allow frequent builds on dev without worry
-        turbopackFileSystemCacheForDev: true,
-
         turbopackUseBuiltinBabel: true,
 
         // let's appear fancy in chrome at least
