@@ -74,7 +74,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "better-auth": {
-      "next": "^16.1.0-canary.19"
+      "next": "^16.1.1-canary.3"
     }
   }
 }
