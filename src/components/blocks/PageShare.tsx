@@ -4,7 +4,6 @@ import {
     FacebookShareButton,
     LinkedinShareButton,
     PinterestShareButton,
-    PocketShareButton,
     RedditShareButton,
     TelegramShareButton,
     TumblrShareButton,
@@ -58,9 +57,6 @@ export default function PageShare({
             <PinterestShareButton url={url} media={media}>
                 <PinterestIcon size={32} round={true}></PinterestIcon>
             </PinterestShareButton>
-            <PocketShareButton url={url}>
-                <PocketIcon size={32} round={true}></PocketIcon>
-            </PocketShareButton>
             <TelegramShareButton url={url}>
                 <TelegramIcon size={32} round={true}></TelegramIcon>
             </TelegramShareButton>
