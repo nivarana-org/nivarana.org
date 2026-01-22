@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest",
     "addhusky": "npx husky init",
     "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts"
@@ -44,7 +44,6 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.32.0",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^25.0.9",
