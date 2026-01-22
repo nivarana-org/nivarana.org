@@ -282,16 +282,18 @@ export const addOrEditPost = asAdmin(async (post: Article) => {
     });
 });
 
-export const editPostCategory = asAdmin( async (postId: number, categoryId: number) => {
-    return await db.transaction(async (trx) => {
-        await trx("post_relations")
-            .where({ post_id: postId, relation_type: "category" })
-            .update("relation_id", categoryId);
-        await trx("blogs")
-            .where({ id: postId })
-            .update("category_name", `${categoryId}`);
-    });
-});
+export const editPostCategory = asAdmin(
+    async (postId: number, categoryId: number) => {
+        return await db.transaction(async (trx) => {
+            await trx("post_relations")
+                .where({ post_id: postId, relation_type: "category" })
+                .update("relation_id", categoryId);
+            await trx("blogs")
+                .where({ id: postId })
+                .update("category_name", `${categoryId}`);
+        });
+    },
+);
 
 export const addCategory = asAdmin(async (name: string, path: string) => {
     return await db("categories").insert({
@@ -505,14 +507,16 @@ export const getWordCloud = async () => {
     return fetchWordCloud(db);
 };
 
-export const changeArticlePath = asAdmin(async (oldPath: string, newPath: string) => {
-    const result = await Blog.query()
-        .where({ path: oldPath })
-        .update({ path: newPath });
-    await db("redirects").insert({
-        source: oldPath,
-        destination: `/article/${newPath}`,
-        type: "permanent",
-    });
-    return result;
-});
+export const changeArticlePath = asAdmin(
+    async (oldPath: string, newPath: string) => {
+        const result = await Blog.query()
+            .where({ path: oldPath })
+            .update({ path: newPath });
+        await db("redirects").insert({
+            source: oldPath,
+            destination: `/article/${newPath}`,
+            type: "permanent",
+        });
+        return result;
+    },
+);
