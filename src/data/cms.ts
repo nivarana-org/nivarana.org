@@ -368,10 +368,6 @@ export const getCategoryByPath = async (path: string) => {
     return category;
 };
 
-export const getWebPushSubscriberCount = async () => {
-    return getTableCount("push_subscriptions");
-};
-
 export const getPeopleCount = async () => {
     return getTableCount("authors");
 };

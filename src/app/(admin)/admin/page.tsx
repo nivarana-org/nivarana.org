@@ -37,19 +37,13 @@ function DashboardItem({
 }
 
 export default async function Page() {
-    const [
-        newsletterSubscriberCount,
-        articleCount,
-        webNotificationSubscriberCount,
-        peopleCount,
-        viewsCount,
-    ] = await Promise.all([
-        getSubscribersCount(),
-        getArticlesCount(),
-        getWebPushSubscriberCount(),
-        getPeopleCount(),
-        getTotalViewsCount(),
-    ]);
+    const [newsletterSubscriberCount, articleCount, peopleCount, viewsCount] =
+        await Promise.all([
+            getSubscribersCount(),
+            getArticlesCount(),
+            getPeopleCount(),
+            getTotalViewsCount(),
+        ]);
 
     return (
         <div className="max-w-(--breakpoint-md) mx-auto">
@@ -76,11 +70,6 @@ export default async function Page() {
                     name="Newsletter Subscribers"
                     link="/admin/newsletter"
                     count={newsletterSubscriberCount}
-                ></DashboardItem>
-                <DashboardItem
-                    name="Web Notifications Subscribers"
-                    link="/admin/push-notifications"
-                    count={webNotificationSubscriberCount}
                 ></DashboardItem>
             </div>
             <hr />
