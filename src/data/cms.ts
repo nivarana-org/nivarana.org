@@ -342,14 +342,11 @@ export const getAuthorByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
-                $modify: ["onlyPublished"],
+                $modify: ["onlyPublished", "orderByCreatedDesc"],
                 categories: true,
                 tags: true,
                 authors: true,
             },
-        })
-        .modifyGraph("articles", (builder) => {
-            builder.orderBy("created_at", "desc");
         });
     return author;
 };
@@ -360,14 +357,11 @@ export const getCategoryByPath = async (path: string) => {
         .first()
         .withGraphFetched({
             articles: {
-                $modify: ["onlyPublished"],
+                $modify: ["onlyPublished", "orderByCreatedDesc"],
                 categories: true,
                 tags: true,
                 authors: true,
             },
-        })
-        .modifyGraph("articles", (builder) => {
-            builder.orderBy("created_at", "desc");
         });
     return category;
 };

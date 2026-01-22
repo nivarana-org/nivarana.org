@@ -60,5 +60,8 @@ export default class Blog extends Model {
         onlyPublished(builder) {
             builder.where("status", "PUBLISHED");
         },
+        orderByCreatedDesc(builder) {
+            builder.orderBy("created_at", "desc");
+        },
     };
 }
