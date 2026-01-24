@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Button,
     Divider,
@@ -23,13 +23,11 @@ const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
 export default function AuthorEditPage({ author }: { author: Author }) {
     const [submitting, setSubmitting] = useState(false);
     const [name, setName] = useState(author?.name || "");
-    const [path, setPath] = useState(author?.path || "");
-    const [generatePath, setGeneratePath] = useState(!Boolean(author?.path));
-    const [pathIsReadOnly, setPathReadOnly] = useState(Boolean(author?.path));
-    useEffect(() => {
-        if (!generatePath) return;
-        setPath(sluggify(name));
-    }, [generatePath, name]);
+    const [fixedPath, setFixedPath] = useState(author?.path);
+    const [manualPath, setManualPath] = useState("");
+
+    const path = fixedPath || manualPath || sluggify(name);
+
     const [image, setImage] = useState(author?.image);
     const [description, setDescription] = useState(author?.description);
     return (
@@ -47,7 +45,7 @@ export default function AuthorEditPage({ author }: { author: Author }) {
                 if (!status) {
                     alert(message);
                 } else {
-                    setPathReadOnly(true);
+                    setFixedPath(path);
                     if (
                         confirm(
                             "Author updated successfully. Open the public page now?",
@@ -74,12 +72,11 @@ export default function AuthorEditPage({ author }: { author: Author }) {
             <FormControl>
                 <FormLabel>Slug/Link/Path</FormLabel>
                 <Input
-                    readOnly={pathIsReadOnly}
+                    readOnly={Boolean(fixedPath)}
                     name="path"
                     value={path}
                     onChange={(e) => {
-                        setGeneratePath(false);
-                        setPath(e.target.value);
+                        setManualPath(e.target.value);
                     }}
                 ></Input>
                 <FormHelperText>
