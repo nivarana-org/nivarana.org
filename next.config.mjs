@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    allowedDevOrigins: ['freedom.tail167e0.ts.net'],
+    allowedDevOrigins: ["freedom.tail167e0.ts.net"],
     experimental: {
         inlineCss: true,
 
@@ -15,61 +15,61 @@ const nextConfig = {
             {
                 source: "/about-us",
                 destination: "/about",
-                permanent: true
+                permanent: true,
             },
             {
                 source: "/singleBlogDetails/:slug",
                 destination: "/article/:slug",
-                permanent: true
+                permanent: true,
             },
             {
                 source: "/authorDetails/:slug",
                 destination: "/author/:slug",
-                permanent: true
+                permanent: true,
             },
             {
                 source: "/staticPage/contact-us",
                 destination: "/contact",
-                permanent: false
+                permanent: false,
             },
             {
                 source: "/staticPage/about-us",
                 destination: "/about",
-                permanent: false
+                permanent: false,
             },
             {
                 source: "/staticPage/submission-guidelines",
                 destination: "/submission-guidelines",
-                permanent: false
+                permanent: false,
             },
-        ]
+        ];
     },
-    serverExternalPackages: ['knex'],
+    serverExternalPackages: ["knex"],
     images: {
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: 'blogsadmin.nivarana.org',
-                port: '',
+                protocol: "https",
+                hostname: "blogsadmin.nivarana.org",
+                port: "",
             },
             {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '3000'
+                protocol: "http",
+                hostname: "localhost",
+                port: "3000",
             },
             {
-                protocol: 'https',
-                hostname: 'nivarana.org',
-                port: '',
+                protocol: "https",
+                hostname: "nivarana.org",
+                port: "",
             },
             {
-                protocol: 'https',
-                hostname: '**.googleusercontent.com'
-            }
+                protocol: "https",
+                hostname: "**.googleusercontent.com",
+            },
         ],
-        dangerouslyAllowLocalIP: true
+        dangerouslyAllowLocalIP: true,
     },
-    reactCompiler: true
+    reactCompiler: true,
 };
 
 export default nextConfig;

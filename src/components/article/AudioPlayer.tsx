@@ -13,7 +13,7 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
             if (s.status === 200) {
                 setSrcValid(true);
             } else {
-              setSrcValid(false);
+                setSrcValid(false);
             }
         });
     }, [src]);
