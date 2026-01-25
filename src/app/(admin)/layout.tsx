@@ -16,7 +16,7 @@ export default async function RootLayout({
     if (session && session.user.role !== "admin") {
         return (
             <div>
-                Sorry, you're not allowed to log-in. If this is a mistake, talk
+                Sorry, you are not allowed to log-in. If this is a mistake, talk
                 to you-know-who
             </div>
         );

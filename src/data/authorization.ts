@@ -3,8 +3,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const asAdmin =
-    (action: any) =>
-    async (...args: any[]) => {
+    <A extends unknown[], R>(action: (...args: A) => R) =>
+    async (...args: A): Promise<R> => {
         const session = await auth.api.getSession({
             headers: await headers(),
         });
