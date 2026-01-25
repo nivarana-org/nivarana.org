@@ -13,7 +13,6 @@ import {
     FacebookIcon,
     LinkedinIcon,
     PinterestIcon,
-    PocketIcon,
     RedditIcon,
     TelegramIcon,
     TumblrIcon,

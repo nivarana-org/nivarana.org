@@ -1,5 +1,4 @@
 import { getArticlesOverview } from "@/data/cms";
-import Link from "next/link";
 import { PathEditor } from "./path-editor";
 
 function LinkEditor({ a }) {

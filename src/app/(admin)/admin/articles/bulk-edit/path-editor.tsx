@@ -27,14 +27,14 @@ export function PathEditor({ id, title, path }: Props) {
                 type="text"
             ></input>
             <Button
-                onClick={(e) => {
+                onClick={() => {
                     setPath(sluggify(title));
                 }}
             >
                 Sluggify
             </Button>
             <Button
-                onClick={(e) => {
+                onClick={() => {
                     changeArticlePath(originalPath, currentPath);
                     setOriginalPath(currentPath);
                 }}

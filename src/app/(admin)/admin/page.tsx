@@ -5,7 +5,6 @@ import {
     getPeopleCount,
     getSubscribersCount,
     getTotalViewsCount,
-    getWebPushSubscriberCount,
 } from "@/data/cms";
 import Link from "next/link";
 import { Suspense } from "react";
