@@ -25,7 +25,7 @@ export default async function RootLayout({
         <ClientRoot>
             <Header
                 email={session?.user.email}
-                picture={session?.user.picture}
+                picture={session?.user.image ?? undefined}
             />
             <hr />
             {children}

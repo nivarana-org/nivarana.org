@@ -4,7 +4,7 @@ import logo from "../../../public/assets/logo.png";
 
 function Header({ email, picture }: { email: string; picture?: string }) {
     return (
-        <header className="flex gap-1 items-center justify-center">
+        <header className="flex flex-row gap-1 items-stretch justify-between max-w-(--breakpoint-md) mx-auto">
             <Link href="/admin">
                 <Image
                     src={logo}
@@ -20,8 +20,17 @@ function Header({ email, picture }: { email: string; picture?: string }) {
                 Public
             </Link>
             <Link href="/admin/profile">
-                {email}{" "}
-                {picture ? <img src="picture" alt="profile pic"></img> : null}
+                <div className="flex flex-row items-center">
+                    {email}{" "}
+                    {picture ? (
+                        <Image
+                            src={picture}
+                            alt="profile pic"
+                            width={40}
+                            height={40}
+                        ></Image>
+                    ) : null}
+                </div>
             </Link>
         </header>
     );

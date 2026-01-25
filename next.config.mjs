@@ -61,6 +61,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'nivarana.org',
                 port: '',
+            },
+            {
+                protocol: 'https',
+                hostname: '**.googleusercontent.com'
             }
         ],
         dangerouslyAllowLocalIP: true
