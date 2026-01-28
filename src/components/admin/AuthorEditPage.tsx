@@ -23,6 +23,8 @@ const ArticleEditor = dynamic(() => import("./ArticleEditor"), {
 export default function AuthorEditPage({ author }: { author: Author }) {
     const [submitting, setSubmitting] = useState(false);
     const [name, setName] = useState(author?.name || "");
+    const [email, setEmail] = useState(author?.email || "");
+
     const [fixedPath, setFixedPath] = useState(author?.path);
     const [manualPath, setManualPath] = useState("");
 
@@ -39,6 +41,7 @@ export default function AuthorEditPage({ author }: { author: Author }) {
                 data.append("id", `${author.id}`);
                 data.append("description", description);
                 data.append("image", image);
+                data.append("email", email);
                 setSubmitting(true);
                 const { status, message } = await addOrEditAuthorAction(data);
                 setSubmitting(false);
@@ -68,6 +71,22 @@ export default function AuthorEditPage({ author }: { author: Author }) {
                     This is the publicly visible name
                 </FormHelperText>
             </FormControl>
+
+            <Divider className="my-4"></Divider>
+            <FormControl>
+                <FormLabel className="font-bold">Author Email</FormLabel>
+                <Input
+                    name="email"
+                    value={email}
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="text-bold"
+                ></Input>
+                <FormHelperText>
+                    Email will be publicly visible. Ensure consent?
+                </FormHelperText>
+            </FormControl>
+
             <Divider className="my-4"></Divider>
             <FormControl>
                 <FormLabel>Slug/Link/Path</FormLabel>

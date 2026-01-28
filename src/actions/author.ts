@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 export const addOrEditAuthorAction = async (formData: FormData) => {
     const id = formData.get("id");
     const name = formData.get("name");
+    const email = formData.get("email");
     const description = formData.get("description");
     const image = formData.get("image");
     const path = formData.get("path");
@@ -13,6 +14,7 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
         id,
         path,
         name,
+        email,
         description,
         image,
         title,

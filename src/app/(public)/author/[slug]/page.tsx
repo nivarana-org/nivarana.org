@@ -76,6 +76,11 @@ async function AuthorDetails({ data }) {
                     }}
                 />
             )}
+            {data.email != null && (
+                <p>
+                    Email: <a href={`mailto:${data.email}`}>{data.email}</a>
+                </p>
+            )}
         </div>
     );
 }
