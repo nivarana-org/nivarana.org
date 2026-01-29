@@ -4,6 +4,7 @@ import Sidebar from "@/components/sidebar";
 import { getArticleByPath, getRedirect, searchArticles } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
+import moment from "moment";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
@@ -79,6 +80,12 @@ export async function generateMetadata(
         title: post.page_title,
         description: post.meta_description ?? (await parent).description,
         keywords: post.meta_keyword ?? (await parent).keywords,
+        other: {
+            citation_title: post.page_title,
+            citation_date: moment(post.scheduled_time).format("YYYY-MM-DD"),
+            citation_journal_title: "Nivarana",
+            citation_authors: post.authors.map((a) => a.name).join("; "),
+        },
         openGraph: {
             images: [optimizedImageUrl],
         },
