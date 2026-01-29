@@ -85,6 +85,7 @@ export async function generateMetadata(
             citation_date: moment(post.scheduled_time).format("YYYY-MM-DD"),
             citation_journal_title: "Nivarana",
             citation_authors: post.authors.map((a) => a.name).join("; "),
+            citation_author: post.authors.map((a) => a.name),
         },
         openGraph: {
             images: [optimizedImageUrl],
