@@ -29,7 +29,10 @@ export const POST = async (req: NextRequest) => {
     const extension = getExtension(file.name);
     const filename = `${time}.${extension}`;
     const uploadsDirectory = getImageUploadDirectory();
-    const filePath = path.join(uploadsDirectory, filename);
+    const filePath = path.join(
+        /*turbopackIgnore: true*/ uploadsDirectory,
+        filename,
+    );
     try {
         await writeFile(filePath, buffer);
         return NextResponse.json({
