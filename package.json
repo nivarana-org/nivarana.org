@@ -27,12 +27,12 @@
     "motion": "^12.28.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.16.1",
-    "next": "16.1.1-canary.36",
+    "next": "16.2.0-canary.52",
     "objection": "^3.1.5",
     "radash": "^12.1.1",
-    "react": "19.2.3",
+    "react": "19.2.4",
     "react-audio-play": "^1.0.4",
-    "react-dom": "19.2.3",
+    "react-dom": "19.2.4",
     "react-share": "^5.1.0",
     "react-tagcloud": "^2.3.3",
     "server-only": "^0.0.1",
@@ -46,11 +46,11 @@
     "@eslint/js": "^9.32.0",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^25.0.9",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.32.0",
-    "eslint-config-next": "16.1.1-canary.36",
+    "eslint-config-next": "16.2.0-canary.52",
     "eslint-config-prettier": "^10.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
@@ -69,10 +69,10 @@
     "*.{js,tsx,ts,css,md}": "prettier --write"
   },
   "overrides": {
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "better-auth": {
-      "next": "^16.1.1-canary.36"
+      "next": "^16.2.0-canary.52"
     }
   }
 }
