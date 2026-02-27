@@ -35,31 +35,31 @@ export default function PageShare({
             : "p-2 flex flex-wrap justify-start md:justify-center gap-1";
     return (
         <div className={classes}>
-            <EmailShareButton url={url}>
+            <EmailShareButton htmlTitle="Email" url={url}>
                 <EmailIcon size={32} round={true}></EmailIcon>
             </EmailShareButton>
-            <WhatsappShareButton url={url}>
+            <WhatsappShareButton htmlTitle="WhatsApp" url={url}>
                 <WhatsappIcon size={32} round={true}></WhatsappIcon>
             </WhatsappShareButton>
-            <TwitterShareButton url={url}>
+            <TwitterShareButton htmlTitle="Twitter" url={url}>
                 <TwitterIcon size={32} round={true}></TwitterIcon>
             </TwitterShareButton>
-            <RedditShareButton url={url}>
+            <RedditShareButton htmlTitle="Reddit" url={url}>
                 <RedditIcon size={32} round={true}></RedditIcon>
             </RedditShareButton>
-            <FacebookShareButton url={url}>
+            <FacebookShareButton htmlTitle="Facebook" url={url}>
                 <FacebookIcon size={32} round={true}></FacebookIcon>
             </FacebookShareButton>
-            <LinkedinShareButton url={url}>
+            <LinkedinShareButton htmlTitle="LinkedIn" url={url}>
                 <LinkedinIcon size={32} round={true}></LinkedinIcon>
             </LinkedinShareButton>
-            <PinterestShareButton url={url} media={media}>
+            <PinterestShareButton htmlTitle="Pinterest" url={url} media={media}>
                 <PinterestIcon size={32} round={true}></PinterestIcon>
             </PinterestShareButton>
-            <TelegramShareButton url={url}>
+            <TelegramShareButton htmlTitle="Telegram" url={url}>
                 <TelegramIcon size={32} round={true}></TelegramIcon>
             </TelegramShareButton>
-            <TumblrShareButton url={url}>
+            <TumblrShareButton htmlTitle="Tumblr" url={url}>
                 <TumblrIcon size={32} round={true}></TumblrIcon>
             </TumblrShareButton>
         </div>
