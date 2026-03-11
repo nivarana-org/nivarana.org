@@ -73,6 +73,7 @@ export default async function Page() {
             </div>
             <hr />
             <div className="my-2 p2 flex gap-2">
+                <DashboardItem name="Pages" link="/admin/pages"></DashboardItem>
                 <DashboardItem
                     name="Categories"
                     link="/admin/categories"

@@ -96,6 +96,14 @@ export const getArticlesOverview = async () => {
     return db<Article>("blogs").select("*").orderBy("id", "desc");
 };
 
+export const getPagesOverview = async () => {
+    return db("static_pages").select("*").orderBy("id", "asc");
+};
+
+export const getPage = async (id: number) => {
+    return db("static_pages").select("*").where("id", id).first();
+};
+
 export const getAuthorsOverview = async () => {
     return db<Author>("authors")
         .select({
@@ -337,6 +345,37 @@ export const getPageByPath = async (path: string) => {
         .first();
     return page;
 };
+
+export interface StaticPage {
+    id?: number;
+    page_name: string;
+    page_title: string;
+    description: string;
+}
+
+export const addOrEditPage = asAdmin(async (page: StaticPage) => {
+    const timestamp = new Date(Date.now());
+
+    const [pageId] = await db("static_pages")
+        .insert({
+            id: page.id,
+            page_name: page.page_name,
+            page_title: page.page_title,
+            description: page.description,
+            created_at: timestamp,
+            updated_at: timestamp,
+        })
+        .onConflict("id")
+        .merge({
+            page_name: page.page_name,
+            page_title: page.page_title,
+            description: page.description,
+            updated_at: timestamp,
+        })
+        .returning("id");
+
+    return pageId;
+});
 
 export const getAuthorByPath = async (path: string) => {
     const author = await Author.query()
