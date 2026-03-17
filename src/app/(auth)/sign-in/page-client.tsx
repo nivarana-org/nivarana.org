@@ -4,11 +4,17 @@ import { Button } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function PageClient() {
+type Props = {
+    returnUrl?: string;
+};
+
+export default function PageClient({ returnUrl }: Props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const callbackUrl = returnUrl || "/";
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,7 +24,7 @@ export default function PageClient() {
         const { error } = await authClient.signIn.email({
             email,
             password,
-            callbackURL: "/admin",
+            callbackURL: callbackUrl,
         });
 
         if (error) {
@@ -70,7 +76,7 @@ export default function PageClient() {
                 onClick={async () => {
                     await authClient.signIn.social({
                         provider: "google",
-                        callbackURL: "/admin",
+                        callbackURL: callbackUrl,
                     });
                 }}
             >
@@ -101,7 +107,10 @@ export default function PageClient() {
             </Button>
             <div className="text-center mt-5">
                 Don&apos;t have an account?{" "}
-                <Link className="text-blue-500" href="/sign-up">
+                <Link
+                    className="text-blue-500"
+                    href={`/sign-up${returnUrl ? `?return=${encodeURIComponent(returnUrl)}` : ""}`}
+                >
                     Sign-up
                 </Link>
             </div>

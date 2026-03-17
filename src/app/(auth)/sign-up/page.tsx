@@ -1,5 +1,10 @@
 import PageClient from "./page-client";
 
-export default function Page() {
-    return <PageClient />;
+type Props = {
+    searchParams: Promise<{ return?: string }>;
+};
+
+export default async function Page({ searchParams }: Props) {
+    const { return: returnUrl } = await searchParams;
+    return <PageClient returnUrl={returnUrl} />;
 }

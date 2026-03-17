@@ -7,7 +7,12 @@ export async function proxy(request: NextRequest) {
         headers: await headers(),
     });
     if (!session) {
-        return NextResponse.redirect(new URL("/sign-in", request.url));
+        return NextResponse.redirect(
+            new URL(
+                `/sign-in?return=${encodeURIComponent("/admin")}`,
+                request.url,
+            ),
+        );
     }
     return NextResponse.next();
 }
