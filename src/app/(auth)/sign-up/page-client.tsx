@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function PageClient() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -15,7 +16,8 @@ export default function PageClient() {
         setError("");
         setLoading(true);
 
-        const { error } = await authClient.signIn.email({
+        const { error } = await authClient.signUp.email({
+            name,
             email,
             password,
             callbackURL: "/admin",
@@ -23,7 +25,12 @@ export default function PageClient() {
 
         if (error) {
             console.log(error);
-            setError(error.message || "Sign in failed");
+            if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+                setError(
+                    `This email address was used previously via a different login mechanism, like "Sign-in with Google". Sign-in with the same mechanism below. If you want to start using a password to sign-in, you can do so in your profile after you sign-in with that mechanism.`,
+                );
+            }
+            // setError(error.message || "Signup failed");
         }
         setLoading(false);
     };
@@ -31,9 +38,17 @@ export default function PageClient() {
     return (
         <div className="mt-10 w-128 mx-auto">
             <h1 className="text-2xl font-bold text-center mb-6">
-                Sign In to Nivarana
+                Sign Up for a Nivarana account
             </h1>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-6">
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border rounded"
+                />
                 <input
                     type="email"
                     placeholder="Email"
@@ -57,7 +72,7 @@ export default function PageClient() {
                     disabled={loading}
                     className="w-full"
                 >
-                    {loading ? "Signing in..." : "Sign in with Email"}
+                    {loading ? "Signing up..." : "Sign up with Email"}
                 </Button>
             </form>
             <div className="flex items-center gap-3 mb-6">
@@ -97,12 +112,12 @@ export default function PageClient() {
                         d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
                     ></path>
                 </svg>
-                <span>Sign in with Google</span>
+                <span>Sign up with Google</span>
             </Button>
             <div className="text-center mt-5">
-                Don&apos;t have an account?{" "}
-                <Link className="text-blue-500" href="/sign-up">
-                    Sign-up
+                Already have an account?{" "}
+                <Link className="text-blue-500" href="/sign-in">
+                    Sign-in
                 </Link>
             </div>
         </div>
