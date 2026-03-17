@@ -11,7 +11,7 @@ export default async function RootLayout({
 }>) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
-        redirect(`/sign-in?return=${encodeURIComponent("/admin")}`);
+        redirect(`/sign-in?return=/admin`);
     }
     if (session && session.user.role !== "admin") {
         return (

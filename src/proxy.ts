@@ -8,10 +8,7 @@ export async function proxy(request: NextRequest) {
     });
     if (!session) {
         return NextResponse.redirect(
-            new URL(
-                `/sign-in?return=${encodeURIComponent("/admin")}`,
-                request.url,
-            ),
+            new URL(`/sign-in?return=/admin}`, request.url),
         );
     }
     return NextResponse.next();
