@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../public/assets/logo.png";
+import { LogOut } from "./LogOut";
 
 function Header({ email, picture }: { email: string; picture?: string }) {
     return (
@@ -19,6 +20,7 @@ function Header({ email, picture }: { email: string; picture?: string }) {
             >
                 Public
             </Link>
+            <LogOut></LogOut>
             <Link href="/admin/profile">
                 <div className="flex flex-row items-center">
                     {email}{" "}
