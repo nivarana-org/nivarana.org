@@ -1,7 +1,9 @@
+import "server-only";
 import { betterAuth } from "better-auth";
 import { customSession } from "better-auth/plugins";
 import { createPool } from "mysql2/promise";
 import { headers } from "next/headers";
+import { sendEmail } from "./mail";
 
 export const auth = betterAuth({
     database: createPool({
@@ -29,6 +31,16 @@ export const auth = betterAuth({
     ],
     emailAndPassword: {
         enabled: true,
+        requireEmailVerification: true,
+    },
+    emailVerification: {
+        sendVerificationEmail: async ({ user, url, token }, request) => {
+            void sendEmail({
+                to: user.email,
+                subject: "Verify your email address",
+                text: `Click the link to verify your email: ${url}`,
+            });
+        },
     },
     socialProviders: {
         google: {
