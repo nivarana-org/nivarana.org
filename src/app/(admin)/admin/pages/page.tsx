@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
-import Image from "next/image";
 import { getPagesOverview } from "@/data/cms";
 
 type Page = {
@@ -12,7 +11,7 @@ type Page = {
     description: string;
 };
 
-function PageRow({ id, page_title, page_name, description }: Page) {
+function PageRow({ id, page_title, page_name }: Page) {
     const adminLink = `/admin/pages/${id}`;
     const publicLink = `/${page_name}`;
     return (
