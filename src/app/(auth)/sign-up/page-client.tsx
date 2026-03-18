@@ -1,5 +1,6 @@
 "use client";
 import { authClient } from "@/utils/auth-client";
+import { getReturnURL } from "@/utils/paths";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
@@ -22,21 +23,36 @@ export default function PageClient({ returnUrl }: Props) {
         setError("");
         setLoading(true);
 
-        const { error } = await authClient.signUp.email({
+        const { error, data } = await authClient.signUp.email({
             name,
             email,
             password,
             callbackURL: callbackUrl,
         });
 
+        console.log({ data, error });
+
         if (error) {
-            console.log(error);
             if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
                 setError(
-                    `This email address was used previously via a different login mechanism, like "Sign-in with Google". Sign-in with the same mechanism below. If you want to start using a password to sign-in, you can do so in your profile after you sign-in with that mechanism.`,
+                    `This email address was used previously via a different login mechanism, like "Sign-in with Google". ` +
+                        `Sign-in with the same mechanism below. ` +
+                        `If you want to start using a password to sign-in, ` +
+                        `you can do so in your profile after you sign-in with that mechanism.`,
                 );
+            } else {
+                setError(error.message || "Signup failed");
             }
-            // setError(error.message || "Signup failed");
+        } else if (data?.token === null) {
+            if (data?.user?.emailVerified === false) {
+                setError(
+                    `Please check your email inbox to verify your email and proceed from there. ` +
+                        `Unless! If you signed-in via Google earlier with this same email address, you won't receive any email, ` +
+                        `and you have to continue signing-in via google by clicking the button below`,
+                );
+            } else {
+                setError(`Could not sign up.`);
+            }
         }
         setLoading(false);
     };
@@ -118,13 +134,13 @@ export default function PageClient({ returnUrl }: Props) {
                         d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
                     ></path>
                 </svg>
-                <span>Sign up with Google</span>
+                <span>Sign in with Google</span>
             </Button>
             <div className="text-center mt-5">
                 Already have an account?{" "}
                 <Link
                     className="text-blue-500"
-                    href={`/sign-in${returnUrl ? `?return=${encodeURIComponent(returnUrl)}` : ""}`}
+                    href={getReturnURL("/sign-in", returnUrl)}
                 >
                     Sign-in
                 </Link>

@@ -25,3 +25,11 @@ export const getArticlePublicURL = (data: GetURLData) => {
 export const getArticleSlug = (data: GetURLData) => {
     return `/${data.category.path}/${data.path}`;
 };
+
+export const getReturnURL = (base: string, returnURL: string | undefined) => {
+    var url = base;
+    if (returnURL) {
+        url += "?return=" + encodeURIComponent(returnURL);
+    }
+    return url;
+};

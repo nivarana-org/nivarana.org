@@ -1,5 +1,6 @@
 "use client";
 import { authClient } from "@/utils/auth-client";
+import { getReturnURL } from "@/utils/paths";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
@@ -109,7 +110,7 @@ export default function PageClient({ returnUrl }: Props) {
                 Don&apos;t have an account?{" "}
                 <Link
                     className="text-blue-500"
-                    href={`/sign-up${returnUrl ? `?return=${encodeURIComponent(returnUrl)}` : ""}`}
+                    href={getReturnURL("/sign-up", returnUrl)}
                 >
                     Sign-up
                 </Link>
