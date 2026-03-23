@@ -373,6 +373,15 @@ export default function ProfilePageClient({ user }: { user: User }) {
                         password to sign in with your email.
                     </p>
                     <form onSubmit={handleSetPassword} className="space-y-4">
+                        <input
+                            type="email"
+                            name="username"
+                            defaultValue={user.email}
+                            autoComplete="username"
+                            className="hidden"
+                            readOnly
+                            tabIndex={-1}
+                        />
                         <div>
                             <label className="block text-sm font-medium text-gray-600 mb-1">
                                 New Password
@@ -386,6 +395,7 @@ export default function ProfilePageClient({ user }: { user: User }) {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-nivarana-blue"
                                 required
                                 minLength={8}
+                                autoComplete="new-password"
                             />
                             <p className="text-xs text-gray-500 mt-1">
                                 Minimum 8 characters
@@ -433,6 +443,15 @@ export default function ProfilePageClient({ user }: { user: User }) {
                         Change Password
                     </h2>
                     <form onSubmit={handlePasswordChange} className="space-y-4">
+                        <input
+                            type="email"
+                            name="username"
+                            defaultValue={user.email}
+                            autoComplete="username"
+                            className="hidden"
+                            readOnly
+                            tabIndex={-1}
+                        />
                         <div>
                             <label className="block text-sm font-medium text-gray-600 mb-1">
                                 Current Password
@@ -445,6 +464,7 @@ export default function ProfilePageClient({ user }: { user: User }) {
                                 }
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-nivarana-blue"
                                 required
+                                autoComplete="current-password"
                             />
                         </div>
                         <div>
@@ -458,6 +478,7 @@ export default function ProfilePageClient({ user }: { user: User }) {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-nivarana-blue"
                                 required
                                 minLength={8}
+                                autoComplete="new-password"
                             />
                             <p className="text-xs text-gray-500 mt-1">
                                 Minimum 8 characters
@@ -475,6 +496,7 @@ export default function ProfilePageClient({ user }: { user: User }) {
                                 }
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-nivarana-blue"
                                 required
+                                autoComplete="new-password"
                             />
                         </div>
                         <button
