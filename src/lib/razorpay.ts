@@ -1,3 +1,4 @@
+import "server-only";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 
@@ -20,29 +21,6 @@ export async function fetchSubscriptionFromRazorpay(
         console.error("Error fetching subscription from Razorpay:", error);
         return null;
     }
-}
-
-export const PLAN_IDS = {
-    "100": process.env.RAZORPAY_PLAN_100 || "",
-    "250": process.env.RAZORPAY_PLAN_250 || "",
-    "500": process.env.RAZORPAY_PLAN_500 || "",
-    "1000": process.env.RAZORPAY_PLAN_1000 || "",
-} as const;
-
-export type PlanPrice = keyof typeof PLAN_IDS;
-
-export function getPlanIdByPrice(price: number): string | undefined {
-    return PLAN_IDS[price as unknown as PlanPrice];
-}
-
-export function getPlanIdToPriceMapping(): Record<string, number> {
-    const mapping: Record<string, number> = {};
-    for (const [price, planId] of Object.entries(PLAN_IDS)) {
-        if (planId) {
-            mapping[planId] = Number(price);
-        }
-    }
-    return mapping;
 }
 
 export function verifyPaymentSignature({
