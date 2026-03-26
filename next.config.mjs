@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    allowedDevOrigins: ["freedom.tail167e0.ts.net"],
+    allowedDevOrigins: [
+        "freedom.tail167e0.ts.net",
+        "kantarimulak.tail167e0.ts.net",
+    ],
     experimental: {
         inlineCss: true,
 
