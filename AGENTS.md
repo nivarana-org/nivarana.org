@@ -33,9 +33,7 @@ npm run test -- --run            # Run once (no watch mode)
 
 ### Database
 
-```bash
-npm run db:codegen   # Regenerate Kysely types from DB schema
-```
+For database migrations, generate the relevant SQL and ask the user to run it manually. Do not try to do migrations on your own.
 
 ## Code Style Guidelines
 
