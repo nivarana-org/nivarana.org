@@ -5,265 +5,219 @@
 
 import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-    T extends ColumnType<infer S, infer I, infer U>
-        ? ColumnType<S, I | undefined, U>
-        : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
-export interface Admins {
-    created_at: Generated<Date | null>;
-    email: string;
-    id: number;
-    password: string;
-    updated_at: Generated<Date | null>;
+export interface Account {
+  accessToken: Generated<string | null>;
+  accessTokenExpiresAt: Generated<Date>;
+  accountId: string;
+  createdAt: Generated<Date>;
+  id: string;
+  idToken: Generated<string | null>;
+  password: Generated<string | null>;
+  providerId: string;
+  refreshToken: Generated<string | null>;
+  refreshTokenExpiresAt: Generated<Date>;
+  scope: Generated<string | null>;
+  updatedAt: Generated<Date>;
+  userId: string;
 }
 
 export interface Authors {
-    author_views: Generated<number>;
-    created_at: Generated<Date>;
-    description: Generated<string | null>;
-    email: Generated<string | null>;
-    id: Generated<number>;
-    image: Generated<string | null>;
-    image_text: Generated<string | null>;
-    meta_description: Generated<string | null>;
-    meta_keyword: Generated<string | null>;
-    meta_title: Generated<string | null>;
-    name: string;
-    path: Generated<string | null>;
-    title: Generated<string | null>;
-    updated_at: Generated<Date>;
-}
-
-export interface BlogComments {
-    blog_id: number;
-    created_at: Generated<Date>;
-    id: Generated<number>;
-    updated_at: Generated<Date>;
-    user_comment: string;
-    user_email: string;
-    user_name: string;
+  author_views: Generated<number>;
+  created_at: Generated<Date>;
+  description: Generated<string | null>;
+  email: Generated<string | null>;
+  id: Generated<number>;
+  image: Generated<string | null>;
+  image_text: Generated<string | null>;
+  meta_description: Generated<string | null>;
+  meta_keyword: Generated<string | null>;
+  meta_title: Generated<string | null>;
+  name: string;
+  path: Generated<string | null>;
+  title: Generated<string | null>;
+  updated_at: Generated<Date>;
 }
 
 export interface Blogs {
-    authors: Generated<string | null>;
-    category_name: Generated<string | null>;
-    created_at: Generated<Date>;
-    description: Generated<string | null>;
-    id: Generated<number>;
-    image_text: Generated<string | null>;
-    language: Generated<string | null>;
-    meta_description: Generated<string | null>;
-    meta_keyword: Generated<string | null>;
-    meta_title: Generated<string | null>;
-    page_name: Generated<string | null>;
-    page_title: Generated<string | null>;
-    path: Generated<string | null>;
-    scheduled_time: Generated<Date>;
-    status: Generated<string | null>;
-    total_views: Generated<number>;
-    type: Generated<string | null>;
-    updated_at: Generated<Date>;
-    upload_image: Generated<string | null>;
+  authors: Generated<string | null>;
+  category_name: Generated<string | null>;
+  created_at: Generated<Date>;
+  description: Generated<string | null>;
+  id: Generated<number>;
+  image_text: Generated<string | null>;
+  language: Generated<string | null>;
+  meta_description: Generated<string | null>;
+  meta_keyword: Generated<string | null>;
+  meta_title: Generated<string | null>;
+  page_name: Generated<string | null>;
+  page_title: Generated<string | null>;
+  path: Generated<string | null>;
+  scheduled_time: Generated<Date>;
+  status: Generated<string | null>;
+  total_views: Generated<number>;
+  type: Generated<string | null>;
+  updated_at: Generated<Date>;
+  upload_image: Generated<string | null>;
 }
 
 export interface Categories {
-    category_desc: Generated<string | null>;
-    created_at: Generated<Date | null>;
-    id: Generated<number>;
-    meta_description: string;
-    meta_keyword: string;
-    meta_title: string;
-    name: string;
-    parent_id: number;
-    path: string;
-    sort_order: number;
-    updated_at: Generated<Date | null>;
+  category_desc: Generated<string | null>;
+  created_at: Generated<Date | null>;
+  id: Generated<number>;
+  meta_description: string;
+  meta_keyword: string;
+  meta_title: string;
+  name: string;
+  parent_id: number;
+  path: string;
+  sort_order: number;
+  updated_at: Generated<Date | null>;
 }
 
-export interface Contents {
-    created_at: Generated<Date | null>;
-    id: Generated<number>;
-    updated_at: Generated<Date | null>;
-}
-
-export interface FailedJobs {
-    connection: string;
-    exception: string;
-    failed_at: Generated<Date>;
-    id: Generated<number>;
-    payload: string;
-    queue: string;
-    uuid: string;
-}
-
-export interface Influencers {
-    about_yourself: Generated<string | null>;
-    age: Generated<string | null>;
-    alt_contact: Generated<string | null>;
-    city: Generated<string | null>;
-    collab_preference: Generated<string | null>;
-    contact: Generated<string | null>;
-    created_at: Generated<Date>;
-    email: Generated<string | null>;
-    facebook_demo_graphics: Generated<string | null>;
-    facebook_followers: Generated<number | null>;
-    facebook_link: Generated<string | null>;
-    facebook_reach: Generated<string | null>;
-    genre: Generated<string | null>;
-    id: Generated<number>;
-    instagram_demo_graphics: Generated<string | null>;
-    instagram_followers: Generated<string | null>;
-    instagram_id: Generated<string | null>;
-    instagram_reach: Generated<string | null>;
-    location: Generated<string | null>;
-    manage_by: Generated<string | null>;
-    name: Generated<string | null>;
-    pic: Generated<string | null>;
-    seek_from: string;
-    state: Generated<string | null>;
-    twitter_demo_graphics: Generated<string | null>;
-    twitter_followers: Generated<number | null>;
-    twitter_link: Generated<string | null>;
-    twitter_reach: Generated<string | null>;
-    updated_at: Generated<Date>;
-    youtube_channel: Generated<string | null>;
-    youtube_demo_graphics: Generated<string | null>;
-    youtube_reach: Generated<string | null>;
-    youtube_subscriber: Generated<number | null>;
-}
-
-export interface Magzines {
-    cover_image: string;
-    created_at: Generated<Date | null>;
-    description: string;
-    id: Generated<number>;
-    name: string;
-    pdf_folder_name: string;
-    public_url: string;
-    updated_at: Generated<Date | null>;
-    url: string;
-}
-
-export interface MagzineSubs {
-    address: string;
-    city: string;
-    country: string;
-    created_at: Generated<Date | null>;
-    duration: string;
-    email: string;
-    id: Generated<number>;
-    message: string;
-    mobile: string;
-    name: string;
-    state: string;
-    updated_at: Generated<Date | null>;
-}
-
-export interface Migrations {
-    batch: number;
-    id: Generated<number>;
-    migration: string;
+export interface MembershipPlans {
+  created_at: Generated<Date | null>;
+  features: string;
+  id: Generated<number>;
+  name: string;
+  price: number;
+  razorpay_plan_id: string;
+  show_in_ui: Generated<number | null>;
+  updated_at: Generated<Date | null>;
 }
 
 export interface Newsletters {
-    created_at: Generated<Date>;
-    id: Generated<number>;
-    updated_at: Generated<Date>;
-    user_email: string;
-}
-
-export interface PasswordResets {
-    created_at: Generated<Date | null>;
-    email: string;
-    token: string;
-}
-
-export interface PersonalAccessTokens {
-    abilities: Generated<string | null>;
-    created_at: Generated<Date | null>;
-    id: Generated<number>;
-    last_used_at: Generated<Date | null>;
-    name: string;
-    token: string;
-    tokenable_id: number;
-    tokenable_type: string;
-    updated_at: Generated<Date | null>;
+  created_at: Generated<Date>;
+  id: Generated<number>;
+  updated_at: Generated<Date>;
+  user_email: string;
 }
 
 export interface PostRelations {
-    order: Generated<number>;
-    post_id: number;
-    relation_id: number;
-    relation_type: string;
+  order: Generated<number>;
+  post_id: number;
+  relation_id: number;
+  relation_type: string;
 }
 
 export interface PushSubscriptions {
-    id: Generated<number>;
-    subscription: Generated<string | null>;
+  id: Generated<number>;
+  subscription: Generated<string | null>;
 }
 
 export interface Redirects {
-    destination: string;
-    source: string;
-    type: Generated<string>;
+  destination: string;
+  source: string;
+  type: Generated<string>;
+}
+
+export interface Session {
+  createdAt: Generated<Date>;
+  expiresAt: Generated<Date>;
+  id: string;
+  ipAddress: Generated<string | null>;
+  token: string;
+  updatedAt: Generated<Date>;
+  userAgent: Generated<string | null>;
+  userId: string;
 }
 
 export interface StaticPages {
-    created_at: Generated<Date | null>;
-    description: Generated<string | null>;
-    id: Generated<number>;
-    page_name: string;
-    page_title: string;
-    updated_at: Generated<Date | null>;
+  created_at: Generated<Date | null>;
+  description: Generated<string | null>;
+  id: Generated<number>;
+  page_name: string;
+  page_title: string;
+  updated_at: Generated<Date | null>;
+}
+
+export interface SubscriptionPayments {
+  amount: number;
+  captured: Generated<number | null>;
+  created_at: Generated<Date | null>;
+  currency: Generated<string | null>;
+  id: Generated<number>;
+  razorpay_payment_id: string;
+  razorpay_signature: Generated<string | null>;
+  razorpay_subscription_id: string;
+  status: string;
+  user_subscription_id: number;
+  verified: Generated<number | null>;
 }
 
 export interface Tags {
-    id: Generated<number>;
-    name: string;
-    path: string;
+  id: Generated<number>;
+  name: string;
+  path: string;
 }
 
-export interface Uploads {
-    created_at: Generated<Date | null>;
-    id: Generated<number>;
-    image: string;
-    path: string;
-    updated_at: Generated<Date | null>;
-    upload_for: Generated<string>;
+export interface User {
+  createdAt: Generated<Date>;
+  email: string;
+  emailVerified: number;
+  id: string;
+  image: Generated<string | null>;
+  name: string;
+  updatedAt: Generated<Date>;
 }
 
-export interface Users {
-    created_at: Generated<Date | null>;
-    email: string;
-    email_verified_at: Generated<Date | null>;
-    id: Generated<number>;
-    name: string;
-    password: string;
-    remember_token: Generated<string | null>;
-    updated_at: Generated<Date | null>;
+export interface UserSubscriptions {
+  auth_attempts: Generated<number | null>;
+  charge_at: Generated<number | null>;
+  created_at: Generated<Date | null>;
+  current_end: Generated<number | null>;
+  current_start: Generated<number | null>;
+  customer_email: Generated<string | null>;
+  end_at: Generated<number | null>;
+  id: Generated<number>;
+  paid_count: Generated<number | null>;
+  plan_id: string;
+  razorpay_subscription_id: string;
+  remaining_count: Generated<number | null>;
+  start_at: Generated<number | null>;
+  status: Generated<"active" | "authenticated" | "cancelled" | "completed" | "created" | "expired" | "halted" | "old" | "pending" | null>;
+  total_count: Generated<number | null>;
+  updated_at: Generated<Date | null>;
+  user_id: string;
+}
+
+export interface Verification {
+  createdAt: Generated<Date>;
+  expiresAt: Generated<Date>;
+  id: string;
+  identifier: string;
+  updatedAt: Generated<Date>;
+  value: string;
+}
+
+export interface WebhookEvents {
+  created_at: Generated<Date | null>;
+  event_type: string;
+  id: Generated<number>;
+  payload: string;
+  processed: Generated<number | null>;
+  razorpay_event_id: string;
 }
 
 export interface DB {
-    admins: Admins;
-    authors: Authors;
-    blog_comments: BlogComments;
-    blogs: Blogs;
-    categories: Categories;
-    contents: Contents;
-    failed_jobs: FailedJobs;
-    influencers: Influencers;
-    magzine__subs: MagzineSubs;
-    magzines: Magzines;
-    migrations: Migrations;
-    newsletters: Newsletters;
-    password_resets: PasswordResets;
-    personal_access_tokens: PersonalAccessTokens;
-    post_relations: PostRelations;
-    push_subscriptions: PushSubscriptions;
-    redirects: Redirects;
-    static_pages: StaticPages;
-    tags: Tags;
-    uploads: Uploads;
-    users: Users;
+  account: Account;
+  authors: Authors;
+  blogs: Blogs;
+  categories: Categories;
+  membership_plans: MembershipPlans;
+  newsletters: Newsletters;
+  post_relations: PostRelations;
+  push_subscriptions: PushSubscriptions;
+  redirects: Redirects;
+  session: Session;
+  static_pages: StaticPages;
+  subscription_payments: SubscriptionPayments;
+  tags: Tags;
+  user: User;
+  user_subscriptions: UserSubscriptions;
+  verification: Verification;
+  webhook_events: WebhookEvents;
 }

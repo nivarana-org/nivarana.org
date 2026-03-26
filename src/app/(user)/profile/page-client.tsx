@@ -1,59 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { authClient } from "@/utils/auth-client";
 import { setPasswordAction } from "@/actions/user";
-
-type Account = {
-    id: string;
-    userId: string;
-    accountId: string;
-    providerId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    scopes: string[];
-};
-
-type User = {
-    id: string | number;
-    email: string;
-    name: string;
-    image: string | null;
-    emailVerified: boolean;
-};
-
-const MEMBERSHIP_PLANS = [
-    {
-        price: 100,
-        name: "Supporter",
-        features: ["Comment on articles"],
-    },
-    {
-        price: 250,
-        name: "Community",
-        features: ["Comment on articles", "Join the community"],
-    },
-    {
-        price: 500,
-        name: "Meetups",
-        features: [
-            "Comment on articles",
-            "Join the community",
-            "Attend meetings",
-        ],
-    },
-    {
-        price: 1000,
-        name: "Priority",
-        features: [
-            "Comment on articles",
-            "Join the community",
-            "Attend meetings",
-            "Editorial priority",
-            "Goodie bag",
-        ],
-    },
-];
+import {
+    createSubscription,
+    syncSubscriptionFromRazorpay,
+} from "@/actions/subscription";
 
 function GoogleIcon() {
     return (
@@ -90,9 +43,70 @@ function CheckIcon() {
     );
 }
 
-export default function ProfilePageClient({ user }: { user: User }) {
-    const [accounts, setAccounts] = useState<Account[]>([]);
-    const [accountsLoaded, setAccountsLoaded] = useState(false);
+type Account = {
+    id: string;
+    userId: string;
+    accountId: string;
+    providerId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    scopes: string[];
+};
+
+type User = {
+    id: string | number;
+    email: string;
+    name: string;
+    image: string | null;
+    emailVerified: boolean;
+};
+
+type SubscriptionStatusData = {
+    id: string;
+    planId: string;
+    price: number;
+    status: string;
+};
+
+type ProfilePageClientProps = {
+    user: User;
+    accounts: Account[];
+    subscriptionStatus: SubscriptionStatusData | null;
+    razorpayKey: string | null;
+    plans: {
+        price: number;
+        name: string;
+        features: string[];
+    }[];
+};
+
+declare global {
+    interface Window {
+        Razorpay: new (options: {
+            key: string;
+            subscription_id: string;
+            name: string;
+            description?: string;
+            handler: (response: {
+                razorpay_payment_id: string;
+                razorpay_signature: string;
+            }) => void;
+            theme?: { color?: string };
+        }) => {
+            open: () => void;
+        };
+    }
+}
+
+export default function ProfilePageClient({
+    user,
+    accounts: initialAccounts,
+    subscriptionStatus: initialSubscriptionStatus,
+    razorpayKey: initialRazorpayKey,
+    plans,
+}: ProfilePageClientProps) {
+    const [accounts, setAccounts] = useState<Account[]>(initialAccounts);
+    const [accountsLoaded] = useState(true);
 
     const hasPasswordAccount = accounts.some(
         (a) => a.providerId === "credential",
@@ -126,12 +140,113 @@ export default function ProfilePageClient({ user }: { user: User }) {
         text: string;
     } | null>(null);
 
-    useEffect(() => {
-        authClient.listAccounts().then(({ data }) => {
-            setAccounts(data || []);
-            setAccountsLoaded(true);
+    const [subscriptionStatus, setSubscriptionStatus] =
+        useState<SubscriptionStatusData | null>(initialSubscriptionStatus);
+    const [razorpayKey] = useState<string | null>(initialRazorpayKey);
+    const [checkoutLoading, setCheckoutLoading] = useState<number | null>(null);
+    const [syncLoading, setSyncLoading] = useState(false);
+
+    const loadRazorpay = () => {
+        return new Promise<Window["Razorpay"]>((resolve) => {
+            if (window.Razorpay) {
+                resolve(window.Razorpay);
+                return;
+            }
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => {
+                resolve(window.Razorpay);
+            };
+            document.body.appendChild(script);
         });
-    }, []);
+    };
+
+    const handleSubscribe = async (price: number) => {
+        if (!razorpayKey) {
+            alert("Payment system not available");
+            return;
+        }
+
+        setCheckoutLoading(price);
+
+        try {
+            const result = await createSubscription(price);
+
+            if (!result.status || !result.subscriptionId) {
+                alert(result.message || "Failed to create subscription");
+                setCheckoutLoading(null);
+                return;
+            }
+
+            const rz = await loadRazorpay();
+
+            const razorpay = new rz({
+                key: razorpayKey,
+                subscription_id: result.subscriptionId,
+                name: "Nivarana Membership",
+                description: `₹${price}/month subscription`,
+                handler: async (response: {
+                    razorpay_payment_id: string;
+                    razorpay_signature: string;
+                }) => {
+                    try {
+                        await fetch("/api/subscriptions/verify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                subscriptionId: result.subscriptionId,
+                                paymentId: response.razorpay_payment_id,
+                                signature: response.razorpay_signature,
+                            }),
+                        });
+                    } catch (err) {
+                        console.error("Verification error:", err);
+                    }
+                },
+                theme: {
+                    color: "#2563eb",
+                },
+            });
+
+            razorpay.open();
+        } catch (error) {
+            console.error("Subscription error:", error);
+            alert("Failed to process subscription");
+        } finally {
+            setCheckoutLoading(null);
+        }
+    };
+
+    const getButtonText = (price: number) => {
+        if (checkoutLoading === price) return "Processing...";
+        if (!subscriptionStatus) return "Subscribe";
+        if (isCurrentPlan(price)) return "Current Plan";
+        return "Upgrade";
+    };
+
+    const isCurrentPlan = (price: number) => {
+        return (
+            subscriptionStatus?.status === "active" &&
+            subscriptionStatus.price === price
+        );
+    };
+
+    const handleSyncSubscription = async () => {
+        setSyncLoading(true);
+        try {
+            const result = await syncSubscriptionFromRazorpay();
+            if (result.status && result.subscription) {
+                setSubscriptionStatus(result.subscription);
+                alert("Subscription status updated successfully!");
+            } else {
+                alert(result.message || "Failed to sync subscription");
+            }
+        } catch (error) {
+            alert("Failed to sync subscription");
+        } finally {
+            setSyncLoading(false);
+        }
+    };
 
     const handleNameUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -601,7 +716,7 @@ export default function ProfilePageClient({ user }: { user: User }) {
                     Support Nivarana and unlock exclusive features.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {MEMBERSHIP_PLANS.map((plan) => (
+                    {plans.map((plan) => (
                         <div
                             key={plan.price}
                             className="border border-gray-200 rounded-lg p-4 flex flex-col"
@@ -639,14 +754,37 @@ export default function ProfilePageClient({ user }: { user: User }) {
                                 ))}
                             </ul>
                             <button
-                                disabled
-                                className="mt-4 w-full px-4 py-2 bg-gray-100 text-gray-400 rounded-md text-sm font-medium cursor-not-allowed"
+                                onClick={() => handleSubscribe(plan.price)}
+                                disabled={
+                                    checkoutLoading === plan.price ||
+                                    isCurrentPlan(plan.price) ||
+                                    !razorpayKey
+                                }
+                                className={`mt-4 w-full px-4 py-2 rounded-md text-sm font-medium ${
+                                    isCurrentPlan(plan.price)
+                                        ? "bg-green-100 text-green-800 cursor-default"
+                                        : "bg-nivarana-blue text-white hover:bg-nivarana-blue/90 disabled:opacity-50"
+                                }`}
                             >
-                                Coming Soon
+                                {getButtonText(plan.price)}
                             </button>
                         </div>
                     ))}
                 </div>
+                {subscriptionStatus &&
+                    subscriptionStatus.status !== "active" && (
+                        <div className="mt-6 text-center">
+                            <button
+                                onClick={handleSyncSubscription}
+                                disabled={syncLoading}
+                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 disabled:opacity-50"
+                            >
+                                {syncLoading
+                                    ? "Checking..."
+                                    : "I've already made payment"}
+                            </button>
+                        </div>
+                    )}
             </section>
         </div>
     );

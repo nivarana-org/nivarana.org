@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "test": "vitest",
     "addhusky": "npx husky init",
-    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts"
+    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=mysql"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -31,6 +31,7 @@
     "nodemailer": "^8.0.2",
     "objection": "^3.1.5",
     "radash": "^12.1.1",
+    "razorpay": "^2.9.6",
     "react": "19.2.4",
     "react-audio-play": "^1.0.4",
     "react-dom": "19.2.4",
