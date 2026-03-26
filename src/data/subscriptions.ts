@@ -301,7 +301,7 @@ export async function createWebhookEvent({
         .values({
             razorpay_event_id: razorpayEventId,
             event_type: eventType,
-            payload: payload as never,
+            payload: JSON.stringify(payload),
             processed: false,
         })
         .execute();
