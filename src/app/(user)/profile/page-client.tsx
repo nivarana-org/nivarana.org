@@ -708,7 +708,7 @@ export default function ProfilePageClient({
                 )}
             </section>
 
-            <section className="bg-white rounded-lg shadow p-6">
+            <section id="membership" className="bg-white rounded-lg shadow p-6">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">
                     Membership Plans
                 </h2>

@@ -4,6 +4,7 @@ import Sidebar from "@/components/sidebar";
 import { getArticleByPath, getRedirect, searchArticles } from "@/data/cms";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
+import { getCommentCount } from "@/actions/comments";
 import moment from "moment";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
@@ -40,15 +41,17 @@ export default async function Page(props: Props) {
     if (actualCategory !== requestedCategory) {
         redirect(`/${actualCategory}/${params.slug}`);
     }
-    if (post.type === "article")
+    if (post.type === "article") {
+        const commentCount = await getCommentCount(post.id);
         return (
             <div>
-                <Article data={post} />
+                <Article data={post} initialCommentCount={commentCount} />
                 <div className="lg:col-span-1">
                     <Sidebar />
                 </div>
             </div>
         );
+    }
     if (post.type === "photo-essay")
         return (
             <div className="max-w-(--breakpoint-xl) mx-auto">

@@ -78,6 +78,17 @@ export interface Categories {
   updated_at: Generated<Date | null>;
 }
 
+export interface Comments {
+  blog_id: number;
+  content: string;
+  created_at: Generated<Date | null>;
+  id: Generated<number>;
+  parent_id: Generated<number | null>;
+  status: Generated<"accepted" | "hidden" | "pending" | "spam" | null>;
+  updated_at: Generated<Date | null>;
+  user_id: string;
+}
+
 export interface MembershipPlans {
   created_at: Generated<Date | null>;
   features: string;
@@ -207,6 +218,7 @@ export interface DB {
   authors: Authors;
   blogs: Blogs;
   categories: Categories;
+  comments: Comments;
   membership_plans: MembershipPlans;
   newsletters: Newsletters;
   post_relations: PostRelations;

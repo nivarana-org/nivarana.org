@@ -12,8 +12,27 @@ import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
 import AudioPlayer from "./AudioPlayer";
+import CommentsSection from "@/components/comments/CommentsSection";
 
-function Article({ data }) {
+interface ArticleProps {
+    data: {
+        id: number;
+        path: string;
+        page_title: string;
+        meta_description: string | null;
+        upload_image: string | null;
+        description: string;
+        created_at: Date;
+        scheduled_time: Date;
+        total_views: number;
+        type: string;
+        category: { path: string; name: string }[];
+        authors: { id: number; path: string; name: string }[];
+    };
+    initialCommentCount: number;
+}
+
+function Article({ data, initialCommentCount }: ArticleProps) {
     return (
         <>
             <div className="flex flex-col md:flex-row">
@@ -144,6 +163,10 @@ function Article({ data }) {
                 media={data.upload_image}
             ></PageShare>
             <NAuthorsBio authors={data.authors} />
+            <CommentsSection
+                blogId={data.id}
+                initialCount={initialCommentCount}
+            />
         </>
     );
 }
