@@ -1,3 +1,5 @@
+import { imageConfig } from "./src/config/images.mjs";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     allowedDevOrigins: [
@@ -49,27 +51,7 @@ const nextConfig = {
     },
     serverExternalPackages: ["knex"],
     images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "blogsadmin.nivarana.org",
-                port: "",
-            },
-            {
-                protocol: "http",
-                hostname: "localhost",
-                port: "3000",
-            },
-            {
-                protocol: "https",
-                hostname: "nivarana.org",
-                port: "",
-            },
-            {
-                protocol: "https",
-                hostname: "**.googleusercontent.com",
-            },
-        ],
+        remotePatterns: imageConfig.remotePatterns,
         dangerouslyAllowLocalIP: true,
     },
     reactCompiler: true,
