@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/assets/logo.png";
-import { LogOut } from "@/components/admin/LogOut";
+import { LogOut } from "@/components/user/LogOut";
 
 export default async function UserLayout({
     children,

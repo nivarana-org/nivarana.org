@@ -8,7 +8,7 @@ export function LogOut({ inline }) {
         await authClient.signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    router.push("/sign-in?return=/admin");
+                    router.push("/");
                 },
             },
         });

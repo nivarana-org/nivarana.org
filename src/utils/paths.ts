@@ -27,7 +27,7 @@ export const getArticleSlug = (data: GetURLData) => {
 };
 
 export const getReturnURL = (base: string, returnURL: string | undefined) => {
-    var url = base;
+    let url = base;
     if (returnURL) {
         url += "?return=" + encodeURIComponent(returnURL);
     }
