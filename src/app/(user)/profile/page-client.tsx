@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/utils/auth-client";
 import { setPasswordAction } from "@/actions/user";
 import {
     createSubscription,
     syncSubscriptionFromRazorpay,
 } from "@/actions/subscription";
+import { Confetti } from "@/components/shared/Confetti";
+import { getAndClearSubscriptionRedirect } from "@/utils/subscription-redirect";
 
 function GoogleIcon() {
     return (
@@ -105,6 +108,7 @@ export default function ProfilePageClient({
     razorpayKey: initialRazorpayKey,
     plans,
 }: ProfilePageClientProps) {
+    const router = useRouter();
     const [accounts, setAccounts] = useState<Account[]>(initialAccounts);
     const [accountsLoaded] = useState(true);
 
@@ -145,6 +149,7 @@ export default function ProfilePageClient({
     const [razorpayKey] = useState<string | null>(initialRazorpayKey);
     const [checkoutLoading, setCheckoutLoading] = useState<number | null>(null);
     const [syncLoading, setSyncLoading] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const loadRazorpay = () => {
         return new Promise<Window["Razorpay"]>((resolve) => {
@@ -190,15 +195,29 @@ export default function ProfilePageClient({
                     razorpay_signature: string;
                 }) => {
                     try {
-                        await fetch("/api/subscriptions/verify", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                subscriptionId: result.subscriptionId,
-                                paymentId: response.razorpay_payment_id,
-                                signature: response.razorpay_signature,
-                            }),
-                        });
+                        const verifyRes = await fetch(
+                            "/api/subscriptions/verify",
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    subscriptionId: result.subscriptionId,
+                                    paymentId: response.razorpay_payment_id,
+                                    signature: response.razorpay_signature,
+                                }),
+                            },
+                        );
+                        const verifyData = await verifyRes.json();
+                        if (verifyData.status) {
+                            setShowConfetti(true);
+                            setTimeout(() => {
+                                const redirectUrl =
+                                    getAndClearSubscriptionRedirect();
+                                if (redirectUrl) {
+                                    router.push(redirectUrl);
+                                }
+                            }, 3000);
+                        }
                     } catch (err) {
                         console.error("Verification error:", err);
                     }
@@ -385,6 +404,11 @@ export default function ProfilePageClient({
 
     return (
         <div className="space-y-8">
+            <Confetti
+                show={showConfetti}
+                duration={3000}
+                onComplete={() => setShowConfetti(false)}
+            />
             <h1 className="text-3xl font-bold text-gray-900">
                 Profile Settings
             </h1>

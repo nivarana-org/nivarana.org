@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { authClient } from "@/utils/auth-client";
 import { addComment, getArticleComments } from "@/actions/comments";
 import { getUserAbilities } from "@/actions/user";
@@ -19,7 +20,9 @@ export default function CommentsSection({
     blogId,
     initialCount,
 }: CommentsSectionProps) {
+    const pathname = usePathname();
     const session = authClient.useSession();
+    const returnUrl = pathname ? `${pathname}#comments` : undefined;
     const [abilities, setAbilities] = useState<UserAbility[]>([]);
     const [abilitiesLoading, setAbilitiesLoading] = useState<boolean | null>(
         null,
@@ -185,9 +188,15 @@ export default function CommentsSection({
                                         Checking authentication...
                                     </p>
                                 ) : !session.data ? (
-                                    <CommentAuthPrompt isLoggedIn={false} />
+                                    <CommentAuthPrompt
+                                        isLoggedIn={false}
+                                        returnUrl={returnUrl}
+                                    />
                                 ) : !canComment ? (
-                                    <CommentAuthPrompt isLoggedIn={true} />
+                                    <CommentAuthPrompt
+                                        isLoggedIn={true}
+                                        returnUrl={returnUrl}
+                                    />
                                 ) : (
                                     <CommentForm
                                         canComment={canComment}
