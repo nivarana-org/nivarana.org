@@ -413,6 +413,85 @@ export default function ProfilePageClient({
                 Profile Settings
             </h1>
 
+            <section id="membership" className="bg-white rounded-lg shadow p-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    Membership Plans
+                </h2>
+                <p className="text-sm text-gray-500 mb-6">
+                    Support Nivarana and unlock exclusive features.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {plans.map((plan) => (
+                        <div
+                            key={plan.price}
+                            className="border border-gray-200 rounded-lg p-4 flex flex-col"
+                        >
+                            <div className="mb-4">
+                                <span className="text-2xl font-bold text-gray-900">
+                                    ₹{plan.price}
+                                </span>
+                                <span className="text-gray-500 text-sm">
+                                    /month
+                                </span>
+                            </div>
+                            <h3 className="font-semibold text-gray-800 mb-2">
+                                {plan.name}
+                            </h3>
+                            <ul className="text-sm text-gray-600 space-y-1 flex-grow">
+                                {plan.features.map((feature, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-start gap-2"
+                                    >
+                                        <svg
+                                            className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                        {feature}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button
+                                onClick={() => handleSubscribe(plan.price)}
+                                disabled={
+                                    checkoutLoading === plan.price ||
+                                    isCurrentPlan(plan.price) ||
+                                    !razorpayKey
+                                }
+                                className={`mt-4 w-full px-4 py-2 rounded-md text-sm font-medium ${
+                                    isCurrentPlan(plan.price)
+                                        ? "bg-green-100 text-green-800 cursor-default"
+                                        : "bg-nivarana-blue text-white hover:bg-nivarana-blue/90 disabled:opacity-50"
+                                }`}
+                            >
+                                {getButtonText(plan.price)}
+                            </button>
+                        </div>
+                    ))}
+                </div>
+                {subscriptionStatus &&
+                    subscriptionStatus.status !== "active" && (
+                        <div className="mt-6 text-center">
+                            <button
+                                onClick={handleSyncSubscription}
+                                disabled={syncLoading}
+                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 disabled:opacity-50"
+                            >
+                                {syncLoading
+                                    ? "Checking..."
+                                    : "I've already made payment"}
+                            </button>
+                        </div>
+                    )}
+            </section>
+
             <section className="bg-white rounded-lg shadow p-6">
                 <h2 className="text-xl font-semibold text-gray-800 mb-4">
                     Profile Information
@@ -730,85 +809,6 @@ export default function ProfilePageClient({
                         enable email sign-in.
                     </p>
                 )}
-            </section>
-
-            <section id="membership" className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                    Membership Plans
-                </h2>
-                <p className="text-sm text-gray-500 mb-6">
-                    Support Nivarana and unlock exclusive features.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {plans.map((plan) => (
-                        <div
-                            key={plan.price}
-                            className="border border-gray-200 rounded-lg p-4 flex flex-col"
-                        >
-                            <div className="mb-4">
-                                <span className="text-2xl font-bold text-gray-900">
-                                    ₹{plan.price}
-                                </span>
-                                <span className="text-gray-500 text-sm">
-                                    /month
-                                </span>
-                            </div>
-                            <h3 className="font-semibold text-gray-800 mb-2">
-                                {plan.name}
-                            </h3>
-                            <ul className="text-sm text-gray-600 space-y-1 flex-grow">
-                                {plan.features.map((feature, index) => (
-                                    <li
-                                        key={index}
-                                        className="flex items-start gap-2"
-                                    >
-                                        <svg
-                                            className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <button
-                                onClick={() => handleSubscribe(plan.price)}
-                                disabled={
-                                    checkoutLoading === plan.price ||
-                                    isCurrentPlan(plan.price) ||
-                                    !razorpayKey
-                                }
-                                className={`mt-4 w-full px-4 py-2 rounded-md text-sm font-medium ${
-                                    isCurrentPlan(plan.price)
-                                        ? "bg-green-100 text-green-800 cursor-default"
-                                        : "bg-nivarana-blue text-white hover:bg-nivarana-blue/90 disabled:opacity-50"
-                                }`}
-                            >
-                                {getButtonText(plan.price)}
-                            </button>
-                        </div>
-                    ))}
-                </div>
-                {subscriptionStatus &&
-                    subscriptionStatus.status !== "active" && (
-                        <div className="mt-6 text-center">
-                            <button
-                                onClick={handleSyncSubscription}
-                                disabled={syncLoading}
-                                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200 disabled:opacity-50"
-                            >
-                                {syncLoading
-                                    ? "Checking..."
-                                    : "I've already made payment"}
-                            </button>
-                        </div>
-                    )}
             </section>
         </div>
     );
