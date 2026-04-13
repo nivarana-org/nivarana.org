@@ -53,8 +53,9 @@ export default function ArticleEditor(props: Props) {
                         "help",
                         "wordcount",
                     ],
+                    
                     toolbar:
-                        "undo redo blocks " +
+                        "undo redo styles " +
                         "bold italic forecolor alignleft aligncenter " +
                         "alignright alignjustify bullist numlist outdent indent " +
                         "link image hr anchor dfn " +
