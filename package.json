@@ -28,14 +28,14 @@
     "motion": "^12.38.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.22.3",
-    "next": "16.3.0-canary.19",
+    "next": "16.3.0-canary.40",
     "nodemailer": "^8.0.7",
     "objection": "^3.1.5",
     "radash": "^12.1.1",
     "razorpay": "^2.9.6",
-    "react": "19.2.6",
+    "react": "19.2.7",
     "react-audio-play": "^1.0.4",
-    "react-dom": "19.2.6",
+    "react-dom": "19.2.7",
     "react-share": "^5.3.0",
     "react-tagcloud": "^2.3.3",
     "server-only": "^0.0.1",
@@ -51,11 +51,11 @@
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^25.3.5",
     "@types/nodemailer": "^7.0.11",
-    "@types/react": "19.2.14",
+    "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^10.0.3",
-    "eslint-config-next": "16.3.0-canary.19",
+    "eslint-config-next": "16.3.0-canary.40",
     "eslint-config-prettier": "^10.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
@@ -77,7 +77,7 @@
     "better-auth": {
       "next": "^16.3.0-canary.19"
     },
-    "@types/react": "19.2.14",
+    "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3"
   }
 }
