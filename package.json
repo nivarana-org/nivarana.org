@@ -17,19 +17,19 @@
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@mui/joy": "^5.0.0-beta.48",
     "@mui/material": "^9.0.1",
-    "@mui/x-date-pickers": "^9.1.0",
+    "@mui/x-date-pickers": "^9.3.0",
     "@tinymce/tinymce-react": "^6.3.0",
     "babel-plugin-react-compiler": "^1.0.0",
-    "better-auth": "^1.6.11",
-    "html-react-parser": "^6.1.0",
+    "better-auth": "^1.6.14",
+    "html-react-parser": "^6.1.3",
     "knex": "^3.2.10",
-    "kysely": "^0.28.17",
+    "kysely": "^0.29.2",
     "moment": "^2.30.1",
-    "motion": "^12.38.0",
+    "motion": "^12.40.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.22.3",
+    "mysql2": "^3.22.4",
     "next": "16.3.0-canary.40",
-    "nodemailer": "^8.0.7",
+    "nodemailer": "^8.0.10",
     "objection": "^3.1.5",
     "radash": "^12.1.1",
     "razorpay": "^2.9.6",
@@ -41,7 +41,7 @@
     "server-only": "^0.0.1",
     "sharp": "^0.34.0",
     "sonner": "^2.0.7",
-    "tinymce": "^8.5.0",
+    "tinymce": "^8.6.0",
     "use-debounce": "^10.1.1",
     "use-immer": "^0.11.0"
   },
@@ -72,12 +72,5 @@
   "lint-staged": {
     "*.{js,tsx,ts}": "eslint --cache --fix",
     "*.{js,tsx,ts,css,md}": "prettier --write"
-  },
-  "overrides": {
-    "better-auth": {
-      "next": "^16.3.0-canary.19"
-    },
-    "@types/react": "19.2.16",
-    "@types/react-dom": "19.2.3"
   }
 }
