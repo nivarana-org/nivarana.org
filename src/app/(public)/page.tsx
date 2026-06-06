@@ -200,3 +200,14 @@ function AuthorsAndPublishedTime({ authors, published_time }) {
         </>
     );
 }
+
+export const metadata = {
+    alternates: {
+        canonical: "https://nivarana.org",
+        types: {
+            "application/rss+xml": "https://nivarana.org/feed/rss.xml",
+            "application/atom+xml": "https://nivarana.org/feed/atom.xml",
+            "application/feed+json": "https://nivarana.org/feed/feed.json",
+        },
+    },
+};
