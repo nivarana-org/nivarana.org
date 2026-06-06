@@ -2,6 +2,23 @@ import { getArticlesPaginated } from "@/data/cms";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Feed } from "feed";
 
+function escapeXml(unsafe) {
+    return unsafe.replace(/[<>&'"]/g, function (c) {
+        switch (c) {
+            case "<":
+                return "&lt;";
+            case ">":
+                return "&gt;";
+            case "&":
+                return "&amp;";
+            case "'":
+                return "&apos;";
+            case '"':
+                return "&quot;";
+        }
+    });
+}
+
 export const getFeed = async () => {
     const feed = new Feed({
         title: "Nivarana",
@@ -22,7 +39,9 @@ export const getFeed = async () => {
         const categorySlug = post.category[0].path;
         const url = `https://nivarana.org/${categorySlug}/${post.path}`;
         const imageUrl = getImageURLFromFileName(post.upload_image);
-        const optimizedImageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(imageUrl)}&w=1200&q=75`;
+        const optimizedImageUrl = escapeXml(
+            `https://nivarana.org/_next/image?url=${encodeURIComponent(imageUrl)}&w=1200&q=75`,
+        );
         const authors = post.authors.map((a) => ({
             name: a.name,
             email: a.email,
