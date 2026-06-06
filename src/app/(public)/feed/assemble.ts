@@ -52,7 +52,7 @@ export const getFeed = async () => {
             id: url,
             link: url,
             description: post.meta_description,
-            content: post.content,
+            content: post.description,
             author: authors,
             contributor: authors,
             date: post.published_time,
