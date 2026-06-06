@@ -19,6 +19,16 @@ function escapeXml(unsafe) {
     });
 }
 
+const getContent = (post) => {
+    if (post.type === "photo-essay") {
+        return JSON.parse(post.description)
+            .chapters.map((p) => `<h2>${p.title}</h2>\n\<hr>${p.body}`)
+            .join("\n<br/>\n");
+    }
+    // article or unknown
+    return post.description;
+};
+
 export const getFeed = async () => {
     const feed = new Feed({
         title: "Nivarana",
@@ -52,7 +62,7 @@ export const getFeed = async () => {
             id: url,
             link: url,
             description: post.meta_description,
-            content: post.description,
+            content: getContent(post),
             author: authors,
             contributor: authors,
             date: post.published_time,
