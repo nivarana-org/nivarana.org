@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "test": "vitest",
     "addhusky": "npx husky init",
-    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=mysql"
+    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=mysql",
+    "prepare": "husky"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
