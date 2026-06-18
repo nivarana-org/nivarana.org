@@ -113,7 +113,7 @@ function Article({ data, initialCommentCount }: ArticleProps) {
                 {/* Post */}
                 <div className="md:basis-xl md:shrink-0">
                     <AudioPlayer
-                        src={getImageURLFromFileName(`audio/${data.id}.wav`)}
+                        src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
                     />
                     <BodyWithPopover body={data.description} />
                 </div>
