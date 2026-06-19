@@ -3,7 +3,6 @@ import ClearCache from "@/components/admin/ClearCache";
 import {
     getArticlesCount,
     getPeopleCount,
-    getSubscribersCount,
     getTotalViewsCount,
 } from "@/data/cms";
 import Link from "next/link";
@@ -36,13 +35,11 @@ function DashboardItem({
 }
 
 export default async function Page() {
-    const [newsletterSubscriberCount, articleCount, peopleCount, viewsCount] =
-        await Promise.all([
-            getSubscribersCount(),
-            getArticlesCount(),
-            getPeopleCount(),
-            getTotalViewsCount(),
-        ]);
+    const [articleCount, peopleCount, viewsCount] = await Promise.all([
+        getArticlesCount(),
+        getPeopleCount(),
+        getTotalViewsCount(),
+    ]);
 
     return (
         <div className="max-w-(--breakpoint-md) mx-auto">
@@ -61,14 +58,6 @@ export default async function Page() {
                 <DashboardItem
                     name="Total Views"
                     count={viewsCount}
-                ></DashboardItem>
-            </div>
-            <hr />
-            <div className="my-2 p2 flex gap-2">
-                <DashboardItem
-                    name="Newsletter Subscribers"
-                    link="/admin/newsletter"
-                    count={newsletterSubscriberCount}
                 ></DashboardItem>
             </div>
             <hr />

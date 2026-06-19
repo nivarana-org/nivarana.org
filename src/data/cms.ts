@@ -22,13 +22,6 @@ export const db = knex({
     pool: { min: 0, max: 7 },
 });
 
-interface NewsletterSubscriber {
-    id: number;
-    user_email: string;
-    created_at: number;
-    updated_at: number;
-}
-
 export interface Article {
     id: number;
     path: string;
@@ -69,24 +62,9 @@ export interface EnhancedArticle extends Article {
     authors: AuthorOld[];
 }
 
-export const addNewsLetterSubscriber = async (email: string) => {
-    await db<NewsletterSubscriber>("newsletters").insert({ user_email: email });
-    return "Success";
-};
-
-export const getSubscribers = asAdmin(async () => {
-    return await db<NewsletterSubscriber>("newsletters")
-        .select("user_email", "id")
-        .orderBy("id", "desc");
-});
-
 const getTableCount = async (table) => {
     const result = await db(table).count("* as count");
     return result[0].count;
-};
-
-export const getSubscribersCount = async () => {
-    return getTableCount("newsletters");
 };
 
 export const getArticlesCount = async () => {
