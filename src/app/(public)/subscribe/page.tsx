@@ -2,17 +2,10 @@ import { getAllPlans } from "@/data/subscriptions";
 import Link from "next/link";
 
 export default async function Page() {
-    const [allPlans] = await Promise.all([getAllPlans(true)]);
-
-    const plans = allPlans.map((plan) => ({
-        price: plan.price,
-        name: plan.name,
-        features: JSON.parse(plan.features || "[]") as string[],
-    }));
+    const [plans] = await Promise.all([getAllPlans(true)]);
 
     const visiblePlans = plans.filter(
-        (plan) =>
-            allPlans.find((p) => p.price === plan.price)?.show_in_ui === 1,
+        (plan) => plans.find((p) => p.price === plan.price)?.show_in_ui === 1,
     );
 
     return (

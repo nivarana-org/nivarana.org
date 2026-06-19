@@ -15,25 +15,19 @@ export default async function ProfilePage() {
         headers: await headers(),
     });
 
-    const [subscriptionResult, razorpayKey, allPlans] = await Promise.all([
+    const [subscriptionResult, razorpayKey, plans] = await Promise.all([
         getSubscriptionStatus(),
         getRazorpayKey(),
         getAllPlans(true),
     ]);
 
-    const plans = allPlans.map((plan) => ({
-        price: plan.price,
-        name: plan.name,
-        features: JSON.parse(plan.features || "[]") as string[],
-    }));
-
     const userPlanId = subscriptionResult.subscription?.planId;
 
     const visiblePlans = plans.filter(
         (plan) =>
-            allPlans.find((p) => p.price === plan.price)?.show_in_ui === 1 ||
+            plans.find((p) => p.price === plan.price)?.show_in_ui === 1 ||
             (userPlanId &&
-                allPlans.find(
+                plans.find(
                     (p) =>
                         p.price === plan.price &&
                         p.razorpay_plan_id === userPlanId,
