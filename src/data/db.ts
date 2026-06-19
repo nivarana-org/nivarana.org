@@ -1,6 +1,6 @@
 import type { DB } from "./db.d"; // this is the Database interface we defined earlier
 import { createPool } from "mysql2"; // do not use 'mysql2/promises'!
-import { Kysely, MysqlDialect } from "kysely";
+import { Kysely, MysqlDialect, ParseJSONResultsPlugin } from "kysely";
 
 const dialect = new MysqlDialect({
     pool: createPool({
@@ -20,4 +20,5 @@ const dialect = new MysqlDialect({
 // to communicate with your database.
 export const db = new Kysely<DB>({
     dialect,
+    plugins: [new ParseJSONResultsPlugin()],
 });

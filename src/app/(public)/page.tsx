@@ -58,7 +58,7 @@ async function LatestArticle({ a }) {
         <div className="group flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden lg:w-2/3 xl:w-2xl ">
             <Link
                 href={getArticleSlug({
-                    category: a.category[0],
+                    category: a.categories[0],
                     path: a.path,
                     type: a.type,
                 })}
@@ -67,8 +67,8 @@ async function LatestArticle({ a }) {
                 <ViewTransition name={`page-lead-image-${a.path}`}>
                     <div className="relative w-full max-h-100 pt-[70%]">
                         <Image
-                            src={getImageURLFromFileName(a.upload_image)}
-                            alt={a.page_title}
+                            src={getImageURLFromFileName(a.image)}
+                            alt={a.title}
                             fill
                             sizes="(max-width: 1024px) 100vw, 66vw"
                             className="object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out"
@@ -79,7 +79,7 @@ async function LatestArticle({ a }) {
             <div className="p-5 flex flex-col justify-between flex-grow">
                 <Link
                     href={getArticleSlug({
-                        category: a.category[0],
+                        category: a.categories[0],
                         path: a.path,
                         type: a.type,
                     })}
@@ -87,15 +87,15 @@ async function LatestArticle({ a }) {
                 >
                     <ViewTransition name={`page-title-${a.path}`}>
                         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
-                            {a.page_title}
+                            {a.title}
                         </h3>
                     </ViewTransition>
                 </Link>
 
                 {/* Meta Description (Excerpt) */}
-                {a.meta_description && (
+                {a.intro && (
                     <p className="text-gray-700 mt-3 text-md md:text-base md:line-clamp-4">
-                        {a.meta_description}
+                        {a.intro}
                     </p>
                 )}
                 <div className="text-xs">
@@ -114,7 +114,7 @@ async function RestArticles({ a }) {
         <div className="group flex items-center bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
             <Link
                 href={getArticleSlug({
-                    category: a.category[0],
+                    category: a.categories[0],
                     path: a.path,
                     type: a.type,
                 })}
@@ -123,8 +123,8 @@ async function RestArticles({ a }) {
                 <ViewTransition name={`page-lead-image-${a.path}`}>
                     <div className="relative w-23 h-16 lg:w-42 lg:h-30">
                         <Image
-                            src={getImageURLFromFileName(a.upload_image)}
-                            alt={a.page_title}
+                            src={getImageURLFromFileName(a.image)}
+                            alt={a.title}
                             fill
                             sizes="(max-width: 1024px) 33vw, 10vw"
                             className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
@@ -135,7 +135,7 @@ async function RestArticles({ a }) {
             <div className="flex flex-col flex-grow">
                 <Link
                     href={getArticleSlug({
-                        category: a.category[0],
+                        category: a.categories[0],
                         path: a.path,
                         type: a.type,
                     })}
@@ -143,7 +143,7 @@ async function RestArticles({ a }) {
                 >
                     <ViewTransition name={`page-title-${a.path}`}>
                         <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-4 group-hover:underline transition-colors duration-200">
-                            {a.page_title}
+                            {a.title}
                         </h4>
                     </ViewTransition>
                 </Link>

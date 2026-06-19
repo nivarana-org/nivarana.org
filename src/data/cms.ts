@@ -7,6 +7,7 @@ import Category from "./models/Category";
 import Tag from "./models/Tag";
 import { fetchWordCloud } from "./word-cloud";
 import { asAdmin } from "./authorization";
+import { getOverview, getPost } from "./queries";
 
 export const db = knex({
     client: "mysql",
@@ -325,17 +326,7 @@ export const addOrEditAuthor = asAdmin(async (author: Author) => {
 });
 
 export const getArticleByPath = async (path: string) => {
-    const article = await Blog.query()
-        .where("path", path)
-        .andWhere("status", "PUBLISHED")
-        .first()
-        .withGraphFetched(
-            "[authors(ordered), categories(ordered) as category, tags(ordered)]",
-        )
-        .modifiers({
-            ordered: (builder) => builder.orderBy("post_relations.order"),
-        });
-    return article;
+    return getPost({ slug: path });
 };
 
 export const getPageByPath = async (path: string) => {
@@ -445,23 +436,7 @@ export const getCategoriesTable = async () => {
 };
 
 export const getCategoriesForFrontPage = async () => {
-    const categories = await Category.query()
-        .where({ parent_id: 0 })
-        .select("categories.*") // Select all category columns
-        .leftJoinRelated("articles") // Join with articles to access their times
-        .groupBy("categories.id") // Group by category ID to use MAX aggregate
-        .withGraphFetched("articles.[categories as category,authors(ordered)]")
-        .modifiers({
-            ordered: (builder) => builder.orderBy("post_relations.order"),
-        });
-    categories.forEach((c) => {
-        c.articles.reverse();
-    });
-    categories.sort(
-        (a, b) =>
-            b.articles[0].published_time() - a.articles[0].published_time(),
-    );
-    return categories.map((c) => c.toJSON());
+    return getOverview();
 };
 
 export const getCategories = async () => {

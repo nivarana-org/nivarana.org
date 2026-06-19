@@ -18,15 +18,15 @@ interface ArticleProps {
     data: {
         id: number;
         path: string;
-        page_title: string;
-        meta_description: string | null;
-        upload_image: string | null;
-        description: string;
+        title: string;
+        intro: string | null;
+        image: string | null;
+        content: string;
         created_at: Date;
         scheduled_time: Date;
         total_views: number;
         type: string;
-        category: { path: string; name: string }[];
+        categories: { path: string; name: string }[];
         authors: { id: number; path: string; name: string }[];
     };
     initialCommentCount: number;
@@ -40,24 +40,22 @@ function Article({ data, initialCommentCount }: ArticleProps) {
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
                         <ViewTransition
-                            name={`category-title-${data.category[0].path}`}
+                            name={`category-title-${data.categories[0].path}`}
                         >
                             <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
                                 <Link
-                                    href={`/category/${data.category[0].path}`}
+                                    href={`/category/${data.categories[0].path}`}
                                 >
-                                    {data.category[0].name}
+                                    {data.categories[0].name}
                                 </Link>
                             </div>
                         </ViewTransition>
                         <ViewTransition name={`page-title-${data.path}`}>
                             <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
-                                {data.page_title}
+                                {data.title}
                             </h1>
                         </ViewTransition>
-                        <p className="mt-6 text-sm lg:text-xl">
-                            {data.meta_description}
-                        </p>
+                        <p className="mt-6 text-sm lg:text-xl">{data.intro}</p>
                     </div>
                 </div>
                 <ViewTransition name={`page-lead-image-${data.path}`}>
@@ -65,8 +63,8 @@ function Article({ data, initialCommentCount }: ArticleProps) {
                         <Image
                             priority
                             fetchPriority="high"
-                            src={getImageURLFromFileName(data.upload_image)}
-                            alt={"Representative image for " + data.page_title}
+                            src={getImageURLFromFileName(data.image)}
+                            alt={"Representative image for " + data.title}
                             width={2000}
                             height={1414}
                             className="w-full h-auto"
@@ -105,7 +103,7 @@ function Article({ data, initialCommentCount }: ArticleProps) {
                     >
                         <PageShare
                             url={getArticlePublicURL(data)}
-                            media={data.upload_image}
+                            media={data.image}
                             style="vertical"
                         ></PageShare>
                     </motion.div>
@@ -115,7 +113,7 @@ function Article({ data, initialCommentCount }: ArticleProps) {
                     <AudioPlayer
                         src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
                     />
-                    <BodyWithPopover body={data.description} />
+                    <BodyWithPopover body={data.content} />
                 </div>
                 {/* Side */}
                 <aside className="px-2 md:basis-3xs self-end mb-10">
@@ -160,7 +158,7 @@ function Article({ data, initialCommentCount }: ArticleProps) {
             </div>
             <PageShare
                 url={getArticlePublicURL(data)}
-                media={data.upload_image}
+                media={data.image}
             ></PageShare>
             <NAuthorsBio authors={data.authors} />
             <CommentsSection

@@ -9,7 +9,7 @@ export function NAuthorsBio({ authors }) {
         </div>
     );
 }
-export function AuthorBio({ path, name, email, description }) {
+export function AuthorBio({ path, name, email, bio }) {
     return (
         <Link href={"/author/" + path}>
             <div className="bg-nivarana-white/50 md:mx-4 rounded">
@@ -17,7 +17,7 @@ export function AuthorBio({ path, name, email, description }) {
                     <div className="text-xl text-nivarana-green">{name}</div>
                     <div
                         className=""
-                        dangerouslySetInnerHTML={{ __html: description }}
+                        dangerouslySetInnerHTML={{ __html: bio }}
                     ></div>
                     {email && <div>Email: {email}</div>}
                 </div>

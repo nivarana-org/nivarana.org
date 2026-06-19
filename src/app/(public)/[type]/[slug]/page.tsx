@@ -37,7 +37,7 @@ export default async function Page(props: Props) {
 
         return notFound();
     }
-    const actualCategory = post.category[0].path;
+    const actualCategory = post.categories[0].path;
     if (actualCategory !== requestedCategory) {
         redirect(`/${actualCategory}/${params.slug}`);
     }
