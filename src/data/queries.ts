@@ -1,7 +1,15 @@
 import { sql } from "kysely";
 import { db } from "./db";
 
-const authorsFragment = sql`COALESCE(
+type Author = {
+    id: number;
+    name: string;
+    email: string;
+    path: string;
+    bio: string;
+};
+
+const authorsFragment = sql<Author>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -19,7 +27,13 @@ const authorsFragment = sql`COALESCE(
     ), JSON_ARRAY()
 )`;
 
-const categoriesFragment = sql`COALESCE(
+type Category = {
+    id: number;
+    name: string;
+    path: string;
+};
+
+const categoriesFragment = sql<Category>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -35,7 +49,13 @@ const categoriesFragment = sql`COALESCE(
     ), JSON_ARRAY()
 )`;
 
-const tagsFragment = sql`COALESCE(
+type Tag = {
+    id: number;
+    name: string;
+    path: string;
+};
+
+const tagsFragment = sql<Tag>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -72,6 +92,27 @@ const articleJSONData = sql`
     'intro', b.meta_description
 `;
 
+type Post = {
+    id: number;
+    title: string;
+    image: string;
+    path: string;
+    intro: string;
+    content: string;
+    created_at: Date;
+    scheduled_time: Date;
+    total_views: number;
+    type: "article" | "photo-essay";
+    categories: Category[];
+    tags: Tag[];
+    authors: Author[];
+};
+
+type PostPreview = Omit<
+    Post,
+    "content" | "created_at" | "scheduled_time" | "total_views" | "type"
+>;
+
 export const getPost = async ({
     id,
     slug,
@@ -82,7 +123,7 @@ export const getPost = async ({
     const idFrag = sql`b.id = ${id}`;
     const slugFrag = sql`b.path = ${slug}`;
     const selectorFrag = id ? idFrag : slugFrag;
-    const result = await sql`SELECT
+    const result = await sql<Post>`SELECT
       ${articleData},
       ${authorsFragment} as authors,
       ${tagsFragment} as tags,
@@ -94,8 +135,15 @@ export const getPost = async ({
     return result.rows[0];
 };
 
+type CategoryOverview = {
+    id: number;
+    name: string;
+    path: string;
+    articles: PostPreview[];
+};
+
 export const getOverview = async () => {
-    const result = await sql`SELECT
+    const result = await sql<CategoryOverview>`SELECT
         c.id,
         c.name,
         c.path,
