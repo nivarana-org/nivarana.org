@@ -66,19 +66,6 @@ export async function getCommentsByBlogId(
     return comments as CommentWithUser[];
 }
 
-export async function getAcceptedCommentCountByBlogId(
-    blogId: number,
-): Promise<number> {
-    const [result] = await db
-        .selectFrom("comments")
-        .where("blog_id", "=", blogId)
-        .where("status", "=", "accepted")
-        .select((eb) => eb.fn.count<number>("id").as("count"))
-        .execute();
-
-    return Number(result?.count) ?? 0;
-}
-
 export async function createComment({
     blogId,
     userId,

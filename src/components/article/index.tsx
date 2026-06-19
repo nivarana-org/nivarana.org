@@ -28,11 +28,11 @@ interface ArticleProps {
         type: string;
         categories: { path: string; name: string }[];
         authors: { id: number; path: string; name: string }[];
+        comments_count: number;
     };
-    initialCommentCount: number;
 }
 
-function Article({ data, initialCommentCount }: ArticleProps) {
+function Article({ data }: ArticleProps) {
     return (
         <>
             <div className="flex flex-col md:flex-row">
@@ -163,7 +163,7 @@ function Article({ data, initialCommentCount }: ArticleProps) {
             <NAuthorsBio authors={data.authors} />
             <CommentsSection
                 blogId={data.id}
-                initialCount={initialCommentCount}
+                initialCount={data.comments_count}
             />
         </>
     );

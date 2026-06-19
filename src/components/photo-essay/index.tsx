@@ -46,7 +46,7 @@ function PhotoChapter({ title, body, image }) {
 }
 
 function PhotoEssay({ data, chapter }) {
-    const { chapters } = JSON.parse(data.description);
+    const { chapters } = data.content;
     const singlePage = chapter === "all";
     const page = singlePage ? 0 : Number(chapter);
     if (singlePage)
@@ -55,7 +55,7 @@ function PhotoEssay({ data, chapter }) {
                 <div className="post post-single">
                     <div className="h-full relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
-                            src={getImageURLFromFileName(data.upload_image)}
+                            src={getImageURLFromFileName(data.image)}
                             alt={
                                 data.image_text ??
                                 "sorry, we aren't having alt support now"
@@ -66,10 +66,10 @@ function PhotoEssay({ data, chapter }) {
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
-                            {data.page_title}
+                            {data.title}
                         </h3>
                         <div className="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                            {data.meta_description}
+                            {data.intro}
                         </div>
                         <div className="z-10 flex space-x-4 p-2 text-xl font-bold text-white">
                             <ul className="z-10 flex  space-x-2 list-none items-center">
@@ -102,7 +102,7 @@ function PhotoEssay({ data, chapter }) {
                     <PageShare
                         className="p-2"
                         url={getArticlePublicURL(data)}
-                        media={data.upload_image}
+                        media={data.image}
                     ></PageShare>
                 </div>
                 <NAuthorsBio authors={data.authors} />
@@ -114,7 +114,7 @@ function PhotoEssay({ data, chapter }) {
                 <div className="post post-single">
                     <div className="h-dvh relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
-                            src={getImageURLFromFileName(data.upload_image)}
+                            src={getImageURLFromFileName(data.image)}
                             alt={
                                 data.image_text ??
                                 "sorry, we aren't having alt support now"
@@ -125,10 +125,10 @@ function PhotoEssay({ data, chapter }) {
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
                         <h3 className="z-10 mt-3 text-3xl font-bold text-white">
-                            {data.page_title}
+                            {data.title}
                         </h3>
                         <div className="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                            {data.meta_description}
+                            {data.intro}
                         </div>
                         <div className="z-10 flex space-x-4 p-2 text-xl font-bold text-white">
                             <ul className="z-10 flex  space-x-2 list-none items-center flex-wrap">
@@ -177,7 +177,7 @@ function PhotoEssay({ data, chapter }) {
                     <PageShare
                         className="p-2"
                         url={getArticlePublicURL(data)}
-                        media={data.upload_image}
+                        media={data.image}
                     ></PageShare>
                 </div>
                 <NAuthorsBio authors={data.authors} />
@@ -225,7 +225,7 @@ function PhotoEssay({ data, chapter }) {
                 <PageShare
                     className="p-2"
                     url={getArticlePublicURL(data)}
-                    media={data.upload_image}
+                    media={data.image}
                 ></PageShare>
             </div>
             {lastPage ? <NAuthorsBio authors={data.authors} /> : null}

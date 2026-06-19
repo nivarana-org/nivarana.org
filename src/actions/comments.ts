@@ -6,7 +6,6 @@ import { getActiveSubscriptionByUserId } from "@/data/subscriptions";
 import {
     createComment,
     getCommentsByBlogId,
-    getAcceptedCommentCountByBlogId,
     type CommentWithUser,
 } from "@/data/comments";
 
@@ -69,9 +68,7 @@ export async function addComment(
     }
 }
 
-export async function getArticleComments(
-    blogId: number,
-): Promise<{
+export async function getArticleComments(blogId: number): Promise<{
     status: boolean;
     data?: CommentWithUser[];
     count?: number;
@@ -79,14 +76,9 @@ export async function getArticleComments(
 }> {
     try {
         const comments = await getCommentsByBlogId(blogId);
-        const count = await getAcceptedCommentCountByBlogId(blogId);
-        return { status: true, data: comments, count };
+        return { status: true, data: comments };
     } catch (err) {
         console.error("Error fetching comments:", err);
         return { status: false, message: "Failed to fetch comments" };
     }
-}
-
-export async function getCommentCount(blogId: number): Promise<number> {
-    return getAcceptedCommentCountByBlogId(blogId);
 }

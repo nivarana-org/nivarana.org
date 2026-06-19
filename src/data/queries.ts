@@ -106,11 +106,19 @@ type Post = {
     categories: Category[];
     tags: Tag[];
     authors: Author[];
+    comments_count: number;
 };
 
-type PostPreview = Omit<
+type PostPreview = Pick<
     Post,
-    "content" | "created_at" | "scheduled_time" | "total_views" | "type"
+    | "id"
+    | "title"
+    | "image"
+    | "path"
+    | "intro"
+    | "authors"
+    | "categories"
+    | "tags"
 >;
 
 export const getPost = async ({
@@ -124,13 +132,19 @@ export const getPost = async ({
     const slugFrag = sql`b.path = ${slug}`;
     const selectorFrag = id ? idFrag : slugFrag;
     const result = await sql<Post>`SELECT
-      ${articleData},
-      ${authorsFragment} as authors,
-      ${tagsFragment} as tags,
-      ${categoriesFragment} as categories
-      FROM blogs b
-      WHERE ${selectorFrag}
-        AND b.status = 'PUBLISHED'
+        ${articleData},
+        (
+            SELECT COUNT(*)
+            FROM comments bc
+            WHERE bc.blog_id = b.id
+                AND bc.status = 'accepted'
+        ) as comments_count,
+        ${authorsFragment} as authors,
+        ${tagsFragment} as tags,
+        ${categoriesFragment} as categories
+        FROM blogs b
+        WHERE ${selectorFrag}
+          AND b.status = 'PUBLISHED'
     ;`.execute(db);
     return result.rows[0];
 };
