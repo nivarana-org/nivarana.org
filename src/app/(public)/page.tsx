@@ -1,4 +1,3 @@
-import WordCloud from "@/components/word-cloud";
 import { getCategoriesForFrontPage } from "@/data/cms";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import moment from "moment";
@@ -16,7 +15,6 @@ export default async function Home() {
                     <Category key={c.path} c={c}></Category>
                 ))}
             </div>
-            <WordCloud></WordCloud>
         </div>
     );
 }

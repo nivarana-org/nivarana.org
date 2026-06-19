@@ -5,7 +5,6 @@ import knex from "knex";
 import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
-import { fetchWordCloud } from "./word-cloud";
 import { asAdmin } from "./authorization";
 import { getOverview, getPost } from "./queries";
 
@@ -489,10 +488,6 @@ export const getRedirect = async (path) => {
         .where({ source: path })
         .first();
     return redirects;
-};
-
-export const getWordCloud = async () => {
-    return fetchWordCloud(db);
 };
 
 export const changeArticlePath = asAdmin(
