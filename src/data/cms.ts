@@ -6,7 +6,13 @@ import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
 import { asAdmin } from "./authorization";
-import { getOverview, getPost, getRedirect as getRedirectK } from "./queries";
+import {
+    getOverview,
+    getPost,
+    getRedirect as getRedirectK,
+    addTag as addTagK,
+    editPostTags as editPostTagsK,
+} from "./queries";
 
 export const db = knex({
     client: "mysql",
@@ -417,27 +423,8 @@ export const getAllArticlesAndTags = async () => {
     return articles;
 };
 
-export const editPostTags = asAdmin(async (postId, tags) => {
-    return await db.transaction(async (trx) => {
-        const tagRelations = tags.map((tagId) => ({
-            post_id: postId,
-            relation_id: tagId,
-            relation_type: "tag",
-        }));
-        await trx("post_relations")
-            .where({ post_id: postId, relation_type: "tag" })
-            .delete();
-        if (tagRelations.length > 0) {
-            await trx("post_relations").insert(tagRelations);
-        }
-
-        return postId;
-    });
-});
-
-export const addTag = asAdmin(async (name, path) => {
-    return await Tag.query().insert({ name, path });
-});
+export const editPostTags = asAdmin(editPostTagsK);
+export const addTag = asAdmin(addTagK);
 
 export const getAllTags = async () => {
     const tags = await Tag.query();
