@@ -193,3 +193,10 @@ export const getOverview = async () => {
     ;`.execute(db);
     return result.rows;
 };
+
+export const getRedirect = (path: string) =>
+    db
+        .selectFrom("redirects")
+        .where("source", "=", path)
+        .selectAll()
+        .executeTakeFirst();

@@ -6,7 +6,7 @@ import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
 import { asAdmin } from "./authorization";
-import { getOverview, getPost } from "./queries";
+import { getOverview, getPost, getRedirect as getRedirectK } from "./queries";
 
 export const db = knex({
     client: "mysql",
@@ -482,13 +482,7 @@ export const getTagByPath = async (path: string) => {
     return tag;
 };
 
-export const getRedirect = async (path) => {
-    const redirects = await db("redirects")
-        .select("*")
-        .where({ source: path })
-        .first();
-    return redirects;
-};
+export const getRedirect = getRedirectK;
 
 export const changeArticlePath = asAdmin(
     async (oldPath: string, newPath: string) => {
