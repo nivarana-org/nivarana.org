@@ -69,7 +69,7 @@ async function AuthorDetails({ data }) {
                 />
             )}
             {data.description != null && (
-                <p
+                <div
                     className="mt-2 max-w-prose text-black"
                     dangerouslySetInnerHTML={{
                         __html: data.description,
