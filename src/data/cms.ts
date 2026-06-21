@@ -483,17 +483,3 @@ export const getTagByPath = async (path: string) => {
 };
 
 export const getRedirect = getRedirectK;
-
-export const changeArticlePath = asAdmin(
-    async (oldPath: string, newPath: string) => {
-        const result = await Blog.query()
-            .where({ path: oldPath })
-            .update({ path: newPath });
-        await db("redirects").insert({
-            source: oldPath,
-            destination: `/article/${newPath}`,
-            type: "permanent",
-        });
-        return result;
-    },
-);

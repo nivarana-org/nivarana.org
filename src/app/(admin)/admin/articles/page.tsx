@@ -50,9 +50,6 @@ export default async function Page({}) {
     return (
         <div className="flex flex-col gap-2 p-2">
             <div className="p-2 flex flex-row gap-2">
-                <Link href="/admin/articles/bulk-edit/">
-                    <Button>Bulk Edit</Button>
-                </Link>
                 <Link href={`/admin/articles/${nextCount}`}>
                     <Button>New Article</Button>
                 </Link>
