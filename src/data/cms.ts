@@ -143,10 +143,6 @@ export const getArticlesFilteredAndPaginated = async (
     return articles.results.map((article) => article.toJSON());
 };
 
-export const getArticleFull = async (id: number) => {
-    return db<Article>("blogs").select("*").where({ id }).first();
-};
-
 export const getArticleFullWithRelations = async (id: number) => {
     const article = await Blog.query()
         .where("id", id)
@@ -166,19 +162,11 @@ export const searchArticles = async (query: string) => {
     return articles;
 };
 
-export const getCategoryDetails = async (id: number | string) => {
-    return db("categories").select("*").where({ id }).first();
-};
-
 export const getAllCategories = async () => {
     return db("categories")
         .select("id", "name")
         .orderBy("id", "asc")
         .where({ parent_id: 0 });
-};
-
-export const getAuthorsDetails = async (ids: string[]) => {
-    return db("authors").select("*").whereIn("id", ids);
 };
 
 export const getAuthor = async (id: number) => {
@@ -387,14 +375,6 @@ export const getPopularPosts = async () => {
         .limit(5);
 };
 
-export const getRandomPosts = async () => {
-    return Blog.query()
-        .modify("onlyPublished")
-        .withGraphFetched("[authors, categories as category, tags]")
-        .orderByRaw("RAND()")
-        .limit(5);
-};
-
 export const incrementBlogViewCount = async (id: number) => {
     const post = await Blog.query().findById(id).increment("total_views", 1);
     return post?.total_views;
@@ -462,24 +442,6 @@ export const addTag = asAdmin(async (name, path) => {
 export const getAllTags = async () => {
     const tags = await Tag.query();
     return JSON.parse(JSON.stringify(tags));
-};
-
-export const getTagByPath = async (path: string) => {
-    const tag = await Tag.query()
-        .where("path", path)
-        .first()
-        .withGraphFetched({
-            articles: {
-                $modify: ["onlyPublished"],
-                categories: true,
-                authors: true,
-                tags: true,
-            },
-        })
-        .modifyGraph("articles", (builder) => {
-            builder.orderBy("created_at", "desc");
-        });
-    return tag;
 };
 
 export const getRedirect = getRedirectK;
