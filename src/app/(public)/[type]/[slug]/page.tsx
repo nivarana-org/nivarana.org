@@ -75,14 +75,14 @@ export async function generateMetadata(
     const params = await props.params;
     const post = await cachedGetArticleBySlug(params.slug);
     if (!post) return {};
-    const imageUrl = getImageURLFromFileName(post.upload_image);
+    const imageUrl = getImageURLFromFileName(post.image);
     const optimizedImageUrl = `https://nivarana.org/_next/image?url=${encodeURIComponent(imageUrl)}&w=1200&q=75`;
     return {
-        title: post.page_title,
-        description: post.meta_description ?? (await parent).description,
-        keywords: post.meta_keyword ?? (await parent).keywords,
+        title: post.title,
+        description: post.intro ?? (await parent).description,
+        keywords: post.keywords ?? (await parent).keywords,
         other: {
-            citation_title: post.page_title,
+            citation_title: post.title,
             citation_date: moment(post.scheduled_time).format("YYYY-MM-DD"),
             citation_journal_title: "Nivarana",
             citation_authors: post.authors.map((a) => a.name).join("; "),
