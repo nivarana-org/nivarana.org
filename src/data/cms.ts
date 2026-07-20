@@ -12,6 +12,7 @@ import {
     getRedirect as getRedirectK,
     addTag as addTagK,
     editPostTags as editPostTagsK,
+    getSettings as getSettingsK,
 } from "./queries";
 
 export const db = knex({
@@ -432,3 +433,5 @@ export const getAllTags = async () => {
 };
 
 export const getRedirect = getRedirectK;
+
+export const getSettings = getSettingsK;
