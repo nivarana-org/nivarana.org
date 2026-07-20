@@ -2,6 +2,7 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import Script from "next/script";
 import { getCategories } from "@/data/cms";
+import Banner from "@/components/banner/Banner";
 
 export default async function PublicLayout({
     children,
@@ -12,6 +13,7 @@ export default async function PublicLayout({
     return (
         <>
             <Header categories={categories} />
+            <Banner />
             {children}
             <hr />
             <Footer />
