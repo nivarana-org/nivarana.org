@@ -6,6 +6,7 @@ export async function GET() {
         "banner.heading",
         "banner.content.head",
         "banner.content.foot",
+        "banner.date",
     ]);
 
     return Response.json(settings);

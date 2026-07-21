@@ -1,15 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import { useBanner } from "./useBanner";
+import { useEffect, useState } from "react";
 import { getYouTubeId } from "@/utils/youtube";
+interface BannerData {
+    "banner.live": string | null;
+    "banner.heading": string | null;
+    "banner.content.head": string | null;
+    "banner.content.foot": string | null;
+    "banner.date": string | null;
+}
+
+const POLL_INTERVAL = 60_000;
+const LS_KEY = "bannerMinimized";
 
 export default function Banner() {
-    const banner = useBanner();
-    const [minimized, setMinimized] = useState(false);
+    const [banner, setBanner] = useState<BannerData | null>(null);
+    const [storedDate] = useState(() => {
+        if (typeof window === "undefined") return null;
+        return localStorage.getItem(LS_KEY);
+    });
+    const [userMinimized, setUserMinimized] = useState<boolean | null>(null);
+
+    const minimized = userMinimized ?? computeMinimized(banner, storedDate);
+
+    useEffect(() => {
+        let active = true;
+
+        const fetchBanner = async () => {
+            try {
+                const response = await fetch("/api/banner", {
+                    cache: "no-store",
+                });
+                if (!response.ok) return;
+                const data = (await response.json()) as BannerData;
+                if (active) setBanner(data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchBanner();
+
+        if (minimized !== false)
+            return () => {
+                active = false;
+            };
+
+        const interval = setInterval(fetchBanner, POLL_INTERVAL);
+
+        return () => {
+            active = false;
+            clearInterval(interval);
+        };
+    }, [minimized]);
 
     const videoId = getYouTubeId(banner?.["banner.live"]);
-    if (!videoId) return null;
+    if (!videoId || minimized === null) return null;
 
     const heading = banner?.["banner.heading"] ?? "";
     const contentHead = banner?.["banner.content.head"] ?? "";
@@ -19,7 +65,10 @@ export default function Banner() {
         return (
             <button
                 type="button"
-                onClick={() => setMinimized(false)}
+                onClick={() => {
+                    localStorage.removeItem(LS_KEY);
+                    setUserMinimized(false);
+                }}
                 className="fixed bottom-4 left-4 z-[9999] rounded-full bg-nivarana-blue px-5 py-3 text-sm font-medium text-white shadow-lg hover:opacity-90"
             >
                 {heading || "Watch live"}
@@ -32,7 +81,11 @@ export default function Banner() {
             <div className="relative max-h-full w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-6 shadow-2xl">
                 <button
                     type="button"
-                    onClick={() => setMinimized(true)}
+                    onClick={() => {
+                        const today = new Date().toISOString().split("T")[0];
+                        localStorage.setItem(LS_KEY, today);
+                        setUserMinimized(true);
+                    }}
                     aria-label="Minimize"
                     className="absolute right-3 top-3 rounded-full p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                 >
@@ -81,4 +134,16 @@ export default function Banner() {
             </div>
         </div>
     );
+}
+
+function computeMinimized(
+    banner: BannerData | null,
+    storedDate: string | null,
+): boolean | null {
+    if (!banner) return null;
+    const videoId = getYouTubeId(banner["banner.live"]);
+    if (!videoId) return null;
+    const bannerDate = banner["banner.date"] ?? null;
+    if (!bannerDate || !storedDate || storedDate < bannerDate) return false;
+    return true;
 }
