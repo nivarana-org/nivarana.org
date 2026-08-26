@@ -8,9 +8,6 @@ const nextConfig = {
     ],
     experimental: {
         inlineCss: true,
-
-        // let's appear fancy in chrome at least
-        viewTransition: true,
     },
     typescript: {
         ignoreBuildErrors: true,
