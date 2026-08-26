@@ -24,6 +24,7 @@
     "better-auth": "^1.6.21",
     "feed": "^6.0.0",
     "html-react-parser": "^6.1.7",
+    "immer": "^11.1.18",
     "knex": "^3.3.0",
     "kysely": "^0.29.5",
     "moment": "^2.30.1",
