@@ -1,5 +1,4 @@
 import { getRedirect, searchArticles } from "@/data/cms";
-import { denormalizeAsOldSlugs } from "@/utils/normalizers";
 import { notFound, redirect } from "next/navigation";
 
 type Props = {
