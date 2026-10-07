@@ -7,23 +7,33 @@ type Props = {
 };
 
 export default async function Page(props: Props) {
-    const params = await props.params;
-    if (Array.isArray(params.catch) && params.catch.length > 0) {
-        const paths = [`/${params.catch.join("/")}/`, params.catch.at(-1)];
-        for (const path of paths) {
-            const result = await getRedirect(path);
-            if (result && result.destination) {
-                return redirect(result.destination);
-            }
-        }
+    const { catch: input } = await props.params;
 
-        const searchResult = await searchArticles(params.catch.join(" "));
-        if (searchResult.length > 0) {
-            const slug = denormalizeAsOldSlugs(searchResult[0].path);
-            // const slug = searchResult[0].path;
-            const category = searchResult[0].category;
-            return redirect(`/${category.name}/${slug}`, "replace");
+    if (!validArray(input)) {
+        return notFound();
+    }
+
+    const oldPath: [string, ...string[]] = input;
+    const fullPath = `/${oldPath.join("/")}/`;
+    const lastSegment: string = oldPath.at(-1)!;
+
+    for (const path of [fullPath, lastSegment]) {
+        const redirectResult = await getRedirect(path);
+        if (redirectResult && redirectResult.destination) {
+            return redirect(redirectResult.destination);
         }
     }
-    return notFound();
+
+    const searchResult = await searchArticles(
+        oldPath.join(" ").split("-").join(" "),
+    );
+    if (searchResult.length > 0) {
+        const slug = searchResult[0].path;
+        const category = searchResult[0].category;
+        return redirect(`/${category.name}/${slug}`, "replace");
+    }
+}
+
+function validArray(input: string[] | string): input is [string, ...string[]] {
+    return Array.isArray(input) && input.length > 0;
 }
