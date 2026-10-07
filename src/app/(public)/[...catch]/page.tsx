@@ -1,4 +1,5 @@
-import { getRedirect, searchArticles } from "@/data/cms";
+import { searchArticles } from "@/data/cms";
+import { getRedirect } from "@/data/redirects";
 import { notFound, redirect } from "next/navigation";
 
 type Props = {

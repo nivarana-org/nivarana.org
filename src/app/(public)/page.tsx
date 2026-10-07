@@ -1,13 +1,13 @@
-import { getCategoriesForFrontPage } from "@/data/cms";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
+import { getOverview } from "@/data/queries";
 
 export default async function Home() {
-    const categories = await getCategoriesForFrontPage();
+    const categories = await getOverview();
     return (
         <div className="max-w-screen-xl mx-auto py-8 px-4">
             <div className="flex flex-col gap-12">

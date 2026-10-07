@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getSettings } from "@/data/cms";
 import { StorePage } from "@/components/store/StorePage";
 import type { StoreData, StorePoster } from "@/types/store";
+import { getSettings } from "@/data/settings";
 
 export const metadata: Metadata = {
     title: "Store",

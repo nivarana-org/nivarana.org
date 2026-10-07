@@ -6,14 +6,6 @@ import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
 import { asAdmin } from "./authorization";
-import {
-    getOverview,
-    getPost,
-    getRedirect as getRedirectK,
-    addTag as addTagK,
-    editPostTags as editPostTagsK,
-    getSettings as getSettingsK,
-} from "./queries";
 
 export const db = knex({
     client: "mysql",
@@ -297,10 +289,6 @@ export const addOrEditAuthor = asAdmin(async (author: Author) => {
     return await query;
 });
 
-export const getArticleByPath = async (path: string) => {
-    return getPost({ slug: path });
-};
-
 export const getPageByPath = async (path: string) => {
     const page = await db("static_pages")
         .select("*")
@@ -399,10 +387,6 @@ export const getCategoriesTable = async () => {
     return categories;
 };
 
-export const getCategoriesForFrontPage = async () => {
-    return getOverview();
-};
-
 export const getCategories = async () => {
     const categories = await Category.query()
         .withGraphFetched("children.[children.^]")
@@ -424,14 +408,7 @@ export const getAllArticlesAndTags = async () => {
     return articles;
 };
 
-export const editPostTags = asAdmin(editPostTagsK);
-export const addTag = asAdmin(addTagK);
-
 export const getAllTags = async () => {
     const tags = await Tag.query();
     return JSON.parse(JSON.stringify(tags));
 };
-
-export const getRedirect = getRedirectK;
-
-export const getSettings = getSettingsK;

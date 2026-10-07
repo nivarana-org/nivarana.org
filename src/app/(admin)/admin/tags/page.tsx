@@ -1,7 +1,8 @@
-import { editPostTags, getAllArticlesAndTags, getAllTags } from "@/data/cms";
+import { getAllArticlesAndTags, getAllTags } from "@/data/cms";
 import Link from "next/link";
 import Selector from "./Selector";
 import { Button } from "@mui/joy";
+import { editPostTags } from "@/data/post-relations";
 
 async function onTagChange(post, tags) {
     "use server";

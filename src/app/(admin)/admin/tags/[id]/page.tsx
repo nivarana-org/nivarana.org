@@ -1,4 +1,4 @@
-import { addTag } from "@/data/cms";
+import { addTag } from "@/data/tags";
 import {
     Button,
     FormControl,

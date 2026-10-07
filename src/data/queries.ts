@@ -1,6 +1,5 @@
-import { Kysely, sql, Transaction } from "kysely";
+import { sql } from "kysely";
 import { db } from "./db";
-import { DB } from "./db.d";
 
 type Author = {
     id: number;
@@ -122,13 +121,7 @@ type PostPreview = Pick<
     | "tags"
 >;
 
-export const getPost = async ({
-    id,
-    slug,
-}: {
-    id: number | undefined;
-    slug: string | undefined;
-}) => {
+export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
     const idFrag = sql`b.id = ${id}`;
     const slugFrag = sql`b.path = ${slug}`;
     const selectorFrag = id ? idFrag : slugFrag;
@@ -195,73 +188,4 @@ export const getOverview = async () => {
     return result.rows;
 };
 
-export const getSettings = async (keys: string | string[]) => {
-    const keyList = Array.isArray(keys) ? keys : [keys];
-    const rows = await db
-        .selectFrom("settings")
-        .where("key", "in", keyList)
-        .select(["key", "value"])
-        .execute();
-    const result: Record<string, string | null> = {};
-    for (const key of keyList) {
-        result[key] = rows.find((row) => row.key === key)?.value ?? null;
-    }
-    return result;
-};
-
-export const getRedirect = (path: string) =>
-    db
-        .selectFrom("redirects")
-        .where("source", "=", path)
-        .selectAll()
-        .executeTakeFirst();
-
-export const addTag = (name: string, path: string) =>
-    db.insertInto("tags").values({ name, path });
-
-const deletePostRelation = (
-    post_id: number,
-    relation_type: string,
-    trx: Transaction<DB> | Kysely<DB>,
-) => {
-    return trx
-        .deleteFrom("post_relations")
-        .where("post_id", "=", post_id)
-        .where("relation_type", "=", relation_type)
-        .executeTakeFirst();
-};
-
-const addPostRelation = (
-    post_id: number,
-    relation_type: string,
-    relations: number[],
-    trx: Transaction<DB> | Kysely<DB>,
-) => {
-    return trx
-        .insertInto("post_relations")
-        .values(
-            relations.map((relation_id, index) => ({
-                post_id,
-                relation_type,
-                relation_id,
-                order: index + 1,
-            })),
-        )
-        .execute();
-};
-
-const replacePostRelation = async (
-    post_id: number,
-    relation_type: string,
-    relations: number[],
-    trx: Transaction<DB> | Kysely<DB>,
-) => {
-    await deletePostRelation(post_id, relation_type, trx);
-    await addPostRelation(post_id, relation_type, relations, trx);
-};
-
-export const editPostTags = async (postId: number, tags: number[]) => {
-    return db.transaction().execute(async (trx) => {
-        return await replacePostRelation(postId, "tag", tags, trx);
-    });
-};
+export const getArticleByPath = (path: string) => getPost({ slug: path });
