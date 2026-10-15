@@ -49,12 +49,8 @@ export interface Blogs {
     created_at: Generated<Date>;
     description: Generated<string | null>;
     id: Generated<number>;
-    image_text: Generated<string | null>;
     language: Generated<string | null>;
     meta_description: Generated<string | null>;
-    meta_keyword: Generated<string | null>;
-    meta_title: Generated<string | null>;
-    page_name: Generated<string | null>;
     page_title: Generated<string | null>;
     path: Generated<string | null>;
     scheduled_time: Generated<Date>;
