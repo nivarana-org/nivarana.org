@@ -98,6 +98,10 @@ export default function ArticleEditPage({
                     alert("Please select image");
                     return;
                 }
+                if (Array.isArray(tags) && tags.length === 0) {
+                    alert("Please add at least one tag");
+                    return;
+                }
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
                 data.append(
