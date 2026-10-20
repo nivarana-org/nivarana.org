@@ -4,7 +4,23 @@ import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { replacePostRelation } from "./post-relations";
 import { authorsFragment, categoriesFragment, tagsFragment } from "./queries";
-import type { Article } from "./cms";
+
+export interface Article {
+    id: number;
+    path: string;
+    total_views: number;
+    page_title: string;
+    description: string;
+    category_name: string;
+    authors: number[];
+    tags: number[];
+    upload_image: string;
+    created_at: number;
+    updated_at: number;
+    meta_title: string;
+    meta_keyword: string;
+    meta_description: string;
+}
 
 export const getArticlesOverview = () =>
     db.selectFrom("blogs").selectAll().orderBy("id", "desc").execute();

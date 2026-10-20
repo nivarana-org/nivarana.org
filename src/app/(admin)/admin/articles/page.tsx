@@ -1,11 +1,10 @@
-import { Article } from "@/data/cms";
-import { getArticlesOverview } from "@/data/posts";
 import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
 import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
+import { getArticlesOverview, type Article } from "@/data/posts";
 
 function ArticleRow({
     id,

@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { DB } from "./db.d"; // this is the Database interface we defined earlier
 import { createPool } from "mysql2"; // do not use 'mysql2/promises'!
 import { Kysely, MysqlDialect, ParseJSONResultsPlugin } from "kysely";

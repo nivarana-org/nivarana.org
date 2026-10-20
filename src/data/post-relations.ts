@@ -1,6 +1,7 @@
-import { Kysely, sql, Transaction } from "kysely";
+import { Kysely, Transaction } from "kysely";
 import { db } from "./db";
 import { asAdmin } from "./authorization";
+import type { DB } from "./db.d";
 
 const deletePostRelation = (
     post_id: number,

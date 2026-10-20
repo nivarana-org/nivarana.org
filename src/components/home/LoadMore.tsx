@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import ArticlePreview from "../article/ArticlePreview";
 import { Post } from "@/types/nivarana";
-import { getArticlesPaginated } from "@/data/posts";
+import { getArticlesPaginatedAction } from "@/actions/post";
 
 const usePosts = (startPage: number) => {
     const [page, setPage] = useState(startPage);
@@ -16,7 +16,7 @@ const usePosts = (startPage: number) => {
         if (loading) return;
         setLoading(true);
         setAutoLoad(true);
-        const morePosts = await getArticlesPaginated(page);
+        const morePosts = await getArticlesPaginatedAction(page);
         if (morePosts.length > 0) {
             setPosts((posts) => [...posts, ...morePosts]);
             setPage((page) => page + 1);

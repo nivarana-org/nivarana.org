@@ -1,7 +1,16 @@
 import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { getArticlesByRelation } from "./queries";
-import type { Author } from "./models";
+
+export interface Author {
+    id?: number | string | null;
+    name: string;
+    email?: string | null;
+    path?: string | null;
+    description?: string | null;
+    title?: string | null;
+    image?: string | null;
+}
 
 export const getAuthorsOverview = () =>
     db

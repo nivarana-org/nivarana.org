@@ -46,7 +46,6 @@ const nextConfig = {
             },
         ];
     },
-    serverExternalPackages: ["knex"],
     images: {
         remotePatterns: imageConfig.remotePatterns,
         dangerouslyAllowLocalIP: true,

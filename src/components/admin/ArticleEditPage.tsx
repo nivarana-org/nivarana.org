@@ -11,7 +11,7 @@ import {
     Textarea,
 } from "@mui/joy";
 import { addOrEditPostAction } from "@/actions/post";
-import { Article } from "@/data/cms";
+import type { Article } from "@/data/posts";
 import dynamic from "next/dynamic";
 import ImagePicker from "./ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
