@@ -60,15 +60,6 @@ export interface EnhancedArticle extends Article {
     authors: AuthorOld[];
 }
 
-const getTableCount = async (table) => {
-    const result = await db(table).count("* as count");
-    return result[0].count;
-};
-
-export const getArticlesCount = async () => {
-    return getTableCount("blogs");
-};
-
 export const getArticlesOverview = async () => {
     return db<Article>("blogs").select("*").orderBy("id", "desc");
 };
@@ -356,10 +347,6 @@ export const getCategoryByPath = async (path: string) => {
     return category;
 };
 
-export const getPeopleCount = async () => {
-    return getTableCount("authors");
-};
-
 export const getPopularPosts = async () => {
     return Blog.query()
         .modify("onlyPublished")
@@ -371,11 +358,6 @@ export const getPopularPosts = async () => {
 export const incrementBlogViewCount = async (id: number) => {
     const post = await Blog.query().findById(id).increment("total_views", 1);
     return post?.total_views;
-};
-
-export const getTotalViewsCount = async () => {
-    const views = await Blog.query().sum("total_views");
-    return views[0]["sum(`total_views`)"];
 };
 
 export const publishScheduledPostsNeedingPublication = async () => {

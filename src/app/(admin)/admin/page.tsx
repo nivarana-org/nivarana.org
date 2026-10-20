@@ -4,7 +4,7 @@ import {
     getArticlesCount,
     getPeopleCount,
     getTotalViewsCount,
-} from "@/data/cms";
+} from "@/data/stats";
 import Link from "next/link";
 import { Suspense } from "react";
 
