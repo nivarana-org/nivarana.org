@@ -247,13 +247,14 @@ export const getArticlesByRelation = (
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
-        .whereExists((eb) =>
-            eb
-                .selectFrom("post_relations as pr")
-                .select("pr.post_id")
-                .whereRef("pr.post_id", "=", "b.id")
-                .where("pr.relation_type", "=", relationType)
-                .where("pr.relation_id", "=", relationId),
+        .where(({ exists, selectFrom }) =>
+            exists(
+                selectFrom("post_relations as pr")
+                    .select("pr.post_id")
+                    .whereRef("pr.post_id", "=", "b.id")
+                    .where("pr.relation_type", "=", relationType)
+                    .where("pr.relation_id", "=", relationId),
+            ),
         )
         .orderBy("b.created_at", "desc")
         .execute();
