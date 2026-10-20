@@ -207,58 +207,6 @@ export const editPostCategory = asAdmin(
     },
 );
 
-export const addCategory = asAdmin(async (name: string, path: string) => {
-    return await db("categories").insert({
-        name,
-        path,
-        parent_id: 0,
-        meta_title: name,
-        meta_keyword: name,
-        meta_description: name,
-        sort_order: 0,
-    });
-});
-
-export const addOrEditAuthor = asAdmin(async (author: Author) => {
-    const timestamp = new Date(Date.now());
-    const query = db("authors")
-        .insert({ ...author, created_at: timestamp, updated_at: timestamp })
-        .onConflict("id")
-        .merge({ ...author, updated_at: timestamp });
-    return await query;
-});
-
-export interface StaticPage {
-    id?: number;
-    page_name: string;
-    page_title: string;
-    description: string;
-}
-
-export const addOrEditPage = asAdmin(async (page: StaticPage) => {
-    const timestamp = new Date(Date.now());
-
-    const [pageId] = await db("static_pages")
-        .insert({
-            id: page.id,
-            page_name: page.page_name,
-            page_title: page.page_title,
-            description: page.description,
-            created_at: timestamp,
-            updated_at: timestamp,
-        })
-        .onConflict("id")
-        .merge({
-            page_name: page.page_name,
-            page_title: page.page_title,
-            description: page.description,
-            updated_at: timestamp,
-        })
-        .returning("id");
-
-    return pageId;
-});
-
 export const getAuthorByPath = async (path: string) => {
     const author = await Author.query()
         .where("path", path)

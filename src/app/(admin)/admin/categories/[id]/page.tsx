@@ -1,4 +1,4 @@
-import { addCategory } from "@/data/cms";
+import { addCategory } from "@/data/categories";
 import {
     Button,
     FormControl,

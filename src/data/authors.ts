@@ -1,4 +1,6 @@
+import { asAdmin } from "./authorization";
 import { db } from "./db";
+import type { Author } from "./models";
 
 export const getAuthorsOverview = () =>
     db
@@ -28,3 +30,12 @@ export const getAllAuthors = () =>
         .select(["id", "name", "path"])
         .orderBy("id", "desc")
         .execute();
+
+export const addOrEditAuthor = asAdmin(async (author: Author) => {
+    const timestamp = new Date(Date.now());
+    await db
+        .insertInto("authors")
+        .values({ ...author, created_at: timestamp, updated_at: timestamp })
+        .onDuplicateKeyUpdate({ ...author, updated_at: timestamp })
+        .execute();
+});

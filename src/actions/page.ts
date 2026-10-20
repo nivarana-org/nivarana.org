@@ -1,5 +1,5 @@
 "use server";
-import { addOrEditPage } from "@/data/cms";
+import { addOrEditPage } from "@/data/pages";
 import { revalidatePath } from "next/cache";
 
 export const addOrEditPageAction = async (formData: FormData) => {
