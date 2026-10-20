@@ -222,7 +222,7 @@ export const getCategoriesWithArticleLinks = () =>
 export const getArticleByPath = (path: string) => getPost({ slug: path });
 
 export const getArticlesByRelation = (
-    relationType: "author" | "category",
+    relationType: "author" | "category" | "tag",
     relationId: number,
 ) =>
     db

@@ -90,6 +90,17 @@ function PhotoEssay({ data, chapter }) {
                                 </Suspense>
                             </ul>
                         </div>
+                        {data.tags.length > 0 && (
+                            <ul className="z-10 list-disc pl-5 text-sm text-white">
+                                {data.tags.map((t) => (
+                                    <li key={t.id}>
+                                        <Link href={`/tag/${t.path}`}>
+                                            {t.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                     <div className="mt-6"></div>
                     <ClearChapter></ClearChapter>
@@ -149,6 +160,17 @@ function PhotoEssay({ data, chapter }) {
                                 </Suspense>
                             </ul>
                         </div>
+                        {data.tags.length > 0 && (
+                            <ul className="z-10 list-disc pl-5 text-sm text-white">
+                                {data.tags.map((t) => (
+                                    <li key={t.id}>
+                                        <Link href={`/tag/${t.path}`}>
+                                            {t.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                     <div className="mt-6"></div>
                     <ClearChapter></ClearChapter>

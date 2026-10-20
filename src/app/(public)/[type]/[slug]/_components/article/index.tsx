@@ -27,6 +27,7 @@ interface ArticleProps {
         total_views: number;
         type: string;
         categories: { path: string; name: string }[];
+        tags: { id: number; path: string; name: string }[];
         authors: { id: number; path: string; name: string }[];
         comments_count: number;
     };
@@ -87,6 +88,17 @@ function Article({ data }: ArticleProps) {
                         Published:{" "}
                         {moment(data.created_at).format("MMMM DD, YYYY")}
                     </div>
+                    {data.tags.length > 0 && (
+                        <ul className="list-disc pl-5 p-1 text-sm text-black">
+                            {data.tags.map((t) => (
+                                <li key={t.id} className="hover:bg-cyan-200">
+                                    <Link href={`/tag/${t.path}`}>
+                                        {t.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     <div className="flex">
                         <PageTranslate url={getArticlePublicURL(data)} />
                     </div>
