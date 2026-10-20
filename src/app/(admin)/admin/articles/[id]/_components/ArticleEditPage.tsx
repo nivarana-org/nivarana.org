@@ -2,6 +2,10 @@
 import { useState } from "react";
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     FormControl,
     FormLabel,
     InputLabel,
@@ -11,6 +15,7 @@ import {
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { addOrEditPostAction } from "./post";
+import { addTagAction } from "./tag-actions";
 import type { Article } from "../queries";
 import dynamic from "next/dynamic";
 import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
@@ -63,7 +68,7 @@ export default function ArticleEditPage({
     post,
     allAuthors,
     allCategories,
-    allTags,
+    allTags: initialAllTags,
     type,
 }: {
     post: Article;
@@ -101,8 +106,47 @@ export default function ArticleEditPage({
     const [tags, setTags] = useState<string[]>(
         post?.tags?.map((t) => `${t.id}`) ?? [],
     );
+    const [allTags, setAllTags] = useState(initialAllTags);
     const handleTagChange = (event: SelectChangeEvent<string[]>) => {
         setTags(event.target.value as string[]);
+    };
+    const [newTagOpen, setNewTagOpen] = useState(false);
+    const [newTagSubmitting, setNewTagSubmitting] = useState(false);
+    const [newTag, newTagDispatch] = useImmerReducer(articleEditReducer, {
+        title: "",
+        path: "",
+        pathIsReadOnly: false,
+    });
+    const handleCreateTag = async () => {
+        const name = newTag.title.trim();
+        const path = newTag.path.trim();
+        if (!name) {
+            alert("Please enter a tag name");
+            return;
+        }
+        if (!path) {
+            alert("Please enter a slug/path");
+            return;
+        }
+        if (
+            allTags.some(
+                (t) => `${t.name}`.toLowerCase() === name.toLowerCase(),
+            )
+        ) {
+            alert("A tag with this name already exists");
+            return;
+        }
+        setNewTagSubmitting(true);
+        const { status, message, data } = await addTagAction(name, path);
+        setNewTagSubmitting(false);
+        if (!status || !data) {
+            alert(message);
+            return;
+        }
+        setAllTags((prev) => [...prev, data]);
+        setTags((prev) => [...prev, `${data.id}`]);
+        newTagDispatch({ type: "reset" });
+        setNewTagOpen(false);
     };
     const [category, setCategory] = useState(post?.category_name ?? "");
     const [image, setImage] = useState(post?.upload_image);
@@ -251,15 +295,15 @@ export default function ArticleEditPage({
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel htmlFor="hashtags-select" className="font-bold">
-                        Choose the hashtags
+                    <InputLabel htmlFor="tags-select" className="font-bold">
+                        Choose the tags
                     </InputLabel>
                     <Select
-                        id="hashtags-select"
+                        id="tags-select"
                         value={tags}
                         onChange={handleTagChange}
                         multiple
-                        label="Choose the hashtags"
+                        label="Choose the tags"
                         renderValue={(selected) =>
                             selected
                                 .map(
@@ -278,6 +322,16 @@ export default function ArticleEditPage({
                             </MenuItem>
                         ))}
                     </Select>
+                    <Button
+                        size="small"
+                        onClick={() => {
+                            newTagDispatch({ type: "reset" });
+                            setNewTagOpen(true);
+                        }}
+                        className="justify-start mt-1"
+                    >
+                        + Add new tag
+                    </Button>
                 </FormControl>
 
                 <TextField
@@ -396,6 +450,70 @@ export default function ArticleEditPage({
                 </div>
             </div>
             <div className="my-96"></div>
+            <Dialog
+                open={newTagOpen}
+                onClose={() => setNewTagOpen(false)}
+                fullWidth
+                maxWidth="sm"
+            >
+                <DialogTitle>Add a new tag</DialogTitle>
+                <DialogContent>
+                    <div className="grid grid-cols-1 gap-4 pt-2">
+                        <TextField
+                            fullWidth
+                            autoFocus
+                            value={newTag.title}
+                            onChange={(e) =>
+                                newTagDispatch({
+                                    type: "title",
+                                    value: e.target.value,
+                                })
+                            }
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleCreateTag();
+                                }
+                            }}
+                            label="Tag Title"
+                            slotProps={{
+                                inputLabel: { className: "font-bold" },
+                            }}
+                            helperText="This is the publicly visible title. Do type the # at the beginning."
+                        ></TextField>
+                        <TextField
+                            fullWidth
+                            value={newTag.path}
+                            onChange={(e) =>
+                                newTagDispatch({
+                                    type: "path",
+                                    value: e.target.value,
+                                })
+                            }
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleCreateTag();
+                                }
+                            }}
+                            label="Slug/Link/Path"
+                            slotProps={{
+                                inputLabel: { className: "font-bold" },
+                            }}
+                            helperText="Generated automatically from the tag title. You can edit it manually."
+                        ></TextField>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setNewTagOpen(false)}>Cancel</Button>
+                    <Button
+                        onClick={handleCreateTag}
+                        disabled={newTagSubmitting}
+                    >
+                        {newTagSubmitting ? "Adding..." : "Add tag"}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </form>
     );
 }

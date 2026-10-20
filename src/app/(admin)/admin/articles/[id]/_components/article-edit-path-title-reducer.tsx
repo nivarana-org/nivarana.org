@@ -15,5 +15,10 @@ export const articleEditReducer = (draft, action) => {
         case "freeze-path":
             draft.pathIsReadOnly = true;
             return draft;
+        case "reset":
+            draft.title = "";
+            draft.path = "";
+            draft.pathManuallySet = false;
+            return draft;
     }
 };

@@ -16,7 +16,7 @@ export default async function Page() {
                 name="name"
                 label="Tag Title"
                 slotProps={{ inputLabel: { className: "font-bold" } }}
-                helperText="This is the publicly visible title. Do type the # at the beginning."
+                helperText="This is the publicly visible title. Examples are 'Empathy', 'Violence in health system', 'Climate Change'"
             ></TextField>
             <TextField
                 name="path"

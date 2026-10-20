@@ -1,8 +1,31 @@
+import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { getArticlesByRelation } from "./queries";
 
 export const getAllTags = () =>
     db.selectFrom("tags").selectAll().orderBy("id", "asc").execute();
+
+export const addTag = asAdmin(async (name: string, path: string) => {
+    const existing = await db
+        .selectFrom("tags")
+        .select("id")
+        .where("path", "=", path)
+        .executeTakeFirst();
+    if (existing) {
+        return {
+            status: false as const,
+            message: "A tag with this path already exists",
+        };
+    }
+    const result = await db
+        .insertInto("tags")
+        .values({ name, path })
+        .executeTakeFirst();
+    return {
+        status: true as const,
+        data: { id: Number(result.insertId), name },
+    };
+});
 
 export const getTagByPath = async (path: string) => {
     const tag = await db
