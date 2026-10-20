@@ -53,17 +53,6 @@ export const getArticleFullWithRelations = async (id: number) => {
     return article;
 };
 
-export const searchArticles = async (query: string) => {
-    const articles = await Blog.query()
-        .where("status", "PUBLISHED")
-        .andWhereRaw(
-            "MATCH(page_title, description, meta_description) AGAINST (?)",
-            [query],
-        )
-        .withGraphFetched("[authors, categories as category, tags]");
-    return articles;
-};
-
 export const getAuthorByPath = async (path: string) => {
     const author = await Author.query()
         .where("path", path)

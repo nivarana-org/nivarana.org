@@ -1,4 +1,4 @@
-import { sql } from "kysely";
+import { sql, type SqlBool } from "kysely";
 
 import { asAdmin } from "./authorization";
 import { db } from "./db";
@@ -50,6 +50,29 @@ export const getArticlesFilteredAndPaginated = (
     per_page = 10,
     language = "en",
 ) => getPublishedPostsPaginated(page, per_page, language);
+
+export const searchArticles = (query: string) =>
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.page_title",
+            "b.path",
+            "b.description",
+            "b.upload_image",
+            "b.meta_description",
+            "b.created_at",
+            "b.updated_at",
+            "b.type",
+            authorsFragment.as("authors"),
+            categoriesFragment.as("category"),
+            tagsFragment.as("tags"),
+        ])
+        .where("b.status", "=", "PUBLISHED")
+        .where(
+            sql<SqlBool>`MATCH(b.page_title, b.description, b.meta_description) AGAINST (${query})`,
+        )
+        .execute();
 
 export const addOrEditPost = asAdmin(async (post: Article) => {
     const timestamp = new Date(Date.now());

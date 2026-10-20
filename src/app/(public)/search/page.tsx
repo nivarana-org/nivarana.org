@@ -1,6 +1,6 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Search from "@/components/search/search";
-import { searchArticles } from "@/data/cms";
+import { searchArticles } from "@/data/posts";
 
 type Props = {
     searchParams?: Promise<{

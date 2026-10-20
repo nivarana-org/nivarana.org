@@ -1,4 +1,4 @@
-import { searchArticles } from "@/data/cms";
+import { searchArticles } from "@/data/posts";
 import { getRedirect } from "@/data/redirects";
 import { notFound, redirect } from "next/navigation";
 
