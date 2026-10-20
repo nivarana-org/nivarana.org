@@ -150,7 +150,38 @@ type CategoryOverview = {
     articles: PostPreview[];
 };
 
-export const getOverview = async () => {
+export const getOverview = () => getCategoriesWithArticles(true, 5);
+
+type PostBasics = Pick<Post, "id" | "title" | "image" | "path" | "intro">;
+
+type CategoryWithArticleTitles = {
+    id: number;
+    name: string;
+    path: string;
+    articles: PostBasics[];
+};
+
+function getCategoriesWithArticles(
+    withRelations: true,
+    limit?: number,
+): Promise<CategoryOverview>;
+function getCategoriesWithArticles(
+    withRelations: false,
+    limit?: number,
+): Promise<CategoryWithArticleTitles>;
+async function getCategoriesWithArticles(
+    withRelations: boolean,
+    limit?: number,
+) {
+    const articleObjectFields = withRelations
+        ? sql`
+                ${articleJSONData},
+                'authors', ${authorsFragment},
+                'tags', ${tagsFragment},
+                'categories', ${categoriesFragment}
+            `
+        : articleJSONData;
+    const limitClause = limit ? sql` LIMIT ${limit}` : sql``;
     const result = await sql<CategoryOverview>`SELECT
         c.id,
         c.name,
@@ -159,11 +190,8 @@ export const getOverview = async () => {
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        ${articleJSONData},
-                        'authors', ${authorsFragment},
-                        'tags', ${tagsFragment},
-                        'categories', ${categoriesFragment}
-                    ) ORDER BY b.id DESC LIMIT 5
+                        ${articleObjectFields}
+                    ) ORDER BY b.id DESC${limitClause}
                 )
                 FROM blogs b
                 WHERE b.id IN (
@@ -186,51 +214,10 @@ export const getOverview = async () => {
     ) DESC
     ;`.execute(db);
     return result.rows;
-};
+}
 
-type PostBasics = Pick<Post, "id" | "title" | "image" | "path" | "intro">;
-
-type CategoryWithArticleTitles = {
-    id: number;
-    name: string;
-    path: string;
-    articles: PostBasics[];
-};
-
-export const getCategoriesWithArticleLinks = async () => {
-    const result = await sql<CategoryWithArticleTitles>`SELECT
-      c.id,
-      c.name,
-      c.path,
-      COALESCE(
-          (
-              SELECT JSON_ARRAYAGG(
-                  JSON_OBJECT(
-                      ${articleJSONData}
-                  ) ORDER BY b.id DESC
-              )
-              FROM blogs b
-              WHERE b.id IN (
-                  SELECT pr.post_id
-                  FROM post_relations pr
-                  WHERE pr.relation_type = 'category'
-                      AND pr.relation_id = c.id
-              ) AND b.status = 'PUBLISHED'
-          ), JSON_ARRAY()
-      ) AS articles
-      FROM categories c
-      WHERE c.parent_id = 0
-      ORDER BY (
-          SELECT MAX(b2.scheduled_time)
-          FROM blogs b2
-          JOIN post_relations pr2 ON b2.id = pr2.post_id
-          WHERE pr2.relation_type = 'category'
-              AND pr2.relation_id = c.id
-              AND b2.status = 'PUBLISHED'
-      ) DESC
-  ;`.execute(db);
-    return result.rows;
-};
+export const getCategoriesWithArticleLinks = () =>
+    getCategoriesWithArticles(false);
 
 export const getArticleByPath = (path: string) => getPost({ slug: path });
 
