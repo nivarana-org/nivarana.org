@@ -1,3 +1,3 @@
-import CentralCircularLoader from "./[id]/loading";
+import { CentralCircularLoader } from "@/components/admin/loaders";
 
 export default CentralCircularLoader;

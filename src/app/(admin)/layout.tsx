@@ -1,5 +1,5 @@
-import Header from "@/components/admin/Header";
-import ClientRoot from "./client";
+import Header from "./_components/Header";
+import ClientRoot from "./_components/client";
 import { auth } from "@/utils/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";

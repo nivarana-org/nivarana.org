@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { writeFile } from "fs/promises";
 import { getExtension } from "@/utils/string";
-import { getImageUploadDirectory } from "../setup";
+import { getImageUploadDirectory } from "@/utils/image-upload";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { getRole } from "@/utils/auth";
 

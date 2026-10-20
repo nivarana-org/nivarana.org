@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { NextRequest, NextResponse } from "next/server";
-import { getImageUploadDirectory } from "@/app/(admin)/admin/api/images/setup";
+import { getImageUploadDirectory } from "@/utils/image-upload";
 
 const safe_subdirs = ["audio"];
 

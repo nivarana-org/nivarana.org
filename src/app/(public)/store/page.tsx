@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { StorePage } from "@/components/store/StorePage";
-import type { StoreData, StorePoster } from "@/types/store";
+import { StorePage } from "./_components/StorePage";
+import type { StoreData, StorePoster } from "./_lib/types";
 import { getSettings } from "@/data/settings";
 
 export const metadata: Metadata = {

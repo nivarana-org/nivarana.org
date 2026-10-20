@@ -1,10 +1,10 @@
 import { clearCache } from "@/actions/post";
-import ClearCache from "@/components/admin/ClearCache";
+import ClearCache from "./_components/ClearCache";
 import {
     getArticlesCount,
     getPeopleCount,
     getTotalViewsCount,
-} from "@/data/stats";
+} from "./queries";
 import Link from "next/link";
 import { Suspense } from "react";
 

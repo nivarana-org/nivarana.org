@@ -1,5 +1,5 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
-import Search from "@/components/search/search";
+import Search from "./_components/search";
 import { searchArticles } from "@/data/posts";
 
 type Props = {

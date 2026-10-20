@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import path from "path";
 import fs from "node:fs";
-import { getImageUploadDirectory } from "./setup";
+import { getImageUploadDirectory } from "@/utils/image-upload";
 import { getImageURLFromFileName } from "@/utils/paths";
 
 const sortFiles = (files) => {

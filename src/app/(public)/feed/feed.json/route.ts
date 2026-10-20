@@ -1,4 +1,4 @@
-import { getFeed } from "../assemble";
+import { getFeed } from "../_lib/assemble";
 
 export async function GET() {
     const feed = await getFeed();

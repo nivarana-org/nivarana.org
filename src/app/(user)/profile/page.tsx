@@ -1,8 +1,8 @@
 import { auth } from "@/utils/auth";
 import { headers } from "next/headers";
-import { getSubscriptionStatus, getRazorpayKey } from "@/actions/subscription";
+import { getSubscriptionStatus, getRazorpayKey } from "./actions";
 import { getAllPlans } from "@/data/subscriptions";
-import ProfilePageClient from "./page-client";
+import ProfilePageClient from "./_components/page-client";
 
 export default async function ProfilePage() {
     const session = await auth.api.getSession({ headers: await headers() });

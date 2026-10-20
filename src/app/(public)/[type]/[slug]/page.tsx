@@ -1,5 +1,5 @@
-import Article from "@/components/article";
-import PhotoEssay from "@/components/photo-essay";
+import Article from "./_components/article";
+import PhotoEssay from "./_components/photo-essay";
 import Sidebar from "@/components/sidebar";
 import { searchArticles } from "@/data/posts";
 import { getArticleByPath } from "@/data/queries";

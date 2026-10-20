@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Box, Button } from "@mui/joy";
-import Selector from "./selector";
+import Selector from "./_components/selector";
 import { editPostCategory } from "@/data/post-relations";
 import { getCategoriesWithArticleLinks } from "@/data/queries";
 

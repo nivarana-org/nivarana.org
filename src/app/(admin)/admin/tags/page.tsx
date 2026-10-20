@@ -1,7 +1,7 @@
 import { getAllArticlesAndTags } from "@/data/posts";
 import { getAllTags } from "@/data/tags";
 import Link from "next/link";
-import Selector from "./Selector";
+import Selector from "./_components/Selector";
 import { Button } from "@mui/joy";
 import { editPostTags } from "@/data/post-relations";
 

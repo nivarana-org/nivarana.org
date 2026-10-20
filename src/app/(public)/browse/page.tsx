@@ -1,6 +1,6 @@
 import { getArticlesOverview } from "@/data/posts";
 import { getImageURLFromFileName } from "@/utils/paths";
-import { ArticleCard } from "@/components/browse/ArticleCard";
+import { ArticleCard } from "./_components/ArticleCard";
 
 export default async function BrowsePage() {
     const articles = await getArticlesOverview();

@@ -1,4 +1,4 @@
-import AuthorEditPage from "@/components/admin/AuthorEditPage";
+import AuthorEditPage from "./_components/AuthorEditPage";
 import { getAuthor } from "@/data/authors";
 
 export default async function Page(props: Props) {

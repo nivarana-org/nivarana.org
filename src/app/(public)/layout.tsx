@@ -1,8 +1,8 @@
-import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
+import Header from "./_components/header/Header";
+import Footer from "./_components/footer/Footer";
 import Script from "next/script";
 import { getCategories } from "@/data/categories";
-import Banner from "@/components/banner/Banner";
+import Banner from "./_components/banner/Banner";
 
 export default async function PublicLayout({
     children,

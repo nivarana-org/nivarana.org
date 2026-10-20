@@ -1,4 +1,4 @@
-import PageClient from "./page-client";
+import PageClient from "./_components/page-client";
 
 type Props = {
     searchParams: Promise<{ return?: string }>;

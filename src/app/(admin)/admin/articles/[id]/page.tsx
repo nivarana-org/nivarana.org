@@ -1,4 +1,4 @@
-import ArticleEditPage from "@/components/admin/ArticleEditPage";
+import ArticleEditPage from "./_components/ArticleEditPage";
 import { getAllAuthors } from "@/data/authors";
 import { getAllCategories } from "@/data/categories";
 import { getAllTags } from "@/data/tags";

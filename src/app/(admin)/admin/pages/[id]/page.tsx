@@ -1,4 +1,4 @@
-import PageEditPage from "@/components/admin/PageEditor";
+import PageEditPage from "./_components/PageEditor";
 import { getPage } from "@/data/pages";
 
 export default async function Page(props: Props) {
