@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { Box, Button } from "@mui/joy";
 import Selector from "./_components/selector";
-import { editPostCategory } from "@/data/post-relations";
-import { getCategoriesWithArticleLinks } from "@/data/queries";
+import { editPostCategory } from "./queries";
+import { getCategoriesWithArticleLinks } from "./queries";
 
 // Selector is a client component, so it can only receive server actions.
 async function setPostToCategory(postId: number, categoryId: number) {

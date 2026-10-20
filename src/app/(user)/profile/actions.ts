@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "@/utils/auth";
 import { razorpay } from "@/lib/razorpay";
-import * as subscriptionsDb from "@/data/subscriptions";
+import * as subscriptionsDb from "./queries";
 import type {
     CreateSubscriptionResponse,
     SubscriptionStatus,

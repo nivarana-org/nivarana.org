@@ -1,7 +1,7 @@
 import { auth } from "@/utils/auth";
 import { headers } from "next/headers";
 import { getSubscriptionStatus, getRazorpayKey } from "./actions";
-import { getAllPlans } from "@/data/subscriptions";
+import { getAllPlans } from "./queries";
 import ProfilePageClient from "./_components/page-client";
 
 export default async function ProfilePage() {

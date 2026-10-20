@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/razorpay";
-import * as subscriptionsDb from "@/data/subscriptions";
+import * as subscriptionsDb from "./queries";
 import type { SubscriptionStatus } from "@/types/subscription";
 
 async function parseRawBody(request: Request): Promise<string> {

@@ -1,5 +1,5 @@
 "use server";
-import { addOrEditAuthor } from "@/data/authors";
+import { addOrEditAuthor } from "./queries";
 import { revalidatePath } from "next/cache";
 
 export const addOrEditAuthorAction = async (formData: FormData) => {

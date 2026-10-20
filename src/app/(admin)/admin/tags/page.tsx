@@ -1,9 +1,9 @@
-import { getAllArticlesAndTags } from "@/data/posts";
-import { getAllTags } from "@/data/tags";
+import { getAllArticlesAndTags } from "./queries";
+import { getAllTags } from "./queries";
 import Link from "next/link";
 import Selector from "./_components/Selector";
 import { Button } from "@mui/joy";
-import { editPostTags } from "@/data/post-relations";
+import { editPostTags } from "./queries";
 
 async function onTagChange(post, tags) {
     "use server";

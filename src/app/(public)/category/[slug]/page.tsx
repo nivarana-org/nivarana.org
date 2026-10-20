@@ -1,7 +1,7 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Sidebar from "@/components/sidebar";
-import { getCategoryByPath } from "@/data/categories";
-import { getRedirect } from "@/data/redirects";
+import { getCategoryByPath } from "./queries";
+import { getRedirect } from "./queries";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";

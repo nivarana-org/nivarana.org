@@ -1,9 +1,9 @@
 import Article from "./_components/article";
 import PhotoEssay from "./_components/photo-essay";
 import Sidebar from "@/components/sidebar";
-import { searchArticles } from "@/data/posts";
-import { getArticleByPath } from "@/data/queries";
-import { getRedirect } from "@/data/redirects";
+import { searchArticles } from "./queries";
+import { getArticleByPath } from "./queries";
+import { getRedirect } from "./queries";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
 import moment from "moment";

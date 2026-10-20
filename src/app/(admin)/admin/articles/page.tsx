@@ -4,7 +4,7 @@ import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
 import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
-import { getArticlesOverview, type Article } from "@/data/posts";
+import { getArticlesOverview, type Article } from "./queries";
 
 function ArticleRow({
     id,

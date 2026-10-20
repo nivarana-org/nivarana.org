@@ -2,7 +2,7 @@
 
 import { auth } from "@/utils/auth";
 import { headers } from "next/headers";
-import { getActiveSubscriptionByUserId } from "@/data/subscriptions";
+import { getActiveSubscriptionByUserId } from "./queries";
 import {
     createComment,
     getCommentsByBlogId,

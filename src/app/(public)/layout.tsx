@@ -1,7 +1,7 @@
 import Header from "./_components/header/Header";
 import Footer from "./_components/footer/Footer";
 import Script from "next/script";
-import { getCategories } from "@/data/categories";
+import { getCategories } from "./queries";
 import Banner from "./_components/banner/Banner";
 
 export default async function PublicLayout({

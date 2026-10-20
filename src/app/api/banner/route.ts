@@ -1,4 +1,4 @@
-import { getSettings } from "@/data/settings";
+import { getSettings } from "./queries";
 
 export async function GET() {
     const settings = await getSettings([

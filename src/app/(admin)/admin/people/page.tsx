@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
-import { getAuthorsOverview, type Author } from "@/data/authors";
+import { getAuthorsOverview, type Author } from "./queries";
 
 function AuthorRow({ id, name, path }: Author) {
     const adminLink = `/admin/people/${id}`;

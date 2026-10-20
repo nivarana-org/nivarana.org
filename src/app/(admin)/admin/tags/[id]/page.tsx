@@ -1,4 +1,4 @@
-import { addTag } from "@/data/tags";
+import { addTag } from "./queries";
 import {
     Button,
     FormControl,

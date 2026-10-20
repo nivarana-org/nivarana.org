@@ -1,6 +1,6 @@
 import LanguageSpecificHome from "./_components/LanguageSpecific";
 import RandomQuote from "./_components/random-quote";
-import { getPageByPath } from "@/data/pages";
+import { getPageByPath } from "./queries";
 import { Metadata } from "next";
 import { cache } from "react";
 

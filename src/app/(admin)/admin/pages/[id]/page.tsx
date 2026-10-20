@@ -1,5 +1,5 @@
 import PageEditPage from "./_components/PageEditor";
-import { getPage } from "@/data/pages";
+import { getPage } from "./queries";
 
 export default async function Page(props: Props) {
     const params = await props.params;

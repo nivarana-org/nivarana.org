@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { StorePage } from "./_components/StorePage";
 import type { StoreData, StorePoster } from "./_lib/types";
-import { getSettings } from "@/data/settings";
+import { getSettings } from "./queries";
 
 export const metadata: Metadata = {
     title: "Store",

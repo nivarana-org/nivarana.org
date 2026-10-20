@@ -1,4 +1,4 @@
-import { addCategory } from "@/data/categories";
+import { addCategory } from "./queries";
 import {
     Button,
     FormControl,

@@ -1,4 +1,4 @@
-import { getArticlesPaginated } from "@/data/posts";
+import { getArticlesPaginated } from "../queries";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Feed } from "feed";
 

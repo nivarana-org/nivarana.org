@@ -1,6 +1,6 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
-import { getAuthorByPath } from "@/data/authors";
-import { getRedirect } from "@/data/redirects";
+import { getAuthorByPath } from "./queries";
+import { getRedirect } from "./queries";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";

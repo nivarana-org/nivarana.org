@@ -22,6 +22,14 @@ export interface Article {
     meta_description: string;
 }
 
+export const getAllArticlesAndTags = () =>
+    db
+        .selectFrom("blogs as b")
+        .selectAll()
+        .select(tagsFragment.as("tags"))
+        .orderBy("b.id", "asc")
+        .execute();
+
 export const getArticlesOverview = () =>
     db.selectFrom("blogs").selectAll().orderBy("id", "desc").execute();
 
@@ -90,39 +98,6 @@ export const searchArticles = (query: string) =>
         )
         .execute();
 
-export const getArticleFullWithRelations = (id: number) =>
-    db
-        .selectFrom("blogs as b")
-        .select([
-            "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
-            "b.created_at",
-            "b.updated_at",
-            "b.type",
-            "b.status",
-            "b.scheduled_time",
-            "b.language",
-            "b.category_name",
-            "b.total_views",
-            authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
-            tagsFragment.as("tags"),
-        ])
-        .where("b.id", "=", id)
-        .executeTakeFirst();
-
-export const getAllArticlesAndTags = () =>
-    db
-        .selectFrom("blogs as b")
-        .selectAll()
-        .select(tagsFragment.as("tags"))
-        .orderBy("b.id", "asc")
-        .execute();
-
 export const getPopularPosts = () =>
     db
         .selectFrom("blogs as b")
@@ -157,16 +132,6 @@ export const incrementBlogViewCount = async (id: number) => {
         .where("id", "=", id)
         .executeTakeFirst();
     return row?.total_views;
-};
-
-export const publishScheduledPostsNeedingPublication = async () => {
-    const result = await db
-        .updateTable("blogs")
-        .set({ status: "PUBLISHED" })
-        .where("scheduled_time", "<", new Date())
-        .where("status", "!=", "PUBLISHED")
-        .executeTakeFirst();
-    return Number(result?.numUpdatedOrDeletedRows ?? 0);
 };
 
 export const addOrEditPost = asAdmin(async (post: Article) => {

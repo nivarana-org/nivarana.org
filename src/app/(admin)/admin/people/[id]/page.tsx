@@ -1,5 +1,5 @@
 import AuthorEditPage from "./_components/AuthorEditPage";
-import { getAuthor } from "@/data/authors";
+import { getAuthor } from "./queries";
 
 export default async function Page(props: Props) {
     const params = await props.params;

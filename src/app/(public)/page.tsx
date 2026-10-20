@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
-import { getOverview } from "@/data/queries";
+import { getOverview } from "./queries";
 
 export default async function Home() {
     const categories = await getOverview();

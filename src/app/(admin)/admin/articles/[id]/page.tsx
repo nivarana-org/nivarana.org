@@ -1,8 +1,8 @@
 import ArticleEditPage from "./_components/ArticleEditPage";
-import { getAllAuthors } from "@/data/authors";
-import { getAllCategories } from "@/data/categories";
-import { getAllTags } from "@/data/tags";
-import { getArticleFullWithRelations } from "@/data/posts";
+import { getAllAuthors } from "./queries";
+import { getAllCategories } from "./queries";
+import { getAllTags } from "./queries";
+import { getArticleFullWithRelations } from "./queries";
 
 type PostType = "article" | "photo-essay";
 

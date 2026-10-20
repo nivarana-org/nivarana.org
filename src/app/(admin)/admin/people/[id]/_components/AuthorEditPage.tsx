@@ -9,7 +9,7 @@ import {
     Input,
     Textarea,
 } from "@mui/joy";
-import type { Author } from "@/data/authors";
+import type { Author } from "../queries";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
 import ImagePicker from "@/components/admin/ImagePicker";

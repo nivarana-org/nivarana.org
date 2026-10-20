@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/utils/auth";
 import { verifyPaymentSignature } from "@/lib/razorpay";
-import * as subscriptionsDb from "@/data/subscriptions";
+import * as subscriptionsDb from "./queries";
 
 export async function POST(request: NextRequest) {
     const session = await auth.api.getSession({

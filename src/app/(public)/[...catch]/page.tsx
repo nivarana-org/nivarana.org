@@ -1,5 +1,5 @@
-import { searchArticles } from "@/data/posts";
-import { getRedirect } from "@/data/redirects";
+import { searchArticles } from "./queries";
+import { getRedirect } from "./queries";
 import { notFound, redirect } from "next/navigation";
 
 type Props = {

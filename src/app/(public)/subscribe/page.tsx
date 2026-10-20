@@ -1,4 +1,4 @@
-import { getAllPlans } from "@/data/subscriptions";
+import { getAllPlans } from "./queries";
 import Link from "next/link";
 
 export default async function Page() {

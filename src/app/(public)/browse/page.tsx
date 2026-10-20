@@ -1,4 +1,4 @@
-import { getArticlesOverview } from "@/data/posts";
+import { getArticlesOverview } from "./queries";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { ArticleCard } from "./_components/ArticleCard";
 
