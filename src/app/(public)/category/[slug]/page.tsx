@@ -26,11 +26,11 @@ async function Page(props: Props) {
         <div className="max-w-(--breakpoint-xl) mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
                 <div className="lg:col-span-2">
-                    <div className="uppercase text-black mb-8 font-bold text-4xl mx-auto">
+                    <div className="uppercase text-black mb-8 p-4 font-bold text-4xl mx-auto">
                         {category.name}
                     </div>
                     <div
-                        className="mx-auto mb-8 border-b-2"
+                        className="mx-auto mb-8 p-4 border-b-2"
                         dangerouslySetInnerHTML={{
                             __html: category.meta_description,
                         }}
