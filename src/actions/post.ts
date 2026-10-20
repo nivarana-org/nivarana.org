@@ -1,6 +1,13 @@
 "use server";
-import { addOrEditPost } from "@/data/posts";
+import {
+    addOrEditPost,
+    incrementBlogViewCount as incrementPostViews,
+} from "@/data/posts";
 import { revalidatePath } from "next/cache";
+
+export const incrementBlogViewCount = async (id: number) => {
+    return await incrementPostViews(id);
+};
 
 export const addOrEditPostAction = async (formData: FormData) => {
     const id = formData.get("id");

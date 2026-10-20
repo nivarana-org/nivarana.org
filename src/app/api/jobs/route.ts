@@ -1,4 +1,4 @@
-import { publishScheduledPostsNeedingPublication } from "@/data/cms";
+import { publishScheduledPostsNeedingPublication } from "@/data/posts";
 import { revalidatePath } from "next/cache";
 
 export async function GET() {

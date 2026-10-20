@@ -1,4 +1,4 @@
-import { getPopularPosts } from "@/data/cms";
+import { getPopularPosts } from "@/data/posts";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";

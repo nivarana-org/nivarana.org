@@ -1,4 +1,4 @@
-import { incrementBlogViewCount } from "@/data/cms";
+import { incrementBlogViewCount } from "@/actions/post";
 import { useEffect, useState } from "react";
 
 export const useViewCount = (id: string, initialCount = 0) => {

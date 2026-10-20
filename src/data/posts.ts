@@ -107,6 +107,52 @@ export const getAllArticlesAndTags = () =>
         .orderBy("b.id", "asc")
         .execute();
 
+export const getPopularPosts = () =>
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.page_title",
+            "b.path",
+            "b.description",
+            "b.upload_image",
+            "b.meta_description",
+            "b.created_at",
+            "b.updated_at",
+            "b.type",
+            authorsFragment.as("authors"),
+            categoriesFragment.as("category"),
+            tagsFragment.as("tags"),
+        ])
+        .where("b.status", "=", "PUBLISHED")
+        .orderBy("b.total_views", "desc")
+        .limit(5)
+        .execute();
+
+export const incrementBlogViewCount = async (id: number) => {
+    await db
+        .updateTable("blogs")
+        .set({ total_views: sql<number>`total_views + 1` })
+        .where("id", "=", id)
+        .executeTakeFirst();
+    const row = await db
+        .selectFrom("blogs")
+        .select("total_views")
+        .where("id", "=", id)
+        .executeTakeFirst();
+    return row?.total_views;
+};
+
+export const publishScheduledPostsNeedingPublication = async () => {
+    const result = await db
+        .updateTable("blogs")
+        .set({ status: "PUBLISHED" })
+        .where("scheduled_time", "<", new Date())
+        .where("status", "!=", "PUBLISHED")
+        .executeTakeFirst();
+    return Number(result?.numUpdatedOrDeletedRows ?? 0);
+};
+
 export const addOrEditPost = asAdmin(async (post: Article) => {
     const timestamp = new Date(Date.now());
 
