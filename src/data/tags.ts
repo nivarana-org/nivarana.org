@@ -3,7 +3,7 @@ import { db } from "./db";
 import { getArticlesByRelation } from "./queries";
 
 export const getAllTags = () =>
-    db.selectFrom("tags").selectAll().orderBy("id", "asc").execute();
+    db.selectFrom("tags").selectAll().orderBy("name", "asc").execute();
 
 export const addTag = asAdmin(async (name: string, path: string) => {
     const existing = await db

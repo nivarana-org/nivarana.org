@@ -143,7 +143,9 @@ export default function ArticleEditPage({
             alert(message);
             return;
         }
-        setAllTags((prev) => [...prev, data]);
+        setAllTags((prev) =>
+            [...prev, { ...data }].sort((a, b) => a.name.localeCompare(b.name)),
+        );
         setTags((prev) => [...prev, `${data.id}`]);
         newTagDispatch({ type: "reset" });
         setNewTagOpen(false);
