@@ -2,7 +2,8 @@ import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
-import { Author, getAuthorsOverview } from "@/data/cms";
+import { Author } from "@/data/cms";
+import { getAuthorsOverview } from "@/data/authors";
 
 function AuthorRow({ id, name, path }: Author) {
     const adminLink = `/admin/people/${id}`;

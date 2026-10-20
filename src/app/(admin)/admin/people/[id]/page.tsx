@@ -1,5 +1,5 @@
 import AuthorEditPage from "@/components/admin/AuthorEditPage";
-import { getAuthor } from "@/data/cms";
+import { getAuthor } from "@/data/authors";
 
 export default async function Page(props: Props) {
     const params = await props.params;

@@ -60,17 +60,6 @@ export interface EnhancedArticle extends Article {
     authors: AuthorOld[];
 }
 
-export const getAuthorsOverview = async () => {
-    return db<Author>("authors")
-        .select({
-            id: "id",
-            name: "name",
-            path: "path",
-            email: "email",
-        })
-        .orderBy("id", "desc");
-};
-
 export const getArticlesPaginated = async (
     page = 0,
     per_page = 10,
@@ -136,33 +125,6 @@ export const searchArticles = async (query: string) => {
         )
         .withGraphFetched("[authors, categories as category, tags]");
     return articles;
-};
-
-export const getAllCategories = async () => {
-    return db("categories")
-        .select("id", "name")
-        .orderBy("id", "asc")
-        .where({ parent_id: 0 });
-};
-
-export const getAuthor = async (id: number) => {
-    const author = await db<Author>("authors")
-        .select({
-            id: "id",
-            name: "name",
-            path: "path",
-            email: "email",
-            description: "description",
-            title: "title",
-            image: "image",
-        })
-        .where({ id })
-        .first();
-    return author;
-};
-
-export const getAllAuthors = async () => {
-    return db("authors").select("id", "name", "path").orderBy("id", "desc");
 };
 
 export const addOrEditPost = asAdmin(async (post: Article) => {
