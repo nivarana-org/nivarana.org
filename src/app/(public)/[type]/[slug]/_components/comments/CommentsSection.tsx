@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/utils/auth-client";
 import { addComment, getArticleComments } from "../../actions";
-import { getUserAbilities } from "@/actions/user";
+import { getUserAbilities } from "./getUserAbilities.action";
 import type { CommentWithUser } from "../../queries";
 import type { UserAbility } from "@/actions/user";
 import { CommentItem } from "./CommentItem";

@@ -6,27 +6,6 @@ import { getActiveSubscriptionByUserId } from "@/data/subscriptions";
 
 export type UserAbility = "comment.write";
 
-export async function setPasswordAction(formData: FormData) {
-    const newPassword = formData.get("newPassword") as string;
-
-    if (!newPassword || newPassword.length < 8) {
-        return { error: "Password must be at least 8 characters" };
-    }
-
-    try {
-        await auth.api.setPassword({
-            body: {
-                newPassword,
-            },
-            headers: await headers(),
-        });
-        return { message: "Password set successfully" };
-    } catch (error) {
-        console.error("Error setting password:", error);
-        return { error: "Failed to set password" };
-    }
-}
-
 export async function getUserAbilities(): Promise<{
     status: boolean;
     abilities?: UserAbility[];

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/utils/auth-client";
-import { setPasswordAction } from "@/actions/user";
+import { setPasswordAction } from "./setPassword.action";
 import { createSubscription, syncSubscriptionFromRazorpay } from "../actions";
 import { Confetti } from "./Confetti";
 import { getAndClearSubscriptionRedirect } from "@/utils/subscription-redirect";

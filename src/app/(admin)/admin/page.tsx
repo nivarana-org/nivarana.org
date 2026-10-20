@@ -1,4 +1,4 @@
-import { clearCache } from "@/actions/post";
+import { clearCache } from "@/app/(admin)/admin/articles/[id]/_components/post";
 import ClearCache from "./_components/ClearCache";
 import {
     getArticlesCount,

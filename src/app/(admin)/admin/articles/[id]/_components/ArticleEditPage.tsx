@@ -10,7 +10,7 @@ import {
     Select,
     Textarea,
 } from "@mui/joy";
-import { addOrEditPostAction } from "@/actions/post";
+import { addOrEditPostAction } from "./post";
 import type { Article } from "../queries";
 import dynamic from "next/dynamic";
 import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";

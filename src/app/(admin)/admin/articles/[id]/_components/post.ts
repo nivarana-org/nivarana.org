@@ -1,18 +1,6 @@
 "use server";
-import {
-    addOrEditPost,
-    getArticlesPaginated,
-    incrementBlogViewCount as incrementPostViews,
-} from "@/data/posts";
+import { addOrEditPost } from "@/data/posts";
 import { revalidatePath } from "next/cache";
-
-export const getArticlesPaginatedAction = async (page: number) => {
-    return await getArticlesPaginated(page);
-};
-
-export const incrementBlogViewCount = async (id: number) => {
-    return await incrementPostViews(id);
-};
 
 export const addOrEditPostAction = async (formData: FormData) => {
     const id = formData.get("id");
