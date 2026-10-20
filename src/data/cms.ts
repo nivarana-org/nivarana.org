@@ -1,24 +1,9 @@
 "use server";
 import "server-only";
 
-import knex from "knex";
 import { Author, Blog } from "./models";
 import Category from "./models/Category";
 import Tag from "./models/Tag";
-import { asAdmin } from "./authorization";
-
-export const db = knex({
-    client: "mysql",
-    connection: {
-        host: process.env.DB_HOST,
-        port: 3306,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DATABASE,
-        charset: "utf8mb4",
-    },
-    pool: { min: 0, max: 7 },
-});
 
 export interface Article {
     id: number;
@@ -126,86 +111,6 @@ export const searchArticles = async (query: string) => {
         .withGraphFetched("[authors, categories as category, tags]");
     return articles;
 };
-
-export const addOrEditPost = asAdmin(async (post: Article) => {
-    const timestamp = new Date(Date.now());
-
-    // Start transaction
-    return await db.transaction(async (trx) => {
-        // Upsert into blogs table
-        const { authors, categories, tags, ...rest } = post;
-
-        const [postId] = await trx("blogs")
-            .insert({
-                authors: authors.join(","),
-                category_name: categories[0],
-                ...rest,
-                created_at: timestamp,
-                updated_at: timestamp,
-            })
-            .onConflict("id")
-            .merge({ ...rest, updated_at: timestamp })
-            .returning("id");
-
-        // Prepare the authors data for `post_relations`
-        const authorRelations = authors.map((authorId, index) => ({
-            post_id: postId,
-            relation_id: authorId,
-            relation_type: "author",
-            order: index + 1,
-        }));
-
-        // Update post_relations
-        await trx("post_relations")
-            .where({ post_id: postId, relation_type: "author" })
-            .delete();
-        if (authorRelations.length > 0) {
-            await trx("post_relations").insert(authorRelations);
-        }
-
-        const categoryRelations = categories.map((categoryId, index) => ({
-            post_id: postId,
-            relation_id: categoryId,
-            relation_type: "category",
-            order: index + 1,
-        }));
-
-        await trx("post_relations")
-            .where({ post_id: postId, relation_type: "category" })
-            .delete();
-        if (categoryRelations.length > 0) {
-            await trx("post_relations").insert(categoryRelations);
-        }
-
-        const tagRelations = tags.map((tagId, index) => ({
-            post_id: postId,
-            relation_id: tagId,
-            relation_type: "tag",
-            order: index + 1,
-        }));
-        await trx("post_relations")
-            .where({ post_id: postId, relation_type: "tag" })
-            .delete();
-        if (tagRelations.length > 0) {
-            await trx("post_relations").insert(tagRelations);
-        }
-
-        return postId;
-    });
-});
-
-export const editPostCategory = asAdmin(
-    async (postId: number, categoryId: number) => {
-        return await db.transaction(async (trx) => {
-            await trx("post_relations")
-                .where({ post_id: postId, relation_type: "category" })
-                .update("relation_id", categoryId);
-            await trx("blogs")
-                .where({ id: postId })
-                .update("category_name", `${categoryId}`);
-        });
-    },
-);
 
 export const getAuthorByPath = async (path: string) => {
     const author = await Author.query()

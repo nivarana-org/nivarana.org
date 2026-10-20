@@ -33,7 +33,7 @@ const addPostRelation = (
         .execute();
 };
 
-const replacePostRelation = async (
+export const replacePostRelation = async (
     post_id: number,
     relation_type: string,
     relations: number[],
@@ -48,3 +48,21 @@ export const editPostTags = asAdmin(async (postId: number, tags: number[]) => {
         return await replacePostRelation(postId, "tag", tags, trx);
     });
 });
+
+export const editPostCategory = asAdmin(
+    async (postId: number, categoryId: number) => {
+        return db.transaction().execute(async (trx) => {
+            await trx
+                .updateTable("post_relations")
+                .set({ relation_id: categoryId })
+                .where("post_id", "=", postId)
+                .where("relation_type", "=", "category")
+                .execute();
+            await trx
+                .updateTable("blogs")
+                .set({ category_name: `${categoryId}` })
+                .where("id", "=", postId)
+                .execute();
+        });
+    },
+);

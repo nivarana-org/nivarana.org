@@ -2,8 +2,14 @@ import Link from "next/link";
 
 import { Box, Button } from "@mui/joy";
 import Selector from "./selector";
-import { editPostCategory } from "@/data/cms";
+import { editPostCategory } from "@/data/post-relations";
 import { getCategoriesWithArticleLinks } from "@/data/queries";
+
+// Selector is a client component, so it can only receive server actions.
+async function setPostToCategory(postId: number, categoryId: number) {
+    "use server";
+    return await editPostCategory(postId, categoryId);
+}
 
 function CategoryRow({ id, name, path, articles, categories }) {
     const publicLink = `/category/${path}`;
@@ -23,7 +29,7 @@ function CategoryRow({ id, name, path, articles, categories }) {
                         categories={categories}
                         initialSelected={id}
                         postId={a.id}
-                        setPostToCategory={editPostCategory}
+                        setPostToCategory={setPostToCategory}
                     ></Selector>
                 </div>
             ))}
