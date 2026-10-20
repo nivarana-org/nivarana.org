@@ -104,6 +104,7 @@ export default function ArticleEditPage({
     const handleTagChange = (event: SelectChangeEvent<string[]>) => {
         setTags(event.target.value as string[]);
     };
+    const [category, setCategory] = useState(post?.category_name ?? "");
     const [image, setImage] = useState(post?.upload_image);
     const [description, setDescription] = useState(
         type === "article" ? post?.description : JSON.parse(post?.description),
@@ -226,7 +227,8 @@ export default function ArticleEditPage({
                     </InputLabel>
                     <Select
                         id="category-select"
-                        defaultValue={post?.category_name}
+                        value={category}
+                        onChange={(event) => setCategory(event.target.value)}
                         name="category"
                         label="Choose the category"
                         required
