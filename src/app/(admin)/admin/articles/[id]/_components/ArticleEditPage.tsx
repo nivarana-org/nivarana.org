@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
     Button,
-    Divider,
     FormControl,
     FormLabel,
     InputLabel,
@@ -166,243 +165,239 @@ export default function ArticleEditPage({
                 }
             }}
         >
-            <TextField
-                name="title"
-                value={values.title}
-                onChange={(e) =>
-                    dispatch({ type: "title", value: e.target.value })
-                }
-                label="Post Title"
-                slotProps={{ inputLabel: { className: "font-bold" } }}
-            ></TextField>
-            <Divider className="my-4"></Divider>
-            <TextField
-                slotProps={{ htmlInput: { readOnly: values.pathIsReadOnly } }}
-                name="path"
-                value={values.path}
-                onChange={(e) => {
-                    dispatch({ type: "path", value: e.target.value });
-                }}
-                label="Slug/Link/Path"
-            ></TextField>
-
-            <Divider className="my-4"></Divider>
-
-            <FormControl>
-                <InputLabel className="font-bold">
-                    Choose the authors
-                </InputLabel>
-                <Select
-                    value={authors}
-                    multiple
-                    label="Choose the authors"
-                    displayEmpty
-                    onChange={handleAuthorChange}
-                    renderValue={(selected) =>
-                        selected.length === 0 ? (
-                            <em>Select one or more authors</em>
-                        ) : (
-                            selected
-                                .map(
-                                    (id) =>
-                                        allAuthors.find(
-                                            (a: { id: string }) =>
-                                                `${a.id}` === `${id}`,
-                                        )?.name ?? `${id}`,
-                                )
-                                .join(", ")
-                        )
+            <div className="grid grid-cols-1 gap-4">
+                <TextField
+                    fullWidth
+                    name="title"
+                    value={values.title}
+                    onChange={(e) =>
+                        dispatch({ type: "title", value: e.target.value })
                     }
-                >
-                    {allAuthors.map((a: { id: string; name: string }) => (
-                        <MenuItem key={a.id} value={`${a.id}`}>
-                            {a.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+                    label="Post Title"
+                    slotProps={{ inputLabel: { className: "font-bold" } }}
+                ></TextField>
 
-            <Divider className="my-4"></Divider>
+                <TextField
+                    fullWidth
+                    slotProps={{
+                        htmlInput: { readOnly: values.pathIsReadOnly },
+                    }}
+                    name="path"
+                    value={values.path}
+                    onChange={(e) => {
+                        dispatch({ type: "path", value: e.target.value });
+                    }}
+                    label="Slug/Link/Path"
+                ></TextField>
 
-            <FormControl>
-                <InputLabel className="font-bold">
-                    Choose the category
-                </InputLabel>
-                <Select
-                    defaultValue={post?.category_name}
-                    name="category"
-                    label="Choose the category"
-                    displayEmpty
-                    required
-                    renderValue={(selected) => {
-                        if (!selected) {
-                            return <em>Select a category</em>;
+                <FormControl fullWidth>
+                    <InputLabel className="font-bold">
+                        Choose the authors
+                    </InputLabel>
+                    <Select
+                        value={authors}
+                        multiple
+                        label="Choose the authors"
+                        displayEmpty
+                        onChange={handleAuthorChange}
+                        renderValue={(selected) =>
+                            selected.length === 0 ? (
+                                <em>Select one or more authors</em>
+                            ) : (
+                                selected
+                                    .map(
+                                        (id) =>
+                                            allAuthors.find(
+                                                (a: { id: string }) =>
+                                                    `${a.id}` === `${id}`,
+                                            )?.name ?? `${id}`,
+                                    )
+                                    .join(", ")
+                            )
                         }
-                        const category = allCategories.find(
-                            (c: { id: string }) => `${c.id}` === `${selected}`,
-                        );
-                        return category ? category.name : `${selected}`;
-                    }}
-                >
-                    {allCategories.map((c: { id: string; name: string }) => (
-                        <MenuItem key={c.id} value={`${c.id}`}>
-                            {c.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
-            <FormControl>
-                <InputLabel className="font-bold">
-                    Choose the hashtags
-                </InputLabel>
-                <Select
-                    value={tags}
-                    onChange={handleTagChange}
-                    multiple
-                    label="Choose the hashtags"
-                    displayEmpty
-                    renderValue={(selected) =>
-                        selected.length === 0 ? (
-                            <em>Select hashtags</em>
-                        ) : (
-                            selected
-                                .map(
-                                    (id) =>
-                                        allTags.find(
-                                            (t: { id: string }) =>
-                                                `${t.id}` === `${id}`,
-                                        )?.name ?? `${id}`,
-                                )
-                                .join(", ")
-                        )
-                    }
-                >
-                    {allTags.map((t: { id: string; name: string }) => (
-                        <MenuItem key={t.id} value={`${t.id}`}>
-                            {t.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
-            <Divider className="my-4"></Divider>
-
-            <TextField
-                name="intro"
-                defaultValue={post?.meta_description}
-                label={
-                    <>
-                        Introduction paragraph (previously called &quot;Meta
-                        Description&quot;
-                    </>
-                }
-                multiline
-                minRows={4}
-            ></TextField>
-
-            <Divider className="my-4"></Divider>
-
-            <FormControl>
-                <FormLabel className="font-bold">Image</FormLabel>
-                <ImagePicker
-                    defaultValue={image}
-                    onChange={(newValue: string) => {
-                        setImage(newValue);
-                    }}
-                ></ImagePicker>
-            </FormControl>
-
-            <Divider className="my-4"></Divider>
-
-            {type === "article" ? (
-                <ArticleEditor
-                    initialValue={post?.description}
-                    value={description}
-                    onEditorChange={(newValue) => setDescription(newValue)}
-                />
-            ) : (
-                <PhotoEssayEditor
-                    value={description}
-                    onEditorChange={(newValue) => setDescription(newValue)}
-                />
-            )}
-
-            <Divider className="my-4"></Divider>
-
-            <FormControl>
-                <InputLabel className="font-bold">Language</InputLabel>
-                <Select
-                    defaultValue={post?.language || "en"}
-                    name="language"
-                    label="Language"
-                    displayEmpty
-                    required
-                    renderValue={(selected) => {
-                        if (!selected) {
-                            return <em>Select a language</em>;
-                        }
-                        return (
-                            languages.find((l) => l.id === selected)?.name ??
-                            `${selected}`
-                        );
-                    }}
-                >
-                    {languages.map((l) => (
-                        <MenuItem key={l.id} value={l.id}>
-                            {l.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
-            <Divider className="my-4"></Divider>
-
-            <FormControl>
-                <InputLabel className="font-bold">Status</InputLabel>
-                <Select
-                    value={selectedStatus}
-                    onChange={handleStatusChange}
-                    name="status"
-                    label="Status"
-                    displayEmpty
-                    required
-                    renderValue={(selected) => {
-                        if (!selected) {
-                            return <em>Ready?</em>;
-                        }
-                        return (
-                            statuses.find((s) => s.id === selected)?.name ??
-                            `${selected}`
-                        );
-                    }}
-                >
-                    {statuses.map((c: { id: string; name: string }) => (
-                        <MenuItem key={c.id} value={`${c.id}`}>
-                            {c.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
-            {selectedStatus === "SCHEDULED" && (
-                <FormControl>
-                    <FormLabel className="font-bold">
-                        Scheduled for time
-                    </FormLabel>
-                    <DateTimePicker
-                        value={scheduledTime}
-                        onChange={setScheduledTime}
-                        required
-                    />
+                    >
+                        {allAuthors.map((a: { id: string; name: string }) => (
+                            <MenuItem key={a.id} value={`${a.id}`}>
+                                {a.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
                 </FormControl>
-            )}
 
-            <Divider className="my-4"></Divider>
+                <FormControl fullWidth>
+                    <InputLabel className="font-bold">
+                        Choose the category
+                    </InputLabel>
+                    <Select
+                        defaultValue={post?.category_name}
+                        name="category"
+                        label="Choose the category"
+                        displayEmpty
+                        required
+                        renderValue={(selected) => {
+                            if (!selected) {
+                                return <em>Select a category</em>;
+                            }
+                            const category = allCategories.find(
+                                (c: { id: string }) =>
+                                    `${c.id}` === `${selected}`,
+                            );
+                            return category ? category.name : `${selected}`;
+                        }}
+                    >
+                        {allCategories.map(
+                            (c: { id: string; name: string }) => (
+                                <MenuItem key={c.id} value={`${c.id}`}>
+                                    {c.name}
+                                </MenuItem>
+                            ),
+                        )}
+                    </Select>
+                </FormControl>
 
-            <Button type="submit" disabled={submitting}>
-                {submitting ? "Saving..." : "Save"}
-            </Button>
+                <FormControl fullWidth>
+                    <InputLabel className="font-bold">
+                        Choose the hashtags
+                    </InputLabel>
+                    <Select
+                        value={tags}
+                        onChange={handleTagChange}
+                        multiple
+                        label="Choose the hashtags"
+                        displayEmpty
+                        renderValue={(selected) =>
+                            selected.length === 0 ? (
+                                <em>Select hashtags</em>
+                            ) : (
+                                selected
+                                    .map(
+                                        (id) =>
+                                            allTags.find(
+                                                (t: { id: string }) =>
+                                                    `${t.id}` === `${id}`,
+                                            )?.name ?? `${id}`,
+                                    )
+                                    .join(", ")
+                            )
+                        }
+                    >
+                        {allTags.map((t: { id: string; name: string }) => (
+                            <MenuItem key={t.id} value={`${t.id}`}>
+                                {t.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <TextField
+                    fullWidth
+                    name="intro"
+                    defaultValue={post?.meta_description}
+                    label={
+                        <>
+                            Introduction paragraph (previously called &quot;Meta
+                            Description&quot;
+                        </>
+                    }
+                    multiline
+                    minRows={4}
+                ></TextField>
+
+                <FormControl fullWidth>
+                    <FormLabel className="font-bold">Image</FormLabel>
+                    <ImagePicker
+                        defaultValue={image}
+                        onChange={(newValue: string) => {
+                            setImage(newValue);
+                        }}
+                    ></ImagePicker>
+                </FormControl>
+
+                {type === "article" ? (
+                    <ArticleEditor
+                        initialValue={post?.description}
+                        value={description}
+                        onEditorChange={(newValue) => setDescription(newValue)}
+                    />
+                ) : (
+                    <PhotoEssayEditor
+                        value={description}
+                        onEditorChange={(newValue) => setDescription(newValue)}
+                    />
+                )}
+
+                <FormControl fullWidth>
+                    <InputLabel className="font-bold">Language</InputLabel>
+                    <Select
+                        defaultValue={post?.language || "en"}
+                        name="language"
+                        label="Language"
+                        displayEmpty
+                        required
+                        renderValue={(selected) => {
+                            if (!selected) {
+                                return <em>Select a language</em>;
+                            }
+                            return (
+                                languages.find((l) => l.id === selected)
+                                    ?.name ?? `${selected}`
+                            );
+                        }}
+                    >
+                        {languages.map((l) => (
+                            <MenuItem key={l.id} value={l.id}>
+                                {l.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                    <InputLabel className="font-bold">Status</InputLabel>
+                    <Select
+                        value={selectedStatus}
+                        onChange={handleStatusChange}
+                        name="status"
+                        label="Status"
+                        displayEmpty
+                        required
+                        renderValue={(selected) => {
+                            if (!selected) {
+                                return <em>Ready?</em>;
+                            }
+                            return (
+                                statuses.find((s) => s.id === selected)?.name ??
+                                `${selected}`
+                            );
+                        }}
+                    >
+                        {statuses.map((c: { id: string; name: string }) => (
+                            <MenuItem key={c.id} value={`${c.id}`}>
+                                {c.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                {selectedStatus === "SCHEDULED" && (
+                    <FormControl fullWidth>
+                        <FormLabel className="font-bold">
+                            Scheduled for time
+                        </FormLabel>
+                        <DateTimePicker
+                            value={scheduledTime}
+                            onChange={setScheduledTime}
+                            required
+                        />
+                    </FormControl>
+                )}
+
+                <div>
+                    <Button type="submit" disabled={submitting}>
+                        {submitting ? "Saving..." : "Save"}
+                    </Button>
+                </div>
+            </div>
             <div className="my-96"></div>
         </form>
     );
