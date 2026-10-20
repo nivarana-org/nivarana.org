@@ -29,7 +29,7 @@
     "moment": "^2.31.0",
     "motion": "^14.0.0",
     "mysql2": "^3.24.5",
-    "next": "16.5.0-canary.2",
+    "next": "16.5.0-canary.19",
     "nodemailer": "^10.0.15",
     "radash": "^12.1.1",
     "razorpay": "^2.9.8",
@@ -56,7 +56,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^10.12.0",
-    "eslint-config-next": "16.5.0-canary.2",
+    "eslint-config-next": "16.5.0-canary.19",
     "eslint-config-prettier": "^10.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
@@ -75,7 +75,7 @@
   },
   "overrides": {
     "better-auth": {
-      "next": "16.5.0-canary.2"
+      "next": "16.5.0-canary.19"
     }
   }
 }
