@@ -1,8 +1,9 @@
-import { editPostCategory, getCategoriesTable } from "@/data/cms";
 import Link from "next/link";
 
 import { Box, Button } from "@mui/joy";
 import Selector from "./selector";
+import { editPostCategory } from "@/data/cms";
+import { getCategoriesWithArticleLinks } from "@/data/queries";
 
 function CategoryRow({ id, name, path, articles, categories }) {
     const publicLink = `/category/${path}`;
@@ -17,7 +18,7 @@ function CategoryRow({ id, name, path, articles, categories }) {
             <div>{`${articles.length} articles`}</div>
             {articles.map((a) => (
                 <div key={a.id}>
-                    {a.page_title}{" "}
+                    {a.title}{" "}
                     <Selector
                         categories={categories}
                         initialSelected={id}
@@ -32,7 +33,7 @@ function CategoryRow({ id, name, path, articles, categories }) {
 }
 
 export default async function Page({}) {
-    const categories = await getCategoriesTable();
+    const categories = await getCategoriesWithArticleLinks();
     const nextCount = Number(categories.at(-1).id) + 1;
     return (
         <div className="flex flex-col gap-2 p-2">

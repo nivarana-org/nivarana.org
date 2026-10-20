@@ -378,13 +378,6 @@ export const getTotalViewsCount = async () => {
     return views[0]["sum(`total_views`)"];
 };
 
-export const getCategoriesTable = async () => {
-    const categories = await Category.query()
-        .where({ parent_id: 0 })
-        .withGraphFetched("articles");
-    return categories;
-};
-
 export const publishScheduledPostsNeedingPublication = async () => {
     const scheduled = await Blog.query()
         .where("scheduled_time", "<", new Date())
