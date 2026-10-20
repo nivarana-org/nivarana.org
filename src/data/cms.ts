@@ -1,7 +1,6 @@
 "use server";
 import "server-only";
 
-import { Author } from "./models";
 import Category from "./models/Category";
 
 export interface Article {
@@ -43,33 +42,3 @@ export interface EnhancedArticle extends Article {
     category: Category;
     authors: AuthorOld[];
 }
-
-export const getAuthorByPath = async (path: string) => {
-    const author = await Author.query()
-        .where("path", path)
-        .first()
-        .withGraphFetched({
-            articles: {
-                $modify: ["onlyPublished", "orderByCreatedDesc"],
-                categories: true,
-                tags: true,
-                authors: true,
-            },
-        });
-    return author;
-};
-
-export const getCategoryByPath = async (path: string) => {
-    const category = await Category.query()
-        .where("path", path)
-        .first()
-        .withGraphFetched({
-            articles: {
-                $modify: ["onlyPublished", "orderByCreatedDesc"],
-                categories: true,
-                tags: true,
-                authors: true,
-            },
-        });
-    return category;
-};

@@ -233,3 +233,40 @@ export const getCategoriesWithArticleLinks = async () => {
 };
 
 export const getArticleByPath = (path: string) => getPost({ slug: path });
+
+export const getArticlesByRelation = (
+    relationType: "author" | "category",
+    relationId: number,
+) =>
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.page_title",
+            "b.path",
+            "b.description",
+            "b.upload_image",
+            "b.meta_description",
+            "b.created_at",
+            "b.updated_at",
+            "b.type",
+            "b.status",
+            "b.scheduled_time",
+            "b.language",
+            "b.category_name",
+            "b.total_views",
+            authorsFragment.as("authors"),
+            categoriesFragment.as("categories"),
+            tagsFragment.as("tags"),
+        ])
+        .where("b.status", "=", "PUBLISHED")
+        .whereExists((eb) =>
+            eb
+                .selectFrom("post_relations as pr")
+                .select("pr.post_id")
+                .whereRef("pr.post_id", "=", "b.id")
+                .where("pr.relation_type", "=", relationType)
+                .where("pr.relation_id", "=", relationId),
+        )
+        .orderBy("b.created_at", "desc")
+        .execute();

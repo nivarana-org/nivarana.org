@@ -1,5 +1,6 @@
 import { asAdmin } from "./authorization";
 import { db } from "./db";
+import { getArticlesByRelation } from "./queries";
 import type { Author } from "./models";
 
 export const getAuthorsOverview = () =>
@@ -30,6 +31,19 @@ export const getAllAuthors = () =>
         .select(["id", "name", "path"])
         .orderBy("id", "desc")
         .execute();
+
+export const getAuthorByPath = async (path: string) => {
+    const author = await db
+        .selectFrom("authors")
+        .selectAll()
+        .where("path", "=", path)
+        .executeTakeFirst();
+    if (!author) {
+        return undefined;
+    }
+    const articles = await getArticlesByRelation("author", author.id);
+    return { ...author, articles };
+};
 
 export const addOrEditAuthor = asAdmin(async (author: Author) => {
     const timestamp = new Date(Date.now());

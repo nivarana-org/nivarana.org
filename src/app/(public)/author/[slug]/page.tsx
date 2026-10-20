@@ -1,5 +1,5 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
-import { getAuthorByPath } from "@/data/cms";
+import { getAuthorByPath } from "@/data/authors";
 import { getRedirect } from "@/data/redirects";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { Metadata, ResolvingMetadata } from "next";
