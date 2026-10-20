@@ -191,29 +191,25 @@ export default function ArticleEditPage({
                 ></TextField>
 
                 <FormControl fullWidth>
-                    <InputLabel className="font-bold">
+                    <InputLabel htmlFor="authors-select" className="font-bold">
                         Choose the authors
                     </InputLabel>
                     <Select
+                        id="authors-select"
                         value={authors}
                         multiple
                         label="Choose the authors"
-                        displayEmpty
                         onChange={handleAuthorChange}
                         renderValue={(selected) =>
-                            selected.length === 0 ? (
-                                <em>Select one or more authors</em>
-                            ) : (
-                                selected
-                                    .map(
-                                        (id) =>
-                                            allAuthors.find(
-                                                (a: { id: string }) =>
-                                                    `${a.id}` === `${id}`,
-                                            )?.name ?? `${id}`,
-                                    )
-                                    .join(", ")
-                            )
+                            selected
+                                .map(
+                                    (id) =>
+                                        allAuthors.find(
+                                            (a: { id: string }) =>
+                                                `${a.id}` === `${id}`,
+                                        )?.name ?? `${id}`,
+                                )
+                                .join(", ")
                         }
                     >
                         {allAuthors.map((a: { id: string; name: string }) => (
@@ -225,19 +221,16 @@ export default function ArticleEditPage({
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel className="font-bold">
+                    <InputLabel htmlFor="category-select" className="font-bold">
                         Choose the category
                     </InputLabel>
                     <Select
+                        id="category-select"
                         defaultValue={post?.category_name}
                         name="category"
                         label="Choose the category"
-                        displayEmpty
                         required
                         renderValue={(selected) => {
-                            if (!selected) {
-                                return <em>Select a category</em>;
-                            }
                             const category = allCategories.find(
                                 (c: { id: string }) =>
                                     `${c.id}` === `${selected}`,
@@ -256,29 +249,25 @@ export default function ArticleEditPage({
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel className="font-bold">
+                    <InputLabel htmlFor="hashtags-select" className="font-bold">
                         Choose the hashtags
                     </InputLabel>
                     <Select
+                        id="hashtags-select"
                         value={tags}
                         onChange={handleTagChange}
                         multiple
                         label="Choose the hashtags"
-                        displayEmpty
                         renderValue={(selected) =>
-                            selected.length === 0 ? (
-                                <em>Select hashtags</em>
-                            ) : (
-                                selected
-                                    .map(
-                                        (id) =>
-                                            allTags.find(
-                                                (t: { id: string }) =>
-                                                    `${t.id}` === `${id}`,
-                                            )?.name ?? `${id}`,
-                                    )
-                                    .join(", ")
-                            )
+                            selected
+                                .map(
+                                    (id) =>
+                                        allTags.find(
+                                            (t: { id: string }) =>
+                                                `${t.id}` === `${id}`,
+                                        )?.name ?? `${id}`,
+                                )
+                                .join(", ")
                         }
                     >
                         {allTags.map((t: { id: string; name: string }) => (
@@ -327,8 +316,11 @@ export default function ArticleEditPage({
                 )}
 
                 <FormControl fullWidth>
-                    <InputLabel className="font-bold">Language</InputLabel>
+                    <InputLabel htmlFor="language-select" className="font-bold">
+                        Language
+                    </InputLabel>
                     <Select
+                        id="language-select"
                         defaultValue={post?.language || "en"}
                         name="language"
                         label="Language"
@@ -353,8 +345,11 @@ export default function ArticleEditPage({
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel className="font-bold">Status</InputLabel>
+                    <InputLabel htmlFor="status-select" className="font-bold">
+                        Status
+                    </InputLabel>
                     <Select
+                        id="status-select"
                         value={selectedStatus}
                         onChange={handleStatusChange}
                         name="status"
