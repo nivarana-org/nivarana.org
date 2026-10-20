@@ -3,7 +3,12 @@
 
 import { motion } from "framer-motion";
 
-export default function MenuToggleButton({ isOpen, toggleMenu }) {
+type Props = {
+    isOpen: boolean;
+    toggleMenu: () => void;
+};
+
+export default function MenuToggleButton({ isOpen, toggleMenu }: Props) {
     return (
         <button
             onClick={toggleMenu}

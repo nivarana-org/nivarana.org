@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import MenuToggleButton from "./MenuToggleButton";
 import Search from "../search/sidebar-search";
+import { HeaderProps } from "./types";
 
 const menuVariants = {
     hidden: {
@@ -26,7 +27,7 @@ const menuVariants = {
     },
 };
 
-function HeaderClient({ categories }) {
+function HeaderClient({ categories }: HeaderProps) {
     const [showCategories, setShowCategories] = useState(false);
     return (
         <>

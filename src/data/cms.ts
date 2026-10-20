@@ -385,13 +385,6 @@ export const getCategoriesTable = async () => {
     return categories;
 };
 
-export const getCategories = async () => {
-    const categories = await Category.query()
-        .withGraphFetched("children.[children.^]")
-        .where("parent_id", 0);
-    return JSON.parse(JSON.stringify(categories));
-};
-
 export const publishScheduledPostsNeedingPublication = async () => {
     const scheduled = await Blog.query()
         .where("scheduled_time", "<", new Date())

@@ -4,6 +4,7 @@ import { div as MotionDiv, ul as MotionUl } from "motion/react-client";
 import Image from "next/image";
 import SearchIcon from "./SearchButton";
 import logo from "../../../public/assets/logo.png";
+import { HeaderProps } from "./types";
 
 function LogoComponent() {
     return (
@@ -35,7 +36,7 @@ const desktopMenuVariants = {
     },
 };
 
-function DesktopMenuComponent({ categories }) {
+function DesktopMenuComponent({ categories }: HeaderProps) {
     return (
         <MotionUl
             className="hidden lg:flex lg:flex-row flex-nowrap gap-4 ml-auto" // ml-auto to push to the right
@@ -63,7 +64,7 @@ function DesktopMenuComponent({ categories }) {
     );
 }
 
-export default async function Header({ categories }) {
+export default async function Header({ categories }: HeaderProps) {
     return (
         <header className="p-4 shadow-md text-nivarana-charcoal bg-nivarana-white">
             <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
