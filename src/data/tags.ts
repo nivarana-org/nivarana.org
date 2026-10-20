@@ -16,3 +16,22 @@ export const getTagByPath = async (path: string) => {
     const articles = await getArticlesByRelation("tag", tag.id);
     return { ...tag, articles };
 };
+
+export const getTagCloud = async () => {
+    const rows = await db
+        .selectFrom("tags as t")
+        .innerJoin("post_relations as pr", "pr.relation_id", "t.id")
+        .innerJoin("blogs as b", "b.id", "pr.post_id")
+        .select((eb) => [
+            "t.name as value",
+            "t.path as path",
+            eb.fn.countAll().as("count"),
+        ])
+        .where("pr.relation_type", "=", "tag")
+        .where("b.status", "=", "PUBLISHED")
+        .groupBy(["t.id", "t.name", "t.path"])
+        .orderBy((eb) => eb.fn.countAll(), "desc")
+        .limit(100)
+        .execute();
+    return rows.map((row) => ({ ...row, count: Number(row.count) }));
+};

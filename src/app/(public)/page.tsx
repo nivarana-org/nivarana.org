@@ -1,3 +1,4 @@
+import TagCloud from "./_components/tag-cloud";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import moment from "moment";
 import Image from "next/image";
@@ -15,6 +16,7 @@ export default async function Home() {
                     <Category key={c.path} c={c}></Category>
                 ))}
             </div>
+            <TagCloud></TagCloud>
         </div>
     );
 }
