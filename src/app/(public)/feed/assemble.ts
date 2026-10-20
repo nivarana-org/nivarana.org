@@ -1,4 +1,4 @@
-import { getArticlesPaginated } from "@/data/cms";
+import { getArticlesPaginated } from "@/data/posts";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { Feed } from "feed";
 

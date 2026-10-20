@@ -9,7 +9,7 @@ type Author = {
     bio: string;
 };
 
-const authorsFragment = sql<Author>`COALESCE(
+export const authorsFragment = sql<Author[]>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -33,7 +33,7 @@ type Category = {
     path: string;
 };
 
-const categoriesFragment = sql<Category>`COALESCE(
+export const categoriesFragment = sql<Category[]>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -55,17 +55,17 @@ type Tag = {
     path: string;
 };
 
-const tagsFragment = sql<Tag>`COALESCE(
+export const tagsFragment = sql<Tag[]>`COALESCE(
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
-                'id', c.id,
-                'name', c.name,
-                'path', c.path
+                'id', t.id,
+                'name', t.name,
+                'path', t.path
             ) ORDER BY tr.order ASC
         )
         FROM post_relations tr
-        JOIN categories c ON tr.relation_id = c.id
+        JOIN tags t ON tr.relation_id = t.id
         WHERE tr.post_id = b.id
             AND tr.relation_type = 'tag'
     ), JSON_ARRAY()

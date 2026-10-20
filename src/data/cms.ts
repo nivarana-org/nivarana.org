@@ -45,54 +45,6 @@ export interface EnhancedArticle extends Article {
     authors: AuthorOld[];
 }
 
-export const getArticlesPaginated = async (
-    page = 0,
-    per_page = 10,
-): Promise<EnhancedArticle[]> => {
-    const articles = await Blog.query()
-        .select(
-            "blogs.id",
-            "blogs.page_title",
-            "blogs.path",
-            "blogs.description",
-            "blogs.upload_image",
-            "blogs.meta_description",
-            "blogs.created_at",
-            "blogs.updated_at",
-            "blogs.type",
-        )
-        .where("status", "PUBLISHED")
-        .withGraphFetched("[authors, categories as category, tags]")
-        .orderBy("id", "desc")
-        .page(page, per_page);
-    return articles.results.map((article) => article.toJSON());
-};
-
-export const getArticlesFilteredAndPaginated = async (
-    page = 0,
-    per_page = 10,
-    language = "en",
-): Promise<EnhancedArticle[]> => {
-    const articles = await Blog.query()
-        .select(
-            "blogs.id",
-            "blogs.page_title",
-            "blogs.path",
-            "blogs.description",
-            "blogs.upload_image",
-            "blogs.meta_description",
-            "blogs.created_at",
-            "blogs.updated_at",
-            "blogs.type",
-        )
-        .where("status", "PUBLISHED")
-        .where("language", language)
-        .withGraphFetched("[authors, categories as category, tags]")
-        .orderBy("id", "desc")
-        .page(page, per_page);
-    return articles.results.map((article) => article.toJSON());
-};
-
 export const getArticleFullWithRelations = async (id: number) => {
     const article = await Blog.query()
         .where("id", id)

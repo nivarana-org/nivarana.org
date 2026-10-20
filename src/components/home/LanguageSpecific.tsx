@@ -1,6 +1,6 @@
 import ArticlePreview from "@/components/article/ArticlePreview";
 import Sidebar from "@/components/sidebar";
-import { getArticlesFilteredAndPaginated } from "@/data/cms";
+import { getArticlesFilteredAndPaginated } from "@/data/posts";
 
 export default async function LanguageSpecificHome() {
     const initialPosts = await getArticlesFilteredAndPaginated(0, 100, "hi");

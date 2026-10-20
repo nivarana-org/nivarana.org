@@ -1,10 +1,55 @@
+import { sql } from "kysely";
+
 import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { replacePostRelation } from "./post-relations";
+import { authorsFragment, categoriesFragment, tagsFragment } from "./queries";
 import type { Article } from "./cms";
 
 export const getArticlesOverview = () =>
     db.selectFrom("blogs").selectAll().orderBy("id", "desc").execute();
+
+const getPublishedPostsPaginated = (
+    page: number,
+    per_page: number,
+    language?: string,
+) => {
+    return db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.page_title",
+            "b.path",
+            "b.description",
+            "b.upload_image",
+            "b.meta_description",
+            "b.created_at",
+            "b.updated_at",
+            "b.type",
+            sql<Date>`CASE
+                WHEN b.scheduled_time > b.created_at THEN b.scheduled_time
+                ELSE b.created_at
+            END`.as("published_time"),
+            authorsFragment.as("authors"),
+            categoriesFragment.as("category"),
+            tagsFragment.as("tags"),
+        ])
+        .where("b.status", "=", "PUBLISHED")
+        .$if(!!language, (qb) => qb.where("b.language", "=", language!))
+        .orderBy("b.id", "desc")
+        .limit(per_page)
+        .offset(page * per_page)
+        .execute();
+};
+
+export const getArticlesPaginated = (page = 0, per_page = 10) =>
+    getPublishedPostsPaginated(page, per_page);
+
+export const getArticlesFilteredAndPaginated = (
+    page = 0,
+    per_page = 10,
+    language = "en",
+) => getPublishedPostsPaginated(page, per_page, language);
 
 export const addOrEditPost = asAdmin(async (post: Article) => {
     const timestamp = new Date(Date.now());

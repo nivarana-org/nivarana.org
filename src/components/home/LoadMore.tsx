@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import ArticlePreview from "../article/ArticlePreview";
 import { Post } from "@/types/nivarana";
-import { getArticlesPaginated } from "@/data/cms";
+import { getArticlesPaginated } from "@/data/posts";
 
 const usePosts = (startPage: number) => {
     const [page, setPage] = useState(startPage);
