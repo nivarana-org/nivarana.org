@@ -1,3 +1,4 @@
+import { asAdmin } from "@/data/authorization";
 import { db } from "@/data/db";
 
 export type { Author } from "@/data/authors";
@@ -17,19 +18,21 @@ export const getAuthor = (id: number) =>
         .where("id", "=", id)
         .executeTakeFirst();
 
-export const addOrEditAuthor = (author: {
-    id?: number | string | null;
-    name: string;
-    email?: string | null;
-    path?: string | null;
-    description?: string | null;
-    title?: string | null;
-    image?: string | null;
-}) => {
-    const timestamp = new Date(Date.now());
-    return db
-        .insertInto("authors")
-        .values({ ...author, created_at: timestamp, updated_at: timestamp })
-        .onDuplicateKeyUpdate({ ...author, updated_at: timestamp })
-        .execute();
-};
+export const addOrEditAuthor = asAdmin(
+    (author: {
+        id?: number | string | null;
+        name: string;
+        email?: string | null;
+        path?: string | null;
+        description?: string | null;
+        title?: string | null;
+        image?: string | null;
+    }) => {
+        const timestamp = new Date(Date.now());
+        return db
+            .insertInto("authors")
+            .values({ ...author, created_at: timestamp, updated_at: timestamp })
+            .onDuplicateKeyUpdate({ ...author, updated_at: timestamp })
+            .execute();
+    },
+);

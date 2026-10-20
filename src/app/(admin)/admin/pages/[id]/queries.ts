@@ -1,3 +1,4 @@
+import { asAdmin } from "@/data/authorization";
 import { db } from "@/data/db";
 
 export const getPage = (id: number) =>
@@ -14,7 +15,7 @@ export interface StaticPage {
     description: string;
 }
 
-export const addOrEditPage = async (page: StaticPage) => {
+export const addOrEditPage = asAdmin(async (page: StaticPage) => {
     const timestamp = new Date(Date.now());
     await db
         .insertInto("static_pages")
@@ -33,4 +34,4 @@ export const addOrEditPage = async (page: StaticPage) => {
             updated_at: timestamp,
         })
         .execute();
-};
+});
