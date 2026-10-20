@@ -4,11 +4,9 @@ import {
     Button,
     Divider,
     FormControl,
-    FormHelperText,
     FormLabel,
-    Input,
-    Textarea,
-} from "@mui/joy";
+    TextField,
+} from "@mui/material";
 import type { Author } from "../queries";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
@@ -62,62 +60,53 @@ export default function AuthorEditPage({ author }: { author: Author }) {
                 }
             }}
         >
-            <FormControl>
-                <FormLabel className="font-bold">Author Name</FormLabel>
-                <Input
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="text-bold"
-                ></Input>
-                <FormHelperText>
-                    This is the publicly visible name
-                </FormHelperText>
-            </FormControl>
+            <TextField
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                label="Author Name"
+                slotProps={{ inputLabel: { className: "font-bold" } }}
+                helperText="This is the publicly visible name"
+            ></TextField>
 
             <Divider className="my-4"></Divider>
-            <FormControl>
-                <FormLabel className="font-bold">Author Email</FormLabel>
-                <Input
-                    name="email"
-                    value={email}
-                    type="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="text-bold"
-                ></Input>
-                <FormHelperText>
-                    Email will be publicly visible. Ensure consent?
-                </FormHelperText>
-            </FormControl>
+            <TextField
+                name="email"
+                value={email}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                label="Author Email"
+                slotProps={{ inputLabel: { className: "font-bold" } }}
+                helperText="Email will be publicly visible. Ensure consent?"
+            ></TextField>
 
             <Divider className="my-4"></Divider>
-            <FormControl>
-                <FormLabel>Slug/Link/Path</FormLabel>
-                <Input
-                    readOnly={Boolean(fixedPath)}
-                    name="path"
-                    value={path}
-                    onChange={(e) => {
-                        setManualPath(e.target.value);
-                    }}
-                ></Input>
-                <FormHelperText>
-                    {path
+            <TextField
+                slotProps={{
+                    htmlInput: { readOnly: Boolean(fixedPath) },
+                }}
+                name="path"
+                value={path}
+                onChange={(e) => {
+                    setManualPath(e.target.value);
+                }}
+                label="Slug/Link/Path"
+                helperText={
+                    path
                         ? `The author's profile will be publicly accessible at https://nivarana.org/author/${path}`
-                        : "The link to the author's profile"}
-                </FormHelperText>
-            </FormControl>
+                        : "The link to the author's profile"
+                }
+            ></TextField>
 
             <Divider className="my-4"></Divider>
 
-            <FormControl>
-                <FormLabel>Title</FormLabel>
-                <Textarea
-                    name="intro"
-                    defaultValue={author?.title}
-                    minRows={4}
-                ></Textarea>
-            </FormControl>
+            <TextField
+                name="intro"
+                defaultValue={author?.title}
+                label="Title"
+                multiline
+                minRows={4}
+            ></TextField>
 
             <Divider className="my-4"></Divider>
 

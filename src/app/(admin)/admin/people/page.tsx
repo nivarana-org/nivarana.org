@@ -1,18 +1,25 @@
 import Link from "next/link";
 
-import Table from "@mui/joy/Table";
-import { Box, Button } from "@mui/joy";
+import {
+    Box,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@mui/material";
 import { getAuthorsOverview, type Author } from "./queries";
 
 function AuthorRow({ id, name, path }: Author) {
     const adminLink = `/admin/people/${id}`;
     const publicLink = `/author/${path}`;
     return (
-        <>
-            <td>
+        <TableRow>
+            <TableCell>
                 <Link href={adminLink}>{name}</Link>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Link href={adminLink}>
                         <Button>Edit</Button>
@@ -21,8 +28,8 @@ function AuthorRow({ id, name, path }: Author) {
                         <Button>Open</Button>
                     </Link>
                 </Box>
-            </td>
-        </>
+            </TableCell>
+        </TableRow>
     );
 }
 
@@ -37,19 +44,17 @@ export default async function Page({}) {
                 </Link>
             </div>
             <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                     {authors.map((a) => (
-                        <tr key={a.id}>
-                            <AuthorRow {...a} />
-                        </tr>
+                        <AuthorRow key={a.id} {...a} />
                     ))}
-                </tbody>
+                </TableBody>
             </Table>
         </div>
     );

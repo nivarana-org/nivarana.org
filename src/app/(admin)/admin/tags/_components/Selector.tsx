@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete } from "@mui/joy";
+import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 
 export default function Selector({ value, allTags, onChange }) {
@@ -16,6 +16,7 @@ export default function Selector({ value, allTags, onChange }) {
             isOptionEqualToValue={(option, value) => option.id === value.id}
             options={allTags}
             getOptionLabel={(o) => o.name}
+            renderInput={(params) => <TextField {...params} />}
         ></Autocomplete>
     );
 }

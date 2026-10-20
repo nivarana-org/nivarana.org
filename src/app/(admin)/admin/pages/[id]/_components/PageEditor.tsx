@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Divider } from "@mui/joy";
+import { Button, Divider } from "@mui/material";
 import { addOrEditPageAction } from "../actions";
 import dynamic from "next/dynamic";
 

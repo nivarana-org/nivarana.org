@@ -10,7 +10,7 @@ import PageTranslate from "../blocks/PageTranslate";
 
 import Link from "next/link";
 import ZoomableImage from "./ZoomableImage";
-import { Button } from "@mui/joy";
+import { Button } from "@mui/material";
 import ScrollToTop from "./ScrollToTop";
 import ClearChapter from "./ClearChapter";
 

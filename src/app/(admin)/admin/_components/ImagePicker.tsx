@@ -1,7 +1,7 @@
 "use client";
 import { getImages } from "@/network/api";
 import { getImageURLFromFileName } from "@/utils/paths";
-import { Box, Button, Grid, Modal } from "@mui/joy";
+import { Box, Button, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { uploadImage } from "./image";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default function ImagePicker({
     }, []);
     if (!open)
         return (
-            <Grid>
+            <Box>
                 {selected ? (
                     <img
                         alt={`Representative image named ${selected}`}
@@ -38,7 +38,7 @@ export default function ImagePicker({
                     <div>No image selected</div>
                 )}
                 <Button onClick={() => setOpen(true)}>Change</Button>
-            </Grid>
+            </Box>
         );
 
     const handleUploadImage = async (file) => {
@@ -51,8 +51,8 @@ export default function ImagePicker({
         setUploading(false);
     };
     return (
-        <Modal open={open}>
-            <Grid>
+        <Modal open={open} onClose={() => setOpen(false)}>
+            <Box>
                 <Box
                     sx={{
                         position: "absolute",
@@ -105,7 +105,7 @@ export default function ImagePicker({
                           })
                         : null}
                 </Box>
-            </Grid>
+            </Box>
         </Modal>
     );
 }

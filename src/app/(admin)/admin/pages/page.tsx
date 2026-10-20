@@ -1,7 +1,15 @@
 import Link from "next/link";
 
-import Table from "@mui/joy/Table";
-import { Box, Button } from "@mui/joy";
+import {
+    Box,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@mui/material";
+
 import { getPagesOverview } from "./queries";
 
 type Page = {
@@ -15,11 +23,11 @@ function PageRow({ id, page_title, page_name }: Page) {
     const adminLink = `/admin/pages/${id}`;
     const publicLink = `/${page_name}`;
     return (
-        <>
-            <td>
+        <TableRow>
+            <TableCell>
                 <Link href={adminLink}>{page_title}</Link>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Link href={adminLink}>
                         <Button>Edit</Button>
@@ -28,8 +36,8 @@ function PageRow({ id, page_title, page_name }: Page) {
                         <Button>Open</Button>
                     </Link>
                 </Box>
-            </td>
-        </>
+            </TableCell>
+        </TableRow>
     );
 }
 
@@ -39,19 +47,17 @@ export default async function Page({}) {
         <div className="flex flex-col gap-2 p-2">
             <div className="p-2 flex flex-row gap-2"></div>
             <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                     {pages.map((a) => (
-                        <tr key={a.id}>
-                            <PageRow {...a} />
-                        </tr>
+                        <PageRow key={a.id} {...a} />
                     ))}
-                </tbody>
+                </TableBody>
             </Table>
         </div>
     );

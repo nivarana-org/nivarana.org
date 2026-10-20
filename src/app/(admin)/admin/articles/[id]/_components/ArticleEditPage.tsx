@@ -1,15 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Button,
     Divider,
     FormControl,
     FormLabel,
-    Input,
-    Option,
+    InputLabel,
+    MenuItem,
     Select,
-    Textarea,
-} from "@mui/joy";
+    TextField,
+} from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material";
 import { addOrEditPostAction } from "./post";
 import type { Article } from "../queries";
 import dynamic from "next/dynamic";
@@ -32,6 +33,31 @@ const statuses = [
     { id: "DRAFT", name: "Draft" },
     { id: "SCHEDULED", name: "Scheduled" },
     { id: "PUBLISHED", name: "Published" },
+];
+
+const languages = [
+    { id: "en", name: "English" },
+    { id: "as", name: "Assamese" },
+    { id: "bn", name: "Bengali" },
+    { id: "gu", name: "Gujarati" },
+    { id: "hi", name: "Hindi" },
+    { id: "kn", name: "Kannada" },
+    { id: "ks", name: "Kashmiri" },
+    { id: "ml", name: "Malayalam" },
+    { id: "mr", name: "Marathi" },
+    { id: "ne", name: "Nepali" },
+    { id: "or", name: "Odia" },
+    { id: "pa", name: "Punjabi" },
+    { id: "sa", name: "Sanskrit" },
+    { id: "sd", name: "Sindhi" },
+    { id: "ta", name: "Tamil" },
+    { id: "te", name: "Telugu" },
+    { id: "ur", name: "Urdu" },
+    { id: "bh", name: "Bihari" },
+    { id: "bo", name: "Bodo" },
+    { id: "doi", name: "Dogri" },
+    { id: "mai", name: "Maithili" },
+    { id: "mni", name: "Manipuri" },
 ];
 
 export default function ArticleEditPage({
@@ -59,7 +85,8 @@ export default function ArticleEditPage({
     const [scheduledTime, setScheduledTime] = useState(
         moment(post?.scheduled_time) || null,
     );
-    const handleStatusChange = (event, newValue) => {
+    const handleStatusChange = (event: SelectChangeEvent) => {
+        const newValue = event.target.value as string;
         setSelectedStatus(newValue);
         if (newValue !== "SCHEDULED") {
             setScheduledTime(null);
@@ -69,24 +96,14 @@ export default function ArticleEditPage({
     const [authors, setAuthors] = useState<string[]>(
         post?.authors?.map((a) => `${a.id}`) ?? [],
     );
-    const handleAuthorChange = (
-        event: React.SyntheticEvent | null,
-        newValue: Array<string> | null,
-    ) => {
-        if (newValue) {
-            setAuthors(newValue);
-        }
+    const handleAuthorChange = (event: SelectChangeEvent<string[]>) => {
+        setAuthors(event.target.value as string[]);
     };
     const [tags, setTags] = useState<string[]>(
         post?.tags?.map((t) => `${t.id}`) ?? [],
     );
-    const handleTagChange = (
-        event: React.SyntheticEvent | null,
-        newValue: Array<string> | null,
-    ) => {
-        if (newValue) {
-            setTags(newValue);
-        }
+    const handleTagChange = (event: SelectChangeEvent<string[]>) => {
+        setTags(event.target.value as string[]);
     };
     const [image, setImage] = useState(post?.upload_image);
     const [description, setDescription] = useState(
@@ -149,44 +166,55 @@ export default function ArticleEditPage({
                 }
             }}
         >
-            <FormControl>
-                <FormLabel className="font-bold">Post Title</FormLabel>
-                <Input
-                    name="title"
-                    value={values.title}
-                    onChange={(e) =>
-                        dispatch({ type: "title", value: e.target.value })
-                    }
-                    className="text-bold"
-                ></Input>
-            </FormControl>
+            <TextField
+                name="title"
+                value={values.title}
+                onChange={(e) =>
+                    dispatch({ type: "title", value: e.target.value })
+                }
+                label="Post Title"
+                slotProps={{ inputLabel: { className: "font-bold" } }}
+            ></TextField>
             <Divider className="my-4"></Divider>
-            <FormControl>
-                <FormLabel>Slug/Link/Path</FormLabel>
-                <Input
-                    readOnly={values.pathIsReadOnly}
-                    name="path"
-                    value={values.path}
-                    onChange={(e) => {
-                        dispatch({ type: "path", value: e.target.value });
-                    }}
-                ></Input>
-            </FormControl>
+            <TextField
+                slotProps={{ htmlInput: { readOnly: values.pathIsReadOnly } }}
+                name="path"
+                value={values.path}
+                onChange={(e) => {
+                    dispatch({ type: "path", value: e.target.value });
+                }}
+                label="Slug/Link/Path"
+            ></TextField>
 
             <Divider className="my-4"></Divider>
 
             <FormControl>
-                <FormLabel className="font-bold">Choose the authors</FormLabel>
+                <InputLabel className="font-bold">
+                    Choose the authors
+                </InputLabel>
                 <Select
-                    defaultValue={authors}
+                    value={authors}
                     multiple
-                    placeholder="Select one or more authors"
+                    label="Choose the authors"
+                    displayEmpty
                     onChange={handleAuthorChange}
+                    renderValue={(selected) =>
+                        selected.length === 0 ? (
+                            <em>Select one or more authors</em>
+                        ) : (
+                            allAuthors
+                                .filter((a: { id: string }) =>
+                                    selected.includes(`${a.id}`),
+                                )
+                                .map((a: { name: string }) => a.name)
+                                .join(", ")
+                        )
+                    }
                 >
                     {allAuthors.map((a: { id: string; name: string }) => (
-                        <Option key={a.id} value={`${a.id}`}>
+                        <MenuItem key={a.id} value={`${a.id}`}>
                             {a.name}
-                        </Option>
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
@@ -194,51 +222,79 @@ export default function ArticleEditPage({
             <Divider className="my-4"></Divider>
 
             <FormControl>
-                <FormLabel className="font-bold">Choose the category</FormLabel>
+                <InputLabel className="font-bold">
+                    Choose the category
+                </InputLabel>
                 <Select
                     defaultValue={post?.category_name}
                     name="category"
-                    placeholder="Select a category"
+                    label="Choose the category"
+                    displayEmpty
                     required
+                    renderValue={(selected) => {
+                        if (!selected) {
+                            return <em>Select a category</em>;
+                        }
+                        const category = allCategories.find(
+                            (c: { id: string }) => `${c.id}` === `${selected}`,
+                        );
+                        return category ? category.name : `${selected}`;
+                    }}
                 >
                     {allCategories.map((c: { id: string; name: string }) => (
-                        <Option key={c.id} value={`${c.id}`}>
+                        <MenuItem key={c.id} value={`${c.id}`}>
                             {c.name}
-                        </Option>
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
 
             <FormControl>
-                <FormLabel className="font-bold">Choose the hashtags</FormLabel>
+                <InputLabel className="font-bold">
+                    Choose the hashtags
+                </InputLabel>
                 <Select
-                    defaultValue={tags}
+                    value={tags}
                     onChange={handleTagChange}
                     multiple
                     name="tags"
-                    placeholder="Select hashtags"
+                    label="Choose the hashtags"
+                    displayEmpty
+                    renderValue={(selected) =>
+                        selected.length === 0 ? (
+                            <em>Select hashtags</em>
+                        ) : (
+                            allTags
+                                .filter((t: { id: string }) =>
+                                    selected.includes(`${t.id}`),
+                                )
+                                .map((t: { name: string }) => t.name)
+                                .join(", ")
+                        )
+                    }
                 >
                     {allTags.map((t: { id: string; name: string }) => (
-                        <Option key={t.id} value={`${t.id}`}>
+                        <MenuItem key={t.id} value={`${t.id}`}>
                             {t.name}
-                        </Option>
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
 
             <Divider className="my-4"></Divider>
 
-            <FormControl>
-                <FormLabel>
-                    Introduction paragraph (previously called &quot;Meta
-                    Description&quot;
-                </FormLabel>
-                <Textarea
-                    name="intro"
-                    defaultValue={post?.meta_description}
-                    minRows={4}
-                ></Textarea>
-            </FormControl>
+            <TextField
+                name="intro"
+                defaultValue={post?.meta_description}
+                label={
+                    <>
+                        Introduction paragraph (previously called &quot;Meta
+                        Description&quot;
+                    </>
+                }
+                multiline
+                minRows={4}
+            ></TextField>
 
             <Divider className="my-4"></Divider>
 
@@ -270,53 +326,56 @@ export default function ArticleEditPage({
             <Divider className="my-4"></Divider>
 
             <FormControl>
-                <FormLabel className="font-bold">Language</FormLabel>
+                <InputLabel className="font-bold">Language</InputLabel>
                 <Select
                     defaultValue={post?.language || "en"}
                     name="language"
-                    placeholder="Select a language"
+                    label="Language"
+                    displayEmpty
                     required
+                    renderValue={(selected) => {
+                        if (!selected) {
+                            return <em>Select a language</em>;
+                        }
+                        return (
+                            languages.find((l) => l.id === selected)?.name ??
+                            `${selected}`
+                        );
+                    }}
                 >
-                    <Option value="en">English</Option>
-                    <Option value="as">Assamese</Option>
-                    <Option value="bn">Bengali</Option>
-                    <Option value="gu">Gujarati</Option>
-                    <Option value="hi">Hindi</Option>
-                    <Option value="kn">Kannada</Option>
-                    <Option value="ks">Kashmiri</Option>
-                    <Option value="ml">Malayalam</Option>
-                    <Option value="mr">Marathi</Option>
-                    <Option value="ne">Nepali</Option>
-                    <Option value="or">Odia</Option>
-                    <Option value="pa">Punjabi</Option>
-                    <Option value="sa">Sanskrit</Option>
-                    <Option value="sd">Sindhi</Option>
-                    <Option value="ta">Tamil</Option>
-                    <Option value="te">Telugu</Option>
-                    <Option value="ur">Urdu</Option>
-                    <Option value="bh">Bihari</Option>
-                    <Option value="bo">Bodo</Option>
-                    <Option value="doi">Dogri</Option>
-                    <Option value="mai">Maithili</Option>
-                    <Option value="mni">Manipuri</Option>
+                    {languages.map((l) => (
+                        <MenuItem key={l.id} value={l.id}>
+                            {l.name}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
 
             <Divider className="my-4"></Divider>
 
             <FormControl>
-                <FormLabel className="font-bold">Status</FormLabel>
+                <InputLabel className="font-bold">Status</InputLabel>
                 <Select
                     value={selectedStatus}
                     onChange={handleStatusChange}
                     name="status"
-                    placeholder="Ready?"
+                    label="Status"
+                    displayEmpty
                     required
+                    renderValue={(selected) => {
+                        if (!selected) {
+                            return <em>Ready?</em>;
+                        }
+                        return (
+                            statuses.find((s) => s.id === selected)?.name ??
+                            `${selected}`
+                        );
+                    }}
                 >
                     {statuses.map((c: { id: string; name: string }) => (
-                        <Option key={c.id} value={`${c.id}`}>
+                        <MenuItem key={c.id} value={`${c.id}`}>
                             {c.name}
-                        </Option>
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
@@ -329,7 +388,6 @@ export default function ArticleEditPage({
                     <DateTimePicker
                         value={scheduledTime}
                         onChange={setScheduledTime}
-                        renderInput={(props) => <input {...props} />}
                         required
                     />
                 </FormControl>

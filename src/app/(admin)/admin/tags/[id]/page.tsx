@@ -1,11 +1,5 @@
 import { addTag } from "./queries";
-import {
-    Button,
-    FormControl,
-    FormHelperText,
-    FormLabel,
-    Input,
-} from "@mui/joy";
+import { Button, TextField } from "@mui/material";
 import { redirect } from "next/navigation";
 
 async function addTagAction(formData: FormData) {
@@ -18,22 +12,18 @@ async function addTagAction(formData: FormData) {
 export default async function Page() {
     return (
         <form action={addTagAction} className="p-2">
-            <FormControl>
-                <FormLabel className="font-bold">Tag Title</FormLabel>
-                <Input name="name" className="text-bold"></Input>
-                <FormHelperText>
-                    This is the publicly visible title. Do type the # at the
-                    beginning.
-                </FormHelperText>
-            </FormControl>
-            <FormControl>
-                <FormLabel className="font-bold">Path</FormLabel>
-                <Input name="path" className="text-bold"></Input>
-                <FormHelperText>
-                    This is the path segment visible in the URL. Should be all
-                    small letters, no space, use hyphens if necessary.
-                </FormHelperText>
-            </FormControl>
+            <TextField
+                name="name"
+                label="Tag Title"
+                slotProps={{ inputLabel: { className: "font-bold" } }}
+                helperText="This is the publicly visible title. Do type the # at the beginning."
+            ></TextField>
+            <TextField
+                name="path"
+                label="Path"
+                slotProps={{ inputLabel: { className: "font-bold" } }}
+                helperText="This is the path segment visible in the URL. Should be all small letters, no space, use hyphens if necessary."
+            ></TextField>
             <Button type="submit">Save</Button>
         </form>
     );

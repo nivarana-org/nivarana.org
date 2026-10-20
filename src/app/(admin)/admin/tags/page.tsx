@@ -2,7 +2,7 @@ import { getAllArticlesAndTags } from "./queries";
 import { getAllTags } from "./queries";
 import Link from "next/link";
 import Selector from "./_components/Selector";
-import { Button } from "@mui/joy";
+import { Button } from "@mui/material";
 import { editPostTags } from "./queries";
 
 async function onTagChange(post, tags) {
@@ -15,7 +15,7 @@ function ArticleRow({ id, type, page_title, path, tags, allTags }) {
         <div className="mb-4">
             <div>
                 {page_title}{" "}
-                <Button variant="plain">
+                <Button>
                     <Link href={`/${type}/${path}`}>📎</Link>
                 </Button>
             </div>
@@ -46,7 +46,7 @@ export default async function Page({}) {
                         <li key={t.id}>{t.name}</li>
                     ))}
                     <li>
-                        <Button variant="plain">
+                        <Button>
                             <Link href={`/admin/tags/${nextTag}`}>
                                 Create new
                             </Link>

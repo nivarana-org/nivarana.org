@@ -1,7 +1,14 @@
 import Link from "next/link";
 
-import Table from "@mui/joy/Table";
-import { Box, Button } from "@mui/joy";
+import {
+    Box,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@mui/material";
 import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { getArticlesOverview, type Article } from "./queries";
@@ -17,19 +24,19 @@ function ArticleRow({
     const adminLink = `/admin/articles/${id}`;
     const publicLink = `/${type}/${path}`;
     return (
-        <>
-            <td>
+        <TableRow>
+            <TableCell>
                 <Image
                     src={getImageURLFromFileName(upload_image)}
                     alt=""
                     height={55}
                     width={80}
                 ></Image>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
                 <Link href={adminLink}>{page_title}</Link>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Link href={adminLink}>
                         <Button>Edit</Button>
@@ -38,9 +45,9 @@ function ArticleRow({
                         <Button>Open</Button>
                     </Link>
                 </Box>
-            </td>
-            <td>{total_views}</td>
-        </>
+            </TableCell>
+            <TableCell>{total_views}</TableCell>
+        </TableRow>
     );
 }
 
@@ -58,21 +65,19 @@ export default async function Page({}) {
                 </Link>
             </div>
             <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Actions</th>
-                        <th>Views</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Image</TableCell>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Actions</TableCell>
+                        <TableCell>Views</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
                     {articles.map((a) => (
-                        <tr key={a.id}>
-                            <ArticleRow {...a} />
-                        </tr>
+                        <ArticleRow key={a.id} {...a} />
                     ))}
-                </tbody>
+                </TableBody>
             </Table>
         </div>
     );

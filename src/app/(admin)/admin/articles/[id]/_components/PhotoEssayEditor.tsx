@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Textarea } from "@mui/joy";
+import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 import ArticleEditor from "@/app/(admin)/admin/articles/[id]/_components/ArticleEditor";
 import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 
@@ -6,14 +6,13 @@ function ChapterEditor({ chapter, updateChapter }) {
     return (
         <>
             <h1 className="text-bold">Chapter</h1>
-            <FormControl>
-                <FormLabel>Chapter Title</FormLabel>
-                <Textarea
-                    value={chapter.title}
-                    onChange={(e) => updateChapter({ title: e.target.value })}
-                    minRows={4}
-                ></Textarea>
-            </FormControl>
+            <TextField
+                label="Chapter Title"
+                multiline
+                minRows={4}
+                value={chapter.title}
+                onChange={(e) => updateChapter({ title: e.target.value })}
+            ></TextField>
             <FormControl>
                 <FormLabel>Chapter Body</FormLabel>
                 <ArticleEditor

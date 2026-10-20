@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Box, Button } from "@mui/joy";
+import { Box, Button } from "@mui/material";
 import Selector from "./_components/selector";
 import { editPostCategory } from "./queries";
 import { getCategoriesWithArticleLinks } from "./queries";

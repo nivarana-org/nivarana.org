@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@mui/joy";
+import { Button } from "@mui/material";
 
 export default function ClearCache({ clearCache }: { clearCache: () => void }) {
     return (
