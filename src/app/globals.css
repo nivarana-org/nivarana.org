@@ -2,8 +2,8 @@
 
 @theme {
   --font-body:
-    "Poppins", "Poppins Fallback", system-ui, 'Apple Color Emoji', 'Segoe UI Emoji',
-    sans-serif;
+    "Tinos", 'Apple Color Emoji', 'Segoe UI Emoji',
+    serif, system-ui;
 
   --color-background: #ffffff;
   --color-foreground: #171717;

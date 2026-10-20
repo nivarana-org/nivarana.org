@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Tinos } from "next/font/google";
 
 import "./globals.css";
 
-const poppins = Poppins({
-    subsets: ["devanagari", "latin"],
+const font = Tinos({
+    subsets: ["latin"],
     // thin = 100, extralight = 200, light = 300,
     // normal = 400, medium = 500, semibold = 600,
     // bold = 700, extrabold = 800, black = 900
-    weight: ["400", "500", "600", "700"],
+    weight: ["400", "700"],
     display: "swap",
-    variable: "--font-poppins",
+    variable: "--font-nivarana",
 });
 
 export const fetchCache = "default-cache";
@@ -33,7 +33,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={`${poppins.variable}`}>
+        <html lang="en" className={`${font.variable}`}>
             <body className="font-body">{children}</body>
         </html>
     );
