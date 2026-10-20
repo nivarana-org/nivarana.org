@@ -202,11 +202,14 @@ export default function ArticleEditPage({
                         selected.length === 0 ? (
                             <em>Select one or more authors</em>
                         ) : (
-                            allAuthors
-                                .filter((a: { id: string }) =>
-                                    selected.includes(`${a.id}`),
+                            selected
+                                .map(
+                                    (id) =>
+                                        allAuthors.find(
+                                            (a: { id: string }) =>
+                                                `${a.id}` === `${id}`,
+                                        )?.name ?? `${id}`,
                                 )
-                                .map((a: { name: string }) => a.name)
                                 .join(", ")
                         )
                     }
@@ -257,18 +260,20 @@ export default function ArticleEditPage({
                     value={tags}
                     onChange={handleTagChange}
                     multiple
-                    name="tags"
                     label="Choose the hashtags"
                     displayEmpty
                     renderValue={(selected) =>
                         selected.length === 0 ? (
                             <em>Select hashtags</em>
                         ) : (
-                            allTags
-                                .filter((t: { id: string }) =>
-                                    selected.includes(`${t.id}`),
+                            selected
+                                .map(
+                                    (id) =>
+                                        allTags.find(
+                                            (t: { id: string }) =>
+                                                `${t.id}` === `${id}`,
+                                        )?.name ?? `${id}`,
                                 )
-                                .map((t: { name: string }) => t.name)
                                 .join(", ")
                         )
                     }
