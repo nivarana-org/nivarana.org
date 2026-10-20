@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Textarea } from "@mui/joy";
-import ArticleEditor from "@/components/admin/ArticleEditor";
-import ImagePicker from "@/components/admin/ImagePicker";
+import ArticleEditor from "@/app/(admin)/admin/articles/[id]/_components/ArticleEditor";
+import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 
 function ChapterEditor({ chapter, updateChapter }) {
     return (

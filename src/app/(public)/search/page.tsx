@@ -1,4 +1,4 @@
-import ArticlePreview from "@/components/article/ArticlePreview";
+import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
 import Search from "./_components/search";
 import { searchArticles } from "./queries";
 

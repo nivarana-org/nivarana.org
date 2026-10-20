@@ -1,5 +1,5 @@
-import ArticlePreview from "@/components/article/ArticlePreview";
-import Sidebar from "@/components/sidebar";
+import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
+import Sidebar from "@/app/(public)/_components/sidebar";
 import { getCategoryByPath } from "./queries";
 import { getRedirect } from "./queries";
 import { Metadata, ResolvingMetadata } from "next";

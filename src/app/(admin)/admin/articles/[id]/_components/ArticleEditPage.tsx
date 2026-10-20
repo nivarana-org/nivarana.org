@@ -13,7 +13,7 @@ import {
 import { addOrEditPostAction } from "@/actions/post";
 import type { Article } from "../queries";
 import dynamic from "next/dynamic";
-import ImagePicker from "@/components/admin/ImagePicker";
+import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import PhotoEssayEditor from "./PhotoEssayEditor";
@@ -21,7 +21,7 @@ import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-path-title-reducer";
 
 const ArticleEditor = dynamic(
-    () => import("@/components/admin/ArticleEditor"),
+    () => import("@/app/(admin)/admin/articles/[id]/_components/ArticleEditor"),
     {
         ssr: false,
         loading: () => <p>Loading editor....</p>,

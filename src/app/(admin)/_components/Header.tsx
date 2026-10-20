@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../../../public/assets/logo.png";
-import { LogOut } from "@/components/user/LogOut";
+import { LogOut } from "@/app/_components/user/LogOut";
 
 function Header({ email, picture }: { email: string; picture?: string }) {
     return (

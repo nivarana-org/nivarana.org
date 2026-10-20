@@ -1,6 +1,6 @@
 import Article from "./_components/article";
 import PhotoEssay from "./_components/photo-essay";
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/app/(public)/_components/sidebar";
 import { searchArticles } from "./queries";
 import { getArticleByPath } from "./queries";
 import { getRedirect } from "./queries";

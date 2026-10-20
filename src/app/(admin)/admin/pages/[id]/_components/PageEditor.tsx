@@ -5,7 +5,7 @@ import { addOrEditPageAction } from "../actions";
 import dynamic from "next/dynamic";
 
 const BundledEditor = dynamic(
-    () => import("@/components/admin/BundledEditor"),
+    () => import("../../../_components/BundledEditor"),
     {
         ssr: false,
         loading: () => <p>Loading editor....</p>,

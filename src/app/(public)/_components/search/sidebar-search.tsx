@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { SearchIcon } from "@/components/search/search-icon";
+import { SearchIcon } from "@/app/(public)/_components/search/search-icon";
 
 export default function Search({
     placeholder,

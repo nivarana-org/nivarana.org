@@ -2,7 +2,10 @@
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 
-const BundledEditor = dynamic(() => import("./BundledEditor"), { ssr: false });
+const BundledEditor = dynamic(
+    () => import("../../../_components/BundledEditor"),
+    { ssr: false },
+);
 
 type Props = {
     initialValue?: string;
@@ -53,7 +56,7 @@ export default function ArticleEditor(props: Props) {
                         "help",
                         "wordcount",
                     ],
-                    
+
                     toolbar:
                         "undo redo styles " +
                         "bold italic forecolor alignleft aligncenter " +

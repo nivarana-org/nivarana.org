@@ -1,5 +1,5 @@
-import ArticlePreview from "@/components/article/ArticlePreview";
-import Sidebar from "@/components/sidebar";
+import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
+import Sidebar from "@/app/(public)/_components/sidebar";
 import { getArticlesFilteredAndPaginated } from "../queries";
 
 export default async function LanguageSpecificHome() {

@@ -1,4 +1,4 @@
-import ArticlePreview from "@/components/article/ArticlePreview";
+import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
 import { getAuthorByPath } from "./queries";
 import { getRedirect } from "./queries";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";

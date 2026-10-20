@@ -12,11 +12,11 @@ import {
 import type { Author } from "../queries";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
-import ImagePicker from "@/components/admin/ImagePicker";
+import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 import { addOrEditAuthorAction } from "../actions";
 
 const ArticleEditor = dynamic(
-    () => import("@/components/admin/ArticleEditor"),
+    () => import("@/app/(admin)/admin/articles/[id]/_components/ArticleEditor"),
     {
         ssr: false,
         loading: () => <p>Loading editor....</p>,
