@@ -1,4 +1,5 @@
-import { getAllArticlesAndTags, getAllTags } from "@/data/cms";
+import { getAllArticlesAndTags } from "@/data/posts";
+import { getAllTags } from "@/data/tags";
 import Link from "next/link";
 import Selector from "./Selector";
 import { Button } from "@mui/joy";

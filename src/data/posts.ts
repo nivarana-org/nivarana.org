@@ -74,6 +74,39 @@ export const searchArticles = (query: string) =>
         )
         .execute();
 
+export const getArticleFullWithRelations = (id: number) =>
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.page_title",
+            "b.path",
+            "b.description",
+            "b.upload_image",
+            "b.meta_description",
+            "b.created_at",
+            "b.updated_at",
+            "b.type",
+            "b.status",
+            "b.scheduled_time",
+            "b.language",
+            "b.category_name",
+            "b.total_views",
+            authorsFragment.as("authors"),
+            categoriesFragment.as("category"),
+            tagsFragment.as("tags"),
+        ])
+        .where("b.id", "=", id)
+        .executeTakeFirst();
+
+export const getAllArticlesAndTags = () =>
+    db
+        .selectFrom("blogs as b")
+        .selectAll()
+        .select(tagsFragment.as("tags"))
+        .orderBy("b.id", "asc")
+        .execute();
+
 export const addOrEditPost = asAdmin(async (post: Article) => {
     const timestamp = new Date(Date.now());
 

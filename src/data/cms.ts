@@ -3,7 +3,6 @@ import "server-only";
 
 import { Author, Blog } from "./models";
 import Category from "./models/Category";
-import Tag from "./models/Tag";
 
 export interface Article {
     id: number;
@@ -44,14 +43,6 @@ export interface EnhancedArticle extends Article {
     category: Category;
     authors: AuthorOld[];
 }
-
-export const getArticleFullWithRelations = async (id: number) => {
-    const article = await Blog.query()
-        .where("id", id)
-        .first()
-        .withGraphFetched("[authors, categories as category, tags]");
-    return article;
-};
 
 export const getAuthorByPath = async (path: string) => {
     const author = await Author.query()
@@ -103,14 +94,4 @@ export const publishScheduledPostsNeedingPublication = async () => {
         .patch({ status: "PUBLISHED" })
         .returning("id");
     return JSON.parse(JSON.stringify(scheduled));
-};
-
-export const getAllArticlesAndTags = async () => {
-    const articles = await Blog.query().withGraphFetched("[tags]");
-    return articles;
-};
-
-export const getAllTags = async () => {
-    const tags = await Tag.query();
-    return JSON.parse(JSON.stringify(tags));
 };
