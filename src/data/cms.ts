@@ -60,18 +60,6 @@ export interface EnhancedArticle extends Article {
     authors: AuthorOld[];
 }
 
-export const getArticlesOverview = async () => {
-    return db<Article>("blogs").select("*").orderBy("id", "desc");
-};
-
-export const getPagesOverview = async () => {
-    return db("static_pages").select("*").orderBy("id", "asc");
-};
-
-export const getPage = async (id: number) => {
-    return db("static_pages").select("*").where("id", id).first();
-};
-
 export const getAuthorsOverview = async () => {
     return db<Author>("authors")
         .select({
@@ -277,14 +265,6 @@ export const addOrEditAuthor = asAdmin(async (author: Author) => {
         .merge({ ...author, updated_at: timestamp });
     return await query;
 });
-
-export const getPageByPath = async (path: string) => {
-    const page = await db("static_pages")
-        .select("*")
-        .where({ page_name: path })
-        .first();
-    return page;
-};
 
 export interface StaticPage {
     id?: number;

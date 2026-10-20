@@ -1,5 +1,5 @@
 import PageEditPage from "@/components/admin/PageEditor";
-import { getPage } from "@/data/cms";
+import { getPage } from "@/data/pages";
 
 export default async function Page(props: Props) {
     const params = await props.params;

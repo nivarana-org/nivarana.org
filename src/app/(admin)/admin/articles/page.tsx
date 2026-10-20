@@ -1,4 +1,5 @@
-import { Article, getArticlesOverview } from "@/data/cms";
+import { Article } from "@/data/cms";
+import { getArticlesOverview } from "@/data/posts";
 import Link from "next/link";
 
 import Table from "@mui/joy/Table";

@@ -1,6 +1,6 @@
 import LanguageSpecificHome from "@/components/home/LanguageSpecific";
 import RandomQuote from "@/components/sprinkle/random-quote";
-import { getPageByPath } from "@/data/cms";
+import { getPageByPath } from "@/data/pages";
 import { Metadata } from "next";
 import { cache } from "react";
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import Table from "@mui/joy/Table";
 import { Box, Button } from "@mui/joy";
-import { getPagesOverview } from "@/data/cms";
+import { getPagesOverview } from "@/data/pages";
 
 type Page = {
     id: number;
