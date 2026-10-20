@@ -7,7 +7,7 @@ import {
     RedditShareButton,
     TelegramShareButton,
     TumblrShareButton,
-    TwitterShareButton,
+    XShareButton,
     WhatsappShareButton,
     EmailIcon,
     FacebookIcon,
@@ -16,7 +16,7 @@ import {
     RedditIcon,
     TelegramIcon,
     TumblrIcon,
-    TwitterIcon,
+    XIcon,
     WhatsappIcon,
 } from "react-share";
 
@@ -36,31 +36,31 @@ export default function PageShare({
     return (
         <div className={classes}>
             <EmailShareButton htmlTitle="Email" url={url}>
-                <EmailIcon size={32} round={true}></EmailIcon>
+                <EmailIcon size={32}></EmailIcon>
             </EmailShareButton>
             <WhatsappShareButton htmlTitle="WhatsApp" url={url}>
-                <WhatsappIcon size={32} round={true}></WhatsappIcon>
+                <WhatsappIcon size={32}></WhatsappIcon>
             </WhatsappShareButton>
-            <TwitterShareButton htmlTitle="Twitter" url={url}>
-                <TwitterIcon size={32} round={true}></TwitterIcon>
-            </TwitterShareButton>
+            <XShareButton htmlTitle="Twitter" url={url}>
+                <XIcon size={32}></XIcon>
+            </XShareButton>
             <RedditShareButton htmlTitle="Reddit" url={url}>
-                <RedditIcon size={32} round={true}></RedditIcon>
+                <RedditIcon size={32}></RedditIcon>
             </RedditShareButton>
             <FacebookShareButton htmlTitle="Facebook" url={url}>
-                <FacebookIcon size={32} round={true}></FacebookIcon>
+                <FacebookIcon size={32}></FacebookIcon>
             </FacebookShareButton>
             <LinkedinShareButton htmlTitle="LinkedIn" url={url}>
-                <LinkedinIcon size={32} round={true}></LinkedinIcon>
+                <LinkedinIcon size={32}></LinkedinIcon>
             </LinkedinShareButton>
             <PinterestShareButton htmlTitle="Pinterest" url={url} media={media}>
-                <PinterestIcon size={32} round={true}></PinterestIcon>
+                <PinterestIcon size={32}></PinterestIcon>
             </PinterestShareButton>
             <TelegramShareButton htmlTitle="Telegram" url={url}>
-                <TelegramIcon size={32} round={true}></TelegramIcon>
+                <TelegramIcon size={32}></TelegramIcon>
             </TelegramShareButton>
             <TumblrShareButton htmlTitle="Tumblr" url={url}>
-                <TumblrIcon size={32} round={true}></TumblrIcon>
+                <TumblrIcon size={32}></TumblrIcon>
             </TumblrShareButton>
         </div>
     );
