@@ -25,7 +25,6 @@ export default function StoryFooter({
         <>
             <div className="mx-auto w-full max-w-7xl px-5 md:px-6 mt-12">
                 <div className={`mx-auto w-full ${READING_MEASURE}`}>
-                    <div className="mb-3 text-black font-bold">Share</div>
                     <PageShare
                         url={getArticlePublicURL(data)}
                         media={getImageURLFromFileName(data.image)}

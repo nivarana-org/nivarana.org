@@ -36,44 +36,50 @@ export default function ContinuousStory({
                 so the split reads as a single block instead of two pieces
                 that happen to touch.
             */}
-            <div className="mx-auto w-full max-w-7xl">
-                <div className="flex flex-col md:flex-row">
-                    <div className="flex flex-col justify-end bg-nivarana-white text-nivarana-charcoal md:w-1/2 md:shrink-0">
-                        <div className="px-6 py-8 md:px-10 md:py-12 lg:px-12 xl:px-16">
-                            <ViewTransition
-                                name={`category-title-${data.category.slug}`}
-                            >
-                                <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
-                                    <Link
-                                        href={`/category/${data.category.slug}`}
-                                    >
-                                        {data.category.name}
-                                    </Link>
-                                </div>
-                            </ViewTransition>
-                            <ViewTransition name={`page-title-${data.slug}`}>
-                                <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
-                                    {data.title}
-                                </h1>
-                            </ViewTransition>
-                            <p className="mt-6 text-sm lg:text-xl">
-                                {data.intro}
-                            </p>
+            <div className="w-full bg-nivarana-white">
+                <div className=" max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row">
+                        <div className="flex flex-col justify-end bg-nivarana-white text-nivarana-charcoal md:w-1/2 md:shrink-0">
+                            <div className="px-6 py-8 md:px-10 md:py-12 lg:px-12 xl:px-16">
+                                <ViewTransition
+                                    name={`category-title-${data.category.slug}`}
+                                >
+                                    <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
+                                        <Link
+                                            href={`/category/${data.category.slug}`}
+                                        >
+                                            {data.category.name}
+                                        </Link>
+                                    </div>
+                                </ViewTransition>
+                                <ViewTransition
+                                    name={`page-title-${data.slug}`}
+                                >
+                                    <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
+                                        {data.title}
+                                    </h1>
+                                </ViewTransition>
+                                <p className="mt-6 text-sm lg:text-xl">
+                                    {data.intro}
+                                </p>
+                            </div>
                         </div>
+                        <ViewTransition name={`page-lead-image-${data.slug}`}>
+                            <div className="relative aspect-video w-full md:aspect-auto md:w-1/2 md:min-h-110 md:shrink-0 lg:min-h-130 mb-4 md:mb-0">
+                                <Image
+                                    preload={true}
+                                    fetchPriority="high"
+                                    src={getImageURLFromFileName(data.image)}
+                                    alt={
+                                        "Representative image for " + data.title
+                                    }
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    className="object-contain md:drop-shadow-2xl"
+                                />
+                            </div>
+                        </ViewTransition>
                     </div>
-                    <ViewTransition name={`page-lead-image-${data.slug}`}>
-                        <div className="relative aspect-video w-full md:aspect-auto md:w-1/2 md:min-h-110 md:shrink-0 lg:min-h-130">
-                            <Image
-                                preload={true}
-                                fetchPriority="high"
-                                src={getImageURLFromFileName(data.image)}
-                                alt={"Representative image for " + data.title}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                className="object-cover"
-                            />
-                        </div>
-                    </ViewTransition>
                 </div>
             </div>
             {/*
@@ -81,13 +87,17 @@ export default function ContinuousStory({
                 left, the byline and the audio version sit directly above the
                 text, and everything shares one measure.
             */}
-            <div className="mx-auto w-full max-w-7xl px-5 md:px-6">
+            <div className="mx-auto w-full max-w-7xl mt-5 px-5 md:px-6">
                 <div className="flex justify-center gap-8">
-                    <aside className="hidden w-12 shrink-0 lg:block">
+                    <aside className="hidden w-12 shrink-0 lg:block pt-250 pb-125">
                         <motion.div
                             className="sticky top-24 flex flex-col items-center gap-3"
-                            initial={{ translateX: "-10px", opacity: 0 }}
-                            whileInView={{ translateX: 0, opacity: 1 }}
+                            initial={{ translateX: "-30px", opacity: 0 }}
+                            whileInView={{
+                                translateX: 0,
+                                translateY: -40,
+                                opacity: 1,
+                            }}
                         >
                             <PageShare
                                 url={getArticlePublicURL(data)}
