@@ -136,10 +136,6 @@ export default function ContinuousStory({
                 </aside>
                 <ProgressTracker></ProgressTracker>
             </div>
-            <PageShare
-                url={getArticlePublicURL(data)}
-                media={data.image}
-            ></PageShare>
             <StoryFooter data={data} />
             <div className="lg:col-span-1">
                 <Sidebar />
