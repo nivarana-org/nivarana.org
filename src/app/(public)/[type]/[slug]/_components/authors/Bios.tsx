@@ -9,9 +9,9 @@ export function NAuthorsBio({ authors }) {
         </div>
     );
 }
-export function AuthorBio({ path, name, email, bio }) {
+export function AuthorBio({ slug, name, email, bio }) {
     return (
-        <Link href={"/author/" + path}>
+        <Link href={"/author/" + slug}>
             <div className="bg-nivarana-white/50 md:mx-4 rounded">
                 <div className="p-2 md:max-w-3xl md:mx-auto">
                     <div className="text-xl text-nivarana-green">{name}</div>

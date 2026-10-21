@@ -1,17 +1,15 @@
 import { sql, type SqlBool } from "kysely";
 
-import type { Suggestion } from "@/types/nivarana";
-
-/** Queries shorter than this never produce author/category/tag suggestions. */
+/** Queries shorter than this never surface author/category/tag matches. */
 export const MIN_SUGGESTION_LENGTH = 2;
 
-/** Maximum suggestions returned per group (authors, categories, tags). */
-export const SUGGESTION_LIMIT = 4;
+/** Maximum entities shown per group (authors, categories, tags). */
+export const SUGGESTION_LIMIT = 6;
 
 /**
  * Candidates fetched per group before de-duplication; larger than
- * SUGGESTION_LIMIT because duplicate rows (same path, different ids)
- * are collapsed afterwards.
+ * SUGGESTION_LIMIT because rows sharing a key (duplicated entities)
+ * collapse afterwards.
  */
 export const SUGGESTION_CANDIDATE_LIMIT = 20;
 
@@ -56,7 +54,7 @@ export const suggestionRank = (column: string, query: string) => {
     END`;
 };
 
-/** Keeps suggestions to entities that actually lead to content. */
+/** Keeps matches to entities that actually lead to content. */
 export const hasPublishedPost = (
     relationType: string,
     relationIdColumn: string,
@@ -70,29 +68,26 @@ export const hasPublishedPost = (
             AND pb.status = 'PUBLISHED'
     )`;
 
-type MatchedRow = { name: string; path: string | null };
-
 /**
- * Shapes ranked rows for the client: rows without a path are dropped, rows
- * sharing a path (duplicated entities) collapse into one, and the group is
- * capped at SUGGESTION_LIMIT.
+ * Shapes ranked rows for display: rows without a usable key (nothing to link
+ * to) are dropped, rows sharing a key (duplicated entities) collapse into one,
+ * and the group is capped at `limit`.
  */
-export const toSuggestions = (
-    rows: MatchedRow[],
+export const toSuggestions = <T extends { name: string }>(
+    rows: T[],
+    keyOf: (row: T) => string | null,
     hrefPrefix: string,
-): Suggestion[] => {
+    limit: number = SUGGESTION_LIMIT,
+): Array<{ name: string; href: string }> => {
     const seen = new Set<string>();
-    const suggestions: Suggestion[] = [];
+    const suggestions: Array<{ name: string; href: string }> = [];
 
     for (const row of rows) {
-        if (!row.path || seen.has(row.path)) continue;
-        seen.add(row.path);
-        suggestions.push({
-            name: row.name,
-            path: row.path,
-            href: `${hrefPrefix}${row.path}`,
-        });
-        if (suggestions.length >= SUGGESTION_LIMIT) break;
+        const key = keyOf(row);
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        suggestions.push({ name: row.name, href: `${hrefPrefix}${key}` });
+        if (suggestions.length >= limit) break;
     }
 
     return suggestions;
