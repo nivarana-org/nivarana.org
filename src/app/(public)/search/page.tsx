@@ -31,7 +31,7 @@ export default async function SearchPage(props: Props) {
     return (
         <div className="p-2">
             <h1 className="text-bold text-3xl text-center">Search</h1>
-            <div className="max-w-64 mx-auto mb-4">
+            <div className="max-w-md mx-auto mb-4">
                 <Search placeholder="enter text to search" />
             </div>
             {q && <Results results={result} />}

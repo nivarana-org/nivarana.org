@@ -7,6 +7,18 @@ type Category = {
     path: string;
 };
 
+export type Suggestion = {
+    name: string;
+    path: string;
+    href: string;
+};
+
+export type Suggestions = {
+    authors: Suggestion[];
+    categories: Suggestion[];
+    tags: Suggestion[];
+};
+
 export type Post = {
     id: number;
     path: string;
