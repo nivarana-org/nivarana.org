@@ -7,19 +7,21 @@ import { authorsFragment, categoriesFragment, tagsFragment } from "./queries";
 
 export interface Article {
     id: number;
-    path: string;
-    total_views: number;
-    page_title: string;
-    description: string;
-    category_name: string;
+    slug: string;
+    views: number;
+    title: string;
+    contents: string;
+    categories: number[];
     authors: number[];
     tags: number[];
-    upload_image: string;
+    image: string;
     created_at: number;
     updated_at: number;
-    meta_title: string;
-    meta_keyword: string;
-    meta_description: string;
+    intro: string;
+    status?: string | null;
+    language?: string | null;
+    type?: string | null;
+    published_at?: Date | null;
 }
 
 export const getAllArticlesAndTags = () =>
@@ -42,16 +44,16 @@ const getPublishedPostsPaginated = (
         .selectFrom("blogs as b")
         .select([
             "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
+            "b.title",
+            "b.slug",
+            "b.contents",
+            "b.image",
+            "b.intro",
             "b.created_at",
             "b.updated_at",
             "b.type",
             sql<Date>`CASE
-                WHEN b.scheduled_time > b.created_at THEN b.scheduled_time
+                WHEN b.published_at > b.created_at THEN b.published_at
                 ELSE b.created_at
             END`.as("published_time"),
             authorsFragment.as("authors"),
@@ -80,11 +82,11 @@ export const searchArticles = (query: string) =>
         .selectFrom("blogs as b")
         .select([
             "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
+            "b.title",
+            "b.slug",
+            "b.contents",
+            "b.image",
+            "b.intro",
             "b.created_at",
             "b.updated_at",
             "b.type",
@@ -94,7 +96,7 @@ export const searchArticles = (query: string) =>
         ])
         .where("b.status", "=", "PUBLISHED")
         .where(
-            sql<SqlBool>`MATCH(b.page_title, b.description, b.meta_description) AGAINST (${query})`,
+            sql<SqlBool>`MATCH(b.title, b.contents, b.intro) AGAINST (${query})`,
         )
         .execute();
 
@@ -103,11 +105,11 @@ export const getPopularPosts = () =>
         .selectFrom("blogs as b")
         .select([
             "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
+            "b.title",
+            "b.slug",
+            "b.contents",
+            "b.image",
+            "b.intro",
             "b.created_at",
             "b.updated_at",
             "b.type",
@@ -116,22 +118,22 @@ export const getPopularPosts = () =>
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
-        .orderBy("b.total_views", "desc")
+        .orderBy("b.views", "desc")
         .limit(5)
         .execute();
 
 export const incrementBlogViewCount = async (id: number) => {
     await db
         .updateTable("blogs")
-        .set({ total_views: sql<number>`total_views + 1` })
+        .set({ views: sql<number>`views + 1` })
         .where("id", "=", id)
         .executeTakeFirst();
     const row = await db
         .selectFrom("blogs")
-        .select("total_views")
+        .select("views")
         .where("id", "=", id)
         .executeTakeFirst();
-    return row?.total_views;
+    return row?.views;
 };
 
 export const addOrEditPost = asAdmin(async (post: Article) => {
@@ -144,8 +146,6 @@ export const addOrEditPost = asAdmin(async (post: Article) => {
         const result = await trx
             .insertInto("blogs")
             .values({
-                authors: authors.join(","),
-                category_name: categories[0],
                 ...rest,
                 created_at: timestamp,
                 updated_at: timestamp,

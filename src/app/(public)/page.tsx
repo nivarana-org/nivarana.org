@@ -59,12 +59,12 @@ async function LatestArticle({ a }) {
             <Link
                 href={getArticleSlug({
                     category: a.categories[0],
-                    path: a.path,
+                    slug: a.slug,
                     type: a.type,
                 })}
                 className="block"
             >
-                <ViewTransition name={`page-lead-image-${a.path}`}>
+                <ViewTransition name={`page-lead-image-${a.slug}`}>
                     <div className="relative w-full max-h-100 pt-[70%]">
                         <Image
                             src={getImageURLFromFileName(a.image)}
@@ -80,12 +80,12 @@ async function LatestArticle({ a }) {
                 <Link
                     href={getArticleSlug({
                         category: a.categories[0],
-                        path: a.path,
+                        slug: a.slug,
                         type: a.type,
                     })}
                     className="block"
                 >
-                    <ViewTransition name={`page-title-${a.path}`}>
+                    <ViewTransition name={`page-title-${a.slug}`}>
                         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
                             {a.title}
                         </h3>
@@ -115,12 +115,12 @@ async function RestArticles({ a }) {
             <Link
                 href={getArticleSlug({
                     category: a.categories[0],
-                    path: a.path,
+                    slug: a.slug,
                     type: a.type,
                 })}
                 className="flex-shrink-0 mr-3 block"
             >
-                <ViewTransition name={`page-lead-image-${a.path}`}>
+                <ViewTransition name={`page-lead-image-${a.slug}`}>
                     <div className="relative w-23 h-16 lg:w-42 lg:h-30">
                         <Image
                             src={getImageURLFromFileName(a.image)}
@@ -136,12 +136,12 @@ async function RestArticles({ a }) {
                 <Link
                     href={getArticleSlug({
                         category: a.categories[0],
-                        path: a.path,
+                        slug: a.slug,
                         type: a.type,
                     })}
                     className="block"
                 >
-                    <ViewTransition name={`page-title-${a.path}`}>
+                    <ViewTransition name={`page-title-${a.slug}`}>
                         <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-4 group-hover:underline transition-colors duration-200">
                             {a.title}
                         </h4>
@@ -173,7 +173,7 @@ function AuthorsAndPublishedTime({ authors, published_time }) {
                                         className="inline-flex items-center"
                                     >
                                         <Link
-                                            href={`/author/${author.path}`}
+                                            href={`/author/${author.slug}`}
                                             className="py-1 pl-1 rounded-sm hover:bg-cyan-200 hover:text-cyan-800 transition-colors duration-200"
                                         >
                                             {author.name}

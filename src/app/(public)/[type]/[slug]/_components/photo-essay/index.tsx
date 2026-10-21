@@ -14,10 +14,10 @@ import { Button } from "@mui/material";
 import ScrollToTop from "./ScrollToTop";
 import ClearChapter from "./ClearChapter";
 
-function Author({ path, name }) {
+function Author({ slug, name }) {
     return (
         <li className="list-inline-item border p-1 rounded-sm text-white hover:bg-cyan-200">
-            <Link href={"/author/" + path}>{name}</Link>
+            <Link href={"/author/" + slug}>{name}</Link>
         </li>
     );
 }
@@ -56,10 +56,7 @@ function PhotoEssay({ data, chapter }) {
                     <div className="h-full relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
                             src={getImageURLFromFileName(data.image)}
-                            alt={
-                                data.image_text ??
-                                "sorry, we aren't having alt support now"
-                            }
+                            alt={data.title}
                             width={1280}
                             height={900}
                             className="h-dvh w-full md:w-auto absolute inset-0  object-cover"
@@ -85,7 +82,7 @@ function PhotoEssay({ data, chapter }) {
                                 <Suspense>
                                     <ViewCountUpdateOnly
                                         id={data.id}
-                                        count={data.total_views}
+                                        count={data.views}
                                     />
                                 </Suspense>
                             </ul>
@@ -126,10 +123,7 @@ function PhotoEssay({ data, chapter }) {
                     <div className="h-dvh relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
                         <Image
                             src={getImageURLFromFileName(data.image)}
-                            alt={
-                                data.image_text ??
-                                "sorry, we aren't having alt support now"
-                            }
+                            alt={data.title}
                             width={1280}
                             height={900}
                             className="h-full w-full md:max-h-dvh my-auto absolute inset-0 object-cover"
@@ -155,7 +149,7 @@ function PhotoEssay({ data, chapter }) {
                                 <Suspense>
                                     <ViewCountUpdateOnly
                                         id={data.id}
-                                        count={data.total_views}
+                                        count={data.views}
                                     />
                                 </Suspense>
                             </ul>

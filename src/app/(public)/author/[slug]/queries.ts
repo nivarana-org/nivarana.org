@@ -1,2 +1,2 @@
-export { getAuthorByPath } from "@/data/authors";
+export { getAuthorBySlug } from "@/data/authors";
 export { getRedirect } from "@/data/redirects";

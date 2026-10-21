@@ -1,8 +1,8 @@
 import { db } from "./db";
 
-export const getPageByPath = (path: string) =>
+export const getPageBySlug = (slug: string) =>
     db
         .selectFrom("static_pages")
         .selectAll()
-        .where("page_name", "=", path)
+        .where("slug", "=", slug)
         .executeTakeFirst();

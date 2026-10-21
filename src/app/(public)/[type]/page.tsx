@@ -1,6 +1,6 @@
 import LanguageSpecificHome from "./_components/LanguageSpecific";
 import RandomQuote from "./_components/random-quote";
-import { getPageByPath } from "./queries";
+import { getPageBySlug } from "./queries";
 import { Metadata } from "next";
 import { cache } from "react";
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const cachedGetPageBySlug = cache((slug: string) => {
-    return getPageByPath(slug);
+    return getPageBySlug(slug);
 });
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -22,7 +22,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const post = await cachedGetPageBySlug(params.type);
     if (!post) return {};
     return {
-        title: post.page_title,
+        title: post.title,
     };
 }
 
@@ -37,8 +37,8 @@ export default async function Page(props: Props) {
     }
     return (
         <div className="max-w-prose mx-auto p-5">
-            <h1 className="font-4xl">{page.page_title}</h1>
-            <p dangerouslySetInnerHTML={{ __html: page.description }}></p>
+            <h1 className="font-4xl">{page.title}</h1>
+            <p dangerouslySetInnerHTML={{ __html: page.contents }}></p>
         </div>
     );
 }

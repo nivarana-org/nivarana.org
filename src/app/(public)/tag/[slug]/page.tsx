@@ -31,7 +31,7 @@ async function Page(props: Props) {
                     </div>
 
                     {tag.articles.map((item) => (
-                        <ArticlePreview {...item} key={item.path} />
+                        <ArticlePreview {...item} key={item.slug} />
                     ))}
                 </div>
                 <div className="lg:col-span-1">

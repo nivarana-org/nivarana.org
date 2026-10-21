@@ -8,11 +8,11 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
     const email = formData.get("email");
     const description = formData.get("description");
     const image = formData.get("image");
-    const path = formData.get("path");
+    const slug = formData.get("slug");
     const title = formData.get("title");
     const author = {
         id,
-        path,
+        slug,
         name,
         email,
         description,
@@ -21,7 +21,7 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
     };
     try {
         await addOrEditAuthor(author);
-        clearCache(author.path);
+        clearCache(author.slug);
         return { status: true };
     } catch (err) {
         console.error(err);
@@ -29,7 +29,7 @@ export const addOrEditAuthorAction = async (formData: FormData) => {
     }
 };
 
-export async function clearCache(path: string) {
+export async function clearCache(slug: string) {
     revalidatePath("/", "layout");
-    revalidatePath(`/author/${path}`, "page");
+    revalidatePath(`/author/${slug}`, "page");
 }

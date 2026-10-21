@@ -14,18 +14,18 @@ import { getPagesOverview } from "./queries";
 
 type Page = {
     id: number;
-    page_title: string;
-    page_name: string;
-    description: string;
+    title: string;
+    slug: string;
+    contents: string;
 };
 
-function PageRow({ id, page_title, page_name }: Page) {
+function PageRow({ id, title, slug }: Page) {
     const adminLink = `/admin/pages/${id}`;
-    const publicLink = `/${page_name}`;
+    const publicLink = `/${slug}`;
     return (
         <TableRow>
             <TableCell>
-                <Link href={adminLink}>{page_title}</Link>
+                <Link href={adminLink}>{title}</Link>
             </TableCell>
             <TableCell>
                 <Box sx={{ display: "flex", gap: 1 }}>

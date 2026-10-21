@@ -32,12 +32,12 @@ async function Page(props: Props) {
                     <div
                         className="mx-auto mb-8 p-4 border-b-2"
                         dangerouslySetInnerHTML={{
-                            __html: category.meta_description,
+                            __html: category.intro,
                         }}
                     ></div>
 
                     {category.articles.map((item) => (
-                        <ArticlePreview {...item} key={item.path} />
+                        <ArticlePreview {...item} key={item.slug} />
                     ))}
                 </div>
                 <div className="lg:col-span-1">
@@ -61,8 +61,8 @@ export async function generateMetadata(
     const category = await cachedGetCategoryBySlug(slug);
     return {
         title: category.name,
-        description: category.meta_description ?? (await parent).description,
-        keywords: category.meta_keyword ?? (await parent).keywords,
+        description: category.intro ?? (await parent).description,
+        keywords: (await parent).keywords,
     };
 }
 

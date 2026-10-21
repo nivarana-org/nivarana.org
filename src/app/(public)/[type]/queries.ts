@@ -1,2 +1,2 @@
 export { getArticlesFilteredAndPaginated } from "@/data/posts";
-export { getPageByPath } from "@/data/pages";
+export { getPageBySlug } from "@/data/pages";

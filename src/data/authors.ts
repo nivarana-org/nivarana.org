@@ -5,7 +5,7 @@ export interface Author {
     id?: number | string | null;
     name: string;
     email?: string | null;
-    path?: string | null;
+    slug?: string | null;
     description?: string | null;
     title?: string | null;
     image?: string | null;
@@ -14,15 +14,15 @@ export interface Author {
 export const getAllAuthors = () =>
     db
         .selectFrom("authors")
-        .select(["id", "name", "path"])
+        .select(["id", "name", "slug"])
         .orderBy("id", "desc")
         .execute();
 
-export const getAuthorByPath = async (path: string) => {
+export const getAuthorBySlug = async (slug: string) => {
     const author = await db
         .selectFrom("authors")
         .selectAll()
-        .where("path", "=", path)
+        .where("slug", "=", slug)
         .executeTakeFirst();
     if (!author) {
         return undefined;

@@ -27,52 +27,40 @@ export interface Account {
 }
 
 export interface Authors {
-    author_views: Generated<number>;
     created_at: Generated<Date>;
     description: Generated<string | null>;
     email: Generated<string | null>;
     id: Generated<number>;
     image: Generated<string | null>;
-    image_text: Generated<string | null>;
-    meta_description: Generated<string | null>;
-    meta_keyword: Generated<string | null>;
-    meta_title: Generated<string | null>;
     name: string;
-    path: Generated<string | null>;
+    slug: Generated<string | null>;
     title: Generated<string | null>;
     updated_at: Generated<Date>;
 }
 
 export interface Blogs {
-    authors: Generated<string | null>;
-    category_name: Generated<string | null>;
+    contents: Generated<string | null>;
     created_at: Generated<Date>;
-    description: Generated<string | null>;
     id: Generated<number>;
+    image: Generated<string | null>;
+    intro: Generated<string | null>;
     language: Generated<string | null>;
-    meta_description: Generated<string | null>;
-    page_title: Generated<string | null>;
-    path: Generated<string | null>;
-    scheduled_time: Generated<Date>;
+    published_at: Generated<Date>;
+    slug: Generated<string | null>;
     status: Generated<string | null>;
-    total_views: Generated<number>;
+    title: Generated<string | null>;
     type: Generated<string | null>;
     updated_at: Generated<Date>;
-    upload_image: Generated<string | null>;
+    views: Generated<number>;
 }
 
 export interface Categories {
-    category_desc: Generated<string | null>;
-    created_at: Generated<Date | null>;
     id: Generated<number>;
-    meta_description: string;
-    meta_keyword: string;
-    meta_title: string;
+    intro: string;
     name: string;
     parent_id: number;
     path: string;
     sort_order: number;
-    updated_at: Generated<Date | null>;
 }
 
 export interface Comments {
@@ -139,11 +127,11 @@ export interface Settings {
 }
 
 export interface StaticPages {
+    contents: Generated<string | null>;
     created_at: Generated<Date | null>;
-    description: Generated<string | null>;
     id: Generated<number>;
-    page_name: string;
-    page_title: string;
+    slug: string;
+    title: string;
     updated_at: Generated<Date | null>;
 }
 

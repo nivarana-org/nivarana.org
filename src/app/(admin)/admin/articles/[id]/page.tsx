@@ -17,10 +17,10 @@ const getEmptyDescription = (type: PostType) => {
 
 const getEmptyPost = (postId: number, postType: PostType) => {
     return {
-        page_title: "",
-        description: getEmptyDescription(postType),
+        title: "",
+        contents: getEmptyDescription(postType),
         id: postId,
-        upload_image: "logo.png",
+        image: "logo.png",
         status: "DRAFT",
         type: postType ?? "article",
     };

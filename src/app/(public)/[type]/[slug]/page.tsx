@@ -2,7 +2,7 @@ import Article from "./_components/article";
 import PhotoEssay from "./_components/photo-essay";
 import Sidebar from "@/app/(public)/_components/sidebar";
 import { searchArticles } from "./queries";
-import { getArticleByPath } from "./queries";
+import { getArticleBySlug } from "./queries";
 import { getRedirect } from "./queries";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { getImageURLFromFileName } from "@/utils/paths";
@@ -13,7 +13,7 @@ import { cache } from "react";
 
 const cachedGetArticleBySlug = cache((slug: string) => {
     const path = normalizeAsOldSlugs(slug);
-    return getArticleByPath(path);
+    return getArticleBySlug(path);
 });
 
 export default async function Page(props: Props) {
@@ -31,7 +31,7 @@ export default async function Page(props: Props) {
         }
         const searchResult = await searchArticles(params.slug);
         if (searchResult.length > 0) {
-            const slug = searchResult[0].path;
+            const slug = searchResult[0].slug;
             const category = searchResult[0].category;
             return redirect(`/${category.name}/${slug}`, "replace");
         }
@@ -85,7 +85,7 @@ export async function generateMetadata(
         keywords: post.keywords ?? (await parent).keywords,
         other: {
             citation_title: post.title,
-            citation_date: moment(post.scheduled_time).format("YYYY-MM-DD"),
+            citation_date: moment(post.published_at).format("YYYY-MM-DD"),
             citation_journal_title: "Nivarana",
             citation_authors: post.authors.map((a) => a.name).join("; "),
             citation_author: post.authors.map((a) => a.name),

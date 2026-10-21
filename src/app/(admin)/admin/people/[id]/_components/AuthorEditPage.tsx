@@ -26,10 +26,10 @@ export default function AuthorEditPage({ author }: { author: Author }) {
     const [name, setName] = useState(author?.name || "");
     const [email, setEmail] = useState(author?.email || "");
 
-    const [fixedPath, setFixedPath] = useState(author?.path);
-    const [manualPath, setManualPath] = useState("");
+    const [fixedSlug, setFixedSlug] = useState(author?.slug);
+    const [manualSlug, setManualSlug] = useState("");
 
-    const path = fixedPath || manualPath || sluggify(name);
+    const slug = fixedSlug || manualSlug || sluggify(name);
 
     const [image, setImage] = useState(author?.image);
     const [description, setDescription] = useState(author?.description);
@@ -49,13 +49,13 @@ export default function AuthorEditPage({ author }: { author: Author }) {
                 if (!status) {
                     alert(message);
                 } else {
-                    setFixedPath(path);
+                    setFixedSlug(slug);
                     if (
                         confirm(
                             "Author updated successfully. Open the public page now?",
                         )
                     ) {
-                        window.open(`/author/${path}`);
+                        window.open(`/author/${slug}`);
                     }
                 }
             }}
@@ -83,17 +83,17 @@ export default function AuthorEditPage({ author }: { author: Author }) {
             <Divider className="my-4"></Divider>
             <TextField
                 slotProps={{
-                    htmlInput: { readOnly: Boolean(fixedPath) },
+                    htmlInput: { readOnly: Boolean(fixedSlug) },
                 }}
-                name="path"
-                value={path}
+                name="slug"
+                value={slug}
                 onChange={(e) => {
-                    setManualPath(e.target.value);
+                    setManualSlug(e.target.value);
                 }}
                 label="Slug/Link/Path"
                 helperText={
-                    path
-                        ? `The author's profile will be publicly accessible at https://nivarana.org/author/${path}`
+                    slug
+                        ? `The author's profile will be publicly accessible at https://nivarana.org/author/${slug}`
                         : "The link to the author's profile"
                 }
             ></TextField>

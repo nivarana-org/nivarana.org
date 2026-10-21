@@ -5,19 +5,19 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface ArticleCardProps {
-    path: string;
+    slug: string;
     title: string;
     imageUrl: string;
 }
 
-export function ArticleCard({ path, type, title, imageUrl }: ArticleCardProps) {
+export function ArticleCard({ slug, type, title, imageUrl }: ArticleCardProps) {
     const [isActive, setIsActive] = useState(false);
     const router = useRouter();
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         if (isActive) {
-            router.push(`/${type}/${path}`);
+            router.push(`/${type}/${slug}`);
         } else {
             setIsActive(true);
         }
@@ -25,7 +25,7 @@ export function ArticleCard({ path, type, title, imageUrl }: ArticleCardProps) {
 
     return (
         <a
-            href={`/${type}/${path}`}
+            href={`/${type}/${slug}`}
             onClick={handleClick}
             onMouseEnter={() => setIsActive(true)}
             onMouseLeave={() => setIsActive(false)}

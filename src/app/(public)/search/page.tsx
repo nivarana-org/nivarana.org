@@ -18,7 +18,7 @@ const Results = ({ results }) => {
     return (
         <>
             {results.map((a) => (
-                <ArticlePreview {...a} key={a.path} />
+                <ArticlePreview {...a} key={a.slug} />
             ))}
         </>
     );

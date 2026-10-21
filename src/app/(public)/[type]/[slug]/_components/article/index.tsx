@@ -17,18 +17,18 @@ import CommentsSection from "../comments/CommentsSection";
 interface ArticleProps {
     data: {
         id: number;
-        path: string;
+        slug: string;
         title: string;
         intro: string | null;
         image: string | null;
-        content: string;
+        contents: string;
         created_at: Date;
-        scheduled_time: Date;
-        total_views: number;
+        published_at: Date;
+        views: number;
         type: string;
         categories: { path: string; name: string }[];
         tags: { id: number; path: string; name: string }[];
-        authors: { id: number; path: string; name: string }[];
+        authors: { id: number; slug: string; name: string }[];
         comments_count: number;
     };
 }
@@ -51,7 +51,7 @@ function Article({ data }: ArticleProps) {
                                 </Link>
                             </div>
                         </ViewTransition>
-                        <ViewTransition name={`page-title-${data.path}`}>
+                        <ViewTransition name={`page-title-${data.slug}`}>
                             <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
                                 {data.title}
                             </h1>
@@ -59,7 +59,7 @@ function Article({ data }: ArticleProps) {
                         <p className="mt-6 text-sm lg:text-xl">{data.intro}</p>
                     </div>
                 </div>
-                <ViewTransition name={`page-lead-image-${data.path}`}>
+                <ViewTransition name={`page-lead-image-${data.slug}`}>
                     <div className="w-full md:w-1/2 md:shrink-0">
                         <Image
                             priority
@@ -81,7 +81,7 @@ function Article({ data }: ArticleProps) {
                             key={a.id}
                             className="p-1 hover:bg-cyan-200 text-black text-md font-bold"
                         >
-                            <Link href={"/author/" + a.path}>{a.name}</Link>
+                            <Link href={"/author/" + a.slug}>{a.name}</Link>
                         </div>
                     ))}
                     <div className="p-1">
@@ -103,10 +103,7 @@ function Article({ data }: ArticleProps) {
                         <PageTranslate url={getArticlePublicURL(data)} />
                     </div>
                     <Suspense>
-                        <ViewCountUpdateOnly
-                            id={data.id}
-                            count={data.total_views}
-                        />
+                        <ViewCountUpdateOnly id={data.id} count={data.views} />
                     </Suspense>
                     <motion.div
                         className="hidden md:block md:sticky top-0 bg-nivarana-white/50 max-w-12"
@@ -125,7 +122,7 @@ function Article({ data }: ArticleProps) {
                     <AudioPlayer
                         src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
                     />
-                    <BodyWithPopover body={data.content} />
+                    <BodyWithPopover body={data.contents} />
                 </div>
                 {/* Side */}
                 <aside className="px-2 md:basis-3xs self-end mb-10">

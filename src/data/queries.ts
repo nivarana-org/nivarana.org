@@ -5,7 +5,7 @@ type Author = {
     id: number;
     name: string;
     email: string;
-    path: string;
+    slug: string;
     bio: string;
 };
 
@@ -16,7 +16,7 @@ export const authorsFragment = sql<Author[]>`COALESCE(
                 'id', a.id,
                 'name', a.name,
                 'email', a.email,
-                'path', a.path,
+                'slug', a.slug,
                 'bio', a.description
             ) ORDER BY ar.order ASC
         )
@@ -73,35 +73,35 @@ export const tagsFragment = sql<Tag[]>`COALESCE(
 
 const articleData = sql`
     b.id,
-    b.page_title as title,
-    b.upload_image as image,
-    b.path as path,
-    b.meta_description as intro,
-    b.description as content,
-    b.created_at as created_at,
-    b.scheduled_time as scheduled_time,
-    b.total_views as total_views,
-    b.type as type
+    b.title,
+    b.image,
+    b.slug,
+    b.intro,
+    b.contents,
+    b.created_at,
+    b.published_at,
+    b.views,
+    b.type
 `;
 
 const articleJSONData = sql`
     'id', b.id,
-    'path', b.path,
-    'title', b.page_title,
-    'image', b.upload_image,
-    'intro', b.meta_description
+    'slug', b.slug,
+    'title', b.title,
+    'image', b.image,
+    'intro', b.intro
 `;
 
 type Post = {
     id: number;
     title: string;
     image: string;
-    path: string;
+    slug: string;
     intro: string;
-    content: string;
+    contents: string;
     created_at: Date;
-    scheduled_time: Date;
-    total_views: number;
+    published_at: Date;
+    views: number;
     type: "article" | "photo-essay";
     categories: Category[];
     tags: Tag[];
@@ -114,7 +114,7 @@ type PostPreview = Pick<
     | "id"
     | "title"
     | "image"
-    | "path"
+    | "slug"
     | "intro"
     | "authors"
     | "categories"
@@ -123,7 +123,7 @@ type PostPreview = Pick<
 
 export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
     const idFrag = sql`b.id = ${id}`;
-    const slugFrag = sql`b.path = ${slug}`;
+    const slugFrag = sql`b.slug = ${slug}`;
     const selectorFrag = id ? idFrag : slugFrag;
     const result = await sql<Post>`SELECT
         ${articleData},
@@ -152,7 +152,7 @@ type CategoryOverview = {
 
 export const getOverview = () => getCategoriesWithArticles(true, 5);
 
-type PostBasics = Pick<Post, "id" | "title" | "image" | "path" | "intro">;
+type PostBasics = Pick<Post, "id" | "title" | "image" | "slug" | "intro">;
 
 type CategoryWithArticleTitles = {
     id: number;
@@ -205,7 +205,7 @@ async function getCategoriesWithArticles(
     FROM categories c
     WHERE c.parent_id = 0
     ORDER BY (
-        SELECT MAX(b2.scheduled_time)
+        SELECT MAX(b2.published_at)
         FROM blogs b2
         JOIN post_relations pr2 ON b2.id = pr2.post_id
         WHERE pr2.relation_type = 'category'
@@ -219,7 +219,7 @@ async function getCategoriesWithArticles(
 export const getCategoriesWithArticleLinks = () =>
     getCategoriesWithArticles(false);
 
-export const getArticleByPath = (path: string) => getPost({ slug: path });
+export const getArticleBySlug = (slug: string) => getPost({ slug });
 
 export const getArticlesByRelation = (
     relationType: "author" | "category" | "tag",
@@ -229,19 +229,18 @@ export const getArticlesByRelation = (
         .selectFrom("blogs as b")
         .select([
             "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
+            "b.title",
+            "b.slug",
+            "b.contents",
+            "b.image",
+            "b.intro",
             "b.created_at",
             "b.updated_at",
             "b.type",
             "b.status",
-            "b.scheduled_time",
+            "b.published_at",
             "b.language",
-            "b.category_name",
-            "b.total_views",
+            "b.views",
             authorsFragment.as("authors"),
             categoriesFragment.as("categories"),
             tagsFragment.as("tags"),

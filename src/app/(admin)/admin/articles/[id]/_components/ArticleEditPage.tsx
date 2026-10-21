@@ -23,7 +23,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import PhotoEssayEditor from "./PhotoEssayEditor";
 import { useImmerReducer } from "use-immer";
-import { articleEditReducer } from "./article-edit-path-title-reducer";
+import { articleEditReducer } from "./article-edit-title-slug-reducer";
 
 const ArticleEditor = dynamic(
     () => import("@/app/(admin)/admin/articles/[id]/_components/ArticleEditor"),
@@ -79,15 +79,15 @@ export default function ArticleEditPage({
 }) {
     const [submitting, setSubmitting] = useState(false);
     const [values, dispatch] = useImmerReducer(articleEditReducer, {
-        title: post?.page_title || "",
-        path: post?.path || "",
-        pathIsReadOnly: Boolean(post?.path),
+        title: post?.title || "",
+        slug: post?.slug || "",
+        slugIsReadOnly: Boolean(post?.slug),
     });
     const [selectedStatus, setSelectedStatus] = useState(
         post?.status || "DRAFT",
     );
     const [scheduledTime, setScheduledTime] = useState(
-        moment(post?.scheduled_time) || null,
+        moment(post?.published_at) || null,
     );
     const handleStatusChange = (event: SelectChangeEvent) => {
         const newValue = event.target.value as string;
@@ -114,12 +114,12 @@ export default function ArticleEditPage({
     const [newTagSubmitting, setNewTagSubmitting] = useState(false);
     const [newTag, newTagDispatch] = useImmerReducer(articleEditReducer, {
         title: "",
-        path: "",
-        pathIsReadOnly: false,
+        slug: "",
+        slugIsReadOnly: false,
     });
     const handleCreateTag = async () => {
         const name = newTag.title.trim();
-        const path = newTag.path.trim();
+        const path = newTag.slug.trim();
         if (!name) {
             alert("Please enter a tag name");
             return;
@@ -150,10 +150,10 @@ export default function ArticleEditPage({
         newTagDispatch({ type: "reset" });
         setNewTagOpen(false);
     };
-    const [category, setCategory] = useState(post?.category_name ?? "");
-    const [image, setImage] = useState(post?.upload_image);
+    const [category, setCategory] = useState(post?.category?.[0]?.id ?? "");
+    const [image, setImage] = useState(post?.image);
     const [description, setDescription] = useState(
-        type === "article" ? post?.description : JSON.parse(post?.description),
+        type === "article" ? post?.contents : JSON.parse(post?.contents),
     );
     return (
         <form
@@ -171,7 +171,7 @@ export default function ArticleEditPage({
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
                 data.append(
-                    "description",
+                    "contents",
                     type === "article"
                         ? description
                         : JSON.stringify(description),
@@ -182,7 +182,7 @@ export default function ArticleEditPage({
                 data.append("image", image);
                 data.append("status", selectedStatus);
                 if (selectedStatus === "SCHEDULED") {
-                    data.append("scheduled_time", scheduledTime);
+                    data.append("published_at", scheduledTime);
                 }
                 setSubmitting(true);
                 const { status, message } = await addOrEditPostAction(data);
@@ -190,7 +190,7 @@ export default function ArticleEditPage({
                 if (!status) {
                     alert(message);
                 } else {
-                    dispatch({ type: "freeze-path" });
+                    dispatch({ type: "freeze-slug" });
                     switch (selectedStatus) {
                         case "SCHEDULED":
                             alert(
@@ -203,7 +203,7 @@ export default function ArticleEditPage({
                                     "Post updated successfully. Open the post now?",
                                 )
                             ) {
-                                window.open(`/${type}/${values.path}`);
+                                window.open(`/${type}/${values.slug}`);
                             }
                             break;
                         default:
@@ -227,12 +227,12 @@ export default function ArticleEditPage({
                 <TextField
                     fullWidth
                     slotProps={{
-                        htmlInput: { readOnly: values.pathIsReadOnly },
+                        htmlInput: { readOnly: values.slugIsReadOnly },
                     }}
-                    name="path"
-                    value={values.path}
+                    name="slug"
+                    value={values.slug}
                     onChange={(e) => {
-                        dispatch({ type: "path", value: e.target.value });
+                        dispatch({ type: "slug", value: e.target.value });
                     }}
                     label="Slug/Link/Path"
                 ></TextField>
@@ -339,7 +339,7 @@ export default function ArticleEditPage({
                 <TextField
                     fullWidth
                     name="intro"
-                    defaultValue={post?.meta_description}
+                    defaultValue={post?.intro}
                     label={
                         <>
                             Introduction paragraph (previously called &quot;Meta
@@ -362,7 +362,7 @@ export default function ArticleEditPage({
 
                 {type === "article" ? (
                     <ArticleEditor
-                        initialValue={post?.description}
+                        initialValue={post?.contents}
                         value={description}
                         onEditorChange={(newValue) => setDescription(newValue)}
                     />
@@ -485,10 +485,10 @@ export default function ArticleEditPage({
                         ></TextField>
                         <TextField
                             fullWidth
-                            value={newTag.path}
+                            value={newTag.slug}
                             onChange={(e) =>
                                 newTagDispatch({
-                                    type: "path",
+                                    type: "slug",
                                     value: e.target.value,
                                 })
                             }

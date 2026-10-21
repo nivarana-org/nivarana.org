@@ -8,7 +8,7 @@ export const getImageURLFromFileName = (filename: string) => {
 
 type GetURLData = {
     type: string;
-    path: string;
+    slug: string;
     category: {
         name: string;
         path: string;
@@ -26,7 +26,7 @@ export const getArticlePublicURL = (data: GetURLData) => {
 };
 
 export const getArticleSlug = (data: GetURLData) => {
-    return `/${data.category.path}/${data.path}`;
+    return `/${data.category.path}/${data.slug}`;
 };
 
 export const getReturnURL = (base: string, returnURL: string | undefined) => {

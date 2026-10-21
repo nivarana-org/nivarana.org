@@ -21,12 +21,12 @@ function escapeXml(unsafe) {
 
 const getContent = (post) => {
     if (post.type === "photo-essay") {
-        return JSON.parse(post.description)
+        return JSON.parse(post.contents)
             .chapters.map((p) => `<h2>${p.title}</h2>\n\<hr>${p.body}`)
             .join("\n<br/>\n");
     }
     // article or unknown
-    return post.description;
+    return post.contents;
 };
 
 export const getFeed = async () => {
@@ -47,21 +47,21 @@ export const getFeed = async () => {
     const posts = await getArticlesPaginated(0, 20);
     posts.forEach((post) => {
         const categorySlug = post.category[0].path;
-        const url = `https://nivarana.org/${categorySlug}/${post.path}`;
-        const imageUrl = getImageURLFromFileName(post.upload_image);
+        const url = `https://nivarana.org/${categorySlug}/${post.slug}`;
+        const imageUrl = getImageURLFromFileName(post.image);
         const optimizedImageUrl = escapeXml(
             `https://nivarana.org/_next/image?url=${encodeURIComponent(imageUrl)}&w=1200&q=75`,
         );
         const authors = post.authors.map((a) => ({
             name: a.name,
             email: a.email,
-            link: `https://nivarana.org/author/${a.path}`,
+            link: `https://nivarana.org/author/${a.slug}`,
         }));
         feed.addItem({
-            title: post.page_title,
+            title: post.title,
             id: url,
             link: url,
-            description: post.meta_description,
+            description: post.intro,
             content: getContent(post),
             author: authors,
             contributor: authors,

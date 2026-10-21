@@ -10,9 +10,9 @@ export const getPage = (id: number) =>
 
 export interface StaticPage {
     id?: number;
-    page_name: string;
-    page_title: string;
-    description: string;
+    slug: string;
+    title: string;
+    contents: string;
 }
 
 export const addOrEditPage = asAdmin(async (page: StaticPage) => {
@@ -21,16 +21,16 @@ export const addOrEditPage = asAdmin(async (page: StaticPage) => {
         .insertInto("static_pages")
         .values({
             id: page.id,
-            page_name: page.page_name,
-            page_title: page.page_title,
-            description: page.description,
+            slug: page.slug,
+            title: page.title,
+            contents: page.contents,
             created_at: timestamp,
             updated_at: timestamp,
         })
         .onDuplicateKeyUpdate({
-            page_name: page.page_name,
-            page_title: page.page_title,
-            description: page.description,
+            slug: page.slug,
+            title: page.title,
+            contents: page.contents,
             updated_at: timestamp,
         })
         .execute();

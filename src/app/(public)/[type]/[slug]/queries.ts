@@ -1,6 +1,6 @@
 export { getActiveSubscriptionByUserId } from "@/data/subscriptions";
 export { searchArticles } from "@/data/posts";
-export { getArticleByPath, getPost } from "@/data/queries";
+export { getArticleBySlug, getPost } from "@/data/queries";
 export { getRedirect } from "@/data/redirects";
 
 import { asAdmin } from "@/data/authorization";

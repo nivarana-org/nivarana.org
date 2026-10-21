@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 
 export const addOrEditPostAction = async (formData: FormData) => {
     const id = formData.get("id");
-    const page_title = formData.get("title");
-    const description = formData.get("description");
+    const title = formData.get("title");
+    const contents = formData.get("contents");
     const authors = (formData.get("authors") as string)
         ?.split(",")
         ?.map((a: string) => Number(a));
@@ -16,25 +16,25 @@ export const addOrEditPostAction = async (formData: FormData) => {
         .get("category")
         ?.split(",")
         ?.map((c: string) => Number(c));
-    const meta_description = formData.get("intro");
-    const upload_image = formData.get("image");
-    const path = formData.get("path");
+    const intro = formData.get("intro");
+    const image = formData.get("image");
+    const slug = formData.get("slug");
     const status = formData.get("status");
-    const scheduledTime = formData.get("scheduled_time");
+    const publishedAt = formData.get("published_at");
     const language = formData.get("language");
     const type = formData.get("type");
     const post = {
         id,
-        path,
-        page_title,
-        description,
+        slug,
+        title,
+        contents,
         authors,
         tags,
         categories,
-        meta_description,
-        upload_image,
+        intro,
+        image,
         status,
-        scheduled_time: scheduledTime ? new Date(scheduledTime) : null,
+        published_at: publishedAt ? new Date(publishedAt) : null,
         language,
         type,
     };

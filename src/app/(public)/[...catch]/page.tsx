@@ -28,7 +28,7 @@ export default async function Page(props: Props) {
         oldPath.join(" ").split("-").join(" "),
     );
     if (searchResult.length > 0) {
-        const slug = searchResult[0].path;
+        const slug = searchResult[0].slug;
         const category = searchResult[0].category;
         return redirect(`/${category.name}/${slug}`, "replace");
     }

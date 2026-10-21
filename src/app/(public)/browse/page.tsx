@@ -12,10 +12,10 @@ export default async function BrowsePage() {
                     <ArticleCard
                         key={article.id}
                         id={article.id}
-                        path={article.path}
-                        title={article.page_title}
+                        slug={article.slug}
+                        title={article.title}
                         type={article.type}
-                        imageUrl={getImageURLFromFileName(article.upload_image)}
+                        imageUrl={getImageURLFromFileName(article.image)}
                     />
                 ))}
             </div>

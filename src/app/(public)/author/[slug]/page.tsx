@@ -1,5 +1,5 @@
 import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
-import { getAuthorByPath } from "./queries";
+import { getAuthorBySlug } from "./queries";
 import { getRedirect } from "./queries";
 import { normalizeAsOldSlugs } from "@/utils/normalizers";
 import { Metadata, ResolvingMetadata } from "next";
@@ -7,8 +7,8 @@ import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 const cachedGetAuthorBySlug = cache((slug: string) => {
-    const path = normalizeAsOldSlugs(slug);
-    return getAuthorByPath(path);
+    const normalized = normalizeAsOldSlugs(slug);
+    return getAuthorBySlug(normalized);
 });
 
 async function Page(props: Props) {
@@ -31,7 +31,7 @@ async function Page(props: Props) {
                 <ArticlePreview
                     {...item}
                     category={item.categories}
-                    key={item.path}
+                    key={item.slug}
                     includeCategory={true}
                 />
             ))}

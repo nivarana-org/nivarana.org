@@ -10,13 +10,13 @@ async function onTagChange(post, tags) {
     return await editPostTags(post, tags);
 }
 
-function ArticleRow({ id, type, page_title, path, tags, allTags }) {
+function ArticleRow({ id, type, title, slug, tags, allTags }) {
     return (
         <div className="mb-4">
             <div>
-                {page_title}{" "}
+                {title}{" "}
                 <Button>
-                    <Link href={`/${type}/${path}`}>📎</Link>
+                    <Link href={`/${type}/${slug}`}>📎</Link>
                 </Button>
             </div>
 

@@ -9,7 +9,7 @@ export const getAuthor = (id: number) =>
         .select([
             "id",
             "name",
-            "path",
+            "slug",
             "email",
             "description",
             "title",
@@ -23,7 +23,7 @@ export const addOrEditAuthor = asAdmin(
         id?: number | string | null;
         name: string;
         email?: string | null;
-        path?: string | null;
+        slug?: string | null;
         description?: string | null;
         title?: string | null;
         image?: string | null;

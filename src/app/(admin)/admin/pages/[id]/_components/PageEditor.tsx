@@ -14,15 +14,15 @@ const BundledEditor = dynamic(
 
 type Page = {
     id: number;
-    page_name: string;
-    page_title: string;
-    description: string;
+    slug: string;
+    title: string;
+    contents: string;
 };
 
 export default function PageEditPage({ page }: { page: Page }) {
-    const [path, setPath] = useState(page.page_name || "");
-    const [title, setTitle] = useState(page.page_title || "");
-    const [description, setDescription] = useState(page.description || "");
+    const [slug, setSlug] = useState(page.slug || "");
+    const [title, setTitle] = useState(page.title || "");
+    const [contents, setContents] = useState(page.contents || "");
     const [saving, setSaving] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,9 +30,9 @@ export default function PageEditPage({ page }: { page: Page }) {
         setSaving(true);
         const formData = new FormData();
         formData.append("id", `${page.id}`);
-        formData.append("path", path);
+        formData.append("slug", slug);
         formData.append("title", title);
-        formData.append("description", description);
+        formData.append("contents", contents);
         await addOrEditPageAction(formData);
         setSaving(false);
     };
@@ -43,14 +43,14 @@ export default function PageEditPage({ page }: { page: Page }) {
             onSubmit={handleSubmit}
         >
             <div className="flex flex-col gap-2">
-                <label className="font-bold" htmlFor="path">
-                    Path
+                <label className="font-bold" htmlFor="slug">
+                    Slug
                 </label>
                 <input
-                    id="path"
+                    id="slug"
                     type="text"
-                    value={path}
-                    onChange={(e) => setPath(e.target.value)}
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
                     className="border border-gray-300 rounded px-3 py-2"
                     placeholder="e.g., about-us"
                 />
@@ -71,15 +71,13 @@ export default function PageEditPage({ page }: { page: Page }) {
             </div>
             <Divider />
             <div className="flex flex-col gap-2">
-                <label className="font-bold" htmlFor="description">
+                <label className="font-bold" htmlFor="contents">
                     Content
                 </label>
                 <BundledEditor
                     apiKey="gpl"
-                    value={description}
-                    onEditorChange={(content: string) =>
-                        setDescription(content)
-                    }
+                    value={contents}
+                    onEditorChange={(content: string) => setContents(content)}
                     init={{
                         height: 500,
                         menubar: true,

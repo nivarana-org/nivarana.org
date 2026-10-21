@@ -11,21 +11,21 @@ export const searchArticles = (query: string) =>
         .selectFrom("blogs as b")
         .select([
             "b.id",
-            "b.page_title",
-            "b.path",
-            "b.description",
-            "b.upload_image",
-            "b.meta_description",
+            "b.title",
+            "b.slug",
+            "b.contents",
+            "b.image",
+            "b.intro",
             "b.created_at",
             "b.updated_at",
-            "b.scheduled_time",
             "b.type",
+            "b.published_at",
             authorsFragment.as("authors"),
             categoriesFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
         .where(
-            sql<SqlBool>`MATCH(b.page_title, b.description, b.meta_description) AGAINST (${query})`,
+            sql<SqlBool>`MATCH(b.title, b.contents, b.intro) AGAINST (${query})`,
         )
         .execute();

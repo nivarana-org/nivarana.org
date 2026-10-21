@@ -15,7 +15,7 @@ import type { Suggestions } from "@/types/nivarana";
 const getAuthorSuggestions = (query: string) =>
     db
         .selectFrom("authors as a")
-        .select(["a.name", "a.path"])
+        .select(["a.name", "a.slug as path"])
         .where(suggestionMatchCondition("a.name", query))
         .where(hasPublishedPost("author", "a.id"))
         .orderBy(suggestionRank("a.name", query))

@@ -7,11 +7,11 @@ import Image from "next/image";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 
 function ArticlePreview({
-    path,
+    slug,
     authors,
-    upload_image,
-    page_title,
-    meta_description,
+    image,
+    title,
+    intro,
     created_at,
     category,
     categories,
@@ -37,7 +37,7 @@ function ArticlePreview({
                         <Link
                             href={getArticleSlug({
                                 type,
-                                path,
+                                slug,
                                 category: category
                                     ? category[0]
                                     : categories[0],
@@ -47,7 +47,7 @@ function ArticlePreview({
                                 width={320}
                                 height={225}
                                 className="h-48 w-full object-cover md:h-full md:w-80"
-                                src={getImageURLFromFileName(upload_image)}
+                                src={getImageURLFromFileName(image)}
                                 alt=""
                                 priority={aboveTheFold}
                             />
@@ -59,18 +59,16 @@ function ArticlePreview({
                         <Link
                             href={getArticleSlug({
                                 type,
-                                path,
+                                slug,
                                 category: category
                                     ? category[0]
                                     : categories[0],
                             })}
                         >
                             <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
-                                {page_title}
+                                {title}
                             </div>
-                            <p className="mt-2 text-slate-500">
-                                {meta_description}
-                            </p>
+                            <p className="mt-2 text-slate-500">{intro}</p>
                         </Link>
                         <ul className="flex space-x-4 text-gray-500 text-sm mt-3 items-center">
                             <NAuthors authors={authors} />

@@ -11,7 +11,7 @@ export default async function LanguageSpecificHome() {
                     {initialPosts.map((item, index) => (
                         <ArticlePreview
                             {...item}
-                            key={item.path}
+                            key={item.slug}
                             aboveTheFold={index < 2}
                         />
                     ))}

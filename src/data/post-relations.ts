@@ -59,11 +59,6 @@ export const editPostCategory = asAdmin(
                 .where("post_id", "=", postId)
                 .where("relation_type", "=", "category")
                 .execute();
-            await trx
-                .updateTable("blogs")
-                .set({ category_name: `${categoryId}` })
-                .where("id", "=", postId)
-                .execute();
         });
     },
 );
