@@ -37,7 +37,11 @@ async function Page(props: Props) {
                     ></div>
 
                     {category.articles.map((item) => (
-                        <ArticlePreview {...item} key={item.slug} />
+                        <ArticlePreview
+                            {...item}
+                            key={item.slug}
+                            category={item.category[0]}
+                        />
                     ))}
                 </div>
                 <div className="lg:col-span-1">

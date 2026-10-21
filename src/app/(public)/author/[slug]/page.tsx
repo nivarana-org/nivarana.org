@@ -30,8 +30,8 @@ async function Page(props: Props) {
             {author.articles.map((item) => (
                 <ArticlePreview
                     {...item}
-                    category={item.categories}
                     key={item.slug}
+                    category={item.category[0]}
                     includeCategory={true}
                 />
             ))}

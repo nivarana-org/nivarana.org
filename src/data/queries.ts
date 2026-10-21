@@ -248,7 +248,7 @@ export const getArticlesByRelation = (
             "b.language",
             "b.views",
             authorsFragment.as("authors"),
-            categoriesFragment.as("categories"),
+            categoriesFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")

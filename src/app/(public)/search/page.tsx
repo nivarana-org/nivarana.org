@@ -37,7 +37,7 @@ const Results = ({
     return (
         <>
             {results.map((a) => (
-                <ArticlePreview {...a} key={a.slug} />
+                <ArticlePreview {...a} key={a.slug} category={a.category[0]} />
             ))}
         </>
     );

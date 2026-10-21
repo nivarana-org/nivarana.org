@@ -1,10 +1,35 @@
 import moment from "moment";
-import Link from "next/link";
-import React from "react";
-import { NAuthors } from "../authors/Authors";
-import { Post } from "@/types/nivarana";
 import Image from "next/image";
+import Link from "next/link";
+
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
+
+import { NAuthors } from "../authors/Authors";
+
+import type { ArticleAuthor } from "../authors/Authors";
+
+/**
+ * The category an article is filed under. It is also the first segment of the
+ * article URL, so a preview needs it to build a working link.
+ */
+type ArticleCategory = {
+    name: string;
+    slug: string;
+};
+
+export type ArticlePreviewProps = {
+    slug: string | null;
+    title: string | null;
+    intro: string | null;
+    image: string | null;
+    created_at: Date | number | string;
+    authors: ArticleAuthor[];
+    category?: ArticleCategory;
+    /** Preload the cover image, for previews that are visible without scrolling. */
+    aboveTheFold?: boolean;
+    /** Show the category of the article next to the preview. */
+    includeCategory?: boolean;
+};
 
 function ArticlePreview({
     slug,
@@ -14,54 +39,44 @@ function ArticlePreview({
     intro,
     created_at,
     category,
-    categories,
     aboveTheFold = false,
     includeCategory = false,
-}: Post & { aboveTheFold?: boolean; includeCategory?: boolean }) {
+}: ArticlePreviewProps) {
+    const href = getArticleSlug({ slug: slug ?? "", category });
+
     return (
         <div className="flex flex-wrap">
-            {includeCategory ? (
+            {includeCategory && category ? (
                 <div className="p-3 grow-0 w-30">
                     <Link
-                        href={"/category/" + category[0].slug}
+                        href={`/category/${category.slug}`}
                         className="text-gray-500 hover:text-gray-700"
                     >
-                        {category[0].name}
+                        {category.name}
                     </Link>
                 </div>
             ) : null}
-            <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-4xl mb-3 grow shrink:0 hover:drop-shadow-xl">
+            <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-4xl mb-3 grow shrink-0 hover:drop-shadow-xl">
                 <div className="md:flex">
                     <div className="md:shrink-0">
-                        <Link
-                            href={getArticleSlug({
-                                slug,
-                                category: category
-                                    ? category[0]
-                                    : categories[0],
-                            })}
-                        >
-                            <Image
-                                width={320}
-                                height={225}
-                                className="h-48 w-full object-cover md:h-full md:w-80"
-                                src={getImageURLFromFileName(image)}
-                                alt=""
-                                priority={aboveTheFold}
-                            />
-                        </Link>
+                        {image ? (
+                            <Link href={href}>
+                                <Image
+                                    width={320}
+                                    height={225}
+                                    className="h-48 w-full object-cover md:h-full md:w-80"
+                                    src={getImageURLFromFileName(image)}
+                                    alt={title ?? ""}
+                                    preload={aboveTheFold}
+                                />
+                            </Link>
+                        ) : (
+                            <div className="h-48 w-full bg-gray-200 md:h-full md:w-80" />
+                        )}
                     </div>
 
                     <div className="p-8">
-                        {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{categro}</div> */}
-                        <Link
-                            href={getArticleSlug({
-                                slug,
-                                category: category
-                                    ? category[0]
-                                    : categories[0],
-                            })}
-                        >
+                        <Link href={href}>
                             <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
                                 {title}
                             </div>
