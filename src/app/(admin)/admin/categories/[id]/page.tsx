@@ -6,7 +6,7 @@ async function addCategoryAction(formData: FormData) {
     "use server";
     const name = formData.get("name");
     const slug = formData.get("slug");
-    await addCategory(name, slug);
+    await addCategory(String(name ?? ""), String(slug ?? ""));
     redirect(`/admin/categories`);
 }
 export default async function Page() {

@@ -14,7 +14,7 @@ import {
 export interface Post {
     id: number;
     slug: string;
-    views: number;
+    views?: number;
     title: string;
     /** The story document, serialised as JSON. */
     contents: string;
@@ -22,8 +22,8 @@ export interface Post {
     authors: number[];
     tags: number[];
     image: string;
-    created_at: number;
-    updated_at: number;
+    created_at?: Date;
+    updated_at?: Date;
     intro: string;
     status?: string | null;
     language?: string | null;
@@ -32,6 +32,10 @@ export interface Post {
      * set, the layout is derived from the number of chapters.
      */
     layout?: PostLayout | null;
+    /**
+     * When the post goes live. It is stamped the first time the post is
+     * published and kept from then on.
+     */
     published_at?: Date | null;
 }
 
@@ -39,7 +43,7 @@ export const getAllArticlesAndTags = () =>
     db
         .selectFrom("blogs as b")
         .select(["b.id", "b.title", "b.slug", "b.image", "b.intro", "b.layout"])
-        .select(tagsFragment.as("tags"))
+        .select([tagsFragment.as("tags"), categoriesFragment.as("category")])
         .orderBy("b.id", "asc")
         .execute();
 
@@ -206,8 +210,23 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
         // Upsert into blogs table
         const { authors, categories, tags, ...rest } = post;
 
+        // The publication date is stamped the first time the post goes live
+        // and kept from then on, so editing a published post does not move
+        // it. A post that is scheduled for later keeps the date it was given.
+        const existing = await trx
+            .selectFrom("blogs")
+            .select(["status", "published_at"])
+            .where("id", "=", post.id)
+            .executeTakeFirst();
+        const publishedAt =
+            post.published_at ??
+            (existing?.status === "PUBLISHED"
+                ? existing.published_at
+                : timestamp);
+
         const values = {
             ...rest,
+            published_at: publishedAt,
             layout,
             body_text: bodyText,
             created_at: timestamp,

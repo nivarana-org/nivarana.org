@@ -3,9 +3,32 @@ import { fetchSubscriptionFromRazorpay } from "@/lib/razorpay";
 import type {
     UserSubscription,
     SubscriptionPayment,
+    SubscriptionPaymentRow,
     WebhookEvent,
+    WebhookEventRow,
     SubscriptionStatus,
 } from "@/types/subscription";
+
+/**
+ * The database stores its boolean flags as tinyints, so they are written as
+ * 0 and 1 and read back as booleans.
+ */
+const toBoolean = (value: number | null) => value === 1;
+
+const toSubscriptionPayment = (
+    row: SubscriptionPaymentRow,
+): SubscriptionPayment => ({
+    ...row,
+    currency: row.currency ?? "INR",
+    captured: toBoolean(row.captured),
+    verified: toBoolean(row.verified),
+});
+
+const toWebhookEvent = (row: WebhookEventRow): WebhookEvent => ({
+    ...row,
+    payload: JSON.parse(row.payload),
+    processed: toBoolean(row.processed),
+});
 
 export async function syncSubscriptionStatus(
     razorpaySubscriptionId: string,
@@ -209,9 +232,9 @@ export async function createPayment({
             amount,
             currency: currency || "INR",
             status,
-            captured: false,
+            captured: 0,
             razorpay_signature: razorpaySignature || null,
-            verified: false,
+            verified: 0,
         })
         .execute();
 
@@ -221,7 +244,7 @@ export async function createPayment({
         .selectAll()
         .execute();
 
-    return payment as SubscriptionPayment;
+    return toSubscriptionPayment(payment);
 }
 
 export async function getPaymentByRazorpayId(
@@ -233,14 +256,14 @@ export async function getPaymentByRazorpayId(
         .selectAll()
         .execute();
 
-    return payment || null;
+    return payment ? toSubscriptionPayment(payment) : null;
 }
 
 export async function verifyPayment(razorpayPaymentId: string): Promise<void> {
     await db
         .updateTable("subscription_payments")
         .where("razorpay_payment_id", "=", razorpayPaymentId)
-        .set({ verified: true })
+        .set({ verified: 1 })
         .execute();
 }
 
@@ -248,7 +271,7 @@ export async function capturePayment(razorpayPaymentId: string): Promise<void> {
     await db
         .updateTable("subscription_payments")
         .where("razorpay_payment_id", "=", razorpayPaymentId)
-        .set({ captured: true })
+        .set({ captured: 1 })
         .execute();
 }
 
@@ -264,7 +287,7 @@ export async function updatePaymentStatus(
         .where("razorpay_payment_id", "=", razorpayPaymentId)
         .set({
             status,
-            captured: existing.captured || status === "captured",
+            captured: existing.captured || status === "captured" ? 1 : 0,
         })
         .execute();
 }
@@ -279,7 +302,7 @@ export async function getPaymentsBySubscriptionId(
         .selectAll()
         .execute();
 
-    return payments as SubscriptionPayment[];
+    return payments.map(toSubscriptionPayment);
 }
 
 export async function createWebhookEvent({
@@ -302,7 +325,7 @@ export async function createWebhookEvent({
             razorpay_event_id: razorpayEventId,
             event_type: eventType,
             payload: JSON.stringify(payload),
-            processed: false,
+            processed: 0,
         })
         .execute();
 
@@ -312,7 +335,7 @@ export async function createWebhookEvent({
         .selectAll()
         .execute();
 
-    return event as unknown as WebhookEvent;
+    return toWebhookEvent(event);
 }
 
 export async function markWebhookEventProcessed(
@@ -321,7 +344,7 @@ export async function markWebhookEventProcessed(
     await db
         .updateTable("webhook_events")
         .where("razorpay_event_id", "=", razorpayEventId)
-        .set({ processed: true })
+        .set({ processed: 1 })
         .execute();
 }
 
@@ -334,7 +357,7 @@ export async function getWebhookEventById(
         .selectAll()
         .execute();
 
-    return event || null;
+    return event ? toWebhookEvent(event) : null;
 }
 
 export interface MembershipPlan {

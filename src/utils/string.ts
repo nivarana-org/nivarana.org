@@ -1,4 +1,4 @@
-export function sluggify(input) {
+export function sluggify(input: string) {
     return input
         .toString()
         .toLowerCase()
@@ -10,6 +10,6 @@ export function sluggify(input) {
         .replace(/-+$/, ""); // Trim - from end of text
 }
 
-export function getExtension(filename) {
+export function getExtension(filename: string) {
     return filename.split(".").pop();
 }

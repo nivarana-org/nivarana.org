@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { db } from "./db";
 import type { PostLayout, Story } from "./story";
 
-type Author = {
+export type Author = {
     id: number;
     name: string;
     email: string;
@@ -28,7 +28,7 @@ export const authorsFragment = sql<Author[]>`COALESCE(
     ), JSON_ARRAY()
 )`;
 
-type Category = {
+export type Category = {
     id: number;
     name: string;
     slug: string;
@@ -50,7 +50,7 @@ export const categoriesFragment = sql<Category[]>`COALESCE(
     ), JSON_ARRAY()
 )`;
 
-type Tag = {
+export type Tag = {
     id: number;
     name: string;
     slug: string;
@@ -90,10 +90,11 @@ const articleJSONData = sql`
     'slug', b.slug,
     'title', b.title,
     'image', b.image,
-    'intro', b.intro
+    'intro', b.intro,
+    'published_at', b.published_at
 `;
 
-type Post = {
+export type Post = {
     id: number;
     title: string;
     image: string;
@@ -115,17 +116,22 @@ type Post = {
     comments_count: number;
 };
 
-type PostPreview = Pick<
-    Post,
-    | "id"
-    | "title"
-    | "image"
-    | "slug"
-    | "intro"
-    | "authors"
-    | "categories"
-    | "tags"
->;
+/**
+ * A post as it appears inside a category overview. The relations are built by
+ * JSON aggregations, so they arrive as arrays of plain objects.
+ */
+export type PostPreview = {
+    id: number;
+    title: string;
+    image: string;
+    slug: string;
+    intro: string;
+    /** The publication date, as the string MySQL puts into JSON. */
+    published_at: string;
+    authors: Author[];
+    categories: Category[];
+    tags: Tag[];
+};
 
 export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
     const idFrag = sql`b.id = ${id}`;
@@ -149,7 +155,7 @@ export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
     return result.rows[0];
 };
 
-type CategoryOverview = {
+export type CategoryOverview = {
     id: number;
     name: string;
     slug: string;
@@ -158,9 +164,12 @@ type CategoryOverview = {
 
 export const getOverview = () => getCategoriesWithArticles(true, 5);
 
-type PostBasics = Pick<Post, "id" | "title" | "image" | "slug" | "intro">;
+export type PostBasics = Pick<
+    Post,
+    "id" | "title" | "image" | "slug" | "intro"
+>;
 
-type CategoryWithArticleTitles = {
+export type CategoryWithArticleTitles = {
     id: number;
     name: string;
     slug: string;
@@ -170,11 +179,11 @@ type CategoryWithArticleTitles = {
 function getCategoriesWithArticles(
     withRelations: true,
     limit?: number,
-): Promise<CategoryOverview>;
+): Promise<CategoryOverview[]>;
 function getCategoriesWithArticles(
     withRelations: false,
     limit?: number,
-): Promise<CategoryWithArticleTitles>;
+): Promise<CategoryWithArticleTitles[]>;
 async function getCategoriesWithArticles(
     withRelations: boolean,
     limit?: number,

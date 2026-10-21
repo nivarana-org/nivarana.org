@@ -20,6 +20,7 @@ import type { EditablePost } from "../queries";
 import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
+import type { Moment } from "moment";
 import StoryEditor from "./StoryEditor";
 import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-title-slug-reducer";
@@ -73,9 +74,9 @@ export default function ArticleEditPage({
     allTags: initialAllTags,
 }: {
     post: EditablePost;
-    allAuthors: { id: string; name: string }[];
-    allCategories: { id: string; name: string }[];
-    allTags: { id: string; name: string }[];
+    allAuthors: { id: number; name: string }[];
+    allCategories: { id: number; name: string }[];
+    allTags: { id: number; name: string }[];
 }) {
     const [submitting, setSubmitting] = useState(false);
     const [values, dispatch] = useImmerReducer(articleEditReducer, {
@@ -86,8 +87,8 @@ export default function ArticleEditPage({
     const [selectedStatus, setSelectedStatus] = useState(
         post?.status || "DRAFT",
     );
-    const [scheduledTime, setScheduledTime] = useState(
-        moment(post?.published_at) || null,
+    const [scheduledTime, setScheduledTime] = useState<Moment | null>(
+        post?.published_at ? moment(post.published_at) : null,
     );
     const handleStatusChange = (event: SelectChangeEvent) => {
         const newValue = event.target.value as string;
@@ -199,8 +200,8 @@ export default function ArticleEditPage({
                 data.append("tags", JSON.stringify(tags));
                 data.append("image", image);
                 data.append("status", selectedStatus);
-                if (selectedStatus === "SCHEDULED") {
-                    data.append("published_at", scheduledTime);
+                if (selectedStatus === "SCHEDULED" && scheduledTime) {
+                    data.append("published_at", scheduledTime.toISOString());
                 }
                 setSubmitting(true);
                 const { status, message } = await addOrEditPostAction(data);
@@ -275,14 +276,13 @@ export default function ArticleEditPage({
                                 .map(
                                     (id) =>
                                         allAuthors.find(
-                                            (a: { id: string }) =>
-                                                `${a.id}` === `${id}`,
+                                            (a) => `${a.id}` === `${id}`,
                                         )?.name ?? `${id}`,
                                 )
                                 .join(", ")
                         }
                     >
-                        {allAuthors.map((a: { id: string; name: string }) => (
+                        {allAuthors.map((a) => (
                             <MenuItem key={a.id} value={`${a.id}`}>
                                 {a.name}
                             </MenuItem>
@@ -303,19 +303,16 @@ export default function ArticleEditPage({
                         required
                         renderValue={(selected) => {
                             const category = allCategories.find(
-                                (c: { id: string }) =>
-                                    `${c.id}` === `${selected}`,
+                                (c) => `${c.id}` === `${selected}`,
                             );
                             return category ? category.name : `${selected}`;
                         }}
                     >
-                        {allCategories.map(
-                            (c: { id: string; name: string }) => (
-                                <MenuItem key={c.id} value={`${c.id}`}>
-                                    {c.name}
-                                </MenuItem>
-                            ),
-                        )}
+                        {allCategories.map((c) => (
+                            <MenuItem key={c.id} value={`${c.id}`}>
+                                {c.name}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
@@ -334,14 +331,13 @@ export default function ArticleEditPage({
                                 .map(
                                     (id) =>
                                         allTags.find(
-                                            (t: { id: string }) =>
-                                                `${t.id}` === `${id}`,
+                                            (t) => `${t.id}` === `${id}`,
                                         )?.name ?? `${id}`,
                                 )
                                 .join(", ")
                         }
                     >
-                        {allTags.map((t: { id: string; name: string }) => (
+                        {allTags.map((t) => (
                             <MenuItem key={t.id} value={`${t.id}`}>
                                 {t.name}
                             </MenuItem>
@@ -485,7 +481,7 @@ export default function ArticleEditPage({
                         </FormLabel>
                         <DateTimePicker
                             value={scheduledTime}
-                            onChange={setScheduledTime}
+                            onChange={(value) => setScheduledTime(value)}
                             required
                         />
                     </FormControl>

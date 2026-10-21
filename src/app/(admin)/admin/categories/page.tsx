@@ -5,13 +5,27 @@ import Selector from "./_components/selector";
 import { editPostCategory } from "./queries";
 import { getCategoriesWithArticleLinks } from "./queries";
 
+import type { PostBasics } from "./queries";
+
 // Selector is a client component, so it can only receive server actions.
 async function setPostToCategory(postId: number, categoryId: number) {
     "use server";
     return await editPostCategory(postId, categoryId);
 }
 
-function CategoryRow({ id, name, slug, articles, categories }) {
+function CategoryRow({
+    id,
+    name,
+    slug,
+    articles,
+    categories,
+}: {
+    id: number;
+    name: string;
+    slug: string;
+    articles: PostBasics[];
+    categories: { id: number; name: string }[];
+}) {
     const publicLink = `/category/${slug}`;
     return (
         <div className="mb-4">
@@ -40,7 +54,7 @@ function CategoryRow({ id, name, slug, articles, categories }) {
 
 export default async function Page({}) {
     const categories = await getCategoriesWithArticleLinks();
-    const nextCount = Number(categories.at(-1).id) + 1;
+    const nextCount = Number(categories.at(-1)?.id ?? 0) + 1;
     return (
         <div className="flex flex-col gap-2 p-2">
             <div className="p-2 flex flex-row gap-2">

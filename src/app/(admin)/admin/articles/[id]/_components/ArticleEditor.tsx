@@ -2,6 +2,8 @@
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 
+import type { BlobInfo, Editor as TinyMCEEditor } from "tinymce";
+
 const BundledEditor = dynamic(
     () => import("../../../_components/BundledEditor"),
     { ssr: false },
@@ -10,11 +12,13 @@ const BundledEditor = dynamic(
 type Props = {
     initialValue?: string;
     value: string;
+    /** Called with the new contents every time the editor changes. */
+    onEditorChange?: (value: string) => void;
 };
 
 export default function ArticleEditor(props: Props) {
-    const editorRef = useRef(null);
-    const imageUploadHandler = async (blobInfo) => {
+    const editorRef = useRef<TinyMCEEditor | null>(null);
+    const imageUploadHandler = async (blobInfo: BlobInfo) => {
         const formData = new FormData();
         formData.append("file", blobInfo.blob(), blobInfo.filename());
         const result = await fetch("/admin/api/images/upload", {

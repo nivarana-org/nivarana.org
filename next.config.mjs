@@ -9,9 +9,6 @@ const nextConfig = {
     experimental: {
         inlineCss: true,
     },
-    typescript: {
-        ignoreBuildErrors: true,
-    },
     async redirects() {
         return [
             {

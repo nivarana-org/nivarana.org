@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { getImageUploadDirectory } from "@/utils/image-upload";
 import { getImageURLFromFileName } from "@/utils/paths";
 
-const sortFiles = (files) => {
+const sortFiles = (files: string[]) => {
     return files.sort((a, b) => {
         const timestampA = parseInt(path.parse(a).name, 10);
         const timestampB = parseInt(path.parse(b).name, 10);

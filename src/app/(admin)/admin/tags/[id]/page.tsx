@@ -6,7 +6,7 @@ async function addTagAction(formData: FormData) {
     "use server";
     const name = formData.get("name");
     const slug = formData.get("slug");
-    await addTag(name, slug);
+    await addTag(String(name ?? ""), String(slug ?? ""));
     redirect(`/admin/tags`);
 }
 export default async function Page() {

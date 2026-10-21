@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
     const formData = await req.formData();
 
     const file = formData.get("file");
-    if (!file) {
+    if (!file || !(file instanceof File)) {
         return NextResponse.json(
             { error: "No files received." },
             { status: 400 },

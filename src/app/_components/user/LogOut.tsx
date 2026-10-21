@@ -2,7 +2,7 @@
 import { authClient } from "@/utils/auth-client";
 import { useRouter } from "next/navigation";
 
-export function LogOut({ inline }) {
+export function LogOut({ inline }: { inline?: boolean }) {
     const router = useRouter();
     const logOut = async () => {
         await authClient.signOut({

@@ -20,7 +20,7 @@ export const getAuthor = (id: number) =>
 
 export const addOrEditAuthor = asAdmin(
     (author: {
-        id?: number | string | null;
+        id?: number;
         name: string;
         email?: string | null;
         slug?: string | null;

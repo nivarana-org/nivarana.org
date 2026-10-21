@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { getAuthorsOverview, type Author } from "./queries";
 
-function AuthorRow({ id, name, path }: Author) {
+function AuthorRow({ id, name, slug }: Author) {
     const adminLink = `/admin/people/${id}`;
-    const publicLink = `/author/${path}`;
+    const publicLink = `/author/${slug}`;
     return (
         <TableRow>
             <TableCell>

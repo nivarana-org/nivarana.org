@@ -2,7 +2,7 @@ import { db } from "./db";
 import { getArticlesByRelation } from "./queries";
 
 export interface Author {
-    id?: number | string | null;
+    id?: number;
     name: string;
     email?: string | null;
     slug?: string | null;

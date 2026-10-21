@@ -3,7 +3,17 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function Selector({ value, allTags, onChange }) {
+import type { Tag } from "../queries";
+
+export default function Selector({
+    value,
+    allTags,
+    onChange,
+}: {
+    value: Tag[];
+    allTags: Tag[];
+    onChange: (tags: number[]) => void | Promise<void>;
+}) {
     const [displayedValue, setDisplayedValue] = useState(value);
     return (
         <Autocomplete

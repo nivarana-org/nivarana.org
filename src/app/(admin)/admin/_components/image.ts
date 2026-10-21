@@ -1,4 +1,4 @@
-export const uploadImage = async (file) => {
+export const uploadImage = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file, file.name);
     const result = await fetch("/admin/api/images/upload", {

@@ -5,19 +5,39 @@ import Selector from "./_components/Selector";
 import { Button } from "@mui/material";
 import { editPostTags } from "./queries";
 
-async function onTagChange(post, tags) {
+import type { Category, Tag } from "./queries";
+
+async function onTagChange(post: number, tags: number[]) {
     "use server";
     return await editPostTags(post, tags);
 }
 
-function ArticleRow({ id, type, title, slug, tags, allTags }) {
+function ArticleRow({
+    id,
+    title,
+    slug,
+    tags,
+    allTags,
+    category,
+}: {
+    id: number;
+    title: string | null;
+    slug: string | null;
+    tags: Tag[];
+    allTags: Tag[];
+    category: Category[];
+}) {
+    // The public URL of a post is prefixed with the slug of its category.
+    const type = category[0]?.slug;
     return (
         <div className="mb-4">
             <div>
                 {title}{" "}
-                <Button>
-                    <Link href={`/${type}/${slug}`}>📎</Link>
-                </Button>
+                {type && slug ? (
+                    <Button>
+                        <Link href={`/${type}/${slug}`}>📎</Link>
+                    </Button>
+                ) : null}
             </div>
 
             <Selector
@@ -35,7 +55,7 @@ function ArticleRow({ id, type, title, slug, tags, allTags }) {
 export default async function Page({}) {
     const articles = await getAllArticlesAndTags();
     const tags = await getAllTags();
-    const nextTag = tags.at(-1).id + 1;
+    const nextTag = Number(tags.at(-1)?.id ?? 0) + 1;
 
     return (
         <>

@@ -1,3 +1,7 @@
+import type { Selectable } from "kysely";
+
+import type { SubscriptionPayments, WebhookEvents } from "@/data/db.d";
+
 export type SubscriptionStatus =
     | "created"
     | "authenticated"
@@ -36,28 +40,37 @@ export interface UserSubscription {
     updated_at: Date;
 }
 
-export interface SubscriptionPayment {
-    id: number;
-    user_subscription_id: number;
-    razorpay_payment_id: string;
-    razorpay_subscription_id: string;
-    amount: number;
-    currency: string;
-    status: string;
-    captured: boolean;
-    razorpay_signature: string | null;
-    verified: boolean;
-    created_at: Date;
-}
+/**
+ * A row of `subscription_payments`, as it comes out of the database. The
+ * boolean flags are stored as tinyints there.
+ */
+export type SubscriptionPaymentRow = Selectable<SubscriptionPayments>;
 
-export interface WebhookEvent {
-    id: number;
-    razorpay_event_id: string;
-    event_type: string;
+/**
+ * A row of `webhook_events`, as it comes out of the database.
+ */
+export type WebhookEventRow = Selectable<WebhookEvents>;
+
+/**
+ * A payment as the application sees it: the database row with its tinyint
+ * flags and its JSON payload turned back into the types they stand for.
+ */
+export type SubscriptionPayment = Omit<
+    SubscriptionPaymentRow,
+    "captured" | "verified" | "currency"
+> & {
+    currency: string;
+    captured: boolean;
+    verified: boolean;
+};
+
+/**
+ * A webhook event as the application sees it.
+ */
+export type WebhookEvent = Omit<WebhookEventRow, "payload" | "processed"> & {
     payload: object;
     processed: boolean;
-    created_at: Date;
-}
+};
 
 export interface CreateSubscriptionResponse {
     status: boolean;

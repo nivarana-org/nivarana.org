@@ -53,6 +53,8 @@ import "tinymce/skins/ui/oxide/content.js";
 
 import "./DfnPlugin";
 
-export default function BundledEditor(props) {
+import type { IAllProps } from "@tinymce/tinymce-react";
+
+export default function BundledEditor(props: IAllProps) {
     return <Editor licenseKey="gpl" {...props} />;
 }

@@ -7,5 +7,5 @@ export const publishScheduledPostsNeedingPublication = async () => {
         .where("published_at", "<", new Date())
         .where("status", "!=", "PUBLISHED")
         .executeTakeFirst();
-    return Number(result?.numUpdatedOrDeletedRows ?? 0);
+    return Number(result?.numUpdatedRows ?? 0);
 };

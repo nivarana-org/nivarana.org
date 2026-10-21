@@ -11,7 +11,7 @@ export default function ImagePicker({
     onChange,
 }: {
     defaultValue: string;
-    onChange: (string) => void;
+    onChange: (value: string) => void;
 }) {
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(defaultValue);
@@ -43,7 +43,7 @@ export default function ImagePicker({
             </Box>
         );
 
-    const handleUploadImage = async (file) => {
+    const handleUploadImage = async (file: File) => {
         setUploading(true);
         const data = await uploadImage(file);
         setSelected(data.filename);

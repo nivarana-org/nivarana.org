@@ -31,8 +31,8 @@ export default function AuthorEditPage({ author }: { author: Author }) {
 
     const slug = fixedSlug || manualSlug || sluggify(name);
 
-    const [image, setImage] = useState(author?.image);
-    const [description, setDescription] = useState(author?.description);
+    const [image, setImage] = useState(author?.image ?? "");
+    const [description, setDescription] = useState(author?.description ?? "");
     return (
         <form
             className="p-4 max-w-(--breakpoint-sm) mx-auto"
@@ -123,7 +123,7 @@ export default function AuthorEditPage({ author }: { author: Author }) {
             <Divider className="my-4"></Divider>
 
             <ArticleEditor
-                initialValue={author?.description}
+                initialValue={author?.description ?? ""}
                 value={description}
                 onEditorChange={(newValue) => setDescription(newValue)}
             />
