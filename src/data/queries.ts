@@ -144,7 +144,7 @@ export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
         ) as comments_count,
         ${authorsFragment} as authors,
         ${tagsFragment} as tags,
-        ${categoryFragment} as categories
+        ${categoryFragment} as category
         FROM blogs b
         WHERE ${selectorFrag}
           AND b.status = 'PUBLISHED'
