@@ -3,7 +3,6 @@ import ClientRoot from "./_components/client";
 import { auth } from "@/utils/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { LogOut } from "@/app/_components/user/LogOut";
 
 export default async function RootLayout({

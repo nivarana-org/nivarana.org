@@ -71,7 +71,10 @@ export function parseHtml(html: string): ReactNode {
                     );
                 }
 
+                // Fallback for images hosted outside `imageConfig.remotePatterns`.
+                // `next/image` throws for those hosts, so a plain <img> is required.
                 return (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={src}
                         alt={alt || ""}

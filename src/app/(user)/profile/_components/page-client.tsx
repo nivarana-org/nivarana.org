@@ -257,7 +257,7 @@ export default function ProfilePageClient({
             } else {
                 alert(result.message || "Failed to sync subscription");
             }
-        } catch (error) {
+        } catch {
             alert("Failed to sync subscription");
         } finally {
             setSyncLoading(false);

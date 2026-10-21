@@ -4,9 +4,7 @@ import Link from "next/link";
 export default async function Page() {
     const [plans] = await Promise.all([getAllPlans(true)]);
 
-    const visiblePlans = plans.filter(
-        (plan) => plans.find((p) => p.price === plan.price)?.show_in_ui === 1,
-    );
+    const visiblePlans = plans.filter((plan) => plan.show_in_ui === 1);
 
     return (
         <div>
@@ -22,7 +20,7 @@ export default async function Page() {
                     Support Nivarana and unlock exclusive features.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {plans.map((plan) => (
+                    {visiblePlans.map((plan) => (
                         <div
                             key={plan.price}
                             className="border border-gray-200 rounded-lg p-4 flex flex-col"

@@ -29,11 +29,13 @@ export default function ImagePicker({
         return (
             <Box>
                 {selected ? (
-                    <img
+                    <Image
                         alt={`Representative image named ${selected}`}
                         src={getImageURLFromFileName(selected)}
-                        height="50vh"
-                    ></img>
+                        width={200}
+                        height={200}
+                        style={{ height: "50vh", width: "auto" }}
+                    />
                 ) : (
                     <div>No image selected</div>
                 )}
