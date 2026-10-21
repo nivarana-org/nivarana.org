@@ -3,8 +3,8 @@ import { getImageURLFromFileName } from "@/utils/paths";
 import { parseStory } from "@/data/story";
 import { Feed } from "feed";
 
-function escapeXml(unsafe) {
-    return unsafe.replace(/[<>&'"]/g, function (c) {
+function escapeXml(unsafe: string) {
+    return unsafe.replace(/[<>&'"]/g, (c: string) => {
         switch (c) {
             case "<":
                 return "&lt;";
@@ -16,6 +16,8 @@ function escapeXml(unsafe) {
                 return "&apos;";
             case '"':
                 return "&quot;";
+            default:
+                return "";
         }
     });
 }
@@ -24,7 +26,7 @@ function escapeXml(unsafe) {
  * The feed body of a story is the concatenation of its chapters. A story with
  * a single chapter — a plain article — reads exactly like its body.
  */
-const getContent = (post) => {
+const getContent = (post: { contents: string | null }) => {
     return parseStory(post.contents)
         .chapters.map((chapter) => {
             const heading = chapter.title
@@ -52,7 +54,7 @@ export const getFeed = async () => {
     });
     const posts = await getArticlesPaginated(0, 20);
     posts.forEach((post) => {
-        const categorySlug = post.category[0].slug;
+        const categorySlug = post.category.slug;
         const url = `https://nivarana.org/${categorySlug}/${post.slug}`;
         const imageUrl = getImageURLFromFileName(post.image);
         const optimizedImageUrl = escapeXml(
@@ -64,16 +66,16 @@ export const getFeed = async () => {
             link: `https://nivarana.org/author/${a.slug}`,
         }));
         feed.addItem({
-            title: post.title,
+            title: post.title ?? "Untitled",
             id: url,
             link: url,
-            description: post.intro,
+            description: post.intro ?? "",
             content: getContent(post),
             author: authors,
             contributor: authors,
             date: post.published_time,
             image: optimizedImageUrl,
-            category: post.category[0].name,
+            category: [{ name: post.category.name }],
         });
     });
     return feed;

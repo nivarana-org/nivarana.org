@@ -5,7 +5,7 @@ import parse, {
 } from "html-react-parser";
 import Image from "next/image";
 import { type ReactNode } from "react";
-import { imageConfig } from "@/config/images";
+import { imageConfig } from "@/config/images.mjs";
 import { DfnWithPopover } from "../_components/shared/DfnWithPopover";
 import { getImageURLFromFileName } from "@/utils/paths";
 

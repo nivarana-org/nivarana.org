@@ -16,7 +16,7 @@ const sanitizedFile = (filePathSegments: string[]) => {
 };
 
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: Promise<{ path: string[] }> },
 ) {
     const { path: filePathSegments } = await params;
@@ -35,8 +35,11 @@ export async function GET(
                 Expires: "0",
             },
         });
-    } catch (error: { code: string | undefined }) {
-        if (error.code === "ENOENT") {
+    } catch (error: unknown) {
+        if (
+            error instanceof Error &&
+            (error as NodeJS.ErrnoException).code === "ENOENT"
+        ) {
             console.error(fullFilePath);
             return new NextResponse("File not found", { status: 404 });
         }

@@ -31,7 +31,7 @@ async function Page(props: Props) {
                 <ArticlePreview
                     {...item}
                     key={item.slug}
-                    category={item.category[0]}
+                    category={item.category}
                     includeCategory={true}
                 />
             ))}
@@ -51,16 +51,25 @@ export async function generateMetadata(
     const slug = params.slug;
     const data = await cachedGetAuthorBySlug(slug);
     return {
-        title: data.name,
+        title: data?.name,
         description: data?.description ?? (await parent).description,
         keywords: ["author"],
     };
 }
 
-async function AuthorDetails({ data }) {
+async function AuthorDetails({
+    data,
+}: {
+    data: {
+        name: string | null;
+        title: string | null;
+        description: string | null;
+        email: string | null;
+    };
+}) {
     return (
         <div className="mr-auto p-4 mb-10">
-            <h4 className="name mb-0 text-6xl mb-12">{data.name}</h4>
+            <h4 className="name text-6xl mb-12">{data.name}</h4>
             {data.title != null && (
                 <p
                     className="mt-2 max-w-prose"

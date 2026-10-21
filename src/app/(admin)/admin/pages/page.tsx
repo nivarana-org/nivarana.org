@@ -16,7 +16,7 @@ type Page = {
     id: number;
     title: string;
     slug: string;
-    contents: string;
+    contents: string | null;
 };
 
 function PageRow({ id, title, slug }: Page) {

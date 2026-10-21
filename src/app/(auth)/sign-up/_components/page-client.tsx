@@ -58,7 +58,7 @@ export default function PageClient({ returnUrl }: Props) {
     };
 
     return (
-        <div className="mt-10 w-128 mx-auto">
+        <div className="mt-10 w-lg mx-auto">
             <h1 className="text-2xl font-bold text-center mb-6">
                 Sign Up for a Nivarana account
             </h1>

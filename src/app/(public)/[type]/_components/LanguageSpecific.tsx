@@ -12,7 +12,7 @@ export default async function LanguageSpecificHome() {
                         <ArticlePreview
                             {...item}
                             key={item.slug}
-                            category={item.category[0]}
+                            category={item.category}
                             aboveTheFold={index < 2}
                         />
                     ))}

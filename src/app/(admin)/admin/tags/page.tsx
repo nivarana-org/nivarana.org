@@ -25,10 +25,10 @@ function ArticleRow({
     slug: string | null;
     tags: Tag[];
     allTags: Tag[];
-    category: Category[];
+    category: Category;
 }) {
     // The public URL of a post is prefixed with the slug of its category.
-    const type = category[0]?.slug;
+    const type = category.slug;
     return (
         <div className="mb-4">
             <div>

@@ -1,4 +1,13 @@
-export const getImageURLFromFileName = (filename: string) => {
+const emptyFileName = (filename?: string | null) => {
+    if (filename === null) return true;
+    if (filename === undefined) return true;
+    if (filename === "") return true;
+    return false;
+};
+export const getImageURLFromFileName = (filename?: string | null) => {
+    if (emptyFileName(filename)) {
+        return "https://picsum.photos/200/300?grayscale";
+    }
     const definedPrefix = process.env.NEXT_PUBLIC_IMAGE_PREFIX;
     if (definedPrefix) {
         return `${definedPrefix}${filename}`;

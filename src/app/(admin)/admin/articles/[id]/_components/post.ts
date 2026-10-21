@@ -16,10 +16,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         .filter((a) => a.length > 0)
         .map((a) => Number(a));
     const tags = JSON.parse(text("tags") || "[]").map((t: string) => Number(t));
-    const categories = text("category")
-        .split(",")
-        .filter((c) => c.length > 0)
-        .map((c) => Number(c));
+    const category = Number(text("category"));
     const intro = text("intro");
     const image = text("image");
     const slug = text("slug");
@@ -34,7 +31,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         contents,
         authors,
         tags,
-        categories,
+        category,
         intro,
         image,
         status,

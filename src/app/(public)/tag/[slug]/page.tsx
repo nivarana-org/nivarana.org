@@ -34,7 +34,7 @@ async function Page(props: Props) {
                         <ArticlePreview
                             {...item}
                             key={item.slug}
-                            category={item.category[0]}
+                            category={item.category}
                         />
                     ))}
                 </div>
@@ -58,7 +58,7 @@ export async function generateMetadata(
     const slug = params.slug;
     const tag = await cachedGetTagBySlug(slug);
     return {
-        title: tag.name,
+        title: tag?.name ?? "Tag",
         description: (await parent).description,
         keywords: ["tag"],
     };

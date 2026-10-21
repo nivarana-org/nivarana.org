@@ -1,4 +1,4 @@
-import { getArticlePublicURL } from "@/utils/paths";
+import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 
 import { READING_MEASURE } from "../../_lib/layout";
 import { NAuthorsBio } from "../authors/Bios";
@@ -28,7 +28,7 @@ export default function StoryFooter({
                     <div className="mb-3 text-black font-bold">Share</div>
                     <PageShare
                         url={getArticlePublicURL(data)}
-                        media={data.image}
+                        media={getImageURLFromFileName(data.image)}
                     ></PageShare>
                 </div>
             </div>

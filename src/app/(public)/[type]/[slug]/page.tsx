@@ -30,7 +30,7 @@ export default async function Page(props: Props) {
         const searchResult = await searchArticles(params.slug);
         if (searchResult.length > 0) {
             const slug = searchResult[0].slug;
-            const category = searchResult[0].category?.[0]?.slug;
+            const category = searchResult[0].category?.slug;
             if (category) {
                 return redirect(`/${category}/${slug}`, "replace");
             }
@@ -38,7 +38,7 @@ export default async function Page(props: Props) {
 
         return notFound();
     }
-    const actualCategory = post.categories[0]?.slug;
+    const actualCategory = post.category?.slug;
     if (actualCategory && actualCategory !== requestedCategory) {
         redirect(`/${actualCategory}/${params.slug}`);
     }

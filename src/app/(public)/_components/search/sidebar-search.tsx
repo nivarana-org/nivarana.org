@@ -9,7 +9,7 @@ export default function Search({
     postSubmit,
 }: {
     placeholder: string;
-    postSubmit?: () => void;
+    postSubmit: () => void;
 }) {
     const searchParams = useSearchParams();
     const { replace } = useRouter();
@@ -30,7 +30,7 @@ export default function Search({
             onSubmit={(e) => {
                 e.preventDefault();
                 const data = new FormData(e.currentTarget);
-                const q = data.get("q");
+                const q = data.get("q") as string;
                 handleSearch(q);
                 postSubmit();
             }}

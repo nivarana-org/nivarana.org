@@ -38,7 +38,7 @@ export default async function Page(props: Props) {
     return (
         <div className="max-w-prose mx-auto p-5">
             <h1 className="font-4xl">{page.title}</h1>
-            <p dangerouslySetInnerHTML={{ __html: page.contents }}></p>
+            <p dangerouslySetInnerHTML={{ __html: page.contents ?? "" }}></p>
         </div>
     );
 }

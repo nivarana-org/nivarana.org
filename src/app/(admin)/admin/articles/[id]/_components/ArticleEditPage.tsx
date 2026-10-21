@@ -482,7 +482,6 @@ export default function ArticleEditPage({
                         <DateTimePicker
                             value={scheduledTime}
                             onChange={(value) => setScheduledTime(value)}
-                            required
                         />
                     </FormControl>
                 )}

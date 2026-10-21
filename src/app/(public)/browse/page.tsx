@@ -11,11 +11,10 @@ export default async function BrowsePage() {
                 {articles.map((article) => (
                     <ArticleCard
                         key={article.id}
-                        id={article.id}
-                        slug={article.slug}
-                        title={article.title}
-                        category={article.categories?.[0]?.slug ?? ""}
-                        imageUrl={getImageURLFromFileName(article.image)}
+                        slug={article.slug ?? ""}
+                        title={article.title ?? ""}
+                        category={article.category.slug ?? ""}
+                        imageUrl={getImageURLFromFileName(article.image ?? "")}
                     />
                 ))}
             </div>

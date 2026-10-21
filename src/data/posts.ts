@@ -3,7 +3,7 @@ import { sql, type SqlBool } from "kysely";
 import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { replacePostRelation } from "./post-relations";
-import { authorsFragment, categoriesFragment, tagsFragment } from "./queries";
+import { authorsFragment, categoryFragment, tagsFragment } from "./queries";
 import {
     parseStory,
     resolveLayout,
@@ -18,7 +18,7 @@ export interface Post {
     title: string;
     /** The story document, serialised as JSON. */
     contents: string;
-    categories: number[];
+    category: number;
     authors: number[];
     tags: number[];
     image: string;
@@ -43,7 +43,7 @@ export const getAllArticlesAndTags = () =>
     db
         .selectFrom("blogs as b")
         .select(["b.id", "b.title", "b.slug", "b.image", "b.intro", "b.layout"])
-        .select([tagsFragment.as("tags"), categoriesFragment.as("category")])
+        .select([tagsFragment.as("tags"), categoryFragment.as("category")])
         .orderBy("b.id", "asc")
         .execute();
 
@@ -60,7 +60,7 @@ export type PostOverview = {
     status: string | null;
     layout: string | null;
     created_at: Date;
-    category: { id: number; name: string; slug: string }[];
+    category: { id: number; name: string; slug: string };
 };
 
 export const getArticlesOverview = () =>
@@ -76,7 +76,7 @@ export const getArticlesOverview = () =>
             "b.status",
             "b.layout",
             "b.created_at",
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
         ])
         .orderBy("b.id", "desc")
         .execute();
@@ -95,7 +95,7 @@ export const getPublishedPostPreviews = () =>
             "b.image",
             "b.intro",
             "b.created_at",
-            categoriesFragment.as("categories"),
+            categoryFragment.as("category"),
         ])
         .where("b.status", "=", "PUBLISHED")
         .orderBy("b.id", "desc")
@@ -123,7 +123,7 @@ const getPublishedPostsPaginated = (
                 ELSE b.created_at
             END`.as("published_time"),
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
@@ -157,7 +157,7 @@ export const searchArticles = (query: string) =>
             "b.updated_at",
             "b.layout",
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
@@ -177,7 +177,7 @@ export const getPopularPosts = () =>
             "b.intro",
             "b.layout",
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
@@ -208,7 +208,7 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
 
     return await db.transaction().execute(async (trx) => {
         // Upsert into blogs table
-        const { authors, categories, tags, ...rest } = post;
+        const { authors, category, tags, ...rest } = post;
 
         // The publication date is stamped the first time the post goes live
         // and kept from then on, so editing a published post does not move
@@ -245,7 +245,7 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
 
         // Replace the post's relations
         await replacePostRelation(postId, "author", authors, trx);
-        await replacePostRelation(postId, "category", categories, trx);
+        await replacePostRelation(postId, "category", [category], trx);
         await replacePostRelation(postId, "tag", tags, trx);
 
         return postId;

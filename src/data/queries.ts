@@ -34,20 +34,17 @@ export type Category = {
     slug: string;
 };
 
-export const categoriesFragment = sql<Category[]>`COALESCE(
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', c.id,
-                'name', c.name,
-                'slug', c.slug
-            )
+export const categoryFragment = sql<Category>`(
+        SELECT JSON_OBJECT(
+          'id', c.id,
+          'name', c.name,
+          'slug', c.slug
         )
         FROM post_relations cr
         JOIN categories c ON cr.relation_id = c.id
         WHERE cr.post_id = b.id
             AND cr.relation_type = 'category'
-    ), JSON_ARRAY()
+        LIMIT 1
 )`;
 
 export type Tag = {
@@ -110,7 +107,7 @@ export type Post = {
     published_at: Date;
     views: number;
     layout: PostLayout;
-    categories: Category[];
+    category: Category;
     tags: Tag[];
     authors: Author[];
     comments_count: number;
@@ -129,7 +126,7 @@ export type PostPreview = {
     /** The publication date, as the string MySQL puts into JSON. */
     published_at: string;
     authors: Author[];
-    categories: Category[];
+    category: Category;
     tags: Tag[];
 };
 
@@ -147,7 +144,7 @@ export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
         ) as comments_count,
         ${authorsFragment} as authors,
         ${tagsFragment} as tags,
-        ${categoriesFragment} as categories
+        ${categoryFragment} as categories
         FROM blogs b
         WHERE ${selectorFrag}
           AND b.status = 'PUBLISHED'
@@ -166,7 +163,7 @@ export const getOverview = () => getCategoriesWithArticles(true, 5);
 
 export type PostBasics = Pick<
     Post,
-    "id" | "title" | "image" | "slug" | "intro"
+    "id" | "title" | "image" | "slug" | "intro" | "published_at"
 >;
 
 export type CategoryWithArticleTitles = {
@@ -187,13 +184,13 @@ function getCategoriesWithArticles(
 async function getCategoriesWithArticles(
     withRelations: boolean,
     limit?: number,
-) {
+): Promise<CategoryOverview[] | CategoryWithArticleTitles[]> {
     const articleObjectFields = withRelations
         ? sql`
                 ${articleJSONData},
                 'authors', ${authorsFragment},
                 'tags', ${tagsFragment},
-                'categories', ${categoriesFragment}
+                'category', ${categoryFragment}
             `
         : articleJSONData;
     const limitClause = limit ? sql` LIMIT ${limit}` : sql``;
@@ -257,7 +254,7 @@ export const getArticlesByRelation = (
             "b.language",
             "b.views",
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")

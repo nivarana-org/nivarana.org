@@ -6,7 +6,7 @@ export default function ViewCountUpdateOnly({
     id,
     count: initialCount,
 }: {
-    id: string;
+    id: number;
     count: number;
 }) {
     useViewCount(id, initialCount);

@@ -23,7 +23,7 @@ function PostRow({
     category,
 }: PostOverview) {
     const adminLink = `/admin/articles/${id}`;
-    const publicLink = `/${category?.[0]?.slug ?? ""}/${slug}`;
+    const publicLink = `/${category?.slug ?? ""}/${slug}`;
     return (
         <TableRow>
             <TableCell>

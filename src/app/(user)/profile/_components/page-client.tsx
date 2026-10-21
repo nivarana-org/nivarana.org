@@ -264,7 +264,7 @@ export default function ProfilePageClient({
         }
     };
 
-    const handleNameUpdate = async (e: React.FormEvent) => {
+    const handleNameUpdate = async (e: React.SubmitEvent) => {
         e.preventDefault();
         if (!name.trim()) {
             setNameMessage({ type: "error", text: "Name cannot be empty" });
@@ -293,7 +293,7 @@ export default function ProfilePageClient({
         setNameSubmitting(false);
     };
 
-    const handlePasswordChange = async (e: React.FormEvent) => {
+    const handlePasswordChange = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setPasswordMessage(null);
 
@@ -338,7 +338,7 @@ export default function ProfilePageClient({
         setPasswordSubmitting(false);
     };
 
-    const handleSetPassword = async (e: React.FormEvent) => {
+    const handleSetPassword = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setOauthPasswordMessage(null);
 
@@ -434,14 +434,14 @@ export default function ProfilePageClient({
                             <h3 className="font-semibold text-gray-800 mb-2">
                                 {plan.name}
                             </h3>
-                            <ul className="text-sm text-gray-600 space-y-1 flex-grow">
+                            <ul className="text-sm text-gray-600 space-y-1 grow">
                                 {plan.features.map((feature, index) => (
                                     <li
                                         key={index}
                                         className="flex items-start gap-2"
                                     >
                                         <svg
-                                            className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5"
+                                            className="w-4 h-4 text-green-500 shrink-0 mt-0.5"
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
                                         >

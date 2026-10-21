@@ -18,14 +18,14 @@ const PopularPosts = async () => {
                             key={slug}
                             className="group flex items-start gap-4 border-b border-gray-200 py-4 last:border-b-0"
                             href={getArticleSlug({
-                                category: category[0],
-                                slug,
+                                category,
+                                slug: slug!,
                             })}
                         >
-                            <div className="relative h-16 w-24 flex-shrink-0 overflow-hidden rounded">
+                            <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded">
                                 <Image
                                     src={getImageURLFromFileName(image)}
-                                    alt={title}
+                                    alt={title ?? "oops"}
                                     fill
                                     sizes="96px"
                                     className="object-cover transition-opacity duration-200 group-hover:opacity-80"
@@ -33,7 +33,7 @@ const PopularPosts = async () => {
                             </div>
                             <div className="min-w-0">
                                 <div className="mb-1 text-xs uppercase tracking-wide text-nivarana-green">
-                                    {category[0]?.name}
+                                    {category?.name}
                                 </div>
                                 <h6 className="line-clamp-2 text-base leading-snug text-nivarana-charcoal transition-colors duration-200 group-hover:text-nivarana-green">
                                     {title}

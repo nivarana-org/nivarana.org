@@ -1,7 +1,7 @@
 import { db } from "@/data/db";
 import {
     authorsFragment,
-    categoriesFragment,
+    categoryFragment,
     tagsFragment,
 } from "@/data/queries";
 import { sql, SqlBool } from "kysely";
@@ -47,7 +47,7 @@ export const searchArticles = (query: string) =>
             "b.updated_at",
             "b.published_at",
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { READING_MEASURE } from "../../_lib/layout";
 
-export function NAuthorsBio({ authors }) {
+export function NAuthorsBio({ authors }: { authors: Author[] }) {
     return (
         <div className="mx-auto mt-12 w-full max-w-7xl px-5 md:px-6">
             <div className={`mx-auto w-full ${READING_MEASURE}`}>
@@ -15,7 +15,16 @@ export function NAuthorsBio({ authors }) {
         </div>
     );
 }
-export function AuthorBio({ slug, name, email, bio }) {
+
+type Author = {
+    id: number;
+    slug: string;
+    name: string;
+    email?: string;
+    bio?: string;
+};
+
+export function AuthorBio({ slug, name, email, bio }: Author) {
     return (
         <Link href={"/author/" + slug} className="block">
             <div className="rounded-lg bg-nivarana-white/50">
@@ -25,7 +34,7 @@ export function AuthorBio({ slug, name, email, bio }) {
                     </div>
                     <div
                         className="mt-3 text-sm leading-relaxed text-nivarana-charcoal"
-                        dangerouslySetInnerHTML={{ __html: bio }}
+                        dangerouslySetInnerHTML={{ __html: bio ?? "" }}
                     ></div>
                     {email && (
                         <div className="mt-3 text-sm text-nivarana-charcoal/80">

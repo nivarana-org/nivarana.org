@@ -5,7 +5,7 @@ export { getAllTags } from "@/data/tags";
 import { db } from "@/data/db";
 import {
     authorsFragment,
-    categoriesFragment,
+    categoryFragment,
     tagsFragment,
 } from "@/data/queries";
 import type { PostLayout, Story } from "@/data/story";
@@ -57,7 +57,7 @@ export const getArticleFullWithRelations = (id: number) =>
             "b.language",
             "b.views",
             authorsFragment.as("authors"),
-            categoriesFragment.as("category"),
+            categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.id", "=", id)

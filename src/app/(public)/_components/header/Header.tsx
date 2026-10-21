@@ -5,6 +5,7 @@ import Image from "next/image";
 import SearchIcon from "./SearchButton";
 import logo from "../../../../../public/assets/logo.png";
 import { HeaderProps } from "./types";
+import { Variants } from "motion/react";
 
 function LogoComponent() {
     return (
@@ -20,7 +21,7 @@ function LogoComponent() {
     );
 }
 
-const desktopMenuVariants = {
+const desktopMenuVariants: Variants = {
     hidden: {
         x: "100%",
         opacity: 0,

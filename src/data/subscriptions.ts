@@ -365,7 +365,7 @@ export interface MembershipPlan {
     razorpay_plan_id: string;
     price: number;
     name: string;
-    features: string;
+    features: string[];
     show_in_ui: number | null;
     created_at: Date | null;
     updated_at: Date | null;

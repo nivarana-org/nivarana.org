@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, Variants } from "motion/react";
 import { useState } from "react";
 import MenuToggleButton from "./MenuToggleButton";
 import Search from "../search/sidebar-search";
 import { HeaderProps } from "./types";
 
-const menuVariants = {
+const menuVariants: Variants = {
     hidden: {
         height: 0,
         opacity: 0,

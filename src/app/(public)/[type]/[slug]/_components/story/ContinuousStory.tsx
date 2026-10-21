@@ -41,13 +41,13 @@ export default function ContinuousStory({
                     <div className="flex flex-col justify-end bg-nivarana-white text-nivarana-charcoal md:w-1/2 md:shrink-0">
                         <div className="px-6 py-8 md:px-10 md:py-12 lg:px-12 xl:px-16">
                             <ViewTransition
-                                name={`category-title-${data.categories[0].slug}`}
+                                name={`category-title-${data.category.slug}`}
                             >
                                 <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
                                     <Link
-                                        href={`/category/${data.categories[0].slug}`}
+                                        href={`/category/${data.category.slug}`}
                                     >
-                                        {data.categories[0].name}
+                                        {data.category.name}
                                     </Link>
                                 </div>
                             </ViewTransition>
@@ -62,9 +62,9 @@ export default function ContinuousStory({
                         </div>
                     </div>
                     <ViewTransition name={`page-lead-image-${data.slug}`}>
-                        <div className="relative aspect-[16/9] w-full md:aspect-auto md:w-1/2 md:min-h-[440px] md:shrink-0 lg:min-h-[520px]">
+                        <div className="relative aspect-video w-full md:aspect-auto md:w-1/2 md:min-h-110 md:shrink-0 lg:min-h-130">
                             <Image
-                                priority
+                                preload={true}
                                 fetchPriority="high"
                                 src={getImageURLFromFileName(data.image)}
                                 alt={"Representative image for " + data.title}
@@ -91,7 +91,7 @@ export default function ContinuousStory({
                         >
                             <PageShare
                                 url={getArticlePublicURL(data)}
-                                media={data.image}
+                                media={getImageURLFromFileName(data.image)}
                                 style="vertical"
                             ></PageShare>
                         </motion.div>

@@ -10,7 +10,7 @@ function Header({ email, picture }: { email: string; picture?: string }) {
                 <Image
                     src={logo}
                     alt="logo"
-                    className="md:w-[70px] w-20"
+                    className="md:w-17.5 w-20"
                     width={100}
                 />
             </Link>

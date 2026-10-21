@@ -40,7 +40,7 @@ export type StoryPost = {
     published_at: Date;
     views: number;
     layout: PostLayout;
-    categories: StoryCategory[];
+    category: StoryCategory;
     tags: StoryTag[];
     authors: StoryAuthor[];
     comments_count: number;

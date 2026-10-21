@@ -1,21 +1,40 @@
 "use client";
 import Link from "next/link";
-import { TagCloud } from "react-tagcloud";
+import { Tag, TagCloud } from "react-tagcloud";
 
-export default function TagCloudClient({ tags }) {
+type Prop = {
+    tags: {
+        count: number;
+        value: string;
+        slug: string;
+    }[];
+};
+
+type CustomTag = Tag & {
+    props?: {
+        slug?: string;
+    };
+};
+
+export default function TagCloudClient({ tags }: Prop) {
+    const tagsForCloud = tags.map(({ count, value, slug }) => ({
+        count,
+        value,
+        props: { slug },
+    }));
     return (
         <div>
             <TagCloud
                 minSize={20}
                 maxSize={60}
-                tags={tags}
+                tags={tagsForCloud}
                 shuffle={true} // Set to true for random arrangement
                 renderer={
                     // Optional: Custom renderer for more control over styling.
                     // This is just an example, default styling often suffices.
-                    (tag, size, color) => (
+                    (tag: CustomTag, size, color) => (
                         <Link
-                            href={`/tag/${tag.slug}`}
+                            href={`/tag/${tag.props?.slug}`}
                             key={tag.value}
                             style={{
                                 fontSize: `${size}px`,

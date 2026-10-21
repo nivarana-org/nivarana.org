@@ -1,16 +1,16 @@
 import TagCloud from "./_components/tag-cloud";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
 import { getOverview } from "./queries";
+import AuthorsAndPublishedTime from "./_components/AuthorsAndPublishedTime";
 
 export default async function Home() {
     const categories = await getOverview();
     return (
-        <div className="max-w-screen-xl mx-auto py-8 px-4">
+        <div className="max-w-7xl mx-auto py-8 px-4">
             <div className="flex flex-col gap-12">
                 {categories.map((c) => (
                     <Category key={c.slug} c={c}></Category>
@@ -21,7 +21,36 @@ export default async function Home() {
     );
 }
 
-async function Category({ c }) {
+type Article = {
+    slug: string;
+    image: string;
+    title: string;
+    category: ArticleCategory;
+    authors: ArticleAuthor[];
+    intro: string;
+    published_at: string;
+};
+
+type ArticleCategory = {
+    slug: string;
+    name: string;
+};
+
+type ArticleAuthor = {
+    id: number;
+    slug: string;
+    name: string;
+};
+
+type CategoryProp = {
+    c: {
+        slug: string;
+        name: string;
+        articles: Article[];
+    };
+};
+
+async function Category({ c }: CategoryProp) {
     return (
         <div className="pb-8 border-b border-gray-300 last:border-b-0">
             <ViewTransition name={`category-title-${c.slug}`}>
@@ -36,7 +65,7 @@ async function Category({ c }) {
                 )}
 
                 {/* Other 4 Less Prominent Articles */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 lg:w-1/3 grow-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 lg:w-1/3 grow">
                     {c.articles.slice(1, 5).map((a) => (
                         <RestArticles key={a.slug} a={a}></RestArticles>
                     ))}
@@ -53,12 +82,12 @@ async function Category({ c }) {
     );
 }
 
-async function LatestArticle({ a }) {
+async function LatestArticle({ a }: { a: Article }) {
     return (
         <div className="group flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden lg:w-2/3 xl:w-2xl ">
             <Link
                 href={getArticleSlug({
-                    category: a.categories[0],
+                    category: a.category,
                     slug: a.slug,
                 })}
                 className="block"
@@ -75,10 +104,10 @@ async function LatestArticle({ a }) {
                     </div>
                 </ViewTransition>
             </Link>
-            <div className="p-5 flex flex-col justify-between flex-grow">
+            <div className="p-5 flex flex-col justify-between grow">
                 <Link
                     href={getArticleSlug({
-                        category: a.categories[0],
+                        category: a.category,
                         slug: a.slug,
                     })}
                     className="block"
@@ -99,7 +128,7 @@ async function LatestArticle({ a }) {
                 <div className="text-xs">
                     <AuthorsAndPublishedTime
                         authors={a.authors}
-                        published_time={a.published_time}
+                        published_at={a.published_at}
                     ></AuthorsAndPublishedTime>
                 </div>
             </div>
@@ -107,15 +136,15 @@ async function LatestArticle({ a }) {
     );
 }
 
-async function RestArticles({ a }) {
+async function RestArticles({ a }: { a: Article }) {
     return (
         <div className="group flex items-center bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
             <Link
                 href={getArticleSlug({
-                    category: a.categories[0],
+                    category: a.category,
                     slug: a.slug,
                 })}
-                className="flex-shrink-0 mr-3 block"
+                className="shrink-0 mr-3 block"
             >
                 <ViewTransition name={`page-lead-image-${a.slug}`}>
                     <div className="relative w-23 h-16 lg:w-42 lg:h-30">
@@ -129,10 +158,10 @@ async function RestArticles({ a }) {
                     </div>
                 </ViewTransition>
             </Link>
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col grow">
                 <Link
                     href={getArticleSlug({
-                        category: a.categories[0],
+                        category: a.category,
                         slug: a.slug,
                     })}
                     className="block"
@@ -146,54 +175,11 @@ async function RestArticles({ a }) {
                 <div className="text-xs">
                     <AuthorsAndPublishedTime
                         authors={a.authors}
-                        published_time={a.published_time}
+                        published_at={a.published_at}
                     ></AuthorsAndPublishedTime>
                 </div>
             </div>
         </div>
-    );
-}
-
-function AuthorsAndPublishedTime({ authors, published_time }) {
-    return (
-        <>
-            {(authors || published_time) && (
-                <div className="text-gray-500 mt-1">
-                    {authors && (
-                        <span>
-                            By
-                            <span className="font-medium">
-                                {authors.map((author, index) => (
-                                    <span
-                                        key={author.id}
-                                        className="inline-flex items-center"
-                                    >
-                                        <Link
-                                            href={`/author/${author.slug}`}
-                                            className="py-1 pl-1 rounded-sm hover:bg-cyan-200 hover:text-cyan-800 transition-colors duration-200"
-                                        >
-                                            {author.name}
-                                        </Link>
-                                        {index < authors.length - 2 && ", "}
-                                        {index === authors.length - 2 && (
-                                            <span className="pl-1"> and </span>
-                                        )}
-                                    </span>
-                                ))}
-                            </span>
-                        </span>
-                    )}
-                    {published_time && (
-                        <>
-                            {authors && " | "}
-                            <span>
-                                {moment(published_time).format("MMM DD, YYYY")}
-                            </span>
-                        </>
-                    )}
-                </div>
-            )}
-        </>
     );
 }
 
