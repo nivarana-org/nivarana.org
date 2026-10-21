@@ -37,6 +37,15 @@
 }
 
 @layer components {
+  /*
+    Article body typography: one comfortable leading and one consistent gap
+    between paragraphs, so the text keeps an even rhythm from the first line
+    to the last.
+  */
+  .post-content p {
+    @apply leading-[1.75] mb-6;
+  }
+
   .post-content a {
     @apply outline-0 underline transition-all duration-200 ease-in-out text-nivarana-green;
   }

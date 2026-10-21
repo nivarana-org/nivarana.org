@@ -1,25 +1,37 @@
 import Link from "next/link";
 
+import { READING_MEASURE } from "../../_lib/layout";
+
 export function NAuthorsBio({ authors }) {
     return (
-        <div className="flex flex-col gap-1">
-            {authors.map((a) => (
-                <AuthorBio {...a} key={a.id} />
-            ))}
+        <div className="mx-auto mt-12 w-full max-w-7xl px-5 md:px-6">
+            <div className={`mx-auto w-full ${READING_MEASURE}`}>
+                <div className="flex flex-col gap-6">
+                    {authors.map((a) => (
+                        <AuthorBio {...a} key={a.id} />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
 export function AuthorBio({ slug, name, email, bio }) {
     return (
-        <Link href={"/author/" + slug}>
-            <div className="bg-nivarana-white/50 md:mx-4 rounded">
-                <div className="p-2 md:max-w-3xl md:mx-auto">
-                    <div className="text-xl text-nivarana-green">{name}</div>
+        <Link href={"/author/" + slug} className="block">
+            <div className="rounded-lg bg-nivarana-white/50">
+                <div className="p-6 text-center md:p-8">
+                    <div className="text-xl font-bold text-nivarana-green">
+                        {name}
+                    </div>
                     <div
-                        className=""
+                        className="mt-3 text-sm leading-relaxed text-nivarana-charcoal"
                         dangerouslySetInnerHTML={{ __html: bio }}
                     ></div>
-                    {email && <div>Email: {email}</div>}
+                    {email && (
+                        <div className="mt-3 text-sm text-nivarana-charcoal/80">
+                            Email: {email}
+                        </div>
+                    )}
                 </div>
             </div>
         </Link>

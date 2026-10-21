@@ -12,7 +12,7 @@ export default function BodyWithPopover({
     className?: string;
 }) {
     return (
-        <div className={`post-content mt-4 text-lg p-2 ${className}`}>
+        <div className={`post-content text-lg ${className}`.trim()}>
             {parseHtml(body)}
         </div>
     );

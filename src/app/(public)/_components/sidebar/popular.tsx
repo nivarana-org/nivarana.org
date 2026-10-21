@@ -7,8 +7,8 @@ const PopularPosts = async () => {
     const posts = await getPopularPosts();
     if (posts.length === 0) return;
     return (
-        <div className="mt-8 p-4 border-t border-nivarana-green">
-            <h3 className="text-xl font-bold text-nivarana-green mb-6 border-b border-nivarana-green pb-2">
+        <div className="mt-12 border-t border-nivarana-green/30 px-4 pb-4 pt-6">
+            <h3 className="mb-4 text-xl font-bold text-nivarana-green">
                 Popular Posts
             </h3>
             <div className="flex flex-col">
@@ -16,24 +16,29 @@ const PopularPosts = async () => {
                     return (
                         <Link
                             key={slug}
-                            className="flex items-start py-4 border-b border-nivarana-green last:border-b-0 group"
+                            className="group flex items-start gap-4 border-b border-gray-200 py-4 last:border-b-0"
                             href={getArticleSlug({
                                 category: category[0],
                                 slug,
                             })}
                         >
-                            <div className="flex-shrink-0 mr-4">
+                            <div className="relative h-16 w-24 flex-shrink-0 overflow-hidden rounded">
                                 <Image
                                     src={getImageURLFromFileName(image)}
                                     alt={title}
-                                    height={60}
-                                    width={100}
-                                    className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
+                                    fill
+                                    sizes="96px"
+                                    className="object-cover transition-opacity duration-200 group-hover:opacity-80"
                                 />
                             </div>
-                            <h6 className="text-lg text-nivarana-charcoal leading-tight transition-colors duration-200">
-                                {title}
-                            </h6>
+                            <div className="min-w-0">
+                                <div className="mb-1 text-xs uppercase tracking-wide text-nivarana-green">
+                                    {category[0]?.name}
+                                </div>
+                                <h6 className="line-clamp-2 text-base leading-snug text-nivarana-charcoal transition-colors duration-200 group-hover:text-nivarana-green">
+                                    {title}
+                                </h6>
+                            </div>
                         </Link>
                     );
                 })}

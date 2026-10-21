@@ -33,12 +33,12 @@ export default function StoryChapter({
                         alt={title || ""}
                         width={2000}
                         height={1414}
-                        className="w-full h-auto rounded-lg my-4"
+                        className="w-full h-auto rounded-lg my-6"
                     />
                 )
             ) : null}
             {title ? (
-                <div className="max-w-4xl mx-auto text-4xl text-black mt-8 p-2">
+                <div className="max-w-4xl mx-auto text-3xl font-semibold leading-snug text-nivarana-charcoal mt-10 mb-4">
                     {title}
                 </div>
             ) : null}

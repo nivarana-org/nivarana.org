@@ -19,7 +19,14 @@ export default function AudioPlayer({ src }: AudioPlayerProps) {
     }, [src]);
 
     if (srcValid) {
-        return <ActualAudioPlayer className="audio-player" src={src} />;
+        return (
+            <div className="mt-4 rounded-lg border border-nivarana-green/30 bg-nivarana-white/20 p-4">
+                <div className="mb-3 text-xs font-bold uppercase tracking-wide text-nivarana-green">
+                    Listen to this article
+                </div>
+                <ActualAudioPlayer className="audio-player" src={src} />
+            </div>
+        );
     }
     return null;
 }

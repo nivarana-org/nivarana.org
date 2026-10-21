@@ -19,48 +19,80 @@ import {
     XIcon,
     WhatsappIcon,
 } from "react-share";
+import type { ReactNode } from "react";
+
+/**
+ * `react-share` styles its buttons inline, so the round, hoverable surface is
+ * drawn by a wrapper around each button rather than by the button itself.
+ */
+const ICON_WRAPPER =
+    "flex h-10 w-10 items-center justify-center rounded-full text-nivarana-charcoal transition-colors duration-200 hover:bg-nivarana-white/50";
+
+const ShareIcon = ({ children }: { children: ReactNode }) => (
+    <span className={ICON_WRAPPER}>{children}</span>
+);
 
 export default function PageShare({
     url,
     media,
     style,
+    className = "",
 }: {
     url: string;
     media: string;
     style?: "vertical" | "horizontal";
+    className?: string;
 }) {
-    const classes =
+    const layout =
         style === "vertical"
-            ? "p-2 max-w-10"
-            : "p-2 flex flex-wrap justify-start md:justify-center gap-1";
+            ? "flex flex-col items-center gap-3"
+            : "flex flex-wrap items-center justify-start gap-2 md:justify-center";
     return (
-        <div className={classes}>
+        <div className={`${layout} ${className}`.trim()}>
             <EmailShareButton htmlTitle="Email" url={url}>
-                <EmailIcon size={32}></EmailIcon>
+                <ShareIcon>
+                    <EmailIcon size={28}></EmailIcon>
+                </ShareIcon>
             </EmailShareButton>
             <WhatsappShareButton htmlTitle="WhatsApp" url={url}>
-                <WhatsappIcon size={32}></WhatsappIcon>
+                <ShareIcon>
+                    <WhatsappIcon size={28}></WhatsappIcon>
+                </ShareIcon>
             </WhatsappShareButton>
             <XShareButton htmlTitle="Twitter" url={url}>
-                <XIcon size={32}></XIcon>
+                <ShareIcon>
+                    <XIcon size={28}></XIcon>
+                </ShareIcon>
             </XShareButton>
             <RedditShareButton htmlTitle="Reddit" url={url}>
-                <RedditIcon size={32}></RedditIcon>
+                <ShareIcon>
+                    <RedditIcon size={28}></RedditIcon>
+                </ShareIcon>
             </RedditShareButton>
             <FacebookShareButton htmlTitle="Facebook" url={url}>
-                <FacebookIcon size={32}></FacebookIcon>
+                <ShareIcon>
+                    <FacebookIcon size={28}></FacebookIcon>
+                </ShareIcon>
             </FacebookShareButton>
             <LinkedinShareButton htmlTitle="LinkedIn" url={url}>
-                <LinkedinIcon size={32}></LinkedinIcon>
+                <ShareIcon>
+                    <LinkedinIcon size={28}></LinkedinIcon>
+                </ShareIcon>
             </LinkedinShareButton>
             <PinterestShareButton htmlTitle="Pinterest" url={url} media={media}>
-                <PinterestIcon size={32}></PinterestIcon>
+                <ShareIcon>
+                    <PinterestIcon size={28}></PinterestIcon>
+                </ShareIcon>
             </PinterestShareButton>
             <TelegramShareButton htmlTitle="Telegram" url={url}>
-                <TelegramIcon size={32}></TelegramIcon>
+                <ShareIcon>
+                    <TelegramIcon size={28}></TelegramIcon>
+                </ShareIcon>
             </TelegramShareButton>
             <TumblrShareButton htmlTitle="Tumblr" url={url}>
-                <TumblrIcon size={32}></TumblrIcon>
+                <ShareIcon>
+                    <TumblrIcon size={28}></TumblrIcon>
+                </ShareIcon>
             </TumblrShareButton>
         </div>
     );
