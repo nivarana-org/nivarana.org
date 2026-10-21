@@ -36,8 +36,8 @@ describe("escapeLike", () => {
 
 describe("toSuggestions", () => {
     test("builds the public href from the key and the group prefix", () => {
-        const rows = [{ name: "Vital Signs", path: "vital-signs" }];
-        expect(toSuggestions(rows, (row) => row.path, "/category/")).toEqual([
+        const rows = [{ name: "Vital Signs", slug: "vital-signs" }];
+        expect(toSuggestions(rows, (row) => row.slug, "/category/")).toEqual([
             { name: "Vital Signs", href: "/category/vital-signs" },
         ]);
     });
@@ -60,19 +60,19 @@ describe("toSuggestions", () => {
     test("caps the group at the suggestion limit", () => {
         const rows = Array.from({ length: 20 }, (_, index) => ({
             name: `Tag ${index}`,
-            path: `tag-${index}`,
+            slug: `tag-${index}`,
         }));
-        const result = toSuggestions(rows, (row) => row.path, "/tag/");
+        const result = toSuggestions(rows, (row) => row.slug, "/tag/");
         expect(result).toHaveLength(SUGGESTION_LIMIT);
     });
 
     test("honours an explicit limit", () => {
         const rows = Array.from({ length: 5 }, (_, index) => ({
             name: `Category ${index}`,
-            path: `category-${index}`,
+            slug: `category-${index}`,
         }));
         expect(
-            toSuggestions(rows, (row) => row.path, "/category/", 2),
+            toSuggestions(rows, (row) => row.slug, "/category/", 2),
         ).toHaveLength(2);
     });
 });

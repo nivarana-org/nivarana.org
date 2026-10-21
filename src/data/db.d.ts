@@ -59,13 +59,13 @@ export interface Categories {
     intro: string;
     name: string;
     parent_id: number;
-    path: string;
+    slug: string;
     sort_order: number;
 }
 
 export interface Comments {
     blog_id: number;
-    content: string;
+    contents: string;
     created_at: Generated<Date | null>;
     id: Generated<number>;
     parent_id: Generated<number | null>;
@@ -152,7 +152,7 @@ export interface SubscriptionPayments {
 export interface Tags {
     id: Generated<number>;
     name: string;
-    path: string;
+    slug: string;
 }
 
 export interface User {

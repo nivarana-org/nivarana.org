@@ -5,21 +5,21 @@ import { getArticlesByRelation } from "./queries";
 export const getAllTags = () =>
     db.selectFrom("tags").selectAll().orderBy("name", "asc").execute();
 
-export const addTag = asAdmin(async (name: string, path: string) => {
+export const addTag = asAdmin(async (name: string, slug: string) => {
     const existing = await db
         .selectFrom("tags")
         .select("id")
-        .where("path", "=", path)
+        .where("slug", "=", slug)
         .executeTakeFirst();
     if (existing) {
         return {
             status: false as const,
-            message: "A tag with this path already exists",
+            message: "A tag with this slug already exists",
         };
     }
     const result = await db
         .insertInto("tags")
-        .values({ name, path })
+        .values({ name, slug })
         .executeTakeFirst();
     return {
         status: true as const,
@@ -27,11 +27,11 @@ export const addTag = asAdmin(async (name: string, path: string) => {
     };
 });
 
-export const getTagByPath = async (path: string) => {
+export const getTagBySlug = async (slug: string) => {
     const tag = await db
         .selectFrom("tags")
         .selectAll()
-        .where("path", "=", path)
+        .where("slug", "=", slug)
         .executeTakeFirst();
     if (!tag) {
         return undefined;
@@ -47,12 +47,12 @@ export const getTagCloud = async () => {
         .innerJoin("blogs as b", "b.id", "pr.post_id")
         .select((eb) => [
             "t.name as value",
-            "t.path as path",
+            "t.slug as slug",
             eb.fn.countAll().as("count"),
         ])
         .where("pr.relation_type", "=", "tag")
         .where("b.status", "=", "PUBLISHED")
-        .groupBy(["t.id", "t.name", "t.path"])
+        .groupBy(["t.id", "t.name", "t.slug"])
         .orderBy((eb) => eb.fn.countAll(), "desc")
         .limit(100)
         .execute();

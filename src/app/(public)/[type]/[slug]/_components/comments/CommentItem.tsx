@@ -60,7 +60,7 @@ export function CommentItem({
                 </span>
             </div>
             <p className="mt-2 text-nivarana-charcoal whitespace-pre-wrap">
-                {comment.content}
+                {comment.contents}
             </p>
             {canReply && (
                 <button

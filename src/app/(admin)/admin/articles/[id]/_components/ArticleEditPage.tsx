@@ -119,13 +119,13 @@ export default function ArticleEditPage({
     });
     const handleCreateTag = async () => {
         const name = newTag.title.trim();
-        const path = newTag.slug.trim();
+        const slug = newTag.slug.trim();
         if (!name) {
             alert("Please enter a tag name");
             return;
         }
-        if (!path) {
-            alert("Please enter a slug/path");
+        if (!slug) {
+            alert("Please enter a tag slug");
             return;
         }
         if (
@@ -137,7 +137,7 @@ export default function ArticleEditPage({
             return;
         }
         setNewTagSubmitting(true);
-        const { status, message, data } = await addTagAction(name, path);
+        const { status, message, data } = await addTagAction(name, slug);
         setNewTagSubmitting(false);
         if (!status || !data) {
             alert(message);

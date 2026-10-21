@@ -11,7 +11,7 @@ type GetURLData = {
     slug: string;
     category: {
         name: string;
-        path: string;
+        slug: string;
     };
 };
 
@@ -26,7 +26,7 @@ export const getArticlePublicURL = (data: GetURLData) => {
 };
 
 export const getArticleSlug = (data: GetURLData) => {
-    return `/${data.category.path}/${data.slug}`;
+    return `/${data.category.slug}/${data.slug}`;
 };
 
 export const getReturnURL = (base: string, returnURL: string | undefined) => {

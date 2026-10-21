@@ -30,7 +30,7 @@ export const authorsFragment = sql<Author[]>`COALESCE(
 type Category = {
     id: number;
     name: string;
-    path: string;
+    slug: string;
 };
 
 export const categoriesFragment = sql<Category[]>`COALESCE(
@@ -39,7 +39,7 @@ export const categoriesFragment = sql<Category[]>`COALESCE(
             JSON_OBJECT(
                 'id', c.id,
                 'name', c.name,
-                'path', c.path
+                'slug', c.slug
             )
         )
         FROM post_relations cr
@@ -52,7 +52,7 @@ export const categoriesFragment = sql<Category[]>`COALESCE(
 type Tag = {
     id: number;
     name: string;
-    path: string;
+    slug: string;
 };
 
 export const tagsFragment = sql<Tag[]>`COALESCE(
@@ -61,7 +61,7 @@ export const tagsFragment = sql<Tag[]>`COALESCE(
             JSON_OBJECT(
                 'id', t.id,
                 'name', t.name,
-                'path', t.path
+                'slug', t.slug
             ) ORDER BY tr.order ASC
         )
         FROM post_relations tr
@@ -146,7 +146,7 @@ export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
 type CategoryOverview = {
     id: number;
     name: string;
-    path: string;
+    slug: string;
     articles: PostPreview[];
 };
 
@@ -157,7 +157,7 @@ type PostBasics = Pick<Post, "id" | "title" | "image" | "slug" | "intro">;
 type CategoryWithArticleTitles = {
     id: number;
     name: string;
-    path: string;
+    slug: string;
     articles: PostBasics[];
 };
 
@@ -185,7 +185,7 @@ async function getCategoriesWithArticles(
     const result = await sql<CategoryOverview>`SELECT
         c.id,
         c.name,
-        c.path,
+        c.slug,
         COALESCE(
             (
                 SELECT JSON_ARRAYAGG(

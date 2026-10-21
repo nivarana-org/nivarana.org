@@ -5,7 +5,7 @@ export const getCategories = async () => {
     return await db
         .selectFrom("categories")
         .where("parent_id", "=", 0)
-        .select(["name", "path"])
+        .select(["name", "slug"])
         .execute();
 };
 
@@ -17,11 +17,11 @@ export const getAllCategories = () =>
         .orderBy("id", "asc")
         .execute();
 
-export const getCategoryByPath = async (path: string) => {
+export const getCategoryBySlug = async (slug: string) => {
     const category = await db
         .selectFrom("categories")
         .selectAll()
-        .where("path", "=", path)
+        .where("slug", "=", slug)
         .executeTakeFirst();
     if (!category) {
         return undefined;

@@ -71,7 +71,7 @@ const getAuthorSuggestions = (query: string) =>
 const getCategorySuggestions = (query: string) =>
     db
         .selectFrom("categories as c")
-        .select(["c.name", "c.path"])
+        .select(["c.name", "c.slug"])
         .where(suggestionMatchCondition("c.name", query))
         .where(hasPublishedPost("category", "c.id"))
         .orderBy(suggestionRank("c.name", query))
@@ -82,7 +82,7 @@ const getCategorySuggestions = (query: string) =>
 const getTagSuggestions = (query: string) =>
     db
         .selectFrom("tags as t")
-        .select(["t.name", "t.path"])
+        .select(["t.name", "t.slug"])
         .where(suggestionMatchCondition("t.name", query))
         .where(hasPublishedPost("tag", "t.id"))
         .orderBy(suggestionRank("t.name", query))
@@ -107,7 +107,7 @@ export const getSearchSuggestions = async (
 
     return {
         authors: toSuggestions(authors, (row) => row.slug, "/author/"),
-        categories: toSuggestions(categories, (row) => row.path, "/category/"),
-        tags: toSuggestions(tags, (row) => row.path, "/tag/"),
+        categories: toSuggestions(categories, (row) => row.slug, "/category/"),
+        tags: toSuggestions(tags, (row) => row.slug, "/tag/"),
     };
 };

@@ -1,13 +1,13 @@
 import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
 import Sidebar from "@/app/(public)/_components/sidebar";
-import { getTagByPath } from "./queries";
+import { getTagBySlug } from "./queries";
 import { getRedirect } from "./queries";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
-const cachedGetTagBySlug = cache((path: string) => {
-    return getTagByPath(path);
+const cachedGetTagBySlug = cache((slug: string) => {
+    return getTagBySlug(slug);
 });
 
 async function Page(props: Props) {

@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 async function addTagAction(formData: FormData) {
     "use server";
     const name = formData.get("name");
-    const path = formData.get("path");
-    await addTag(name, path);
+    const slug = formData.get("slug");
+    await addTag(name, slug);
     redirect(`/admin/tags`);
 }
 export default async function Page() {
@@ -19,8 +19,8 @@ export default async function Page() {
                 helperText="This is the publicly visible title. Examples are 'Empathy', 'Violence in health system', 'Climate Change'"
             ></TextField>
             <TextField
-                name="path"
-                label="Path"
+                name="slug"
+                label="Slug"
                 slotProps={{ inputLabel: { className: "font-bold" } }}
                 helperText="This is the path segment visible in the URL. Should be all small letters, no space, use hyphens if necessary."
             ></TextField>

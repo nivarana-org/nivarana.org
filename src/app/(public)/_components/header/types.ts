@@ -1,6 +1,6 @@
 type Category = {
     name: string;
-    path: string;
+    slug: string;
 };
 
 export type HeaderProps = {

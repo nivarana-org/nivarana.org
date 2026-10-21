@@ -5,6 +5,6 @@ export type { Author } from "@/data/authors";
 export const getAuthorsOverview = () =>
     db
         .selectFrom("authors")
-        .select(["id", "name", "path", "email"])
+        .select(["id", "name", "slug", "email"])
         .orderBy("id", "desc")
         .execute();

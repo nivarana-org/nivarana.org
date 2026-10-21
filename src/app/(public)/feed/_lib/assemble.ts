@@ -19,10 +19,21 @@ function escapeXml(unsafe) {
     });
 }
 
+/**
+ * Photo-essay bodies are stored as JSON. Kysely's ParseJSONResultsPlugin
+ * already turns a JSON-looking string into an object, so the value can arrive
+ * either parsed or as a raw string.
+ */
+const getChapters = (contents: unknown) => {
+    const parsed =
+        typeof contents === "string" ? JSON.parse(contents) : contents;
+    return parsed?.chapters ?? [];
+};
+
 const getContent = (post) => {
     if (post.type === "photo-essay") {
-        return JSON.parse(post.contents)
-            .chapters.map((p) => `<h2>${p.title}</h2>\n\<hr>${p.body}`)
+        return getChapters(post.contents)
+            .map((p) => `<h2>${p.title}</h2>\n\<hr>${p.body}`)
             .join("\n<br/>\n");
     }
     // article or unknown
@@ -46,7 +57,7 @@ export const getFeed = async () => {
     });
     const posts = await getArticlesPaginated(0, 20);
     posts.forEach((post) => {
-        const categorySlug = post.category[0].path;
+        const categorySlug = post.category[0].slug;
         const url = `https://nivarana.org/${categorySlug}/${post.slug}`;
         const imageUrl = getImageURLFromFileName(post.image);
         const optimizedImageUrl = escapeXml(

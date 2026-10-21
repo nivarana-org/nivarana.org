@@ -7,10 +7,10 @@ type AddTagResult =
 
 export const addTagAction = async (
     name: string,
-    path: string,
+    slug: string,
 ): Promise<AddTagResult> => {
     try {
-        return await addTag(name, path);
+        return await addTag(name, slug);
     } catch (err) {
         console.error(err);
         return { status: false, message: `${err}` };

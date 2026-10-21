@@ -11,8 +11,8 @@ async function setPostToCategory(postId: number, categoryId: number) {
     return await editPostCategory(postId, categoryId);
 }
 
-function CategoryRow({ id, name, path, articles, categories }) {
-    const publicLink = `/category/${path}`;
+function CategoryRow({ id, name, slug, articles, categories }) {
+    const publicLink = `/category/${slug}`;
     return (
         <div className="mb-4">
             <h1>{name}</h1>

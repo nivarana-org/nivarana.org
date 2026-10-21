@@ -33,12 +33,12 @@ export default async function Page(props: Props) {
         if (searchResult.length > 0) {
             const slug = searchResult[0].slug;
             const category = searchResult[0].category;
-            return redirect(`/${category.name}/${slug}`, "replace");
+            return redirect(`/${category.slug}/${slug}`, "replace");
         }
 
         return notFound();
     }
-    const actualCategory = post.categories[0].path;
+    const actualCategory = post.categories[0].slug;
     if (actualCategory !== requestedCategory) {
         redirect(`/${actualCategory}/${params.slug}`);
     }

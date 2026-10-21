@@ -24,7 +24,7 @@ function ArticlePreview({
             {includeCategory ? (
                 <div className="p-3 grow-0 w-30">
                     <Link
-                        href={"/category/" + category[0].path}
+                        href={"/category/" + category[0].slug}
                         className="text-gray-500 hover:text-gray-700"
                     >
                         {category[0].name}

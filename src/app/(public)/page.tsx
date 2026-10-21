@@ -13,7 +13,7 @@ export default async function Home() {
         <div className="max-w-screen-xl mx-auto py-8 px-4">
             <div className="flex flex-col gap-12">
                 {categories.map((c) => (
-                    <Category key={c.path} c={c}></Category>
+                    <Category key={c.slug} c={c}></Category>
                 ))}
             </div>
             <TagCloud></TagCloud>
@@ -24,9 +24,9 @@ export default async function Home() {
 async function Category({ c }) {
     return (
         <div className="pb-8 border-b border-gray-300 last:border-b-0">
-            <ViewTransition name={`category-title-${c.path}`}>
+            <ViewTransition name={`category-title-${c.slug}`}>
                 <h2 className="text-3xl md:text-4xl font-bold uppercase mb-6 text-gray-900 border-b-2 border-gray-900 inline-block pb-1">
-                    <Link href={`/category/${c.path}`}>{c.name}</Link>
+                    <Link href={`/category/${c.slug}`}>{c.name}</Link>
                 </h2>
             </ViewTransition>
             <div className="flex flex-col lg:flex-row gap-6 justify-between">
@@ -38,14 +38,14 @@ async function Category({ c }) {
                 {/* Other 4 Less Prominent Articles */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 lg:w-1/3 grow-1">
                     {c.articles.slice(1, 5).map((a) => (
-                        <RestArticles key={a.path} a={a}></RestArticles>
+                        <RestArticles key={a.slug} a={a}></RestArticles>
                     ))}
                     <motion.div
                         whileHover={{ translateX: -10 }}
                         whileTap={{ translateX: -10 }}
                         className="flex flex-row justify-end-safe px-2"
                     >
-                        <Link href={`/category/${c.path}`}>Read More →</Link>
+                        <Link href={`/category/${c.slug}`}>Read More →</Link>
                     </motion.div>
                 </div>
             </div>

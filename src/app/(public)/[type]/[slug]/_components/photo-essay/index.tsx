@@ -46,7 +46,7 @@ function PhotoChapter({ title, body, image }) {
 }
 
 function PhotoEssay({ data, chapter }) {
-    const { chapters } = data.content;
+    const { chapters } = data.contents;
     const singlePage = chapter === "all";
     const page = singlePage ? 0 : Number(chapter);
     if (singlePage)
@@ -91,7 +91,7 @@ function PhotoEssay({ data, chapter }) {
                             <ul className="z-10 list-disc pl-5 text-sm text-white">
                                 {data.tags.map((t) => (
                                     <li key={t.id}>
-                                        <Link href={`/tag/${t.path}`}>
+                                        <Link href={`/tag/${t.slug}`}>
                                             {t.name}
                                         </Link>
                                     </li>
@@ -158,7 +158,7 @@ function PhotoEssay({ data, chapter }) {
                             <ul className="z-10 list-disc pl-5 text-sm text-white">
                                 {data.tags.map((t) => (
                                     <li key={t.id}>
-                                        <Link href={`/tag/${t.path}`}>
+                                        <Link href={`/tag/${t.slug}`}>
                                             {t.name}
                                         </Link>
                                     </li>

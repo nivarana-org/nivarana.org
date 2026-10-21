@@ -13,7 +13,7 @@ export interface Comment {
     blog_id: number;
     user_id: string;
     parent_id: number | null;
-    content: string;
+    contents: string;
     status: CommentStatus;
     created_at: Date | null;
     updated_at: Date | null;
@@ -39,7 +39,7 @@ export async function getCommentsByBlogId(
             "comments.blog_id",
             "comments.user_id",
             "comments.parent_id",
-            "comments.content",
+            "comments.contents",
             "comments.status",
             "comments.created_at",
             "comments.updated_at",
@@ -59,7 +59,7 @@ export async function getCommentsByBlogId(
                 "comments.blog_id",
                 "comments.user_id",
                 "comments.parent_id",
-                "comments.content",
+                "comments.contents",
                 "comments.status",
                 "comments.created_at",
                 "comments.updated_at",
@@ -75,12 +75,12 @@ export async function getCommentsByBlogId(
 export async function createComment({
     blogId,
     userId,
-    content,
+    contents,
     parentId,
 }: {
     blogId: number;
     userId: string;
-    content: string;
+    contents: string;
     parentId?: number;
 }): Promise<Comment> {
     const [comment] = await db
@@ -88,7 +88,7 @@ export async function createComment({
         .values({
             blog_id: blogId,
             user_id: userId,
-            content,
+            contents,
             parent_id: parentId ?? null,
             status: "pending",
         })
@@ -97,7 +97,7 @@ export async function createComment({
             "blog_id",
             "user_id",
             "parent_id",
-            "content",
+            "contents",
             "status",
             "created_at",
             "updated_at",
@@ -109,7 +109,7 @@ export async function createComment({
         blog_id: comment.blog_id,
         user_id: comment.user_id,
         parent_id: comment.parent_id ?? null,
-        content: comment.content,
+        contents: comment.contents,
         status: comment.status as CommentStatus,
         created_at: comment.created_at,
         updated_at: comment.updated_at,

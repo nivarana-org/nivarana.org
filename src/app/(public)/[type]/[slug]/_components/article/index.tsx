@@ -26,8 +26,8 @@ interface ArticleProps {
         published_at: Date;
         views: number;
         type: string;
-        categories: { path: string; name: string }[];
-        tags: { id: number; path: string; name: string }[];
+        categories: { slug: string; name: string }[];
+        tags: { id: number; slug: string; name: string }[];
         authors: { id: number; slug: string; name: string }[];
         comments_count: number;
     };
@@ -41,11 +41,11 @@ function Article({ data }: ArticleProps) {
                     <div className="my-auto"></div>
                     <div className="py-8 px-6">
                         <ViewTransition
-                            name={`category-title-${data.categories[0].path}`}
+                            name={`category-title-${data.categories[0].slug}`}
                         >
                             <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
                                 <Link
-                                    href={`/category/${data.categories[0].path}`}
+                                    href={`/category/${data.categories[0].slug}`}
                                 >
                                     {data.categories[0].name}
                                 </Link>
@@ -92,7 +92,7 @@ function Article({ data }: ArticleProps) {
                         <ul className="list-disc pl-5 p-1 text-sm text-black">
                             {data.tags.map((t) => (
                                 <li key={t.id} className="hover:bg-cyan-200">
-                                    <Link href={`/tag/${t.path}`}>
+                                    <Link href={`/tag/${t.slug}`}>
                                         {t.name}
                                     </Link>
                                 </li>

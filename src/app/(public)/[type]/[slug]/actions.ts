@@ -13,7 +13,7 @@ const MAX_COMMENT_LENGTH = 4096;
 
 export async function addComment(
     blogId: number,
-    content: string,
+    contents: string,
     parentId?: number,
 ): Promise<{
     status: boolean;
@@ -35,11 +35,11 @@ export async function addComment(
         };
     }
 
-    if (!content || content.trim().length === 0) {
+    if (!contents || contents.trim().length === 0) {
         return { status: false, message: "Comment cannot be empty" };
     }
 
-    if (content.length > MAX_COMMENT_LENGTH) {
+    if (contents.length > MAX_COMMENT_LENGTH) {
         return {
             status: false,
             message: `Comment cannot exceed ${MAX_COMMENT_LENGTH} characters`,
@@ -54,7 +54,7 @@ export async function addComment(
         const comment = await createComment({
             blogId,
             userId: session.user.id,
-            content: content.trim(),
+            contents: contents.trim(),
             parentId,
         });
 

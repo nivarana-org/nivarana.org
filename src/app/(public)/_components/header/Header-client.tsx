@@ -54,12 +54,12 @@ function HeaderClient({ categories }: HeaderProps) {
                     >
                         {categories.map((c) => (
                             <li
-                                key={c.path}
+                                key={c.slug}
                                 className="py-2 px-4 bg-white rounded-md shadow-sm uppercase"
                             >
                                 <Link
                                     className="block"
-                                    href={`/category/${c.path}`}
+                                    href={`/category/${c.slug}`}
                                     onNavigate={() => setShowCategories(false)}
                                 >
                                     {c.name}

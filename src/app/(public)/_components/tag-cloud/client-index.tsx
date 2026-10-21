@@ -15,7 +15,7 @@ export default function TagCloudClient({ tags }) {
                     // This is just an example, default styling often suffices.
                     (tag, size, color) => (
                         <Link
-                            href={`/tag/${tag.path}`}
+                            href={`/tag/${tag.slug}`}
                             key={tag.value}
                             style={{
                                 fontSize: `${size}px`,

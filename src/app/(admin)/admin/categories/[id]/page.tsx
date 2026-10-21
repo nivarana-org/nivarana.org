@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 async function addCategoryAction(formData: FormData) {
     "use server";
     const name = formData.get("name");
-    const path = formData.get("path");
-    await addCategory(name, path);
+    const slug = formData.get("slug");
+    await addCategory(name, slug);
     redirect(`/admin/categories`);
 }
 export default async function Page() {
@@ -19,8 +19,8 @@ export default async function Page() {
                 helperText="This is the publicly visible title"
             ></TextField>
             <TextField
-                name="path"
-                label="Path"
+                name="slug"
+                label="Slug"
                 slotProps={{ inputLabel: { className: "font-bold" } }}
                 helperText="This is the path segment visible in the URL. Should be all small letters, no space, use hyphens if necessary."
             ></TextField>
