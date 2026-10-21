@@ -4,12 +4,19 @@ import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { replacePostRelation } from "./post-relations";
 import { authorsFragment, categoriesFragment, tagsFragment } from "./queries";
+import {
+    parseStory,
+    resolveLayout,
+    storyBodyText,
+    type PostLayout,
+} from "./story";
 
-export interface Article {
+export interface Post {
     id: number;
     slug: string;
     views: number;
     title: string;
+    /** The story document, serialised as JSON. */
     contents: string;
     categories: number[];
     authors: number[];
@@ -20,20 +27,75 @@ export interface Article {
     intro: string;
     status?: string | null;
     language?: string | null;
-    type?: string | null;
+    /**
+     * How the chapters of the story are arranged on the page. When it is not
+     * set, the layout is derived from the number of chapters.
+     */
+    layout?: PostLayout | null;
     published_at?: Date | null;
 }
 
 export const getAllArticlesAndTags = () =>
     db
         .selectFrom("blogs as b")
-        .selectAll()
+        .select(["b.id", "b.title", "b.slug", "b.image", "b.intro", "b.layout"])
         .select(tagsFragment.as("tags"))
         .orderBy("b.id", "asc")
         .execute();
 
+/**
+ * A row of the admin overview: enough to list a post and to link to it.
+ */
+export type PostOverview = {
+    id: number;
+    title: string | null;
+    slug: string | null;
+    image: string | null;
+    intro: string | null;
+    views: number;
+    status: string | null;
+    layout: string | null;
+    created_at: Date;
+    category: { id: number; name: string; slug: string }[];
+};
+
 export const getArticlesOverview = () =>
-    db.selectFrom("blogs").selectAll().orderBy("id", "desc").execute();
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.title",
+            "b.slug",
+            "b.image",
+            "b.intro",
+            "b.views",
+            "b.status",
+            "b.layout",
+            "b.created_at",
+            categoriesFragment.as("category"),
+        ])
+        .orderBy("b.id", "desc")
+        .execute();
+
+/**
+ * The previews shown on the browse grid. Published posts only, with the
+ * category needed to build a working public URL.
+ */
+export const getPublishedPostPreviews = () =>
+    db
+        .selectFrom("blogs as b")
+        .select([
+            "b.id",
+            "b.title",
+            "b.slug",
+            "b.image",
+            "b.intro",
+            "b.created_at",
+            categoriesFragment.as("categories"),
+        ])
+        .where("b.status", "=", "PUBLISHED")
+        .orderBy("b.id", "desc")
+        .execute();
 
 const getPublishedPostsPaginated = (
     page: number,
@@ -51,7 +113,7 @@ const getPublishedPostsPaginated = (
             "b.intro",
             "b.created_at",
             "b.updated_at",
-            "b.type",
+            "b.layout",
             sql<Date>`CASE
                 WHEN b.published_at > b.created_at THEN b.published_at
                 ELSE b.created_at
@@ -89,14 +151,14 @@ export const searchArticles = (query: string) =>
             "b.intro",
             "b.created_at",
             "b.updated_at",
-            "b.type",
+            "b.layout",
             authorsFragment.as("authors"),
             categoriesFragment.as("category"),
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
         .where(
-            sql<SqlBool>`MATCH(b.title, b.contents, b.intro) AGAINST (${query})`,
+            sql<SqlBool>`MATCH(b.title, b.body_text, b.intro) AGAINST (${query})`,
         )
         .execute();
 
@@ -107,12 +169,9 @@ export const getPopularPosts = () =>
             "b.id",
             "b.title",
             "b.slug",
-            "b.contents",
             "b.image",
             "b.intro",
-            "b.created_at",
-            "b.updated_at",
-            "b.type",
+            "b.layout",
             authorsFragment.as("authors"),
             categoriesFragment.as("category"),
             tagsFragment.as("tags"),
@@ -136,21 +195,29 @@ export const incrementBlogViewCount = async (id: number) => {
     return row?.views;
 };
 
-export const addOrEditPost = asAdmin(async (post: Article) => {
+export const addOrEditPost = asAdmin(async (post: Post) => {
     const timestamp = new Date(Date.now());
+
+    const chapters = parseStory(post.contents).chapters;
+    const layout = resolveLayout(chapters.length, post.layout);
+    const bodyText = storyBodyText(chapters);
 
     return await db.transaction().execute(async (trx) => {
         // Upsert into blogs table
         const { authors, categories, tags, ...rest } = post;
 
+        const values = {
+            ...rest,
+            layout,
+            body_text: bodyText,
+            created_at: timestamp,
+            updated_at: timestamp,
+        };
+
         const result = await trx
             .insertInto("blogs")
-            .values({
-                ...rest,
-                created_at: timestamp,
-                updated_at: timestamp,
-            })
-            .onDuplicateKeyUpdate({ ...rest, updated_at: timestamp })
+            .values(values)
+            .onDuplicateKeyUpdate({ ...values, updated_at: timestamp })
             .executeTakeFirst();
 
         // On inserts MySQL hands back the auto-generated id; on updates the

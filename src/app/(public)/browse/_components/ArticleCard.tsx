@@ -6,18 +6,25 @@ import { useRouter } from "next/navigation";
 
 interface ArticleCardProps {
     slug: string;
+    category: string;
     title: string;
     imageUrl: string;
 }
 
-export function ArticleCard({ slug, type, title, imageUrl }: ArticleCardProps) {
+export function ArticleCard({
+    slug,
+    category,
+    title,
+    imageUrl,
+}: ArticleCardProps) {
     const [isActive, setIsActive] = useState(false);
     const router = useRouter();
+    const href = `/${category}/${slug}`;
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         if (isActive) {
-            router.push(`/${type}/${slug}`);
+            router.push(href);
         } else {
             setIsActive(true);
         }
@@ -25,7 +32,7 @@ export function ArticleCard({ slug, type, title, imageUrl }: ArticleCardProps) {
 
     return (
         <a
-            href={`/${type}/${slug}`}
+            href={href}
             onClick={handleClick}
             onMouseEnter={() => setIsActive(true)}
             onMouseLeave={() => setIsActive(false)}
@@ -40,7 +47,7 @@ export function ArticleCard({ slug, type, title, imageUrl }: ArticleCardProps) {
             />
             <div
                 className={`absolute inset-0 bg-linear-to-b from-black/0 via-black/20 to-black/80 transition-opacity duration-300 flex items-end
-          ${isActive ? "opacity-70" : "opacity-0"} 
+          ${isActive ? "opacity-70" : "opacity-0"}
           @media(hover: hover):group-hover:opacity-100`}
             >
                 <h3 className="text-white p-4 text-base font-medium line-clamp-2">

@@ -11,11 +11,19 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
-import { getArticlesOverview, type Article } from "./queries";
+import { getArticlesOverview, type PostOverview } from "./queries";
 
-function ArticleRow({ id, title, slug, image, views, type }: Article) {
+function PostRow({
+    id,
+    title,
+    slug,
+    image,
+    views,
+    layout,
+    category,
+}: PostOverview) {
     const adminLink = `/admin/articles/${id}`;
-    const publicLink = `/${type}/${slug}`;
+    const publicLink = `/${category?.[0]?.slug ?? ""}/${slug}`;
     return (
         <TableRow>
             <TableCell>
@@ -28,6 +36,9 @@ function ArticleRow({ id, title, slug, image, views, type }: Article) {
             </TableCell>
             <TableCell>
                 <Link href={adminLink}>{title}</Link>
+            </TableCell>
+            <TableCell>
+                {layout === "paged" ? "Photo essay" : "Article"}
             </TableCell>
             <TableCell>
                 <Box sx={{ display: "flex", gap: 1 }}>
@@ -46,15 +57,12 @@ function ArticleRow({ id, title, slug, image, views, type }: Article) {
 
 export default async function Page({}) {
     const articles = await getArticlesOverview();
-    const nextCount = Number(articles[0].id) + 1;
+    const nextCount = Number(articles[0]?.id ?? 0) + 1;
     return (
         <div className="flex flex-col gap-2 p-2">
             <div className="p-2 flex flex-row gap-2">
                 <Link href={`/admin/articles/${nextCount}`}>
-                    <Button>New Article</Button>
-                </Link>
-                <Link href={`/admin/articles/${nextCount}?type=photo-essay`}>
-                    <Button>New Photo Essay</Button>
+                    <Button>New Story</Button>
                 </Link>
             </div>
             <Table sx={{ "& thead th:nth-child(1)": { width: "100px" } }}>
@@ -62,13 +70,14 @@ export default async function Page({}) {
                     <TableRow>
                         <TableCell>Image</TableCell>
                         <TableCell>Title</TableCell>
+                        <TableCell>Kind</TableCell>
                         <TableCell>Actions</TableCell>
                         <TableCell>Views</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {articles.map((a) => (
-                        <ArticleRow key={a.id} {...a} />
+                        <PostRow key={a.id} {...a} />
                     ))}
                 </TableBody>
             </Table>

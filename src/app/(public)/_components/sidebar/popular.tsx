@@ -12,34 +12,31 @@ const PopularPosts = async () => {
                 Popular Posts
             </h3>
             <div className="flex flex-col">
-                {posts
-                    .slice(0, 5)
-                    .map(({ image, title, slug, type, category }) => {
-                        return (
-                            <Link
-                                key={slug}
-                                className="flex items-start py-4 border-b border-nivarana-green last:border-b-0 group"
-                                href={getArticleSlug({
-                                    category: category[0],
-                                    slug,
-                                    type,
-                                })}
-                            >
-                                <div className="flex-shrink-0 mr-4">
-                                    <Image
-                                        src={getImageURLFromFileName(image)}
-                                        alt={title}
-                                        height={60}
-                                        width={100}
-                                        className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
-                                    />
-                                </div>
-                                <h6 className="text-lg text-nivarana-charcoal leading-tight transition-colors duration-200">
-                                    {title}
-                                </h6>
-                            </Link>
-                        );
-                    })}
+                {posts.slice(0, 5).map(({ image, title, slug, category }) => {
+                    return (
+                        <Link
+                            key={slug}
+                            className="flex items-start py-4 border-b border-nivarana-green last:border-b-0 group"
+                            href={getArticleSlug({
+                                category: category[0],
+                                slug,
+                            })}
+                        >
+                            <div className="flex-shrink-0 mr-4">
+                                <Image
+                                    src={getImageURLFromFileName(image)}
+                                    alt={title}
+                                    height={60}
+                                    width={100}
+                                    className="object-cover rounded group-hover:opacity-80 transition-opacity duration-200"
+                                />
+                            </div>
+                            <h6 className="text-lg text-nivarana-charcoal leading-tight transition-colors duration-200">
+                                {title}
+                            </h6>
+                        </Link>
+                    );
+                })}
             </div>
         </div>
     );

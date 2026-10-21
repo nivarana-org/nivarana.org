@@ -15,7 +15,6 @@ function ArticlePreview({
     created_at,
     category,
     categories,
-    type,
     aboveTheFold = false,
     includeCategory = false,
 }: Post & { aboveTheFold?: boolean; includeCategory?: boolean }) {
@@ -36,7 +35,6 @@ function ArticlePreview({
                     <div className="md:shrink-0">
                         <Link
                             href={getArticleSlug({
-                                type,
                                 slug,
                                 category: category
                                     ? category[0]
@@ -58,7 +56,6 @@ function ArticlePreview({
                         {/* <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{categro}</div> */}
                         <Link
                             href={getArticleSlug({
-                                type,
                                 slug,
                                 category: category
                                     ? category[0]

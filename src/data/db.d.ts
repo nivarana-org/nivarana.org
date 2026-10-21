@@ -39,17 +39,18 @@ export interface Authors {
 }
 
 export interface Blogs {
+    body_text: Generated<string | null>;
     contents: Generated<string | null>;
     created_at: Generated<Date>;
     id: Generated<number>;
     image: Generated<string | null>;
     intro: Generated<string | null>;
     language: Generated<string | null>;
+    layout: Generated<string | null>;
     published_at: Generated<Date>;
     slug: Generated<string | null>;
     status: Generated<string | null>;
     title: Generated<string | null>;
-    type: Generated<string | null>;
     updated_at: Generated<Date>;
     views: Generated<number>;
 }

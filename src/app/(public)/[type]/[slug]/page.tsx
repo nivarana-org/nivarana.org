@@ -1,6 +1,4 @@
-import Article from "./_components/article";
-import PhotoEssay from "./_components/photo-essay";
-import Sidebar from "@/app/(public)/_components/sidebar";
+import Story from "./_components/story";
 import { searchArticles } from "./queries";
 import { getArticleBySlug } from "./queries";
 import { getRedirect } from "./queries";
@@ -32,37 +30,19 @@ export default async function Page(props: Props) {
         const searchResult = await searchArticles(params.slug);
         if (searchResult.length > 0) {
             const slug = searchResult[0].slug;
-            const category = searchResult[0].category;
-            return redirect(`/${category.slug}/${slug}`, "replace");
+            const category = searchResult[0].category?.[0]?.slug;
+            if (category) {
+                return redirect(`/${category}/${slug}`, "replace");
+            }
         }
 
         return notFound();
     }
-    const actualCategory = post.categories[0].slug;
-    if (actualCategory !== requestedCategory) {
+    const actualCategory = post.categories[0]?.slug;
+    if (actualCategory && actualCategory !== requestedCategory) {
         redirect(`/${actualCategory}/${params.slug}`);
     }
-    if (post.type === "article") {
-        return (
-            <div>
-                <Article data={post} />
-                <div className="lg:col-span-1">
-                    <Sidebar />
-                </div>
-            </div>
-        );
-    }
-    if (post.type === "photo-essay")
-        return (
-            <div className="max-w-(--breakpoint-xl) mx-auto">
-                <div className="lg:col-span-2">
-                    <PhotoEssay
-                        data={post}
-                        chapter={searchParams.chapter ?? "0"}
-                    />
-                </div>
-            </div>
-        );
+    return <Story data={post} chapter={searchParams.chapter ?? "0"} />;
 }
 
 type Props = {
@@ -82,7 +62,6 @@ export async function generateMetadata(
     return {
         title: post.title,
         description: post.intro ?? (await parent).description,
-        keywords: post.keywords ?? (await parent).keywords,
         other: {
             citation_title: post.title,
             citation_date: moment(post.published_at).format("YYYY-MM-DD"),

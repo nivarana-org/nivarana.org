@@ -295,3 +295,11 @@ npm run test -- --run   # Run all tests
 ## git preference
 
 DO NOT EVER COMMIT OR PUSH CODE UNLESS THE USER ASKS YOU TO
+
+<!-- BEGIN:nextjs-agent-upgrade -->
+
+## Next.js upgrade reminders
+
+Upgrade reminders emitted by this project's installed Next.js CLI during `next dev` or `next build` are part of the `experimental.agentUpgrade` workflow. Follow these reminders' instructions while respecting user instructions declining upgrades.
+
+<!-- END:nextjs-agent-upgrade -->

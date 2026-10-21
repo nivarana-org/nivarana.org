@@ -1,28 +1,32 @@
 "use server";
 import { addOrEditPost } from "@/data/posts";
+import { isPostLayout } from "@/data/story";
 import { revalidatePath } from "next/cache";
 
 export const addOrEditPostAction = async (formData: FormData) => {
-    const id = formData.get("id");
-    const title = formData.get("title");
-    const contents = formData.get("contents");
-    const authors = (formData.get("authors") as string)
-        ?.split(",")
-        ?.map((a: string) => Number(a));
-    const tags = JSON.parse(formData.get("tags") as string).map((t: string) =>
-        Number(t),
-    );
-    const categories = formData
-        .get("category")
-        ?.split(",")
-        ?.map((c: string) => Number(c));
-    const intro = formData.get("intro");
-    const image = formData.get("image");
-    const slug = formData.get("slug");
-    const status = formData.get("status");
-    const publishedAt = formData.get("published_at");
-    const language = formData.get("language");
-    const type = formData.get("type");
+    const text = (key: string) => {
+        const value = formData.get(key);
+        return typeof value === "string" ? value : "";
+    };
+    const id = Number(text("id"));
+    const title = text("title");
+    const contents = text("contents");
+    const authors = text("authors")
+        .split(",")
+        .filter((a) => a.length > 0)
+        .map((a) => Number(a));
+    const tags = JSON.parse(text("tags") || "[]").map((t: string) => Number(t));
+    const categories = text("category")
+        .split(",")
+        .filter((c) => c.length > 0)
+        .map((c) => Number(c));
+    const intro = text("intro");
+    const image = text("image");
+    const slug = text("slug");
+    const status = text("status");
+    const publishedAt = text("published_at");
+    const language = text("language");
+    const layout = text("layout");
     const post = {
         id,
         slug,
@@ -36,7 +40,9 @@ export const addOrEditPostAction = async (formData: FormData) => {
         status,
         published_at: publishedAt ? new Date(publishedAt) : null,
         language,
-        type,
+        // The layout the author picked. When it is not a layout we know, the
+        // layout is derived from the number of chapters.
+        layout: isPostLayout(layout) ? layout : null,
     };
     try {
         await addOrEditPost(post);

@@ -1,5 +1,6 @@
 import { getArticlesPaginated } from "../queries";
 import { getImageURLFromFileName } from "@/utils/paths";
+import { parseStory } from "@/data/story";
 import { Feed } from "feed";
 
 function escapeXml(unsafe) {
@@ -20,24 +21,18 @@ function escapeXml(unsafe) {
 }
 
 /**
- * Photo-essay bodies are stored as JSON. Kysely's ParseJSONResultsPlugin
- * already turns a JSON-looking string into an object, so the value can arrive
- * either parsed or as a raw string.
+ * The feed body of a story is the concatenation of its chapters. A story with
+ * a single chapter — a plain article — reads exactly like its body.
  */
-const getChapters = (contents: unknown) => {
-    const parsed =
-        typeof contents === "string" ? JSON.parse(contents) : contents;
-    return parsed?.chapters ?? [];
-};
-
 const getContent = (post) => {
-    if (post.type === "photo-essay") {
-        return getChapters(post.contents)
-            .map((p) => `<h2>${p.title}</h2>\n\<hr>${p.body}`)
-            .join("\n<br/>\n");
-    }
-    // article or unknown
-    return post.contents;
+    return parseStory(post.contents)
+        .chapters.map((chapter) => {
+            const heading = chapter.title
+                ? `<h2>${chapter.title}</h2>\n<hr>`
+                : "";
+            return `${heading}${chapter.body}`;
+        })
+        .join("\n<br/>\n");
 };
 
 export const getFeed = async () => {

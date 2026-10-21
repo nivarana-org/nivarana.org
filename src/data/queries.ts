@@ -1,5 +1,6 @@
 import { sql } from "kysely";
 import { db } from "./db";
+import type { PostLayout, Story } from "./story";
 
 type Author = {
     id: number;
@@ -81,7 +82,7 @@ const articleData = sql`
     b.created_at,
     b.published_at,
     b.views,
-    b.type
+    b.layout
 `;
 
 const articleJSONData = sql`
@@ -98,11 +99,16 @@ type Post = {
     image: string;
     slug: string;
     intro: string;
-    contents: string;
+    /**
+     * The story document. Kysely's `ParseJSONResultsPlugin` hands us an object
+     * whenever the stored value looks like JSON, so this is either the parsed
+     * document or the raw JSON string — use `parseStory` to read it.
+     */
+    contents: string | Story;
     created_at: Date;
     published_at: Date;
     views: number;
-    type: "article" | "photo-essay";
+    layout: PostLayout;
     categories: Category[];
     tags: Tag[];
     authors: Author[];
@@ -236,7 +242,7 @@ export const getArticlesByRelation = (
             "b.intro",
             "b.created_at",
             "b.updated_at",
-            "b.type",
+            "b.layout",
             "b.status",
             "b.published_at",
             "b.language",

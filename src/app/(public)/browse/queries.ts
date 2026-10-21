@@ -1,1 +1,1 @@
-export { getArticlesOverview } from "@/data/posts";
+export { getPublishedPostPreviews } from "@/data/posts";

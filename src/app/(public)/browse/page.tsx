@@ -1,9 +1,9 @@
-import { getArticlesOverview } from "./queries";
+import { getPublishedPostPreviews } from "./queries";
 import { getImageURLFromFileName } from "@/utils/paths";
 import { ArticleCard } from "./_components/ArticleCard";
 
 export default async function BrowsePage() {
-    const articles = await getArticlesOverview();
+    const articles = await getPublishedPostPreviews();
 
     return (
         <div className="container mx-auto p-4">
@@ -14,7 +14,7 @@ export default async function BrowsePage() {
                         id={article.id}
                         slug={article.slug}
                         title={article.title}
-                        type={article.type}
+                        category={article.categories?.[0]?.slug ?? ""}
                         imageUrl={getImageURLFromFileName(article.image)}
                     />
                 ))}

@@ -60,7 +60,6 @@ async function LatestArticle({ a }) {
                 href={getArticleSlug({
                     category: a.categories[0],
                     slug: a.slug,
-                    type: a.type,
                 })}
                 className="block"
             >
@@ -81,7 +80,6 @@ async function LatestArticle({ a }) {
                     href={getArticleSlug({
                         category: a.categories[0],
                         slug: a.slug,
-                        type: a.type,
                     })}
                     className="block"
                 >
@@ -116,7 +114,6 @@ async function RestArticles({ a }) {
                 href={getArticleSlug({
                     category: a.categories[0],
                     slug: a.slug,
-                    type: a.type,
                 })}
                 className="flex-shrink-0 mr-3 block"
             >
@@ -137,7 +134,6 @@ async function RestArticles({ a }) {
                     href={getArticleSlug({
                         category: a.categories[0],
                         slug: a.slug,
-                        type: a.type,
                     })}
                     className="block"
                 >

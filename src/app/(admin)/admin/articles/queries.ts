@@ -1,1 +1,1 @@
-export { getArticlesOverview } from "@/data/posts";
+export { getArticlesOverview, type PostOverview } from "@/data/posts";

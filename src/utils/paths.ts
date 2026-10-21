@@ -6,27 +6,47 @@ export const getImageURLFromFileName = (filename: string) => {
     return `https://nivarana.org/images/${filename}`;
 };
 
-type GetURLData = {
-    type: string;
+type CategoryRef = {
+    name?: string;
     slug: string;
-    category: {
-        name: string;
-        slug: string;
-    };
+};
+
+type GetURLData = {
+    slug: string;
+    category?: CategoryRef | CategoryRef[];
+    categories?: CategoryRef[];
+    /**
+     * The chapter to deep link to. Only meaningful for paged stories, whose
+     * chapters are addressed as `?chapter=N`.
+     */
+    chapter?: number | string | null;
+};
+
+const firstCategory = (data: GetURLData): CategoryRef | undefined => {
+    if (Array.isArray(data.category)) {
+        return data.category[0];
+    }
+    if (data.category) {
+        return data.category;
+    }
+    return data.categories?.[0];
 };
 
 export const getArticlePublicURL = (data: GetURLData) => {
-    if (Array.isArray(data.category)) {
-        data.category = data.category[0];
-    }
-    if (Array.isArray(data.categories)) {
-        data.category = data.categories[0];
-    }
     return `https://nivarana.org${getArticleSlug(data)}`;
 };
 
 export const getArticleSlug = (data: GetURLData) => {
-    return `/${data.category.slug}/${data.slug}`;
+    const category = firstCategory(data);
+    const slug = `/${category?.slug ?? ""}/${data.slug}`;
+    if (
+        data.chapter === undefined ||
+        data.chapter === null ||
+        data.chapter === ""
+    ) {
+        return slug;
+    }
+    return `${slug}?chapter=${data.chapter}`;
 };
 
 export const getReturnURL = (base: string, returnURL: string | undefined) => {

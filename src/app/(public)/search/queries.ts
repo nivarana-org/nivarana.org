@@ -45,7 +45,6 @@ export const searchArticles = (query: string) =>
             "b.intro",
             "b.created_at",
             "b.updated_at",
-            "b.type",
             "b.published_at",
             authorsFragment.as("authors"),
             categoriesFragment.as("category"),
@@ -53,7 +52,7 @@ export const searchArticles = (query: string) =>
         ])
         .where("b.status", "=", "PUBLISHED")
         .where(
-            sql<SqlBool>`MATCH(b.title, b.contents, b.intro) AGAINST (${query})`,
+            sql<SqlBool>`MATCH(b.title, b.body_text, b.intro) AGAINST (${query})`,
         )
         .execute();
 

@@ -1,39 +1,32 @@
-import moment from "moment";
-import { NAuthorsBio } from "../authors/Bios";
 import Image from "next/image";
-import PageShare from "../blocks/PageShare";
-import { Suspense } from "react";
-import ViewCountUpdateOnly from "../blocks/ViewUpdateOnly";
-import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
-import BodyWithPopover from "./BodyWithPopover";
-import PageTranslate from "../blocks/PageTranslate";
 import Link from "next/link";
-import ProgressTracker from "./ProgressTracker";
 import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
+
+import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
+import type { Chapter } from "@/data/story";
+import Sidebar from "@/app/(public)/_components/sidebar";
+
+import PageShare from "../blocks/PageShare";
 import AudioPlayer from "./AudioPlayer";
-import CommentsSection from "../comments/CommentsSection";
+import ProgressTracker from "./ProgressTracker";
+import StoryChapter from "./StoryChapter";
+import StoryFooter from "./StoryFooter";
+import StoryMeta from "./StoryMeta";
+import type { StoryPost } from "./types";
 
-interface ArticleProps {
-    data: {
-        id: number;
-        slug: string;
-        title: string;
-        intro: string | null;
-        image: string | null;
-        contents: string;
-        created_at: Date;
-        published_at: Date;
-        views: number;
-        type: string;
-        categories: { slug: string; name: string }[];
-        tags: { id: number; slug: string; name: string }[];
-        authors: { id: number; slug: string; name: string }[];
-        comments_count: number;
-    };
-}
-
-function Article({ data }: ArticleProps) {
+/**
+ * The continuous layout: the whole story is one long read, the way a plain
+ * article reads today. A story with a single chapter renders exactly as an
+ * article always has.
+ */
+export default function ContinuousStory({
+    data,
+    chapters,
+}: {
+    data: StoryPost;
+    chapters: Chapter[];
+}) {
     return (
         <>
             <div className="flex flex-col md:flex-row">
@@ -76,35 +69,7 @@ function Article({ data }: ArticleProps) {
             <div className="flex flex-col md:flex-row max-w-7xl gap-x-8">
                 {/* Authors */}
                 <div className="px-2 mt-4 py-2 md:basis-2xs">
-                    {data.authors.map((a) => (
-                        <div
-                            key={a.id}
-                            className="p-1 hover:bg-cyan-200 text-black text-md font-bold"
-                        >
-                            <Link href={"/author/" + a.slug}>{a.name}</Link>
-                        </div>
-                    ))}
-                    <div className="p-1">
-                        Published:{" "}
-                        {moment(data.created_at).format("MMMM DD, YYYY")}
-                    </div>
-                    {data.tags.length > 0 && (
-                        <ul className="list-disc pl-5 p-1 text-sm text-black">
-                            {data.tags.map((t) => (
-                                <li key={t.id} className="hover:bg-cyan-200">
-                                    <Link href={`/tag/${t.slug}`}>
-                                        {t.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    <div className="flex">
-                        <PageTranslate url={getArticlePublicURL(data)} />
-                    </div>
-                    <Suspense>
-                        <ViewCountUpdateOnly id={data.id} count={data.views} />
-                    </Suspense>
+                    <StoryMeta data={data} />
                     <motion.div
                         className="hidden md:block md:sticky top-0 bg-nivarana-white/50 max-w-12"
                         initial={{ translateX: "-10px", opacity: 0 }}
@@ -122,7 +87,13 @@ function Article({ data }: ArticleProps) {
                     <AudioPlayer
                         src={getImageURLFromFileName(`audio/${data.id}.mp3`)}
                     />
-                    <BodyWithPopover body={data.contents} />
+                    {chapters.map((chapter, index) => (
+                        <StoryChapter
+                            key={index}
+                            chapter={chapter}
+                            imageVariant="inline"
+                        />
+                    ))}
                 </div>
                 {/* Side */}
                 <aside className="px-2 md:basis-3xs self-end mb-10">
@@ -169,13 +140,10 @@ function Article({ data }: ArticleProps) {
                 url={getArticlePublicURL(data)}
                 media={data.image}
             ></PageShare>
-            <NAuthorsBio authors={data.authors} />
-            <CommentsSection
-                blogId={data.id}
-                initialCount={data.comments_count}
-            />
+            <StoryFooter data={data} />
+            <div className="lg:col-span-1">
+                <Sidebar />
+            </div>
         </>
     );
 }
-
-export default Article;

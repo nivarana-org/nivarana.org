@@ -3,34 +3,22 @@ import { getAllAuthors } from "./queries";
 import { getAllCategories } from "./queries";
 import { getAllTags } from "./queries";
 import { getArticleFullWithRelations } from "./queries";
+import { deriveLayout, serializeStory } from "@/data/story";
 
-type PostType = "article" | "photo-essay";
-
-const getEmptyDescription = (type: PostType) => {
-    switch (type) {
-        case "article":
-            return "";
-        case "photo-essay":
-            return JSON.stringify({ chapters: [{ title: "", body: "" }] });
-    }
-};
-
-const getEmptyPost = (postId: number, postType: PostType) => {
+const getEmptyPost = (postId: number) => {
     return {
         title: "",
-        contents: getEmptyDescription(postType),
+        contents: serializeStory([{ title: "", body: "" }]),
         id: postId,
         image: "logo.png",
         status: "DRAFT",
-        type: postType ?? "article",
+        layout: deriveLayout(1),
     };
 };
 
 export default async function Page(props: Props) {
     const params = await props.params;
-    const searchParams = await props.searchParams;
     const postId = Number(params.id);
-    const postType = searchParams.type;
     const [rowPost, rowAllAuthors, rowAllCategories, rowAllTags] =
         await Promise.all([
             getArticleFullWithRelations(postId),
@@ -40,7 +28,7 @@ export default async function Page(props: Props) {
         ]);
     const post = rowPost
         ? JSON.parse(JSON.stringify(rowPost))
-        : getEmptyPost(postId, postType);
+        : getEmptyPost(postId);
     const allAuthors = rowAllAuthors.map((a) => ({ ...a }));
     const allCategories = rowAllCategories.map((c) => ({ ...c }));
     const allTags = rowAllTags.map((t) => ({ ...t }));
@@ -50,12 +38,10 @@ export default async function Page(props: Props) {
             allAuthors={allAuthors}
             allCategories={allCategories}
             allTags={allTags}
-            type={post.type}
         />
     );
 }
 
 type Props = {
     params: Promise<{ id: string }>;
-    searchParams: Promise<{ type: PostType }>;
 };

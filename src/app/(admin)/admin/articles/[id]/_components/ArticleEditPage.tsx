@@ -16,22 +16,24 @@ import {
 import type { SelectChangeEvent } from "@mui/material";
 import { addOrEditPostAction } from "./post";
 import { addTagAction } from "./tag-actions";
-import type { Article } from "../queries";
-import dynamic from "next/dynamic";
+import type { EditablePost } from "../queries";
 import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
-import PhotoEssayEditor from "./PhotoEssayEditor";
+import StoryEditor from "./StoryEditor";
 import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-title-slug-reducer";
-
-const ArticleEditor = dynamic(
-    () => import("@/app/(admin)/admin/articles/[id]/_components/ArticleEditor"),
-    {
-        ssr: false,
-        loading: () => <p>Loading editor....</p>,
-    },
-);
+import {
+    CONTINUOUS_LAYOUT,
+    PAGED_LAYOUT,
+    deriveLayout,
+    ensureChapter,
+    isPostLayout,
+    parseStory,
+    serializeStory,
+    type Chapter,
+    type PostLayout,
+} from "@/data/story";
 
 const statuses = [
     { id: "DRAFT", name: "Draft" },
@@ -69,13 +71,11 @@ export default function ArticleEditPage({
     allAuthors,
     allCategories,
     allTags: initialAllTags,
-    type,
 }: {
-    post: Article;
+    post: EditablePost;
     allAuthors: { id: string; name: string }[];
     allCategories: { id: string; name: string }[];
     allTags: { id: string; name: string }[];
-    type: "article" | "photo-essay";
 }) {
     const [submitting, setSubmitting] = useState(false);
     const [values, dispatch] = useImmerReducer(articleEditReducer, {
@@ -152,9 +152,32 @@ export default function ArticleEditPage({
     };
     const [category, setCategory] = useState(post?.category?.[0]?.id ?? "");
     const [image, setImage] = useState(post?.image);
-    const [description, setDescription] = useState(
-        type === "article" ? post?.contents : JSON.parse(post?.contents),
+    const [chapters, setChapters] = useState<Chapter[]>(
+        ensureChapter(parseStory(post?.contents).chapters),
     );
+    // The layout of a story follows its number of chapters: one chapter reads
+    // as an article, several read as a photo essay. `layoutChoice` holds the
+    // layout the author picked by hand, which wins over the derived one. A
+    // stored layout that differs from the derived one is the author's own
+    // choice from an earlier session, so it is picked up the same way.
+    const [layoutChoice, setLayoutChoice] = useState<PostLayout | null>(() => {
+        const stored = post?.layout;
+        if (!isPostLayout(stored)) {
+            return null;
+        }
+        return stored === deriveLayout(chapters.length) ? null : stored;
+    });
+    const layout = layoutChoice ?? deriveLayout(chapters.length);
+
+    const handleChaptersChange = (
+        updater: (previous: Chapter[]) => Chapter[],
+    ) => {
+        setChapters(updater);
+    };
+
+    const handleLayoutChange = (event: SelectChangeEvent) => {
+        setLayoutChoice(event.target.value as PostLayout);
+    };
     return (
         <form
             className="p-4 max-w-(--breakpoint-sm) mx-auto"
@@ -170,13 +193,8 @@ export default function ArticleEditPage({
                 }
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
-                data.append(
-                    "contents",
-                    type === "article"
-                        ? description
-                        : JSON.stringify(description),
-                );
-                data.append("type", type);
+                data.append("contents", serializeStory(chapters));
+                data.append("layout", layout);
                 data.append("authors", authors.join(","));
                 data.append("tags", JSON.stringify(tags));
                 data.append("image", image);
@@ -203,7 +221,12 @@ export default function ArticleEditPage({
                                     "Post updated successfully. Open the post now?",
                                 )
                             ) {
-                                window.open(`/${type}/${values.slug}`);
+                                const categorySlug = post?.category?.[0]?.slug;
+                                if (categorySlug) {
+                                    window.open(
+                                        `/${categorySlug}/${values.slug}`,
+                                    );
+                                }
                             }
                             break;
                         default:
@@ -353,25 +376,48 @@ export default function ArticleEditPage({
                 <FormControl fullWidth>
                     <FormLabel className="font-bold">Image</FormLabel>
                     <ImagePicker
-                        defaultValue={image}
+                        defaultValue={image ?? ""}
                         onChange={(newValue: string) => {
                             setImage(newValue);
                         }}
                     ></ImagePicker>
                 </FormControl>
 
-                {type === "article" ? (
-                    <ArticleEditor
-                        initialValue={post?.contents}
-                        value={description}
-                        onEditorChange={(newValue) => setDescription(newValue)}
-                    />
-                ) : (
-                    <PhotoEssayEditor
-                        value={description}
-                        onEditorChange={(newValue) => setDescription(newValue)}
-                    />
-                )}
+                <StoryEditor
+                    chapters={chapters}
+                    onChange={handleChaptersChange}
+                />
+
+                <FormControl fullWidth>
+                    <InputLabel htmlFor="layout-select" className="font-bold">
+                        Layout
+                    </InputLabel>
+                    <Select
+                        id="layout-select"
+                        value={layout}
+                        onChange={handleLayoutChange}
+                        label="Layout"
+                        displayEmpty
+                        required
+                        renderValue={(selected) =>
+                            selected === PAGED_LAYOUT
+                                ? "Paged (photo essay)"
+                                : "Continuous (article)"
+                        }
+                    >
+                        <MenuItem value={CONTINUOUS_LAYOUT}>
+                            Continuous (article)
+                        </MenuItem>
+                        <MenuItem value={PAGED_LAYOUT}>
+                            Paged (photo essay)
+                        </MenuItem>
+                    </Select>
+                    <p className="text-xs text-gray-600 mt-1">
+                        A story with one chapter reads as an article, a story
+                        with several reads as a photo essay. Choose a layout to
+                        override that.
+                    </p>
+                </FormControl>
 
                 <FormControl fullWidth>
                     <InputLabel htmlFor="language-select" className="font-bold">
