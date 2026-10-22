@@ -203,7 +203,7 @@ async function getCategoriesWithArticles(
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
                         ${articleObjectFields}
-                    ) ORDER BY b.id DESC${limitClause}
+                    ) ORDER BY b.published_at DESC${limitClause}
                 )
                 FROM blogs b
                 WHERE b.id IN (
