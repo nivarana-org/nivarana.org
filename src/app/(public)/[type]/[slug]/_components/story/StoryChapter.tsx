@@ -13,10 +13,12 @@ export default function StoryChapter({
     chapter,
     imageVariant = "zoom",
     bodyClassName = "",
+    dropCap = false,
 }: {
     chapter: Chapter;
     imageVariant?: "zoom" | "inline";
     bodyClassName?: string;
+    dropCap?: boolean;
 }) {
     const { title, body, image } = chapter;
     return (
@@ -42,7 +44,11 @@ export default function StoryChapter({
                     {title}
                 </div>
             ) : null}
-            <BodyWithPopover body={body} className={bodyClassName} />
+            <BodyWithPopover
+                body={body}
+                className={bodyClassName}
+                dropCap={dropCap}
+            />
         </>
     );
 }

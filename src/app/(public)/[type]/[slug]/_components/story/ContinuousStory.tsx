@@ -120,6 +120,7 @@ export default function ContinuousStory({
                                 key={index}
                                 chapter={chapter}
                                 imageVariant="inline"
+                                dropCap={false}
                             />
                         ))}
                         {/* Side */}
