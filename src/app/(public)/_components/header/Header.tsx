@@ -48,7 +48,7 @@ function DesktopMenuComponent({ categories }: HeaderProps) {
             {categories.map((c) => (
                 <li
                     key={c.slug}
-                    className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase"
+                    className="py-2 px-4 hover:text-nivarana-green hover:scale-110 transition-all uppercase font-heading"
                 >
                     <Link href={`/category/${c.slug}`}>{c.name}</Link>
                 </li>

@@ -44,7 +44,7 @@ export default function ContinuousStory({
                                 <ViewTransition
                                     name={`category-title-${data.category.slug}`}
                                 >
-                                    <div className="uppercase p-1 text-nivarana-charcoal md:text-xl">
+                                    <div className="uppercase p-1 text-nivarana-charcoal md:text-xl font-heading">
                                         <Link
                                             href={`/category/${data.category.slug}`}
                                         >

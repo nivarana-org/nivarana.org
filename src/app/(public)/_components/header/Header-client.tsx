@@ -55,7 +55,7 @@ function HeaderClient({ categories }: HeaderProps) {
                         {categories.map((c) => (
                             <li
                                 key={c.slug}
-                                className="py-2 px-4 bg-white rounded-md shadow-sm uppercase"
+                                className="py-2 px-4 bg-white rounded-md shadow-sm uppercase font-heading"
                             >
                                 <Link
                                     className="block"
