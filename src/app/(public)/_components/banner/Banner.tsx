@@ -110,7 +110,7 @@ export default function Banner() {
 
                 {contentHead && (
                     <div
-                        className="prose mb-4 max-w-none"
+                        className="mb-4 max-w-none"
                         dangerouslySetInnerHTML={{ __html: contentHead }}
                     />
                 )}
@@ -127,7 +127,7 @@ export default function Banner() {
 
                 {contentFoot && (
                     <div
-                        className="prose mt-4 max-w-none"
+                        className="mt-4 max-w-none"
                         dangerouslySetInnerHTML={{ __html: contentFoot }}
                     />
                 )}
