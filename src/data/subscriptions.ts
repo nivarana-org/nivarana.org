@@ -26,7 +26,7 @@ const toSubscriptionPayment = (
 
 const toWebhookEvent = (row: WebhookEventRow): WebhookEvent => ({
     ...row,
-    payload: JSON.parse(row.payload),
+    payload: row.payload as unknown as object,
     processed: toBoolean(row.processed),
 });
 
