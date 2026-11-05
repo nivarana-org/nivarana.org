@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
-import { Tinos } from "next/font/google";
+import { Arsenal, Tinos } from "next/font/google";
 
 import "./globals.css";
 
-const font = Tinos({
+const bodyFont = Tinos({
     subsets: ["latin"],
     // thin = 100, extralight = 200, light = 300,
     // normal = 400, medium = 500, semibold = 600,
     // bold = 700, extrabold = 800, black = 900
     weight: ["400", "700"],
     display: "swap",
-    variable: "--font-nivarana",
+    variable: "--font-tinos",
+});
+
+const headingFont = Arsenal({
+    subsets: ["latin"],
+    weight: ["400", "700"],
+    display: "swap",
+    variable: "--font-arsenal",
 });
 
 export const fetchCache = "default-cache";
@@ -33,7 +40,10 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={`${font.variable}`}>
+        <html
+            lang="en"
+            className={`${bodyFont.variable} ${headingFont.variable}`}
+        >
             <body className="font-body">{children}</body>
         </html>
     );

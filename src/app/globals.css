@@ -2,7 +2,11 @@
 
 @theme {
   --font-body:
-    "Tinos", 'Apple Color Emoji', 'Segoe UI Emoji',
+    var(--font-tinos), "Tinos", 'Apple Color Emoji', 'Segoe UI Emoji',
+    serif, system-ui;
+
+  --font-heading:
+    var(--font-arsenal), "Arsenal", 'Apple Color Emoji', 'Segoe UI Emoji',
     serif, system-ui;
 
   --color-background: #ffffff;
@@ -46,6 +50,34 @@
     @apply leading-[1.75] mb-6;
   }
 
+  /*
+    Tailwind's preflight resets heading size and weight to `inherit`, so
+    article headings need an explicit scale to look like headings again.
+  */
+  .post-content h1 {
+    @apply text-3xl font-bold leading-tight mt-8 mb-4 text-balance;
+  }
+
+  .post-content h2 {
+    @apply text-2xl font-bold leading-tight mt-8 mb-4 text-balance;
+  }
+
+  .post-content h3 {
+    @apply text-xl font-semibold leading-snug mt-6 mb-3 text-balance;
+  }
+
+  .post-content h4 {
+    @apply text-lg font-semibold leading-snug mt-6 mb-3 text-balance;
+  }
+
+  .post-content h5 {
+    @apply text-base font-semibold leading-snug mt-4 mb-2 text-balance;
+  }
+
+  .post-content h6 {
+    @apply text-sm font-semibold uppercase tracking-wide leading-snug mt-4 mb-2 text-balance;
+  }
+
   .post-content a {
     @apply outline-0 underline transition-all duration-200 ease-in-out text-nivarana-green;
   }
@@ -86,6 +118,15 @@
 }
 
 @layer base {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
 
   p {
     margin-bottom: 1rem;
