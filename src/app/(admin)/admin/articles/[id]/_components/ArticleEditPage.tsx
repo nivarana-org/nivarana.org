@@ -151,7 +151,9 @@ export default function ArticleEditPage({
         newTagDispatch({ type: "reset" });
         setNewTagOpen(false);
     };
-    const [category, setCategory] = useState(post?.category?.[0]?.id ?? "");
+    const [category, setCategory] = useState(
+        post?.category ? `${post.category.id}` : "",
+    );
     const [image, setImage] = useState(post?.image);
     const [chapters, setChapters] = useState<Chapter[]>(
         ensureChapter(parseStory(post?.contents).chapters),
@@ -222,7 +224,7 @@ export default function ArticleEditPage({
                                     "Post updated successfully. Open the post now?",
                                 )
                             ) {
-                                const categorySlug = post?.category?.[0]?.slug;
+                                const categorySlug = post?.category?.slug;
                                 if (categorySlug) {
                                     window.open(
                                         `/${categorySlug}/${values.slug}`,
