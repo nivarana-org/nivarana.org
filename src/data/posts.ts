@@ -3,7 +3,12 @@ import { sql, type SqlBool } from "kysely";
 import { asAdmin } from "./authorization";
 import { db } from "./db";
 import { replacePostRelation } from "./post-relations";
-import { authorsFragment, categoryFragment, tagsFragment } from "./queries";
+import {
+    authorsFragment,
+    categoryFragment,
+    tagsFragment,
+    type Category,
+} from "./queries";
 import {
     parseStory,
     resolveLayout,
@@ -166,24 +171,45 @@ export const searchArticles = (query: string) =>
         )
         .execute();
 
-export const getPopularPosts = () =>
-    db
-        .selectFrom("blogs as b")
-        .select([
-            "b.id",
-            "b.title",
-            "b.slug",
-            "b.image",
-            "b.intro",
-            "b.layout",
-            authorsFragment.as("authors"),
-            categoryFragment.as("category"),
-            tagsFragment.as("tags"),
-        ])
-        .where("b.status", "=", "PUBLISHED")
-        .orderBy("b.views", "desc")
-        .limit(5)
-        .execute();
+export type RelatedPost = {
+    id: number;
+    title: string | null;
+    slug: string | null;
+    image: string | null;
+    category: Category;
+};
+
+/**
+ * Posts that share the most tags with the current post, most similar first.
+ */
+export const getRelatedPosts = async (
+    tagIds: number[],
+    excludePostId?: number,
+) => {
+    if (tagIds.length === 0) return [];
+
+    const result = await sql<RelatedPost>`SELECT
+        b.id,
+        b.title,
+        b.slug,
+        b.image,
+        ${categoryFragment} AS category
+        FROM blogs b
+        JOIN (
+            SELECT pr.post_id, COUNT(DISTINCT pr.relation_id) AS shared_tags
+            FROM post_relations pr
+            WHERE pr.relation_type = 'tag'
+                AND pr.relation_id IN (${sql.join(tagIds)})
+            GROUP BY pr.post_id
+        ) matches ON matches.post_id = b.id
+        WHERE b.status = 'PUBLISHED'
+            ${excludePostId ? sql`AND b.id != ${excludePostId}` : sql``}
+        ORDER BY matches.shared_tags DESC, b.views DESC
+        LIMIT 5
+    ;`.execute(db);
+
+    return result.rows;
+};
 
 export const incrementBlogViewCount = async (id: number) => {
     await db

@@ -1,5 +1,4 @@
 import ArticlePreview from "@/app/(public)/_components/article/ArticlePreview";
-import Sidebar from "@/app/(public)/_components/sidebar";
 import { getCategoryBySlug } from "./queries";
 import { getRedirect } from "./queries";
 import { Metadata, ResolvingMetadata } from "next";
@@ -23,31 +22,24 @@ async function Page(props: Props) {
         }
     }
     return (
-        <div className="max-w-(--breakpoint-xl) mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
-                <div className="lg:col-span-2">
-                    <div className="uppercase text-black mb-8 p-4 font-bold text-4xl mx-auto">
-                        {category.name}
-                    </div>
-                    <div
-                        className="mx-auto mb-8 p-4 border-b-2"
-                        dangerouslySetInnerHTML={{
-                            __html: category.intro,
-                        }}
-                    ></div>
-
-                    {category.articles.map((item) => (
-                        <ArticlePreview
-                            {...item}
-                            key={item.slug}
-                            category={item.category}
-                        />
-                    ))}
-                </div>
-                <div className="lg:col-span-1">
-                    <Sidebar />
-                </div>
+        <div className="max-w-(--breakpoint-xl) mx-auto mt-4">
+            <div className="uppercase text-black mb-8 p-4 font-bold text-4xl mx-auto">
+                {category.name}
             </div>
+            <div
+                className="mx-auto mb-8 p-4 border-b-2"
+                dangerouslySetInnerHTML={{
+                    __html: category.intro,
+                }}
+            ></div>
+
+            {category.articles.map((item) => (
+                <ArticlePreview
+                    {...item}
+                    key={item.slug}
+                    category={item.category}
+                />
+            ))}
         </div>
     );
 }

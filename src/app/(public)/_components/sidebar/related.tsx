@@ -1,18 +1,26 @@
-import { getPopularPosts } from "@/data/posts";
+import { getRelatedPosts } from "@/data/posts";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
 
-const PopularPosts = async () => {
-    const posts = await getPopularPosts();
+type RelatedPostsProps = {
+    tags: { id: number }[];
+    excludePostId?: number;
+};
+
+const RelatedPosts = async ({ tags, excludePostId }: RelatedPostsProps) => {
+    const posts = await getRelatedPosts(
+        tags.map((tag) => tag.id),
+        excludePostId,
+    );
     if (posts.length === 0) return;
     return (
         <div className="mt-12 border-t border-nivarana-green/30 px-4 pb-4 pt-6">
             <h3 className="mb-4 text-xl font-bold text-nivarana-green">
-                Popular Posts
+                Related Posts
             </h3>
             <div className="flex flex-col">
-                {posts.slice(0, 5).map(({ image, title, slug, category }) => {
+                {posts.map(({ image, title, slug, category }) => {
                     return (
                         <Link
                             key={slug}
@@ -32,10 +40,10 @@ const PopularPosts = async () => {
                                 />
                             </div>
                             <div className="min-w-0">
-                                <div className="mb-1 text-xs uppercase tracking-wide text-nivarana-green">
+                                <div className="mb-1 text-xs uppercase tracking-wide text-nivarana-green font-heading">
                                     {category?.name}
                                 </div>
-                                <h6 className="line-clamp-2 text-base leading-snug text-nivarana-charcoal transition-colors duration-200 group-hover:text-nivarana-green">
+                                <h6 className="line-clamp-2 text-base leading-snug text-nivarana-charcoal transition-colors duration-200 group-hover:text-nivarana-green font-heading">
                                     {title}
                                 </h6>
                             </div>
@@ -47,4 +55,4 @@ const PopularPosts = async () => {
     );
 };
 
-export default PopularPosts;
+export default RelatedPosts;

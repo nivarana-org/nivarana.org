@@ -1,9 +1,16 @@
-import PopularPosts from "./popular";
+import RelatedPosts from "./related";
 
-function Sidebar() {
+type SidebarProps = {
+    post: {
+        id: number;
+        tags: { id: number }[];
+    };
+};
+
+function Sidebar({ post }: SidebarProps) {
     return (
         <div className="sidebar">
-            <PopularPosts></PopularPosts>
+            <RelatedPosts tags={post.tags} excludePostId={post.id} />
         </div>
     );
 }
