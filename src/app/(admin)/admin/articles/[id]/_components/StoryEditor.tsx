@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 
 import type { Chapter } from "@/data/story";
-import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
+import MediaPicker from "@/app/(admin)/_components/media/MediaPicker";
 
 import ArticleEditor from "./ArticleEditor";
 
@@ -185,7 +185,7 @@ export default function StoryEditor({
                                         <FormLabel className="font-bold">
                                             Image
                                         </FormLabel>
-                                        <ImagePicker
+                                        <MediaPicker
                                             defaultValue={chapter.image ?? ""}
                                             onChange={(newValue: string) => {
                                                 revealExtra(index, "image");
@@ -193,7 +193,7 @@ export default function StoryEditor({
                                                     image: newValue,
                                                 });
                                             }}
-                                        ></ImagePicker>
+                                        ></MediaPicker>
                                     </FormControl>
                                 ) : null}
                             </div>

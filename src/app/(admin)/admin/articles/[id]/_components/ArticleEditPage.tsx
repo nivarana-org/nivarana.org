@@ -17,7 +17,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { addOrEditPostAction } from "./post";
 import { addTagAction } from "./tag-actions";
 import type { EditablePost } from "../queries";
-import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
+import MediaPicker from "@/app/(admin)/_components/media/MediaPicker";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import type { Moment } from "moment";
@@ -373,12 +373,12 @@ export default function ArticleEditPage({
 
                 <FormControl fullWidth>
                     <FormLabel className="font-bold">Image</FormLabel>
-                    <ImagePicker
+                    <MediaPicker
                         defaultValue={image ?? ""}
                         onChange={(newValue: string) => {
                             setImage(newValue);
                         }}
-                    ></ImagePicker>
+                    ></MediaPicker>
                 </FormControl>
 
                 <StoryEditor

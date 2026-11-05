@@ -10,7 +10,7 @@ import {
 import type { Author } from "../queries";
 import { sluggify } from "@/utils/string";
 import dynamic from "next/dynamic";
-import ImagePicker from "@/app/(admin)/admin/_components/ImagePicker";
+import MediaPicker from "@/app/(admin)/_components/media/MediaPicker";
 import { addOrEditAuthorAction } from "../actions";
 
 const ArticleEditor = dynamic(
@@ -112,12 +112,12 @@ export default function AuthorEditPage({ author }: { author: Author }) {
 
             <FormControl>
                 <FormLabel className="font-bold">Image</FormLabel>
-                <ImagePicker
+                <MediaPicker
                     defaultValue={author?.image || "author.png"}
                     onChange={(newValue: string) => {
                         setImage(newValue);
                     }}
-                ></ImagePicker>
+                ></MediaPicker>
             </FormControl>
 
             <Divider className="my-4"></Divider>

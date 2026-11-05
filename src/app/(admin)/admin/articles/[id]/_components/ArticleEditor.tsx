@@ -2,6 +2,8 @@
 import { useRef } from "react";
 import dynamic from "next/dynamic";
 
+import { uploadMedia } from "@/network/api";
+
 import type { BlobInfo, Editor as TinyMCEEditor } from "tinymce";
 
 const BundledEditor = dynamic(
@@ -19,13 +21,7 @@ type Props = {
 export default function ArticleEditor(props: Props) {
     const editorRef = useRef<TinyMCEEditor | null>(null);
     const imageUploadHandler = async (blobInfo: BlobInfo) => {
-        const formData = new FormData();
-        formData.append("file", blobInfo.blob(), blobInfo.filename());
-        const result = await fetch("/admin/api/images/upload", {
-            body: formData,
-            method: "post",
-        });
-        const data = await result.json();
+        const data = await uploadMedia(blobInfo.blob(), blobInfo.filename());
         return data.link;
     };
     return (
@@ -70,7 +66,7 @@ export default function ArticleEditor(props: Props) {
                     toolbar_mode: "wrap",
                     toolbar_sticky: true,
                     min_height: 600,
-                    images_upload_url: "/admin/api/images/upload",
+                    images_upload_url: "/admin/api/media/upload",
                     automatic_uploads: true,
                     promotion: false,
                     images_upload_handler: imageUploadHandler,

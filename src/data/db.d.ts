@@ -75,6 +75,25 @@ export interface Comments {
     user_id: string;
 }
 
+export interface Media {
+    alt_text: Generated<string | null>;
+    created_at: Generated<Date>;
+    created_date: Date;
+    filename: string;
+    id: Generated<number>;
+    mime_type: Generated<string | null>;
+    original_name: Generated<string | null>;
+    type: Generated<"audio" | "document" | "image">;
+    updated_at: Generated<Date>;
+}
+
+export interface MediaRelations {
+    media_id: number;
+    order: Generated<number>;
+    relation_id: number;
+    relation_type: string;
+}
+
 export interface MembershipPlans {
     created_at: Generated<Date | null>;
     features: string;
@@ -221,6 +240,8 @@ export interface DB {
     blogs: Blogs;
     categories: Categories;
     comments: Comments;
+    media: Media;
+    media_relations: MediaRelations;
     membership_plans: MembershipPlans;
     newsletters: Newsletters;
     post_relations: PostRelations;
