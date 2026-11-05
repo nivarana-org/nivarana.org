@@ -180,7 +180,15 @@ export type RelatedPost = {
 };
 
 /**
- * Posts that share the most tags with the current post, most similar first.
+ * Posts that share the most specific tags with the current post, most similar
+ * first.
+ *
+ * Each shared tag contributes an inverse-document-frequency weight:
+ *
+ *     ln((publishedPosts + 1) / (postsUsingTag + 1)) + 1
+ *
+ * A tag used by only a few posts therefore contributes much more than a tag
+ * used everywhere, so a rare match can outrank several generic matches.
  */
 export const getRelatedPosts = async (
     tagIds: number[],
@@ -196,15 +204,38 @@ export const getRelatedPosts = async (
         ${categoryFragment} AS category
         FROM blogs b
         JOIN (
-            SELECT pr.post_id, COUNT(DISTINCT pr.relation_id) AS shared_tags
+            SELECT
+                pr.post_id,
+                SUM(
+                    LN(
+                        (totals.posts + 1) / (tag_usage.post_count + 1)
+                    ) + 1
+                ) AS score,
+                COUNT(DISTINCT pr.relation_id) AS shared_tags
             FROM post_relations pr
+            JOIN (
+                SELECT
+                    pr2.relation_id,
+                    COUNT(DISTINCT pr2.post_id) AS post_count
+                FROM post_relations pr2
+                JOIN blogs b2 ON b2.id = pr2.post_id
+                WHERE pr2.relation_type = 'tag'
+                    AND b2.status = 'PUBLISHED'
+                    AND pr2.relation_id IN (${sql.join(tagIds)})
+                GROUP BY pr2.relation_id
+            ) tag_usage ON tag_usage.relation_id = pr.relation_id
+            CROSS JOIN (
+                SELECT COUNT(*) AS posts
+                FROM blogs
+                WHERE status = 'PUBLISHED'
+            ) totals
             WHERE pr.relation_type = 'tag'
                 AND pr.relation_id IN (${sql.join(tagIds)})
             GROUP BY pr.post_id
         ) matches ON matches.post_id = b.id
         WHERE b.status = 'PUBLISHED'
             ${excludePostId ? sql`AND b.id != ${excludePostId}` : sql``}
-        ORDER BY matches.shared_tags DESC, b.views DESC
+        ORDER BY matches.score DESC, matches.shared_tags DESC, b.views DESC
         LIMIT 5
     ;`.execute(db);
 
