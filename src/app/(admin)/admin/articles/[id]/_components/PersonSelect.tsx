@@ -11,20 +11,19 @@ type Props = {
     people: Person[];
     value: number[];
     onChange: (ids: number[]) => void;
-    label?: string;
+    label: string;
     helperText?: string;
 };
 
 /**
- * A searchable multi-person picker for article editors. The options come from
- * the authors table: an editor is a person, just with a different role on the
- * article.
+ * A searchable multi-person picker. Authors and editors are both stored in the
+ * authors table, so they share the same options and selection behaviour.
  */
-export default function EditorSelect({
+export default function PersonSelect({
     people,
     value,
     onChange,
-    label = "Editors",
+    label,
     helperText,
 }: Props) {
     const selectedPeople = people.filter((person) => value.includes(person.id));

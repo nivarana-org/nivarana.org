@@ -19,7 +19,7 @@ export const getAllAuthors = () =>
     db
         .selectFrom("authors")
         .select(["id", "name", "slug"])
-        .orderBy("id", "desc")
+        .orderBy("name", "asc")
         .execute();
 
 /**

@@ -22,7 +22,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import type { Moment } from "moment";
 import StoryEditor from "./StoryEditor";
-import EditorSelect from "./EditorSelect";
+import PersonSelect from "./PersonSelect";
 import RichTextEditor from "@/app/(admin)/admin/_components/RichTextEditor";
 import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-title-slug-reducer";
@@ -105,12 +105,9 @@ export default function ArticleEditPage({
         }
     };
 
-    const [authors, setAuthors] = useState<string[]>(
-        post?.authors?.map((a) => `${a.id}`) ?? [],
+    const [authors, setAuthors] = useState<number[]>(
+        post?.authors?.map((author) => author.id) ?? [],
     );
-    const handleAuthorChange = (event: SelectChangeEvent<string[]>) => {
-        setAuthors(event.target.value as string[]);
-    };
     const [editors, setEditors] = useState<number[]>(
         post?.editors?.map((editor) => editor.id) ?? [],
     );
@@ -335,34 +332,13 @@ export default function ArticleEditPage({
                     label="Slug/Link/Path"
                 ></TextField>
 
-                <FormControl fullWidth>
-                    <InputLabel htmlFor="authors-select" className="font-bold">
-                        Choose the authors
-                    </InputLabel>
-                    <Select
-                        id="authors-select"
-                        value={authors}
-                        multiple
-                        label="Choose the authors"
-                        onChange={handleAuthorChange}
-                        renderValue={(selected) =>
-                            selected
-                                .map(
-                                    (id) =>
-                                        allAuthors.find(
-                                            (a) => `${a.id}` === `${id}`,
-                                        )?.name ?? `${id}`,
-                                )
-                                .join(", ")
-                        }
-                    >
-                        {allAuthors.map((a) => (
-                            <MenuItem key={a.id} value={`${a.id}`}>
-                                {a.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <PersonSelect
+                    people={allAuthors}
+                    value={authors}
+                    onChange={setAuthors}
+                    label="Choose the authors"
+                    helperText="Search by name. Authors are sorted alphabetically."
+                />
 
                 <FormControl fullWidth>
                     <InputLabel htmlFor="category-select" className="font-bold">
@@ -467,10 +443,11 @@ export default function ArticleEditPage({
                     />
                 </FormControl>
 
-                <EditorSelect
+                <PersonSelect
                     people={allAuthors}
                     value={editors}
                     onChange={setEditors}
+                    label="Editors"
                     helperText="Choose editor"
                 />
 
