@@ -32,6 +32,12 @@ export type MediaMetadataInput = {
     author_ids?: number[];
 };
 
+export type MediaDuplicateGroup = {
+    hash: string;
+    originals: MediaItem[];
+    duplicates: MediaItem[];
+};
+
 export const isMediaType = (value: unknown): value is MediaType =>
     typeof value === "string" &&
     (MEDIA_TYPES as readonly string[]).includes(value);

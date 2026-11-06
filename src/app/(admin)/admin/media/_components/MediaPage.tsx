@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
     Alert,
     Box,
@@ -109,6 +110,9 @@ export default function MediaPage() {
                     </Typography>
                 </Box>
                 <Box sx={{ display: "flex", gap: 1 }}>
+                    <Button component={Link} href="/admin/media/duplicated">
+                        Find duplicates
+                    </Button>
                     <Button onClick={reload} disabled={loading}>
                         Refresh
                     </Button>

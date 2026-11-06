@@ -1,5 +1,6 @@
 import type {
     MediaAuthorOption,
+    MediaDuplicateGroup,
     MediaItem,
     MediaMetadataInput,
     MediaType,
@@ -41,6 +42,16 @@ export const getMedia = async (type?: MediaType): Promise<MediaItem[]> => {
     }
     const data: MediaResponse = await response.json();
     return data.media;
+};
+
+export const getDuplicateMedia = async (): Promise<MediaDuplicateGroup[]> => {
+    const response = await fetch("/admin/api/media/duplicates");
+    if (!response.ok) {
+        throw new Error(await parseError(response));
+    }
+    const data: { status: boolean; groups: MediaDuplicateGroup[] } =
+        await response.json();
+    return data.groups;
 };
 
 export const getAuthors = async (): Promise<MediaAuthorOption[]> => {
