@@ -26,7 +26,9 @@ export default function PersonSelect({
     label,
     helperText,
 }: Props) {
-    const selectedPeople = people.filter((person) => value.includes(person.id));
+    const selectedPeople = value.map(
+        (v) => people.filter((p) => p.id === v)[0],
+    );
 
     return (
         <Autocomplete

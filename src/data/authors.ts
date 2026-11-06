@@ -18,7 +18,7 @@ export interface Author {
 export const getAllAuthors = () =>
     db
         .selectFrom("authors")
-        .select(["id", "name", "slug"])
+        .select(["id", "name", "slug", "title"])
         .orderBy("name", "asc")
         .execute();
 

@@ -81,7 +81,7 @@ export default function ArticleEditPage({
     allTags: initialAllTags,
 }: {
     post: EditablePost;
-    allAuthors: { id: number; name: string }[];
+    allAuthors: { id: number; name: string; title: string | null }[];
     allCategories: { id: number; name: string }[];
     allTags: { id: number; name: string }[];
 }) {
@@ -110,6 +110,10 @@ export default function ArticleEditPage({
     );
     const [editors, setEditors] = useState<number[]>(
         post?.editors?.map((editor) => editor.id) ?? [],
+    );
+    // People can only be credited as editors when their author title says so.
+    const editorOptions = allAuthors.filter((author) =>
+        (author.title ?? "").toLowerCase().includes("editor"),
     );
     const [tags, setTags] = useState<string[]>(
         post?.tags?.map((t) => `${t.id}`) ?? [],
@@ -261,6 +265,14 @@ export default function ArticleEditPage({
                     alert("Please add at least one tag");
                     return;
                 }
+                if (authors.length === 0) {
+                    alert("Please add authors");
+                    return;
+                }
+                if (editors.length === 0) {
+                    alert("Please add editors");
+                    return;
+                }
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
                 data.append("contents", serializeStory(chapters));
@@ -337,7 +349,7 @@ export default function ArticleEditPage({
                     value={authors}
                     onChange={setAuthors}
                     label="Choose the authors"
-                    helperText="Search by name. Authors are sorted alphabetically."
+                    helperText="Search by name. Order should be preserved."
                 />
 
                 <FormControl fullWidth>
@@ -444,7 +456,7 @@ export default function ArticleEditPage({
                 </FormControl>
 
                 <PersonSelect
-                    people={allAuthors}
+                    people={editorOptions}
                     value={editors}
                     onChange={setEditors}
                     label="Editors"
