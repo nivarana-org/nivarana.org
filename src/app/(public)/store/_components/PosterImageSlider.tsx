@@ -64,7 +64,7 @@ export function PosterImageSlider({
                         src={images[index]}
                         alt={`${alt} — photo ${index + 1}`}
                         fill
-                        className="object-cover transition-transform duration-500"
+                        className="object-contain transition-transform duration-500"
                         sizes="(max-width: 768px) 100vw, 50vw"
                     />
                 </motion.div>
