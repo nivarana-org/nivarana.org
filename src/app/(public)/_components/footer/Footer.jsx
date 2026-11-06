@@ -15,6 +15,9 @@ const Footer = () => {
                     <Link href="/submission-guidelines" className="p-4">
                         Submission Guidelines
                     </Link>
+                    <Link href="/authors" className="p-4">
+                        Authors
+                    </Link>
                 </div>
                 <div className="flex space-x-4">
                     <NivaranaSocialMedia />
