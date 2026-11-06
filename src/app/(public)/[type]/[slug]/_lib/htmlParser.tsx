@@ -7,7 +7,7 @@ import Image from "next/image";
 import { type ReactNode } from "react";
 import { imageConfig } from "@/config/images.mjs";
 import { DfnWithPopover } from "../_components/shared/DfnWithPopover";
-import { getImageURLFromFileName } from "@/utils/paths";
+import { getImageURLFromFileName, RELATIVE_IMAGE_PREFIX } from "@/utils/paths";
 
 function matchHostname(hostname: string, pattern: string): boolean {
     if (pattern.startsWith("**.")) {
@@ -35,11 +35,9 @@ function isImageUrlAllowed(url: string): boolean {
     }
 }
 
-const RELATIVE_PREFIX = "../../images/";
-
 function parseUrl(url: string): string {
-    if (url.startsWith(RELATIVE_PREFIX)) {
-        return getImageURLFromFileName(url.slice(RELATIVE_PREFIX.length));
+    if (url.startsWith(RELATIVE_IMAGE_PREFIX)) {
+        return getImageURLFromFileName(url.slice(RELATIVE_IMAGE_PREFIX.length));
     }
     return url;
 }

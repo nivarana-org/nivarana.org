@@ -64,3 +64,24 @@ export const getMediaTypeInfo = (
     const extension = path.extname(filename).slice(1).toLowerCase();
     return MEDIA_TYPE_INFO[extension];
 };
+
+const EXTENSION_BY_MIME_TYPE = new Map<string, string>();
+for (const [extension, info] of Object.entries(MEDIA_TYPE_INFO)) {
+    if (!EXTENSION_BY_MIME_TYPE.has(info.mime)) {
+        EXTENSION_BY_MIME_TYPE.set(info.mime, extension);
+    }
+}
+
+/**
+ * Finds a known file extension for a MIME type. Used when a downloaded file
+ * has no usable extension in its URL.
+ */
+export const getExtensionForMimeType = (
+    mimeType?: string | null,
+): string | undefined => {
+    if (!mimeType) {
+        return undefined;
+    }
+    const normalized = mimeType.split(";")[0].trim().toLowerCase();
+    return EXTENSION_BY_MIME_TYPE.get(normalized);
+};

@@ -39,6 +39,20 @@ export type EditablePost = {
     tags: { id: number; name: string; slug: string }[];
 };
 
+/**
+ * The date the article was created. Imported media inherits it so the library
+ * keeps the same timeline as the article that references the image.
+ */
+export const getArticleCreatedAt = async (id: number) => {
+    const article = await db
+        .selectFrom("blogs")
+        .select("created_at")
+        .where("id", "=", id)
+        .executeTakeFirst();
+
+    return article?.created_at;
+};
+
 export const getArticleFullWithRelations = (id: number) =>
     db
         .selectFrom("blogs as b")

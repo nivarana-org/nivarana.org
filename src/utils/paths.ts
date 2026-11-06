@@ -15,6 +15,15 @@ export const getImageURLFromFileName = (filename?: string | null) => {
     return `https://nivarana.org/images/${filename}`;
 };
 
+/**
+ * The relative form used in article bodies. Article pages live two levels
+ * below the site root, so this resolves to `/images/<filename>`.
+ */
+export const RELATIVE_IMAGE_PREFIX = "../../images/";
+
+export const getRelativeImageURLFromFileName = (filename: string): string =>
+    `${RELATIVE_IMAGE_PREFIX}${filename}`;
+
 type CategoryRef = {
     name?: string;
     slug: string;

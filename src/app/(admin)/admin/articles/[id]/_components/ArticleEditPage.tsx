@@ -35,6 +35,11 @@ import {
     type Chapter,
     type PostLayout,
 } from "@/data/story";
+import {
+    collectExternalImageSources,
+    replaceExternalImageSources,
+} from "../_lib/external-images";
+import { importExternalImageAction } from "./import-external-image";
 
 const statuses = [
     { id: "DRAFT", name: "Draft" },
@@ -176,6 +181,65 @@ export default function ArticleEditPage({
         updater: (previous: Chapter[]) => Chapter[],
     ) => {
         setChapters(updater);
+    };
+
+    const [imageImportProgress, setImageImportProgress] = useState<{
+        completed: number;
+        total: number;
+    } | null>(null);
+
+    const handleImportExternalImages = async () => {
+        const externalImages = collectExternalImageSources(chapters);
+        if (externalImages.length === 0) {
+            alert("No external images were found in this article.");
+            return;
+        }
+
+        setImageImportProgress({ completed: 0, total: externalImages.length });
+        const replacements = new Map<string, string>();
+        const failures: string[] = [];
+
+        try {
+            for (const [index, source] of externalImages.entries()) {
+                const result = await importExternalImageAction(source, post.id);
+                if (result.status) {
+                    replacements.set(source, result.link);
+                } else {
+                    failures.push(`${source}: ${result.message}`);
+                }
+                setImageImportProgress({
+                    completed: index + 1,
+                    total: externalImages.length,
+                });
+            }
+
+            if (replacements.size > 0) {
+                setChapters((previous) =>
+                    previous.map((chapter) => ({
+                        ...chapter,
+                        body: replaceExternalImageSources(
+                            chapter.body,
+                            replacements,
+                        ),
+                    })),
+                );
+            }
+
+            if (failures.length > 0) {
+                alert(
+                    `Imported ${replacements.size} of ${externalImages.length} images.\n\n` +
+                        `Could not import:\n${failures.join("\n")}`,
+                );
+            } else {
+                alert(
+                    `Imported ${replacements.size} image${
+                        replacements.size === 1 ? "" : "s"
+                    }. Save the article to keep the changes.`,
+                );
+            }
+        } finally {
+            setImageImportProgress(null);
+        }
     };
 
     const handleLayoutChange = (event: SelectChangeEvent) => {
@@ -385,6 +449,19 @@ export default function ArticleEditPage({
                     chapters={chapters}
                     onChange={handleChaptersChange}
                 />
+
+                <div>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        disabled={imageImportProgress !== null}
+                        onClick={() => void handleImportExternalImages()}
+                    >
+                        {imageImportProgress
+                            ? `Importing images (${imageImportProgress.completed}/${imageImportProgress.total})...`
+                            : "Download and upload external images to Nivarana"}
+                    </Button>
+                </div>
 
                 <FormControl fullWidth>
                     <InputLabel htmlFor="layout-select" className="font-bold">
