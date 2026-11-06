@@ -28,6 +28,28 @@ export const authorsFragment = sql<Author[]>`COALESCE(
     ), JSON_ARRAY()
 )`;
 
+/**
+ * The people who edited a post. Editors are stored in the same `authors`
+ * table as authors; only the relation type on `post_relations` differs.
+ */
+export const editorsFragment = sql<Author[]>`COALESCE(
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', a.id,
+                'name', a.name,
+                'email', a.email,
+                'slug', a.slug,
+                'bio', a.description
+            ) ORDER BY er.order ASC
+        )
+        FROM post_relations er
+        JOIN authors a ON er.relation_id = a.id
+        WHERE er.post_id = b.id
+            AND er.relation_type = 'editor'
+    ), JSON_ARRAY()
+)`;
+
 export type Category = {
     id: number;
     name: string;

@@ -6,6 +6,7 @@ import { db } from "@/data/db";
 import {
     authorsFragment,
     categoryFragment,
+    editorsFragment,
     tagsFragment,
 } from "@/data/queries";
 import type { PostLayout, Story } from "@/data/story";
@@ -30,6 +31,13 @@ export type EditablePost = {
     language: string | null;
     views: number;
     authors: {
+        id: number;
+        name: string;
+        email: string;
+        slug: string;
+        bio: string;
+    }[];
+    editors: {
         id: number;
         name: string;
         email: string;
@@ -73,6 +81,7 @@ export const getArticleFullWithRelations = (id: number) =>
             "b.language",
             "b.views",
             authorsFragment.as("authors"),
+            editorsFragment.as("editors"),
             categoryFragment.as("category"),
             tagsFragment.as("tags"),
         ])

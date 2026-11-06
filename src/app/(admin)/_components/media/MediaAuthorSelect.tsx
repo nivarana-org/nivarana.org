@@ -49,6 +49,7 @@ export default function MediaAuthorSelect({
             isOptionEqualToValue={(option, selected) =>
                 option.id === selected.id
             }
+            getOptionKey={(option) => option.id}
             getOptionLabel={(option) => option.name}
             noOptionsText="No authors found"
             renderOption={(props, option) => {

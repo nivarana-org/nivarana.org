@@ -25,6 +25,7 @@ export interface Post {
     contents: string;
     category: number;
     authors: number[];
+    editors: number[];
     tags: number[];
     image: string;
     created_at?: Date;
@@ -267,7 +268,7 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
 
     return await db.transaction().execute(async (trx) => {
         // Upsert into blogs table
-        const { authors, category, tags, ...rest } = post;
+        const { authors, editors, category, tags, ...rest } = post;
 
         // The publication date is stamped the first time the post goes live
         // and kept from then on, so editing a published post does not move
@@ -304,6 +305,7 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
 
         // Replace the post's relations
         await replacePostRelation(postId, "author", authors, trx);
+        await replacePostRelation(postId, "editor", editors, trx);
         await replacePostRelation(postId, "category", [category], trx);
         await replacePostRelation(postId, "tag", tags, trx);
 

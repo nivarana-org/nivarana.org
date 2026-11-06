@@ -22,6 +22,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import type { Moment } from "moment";
 import StoryEditor from "./StoryEditor";
+import EditorSelect from "./EditorSelect";
 import RichTextEditor from "@/app/(admin)/admin/_components/RichTextEditor";
 import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-title-slug-reducer";
@@ -110,6 +111,9 @@ export default function ArticleEditPage({
     const handleAuthorChange = (event: SelectChangeEvent<string[]>) => {
         setAuthors(event.target.value as string[]);
     };
+    const [editors, setEditors] = useState<number[]>(
+        post?.editors?.map((editor) => editor.id) ?? [],
+    );
     const [tags, setTags] = useState<string[]>(
         post?.tags?.map((t) => `${t.id}`) ?? [],
     );
@@ -266,6 +270,7 @@ export default function ArticleEditPage({
                 data.append("footnotes", footnotes);
                 data.append("layout", layout);
                 data.append("authors", authors.join(","));
+                data.append("editors", editors.join(","));
                 data.append("tags", JSON.stringify(tags));
                 data.append("image", image);
                 data.append("status", selectedStatus);
@@ -461,6 +466,13 @@ export default function ArticleEditPage({
                         height={300}
                     />
                 </FormControl>
+
+                <EditorSelect
+                    people={allAuthors}
+                    value={editors}
+                    onChange={setEditors}
+                    helperText="Choose editor"
+                />
 
                 <div>
                     <Button
