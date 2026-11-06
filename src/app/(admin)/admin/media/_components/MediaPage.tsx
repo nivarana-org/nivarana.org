@@ -67,6 +67,7 @@ export default function MediaPage() {
                 item.filename.toLowerCase().includes(search) ||
                 (item.original_name ?? "").toLowerCase().includes(search) ||
                 (item.alt_text ?? "").toLowerCase().includes(search) ||
+                (item.credit_text ?? "").toLowerCase().includes(search) ||
                 item.authors.some((author) =>
                     author.name.toLowerCase().includes(search),
                 )
@@ -136,7 +137,7 @@ export default function MediaPage() {
                 <TextField
                     size="small"
                     label="Search media"
-                    placeholder="Filename, alt text, author"
+                    placeholder="Filename, alt text, credit text, author"
                     value={query}
                     onChange={(event) => {
                         setQuery(event.target.value);

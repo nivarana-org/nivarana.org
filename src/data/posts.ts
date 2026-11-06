@@ -30,6 +30,8 @@ export interface Post {
     created_at?: Date;
     updated_at?: Date;
     intro: string;
+    /** HTML footnotes shown at the end of the article. */
+    footnotes?: string | null;
     status?: string | null;
     language?: string | null;
     /**

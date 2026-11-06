@@ -11,6 +11,7 @@ const getEmptyPost = (postId: number) => {
         contents: serializeStory([{ title: "", body: "" }]),
         id: postId,
         image: "logo.png",
+        footnotes: "",
         status: "DRAFT",
         layout: deriveLayout(1),
     };

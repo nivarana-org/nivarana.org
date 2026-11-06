@@ -10,6 +10,7 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
+    Typography,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import moment from "moment";
@@ -17,6 +18,7 @@ import type { Moment } from "moment";
 
 import { updateMedia } from "@/network/api";
 import type { MediaAuthorOption, MediaItem } from "@/types/media";
+import RichTextEditor from "@/app/(admin)/admin/_components/RichTextEditor";
 
 import MediaAuthorSelect from "./MediaAuthorSelect";
 
@@ -62,6 +64,7 @@ function MediaEditForm({
     onSaved: (media: MediaItem) => void;
 }) {
     const [altText, setAltText] = useState(media.alt_text ?? "");
+    const [creditText, setCreditText] = useState(media.credit_text ?? "");
     const [authorIds, setAuthorIds] = useState<number[]>(
         media.authors.map((author) => author.id),
     );
@@ -82,6 +85,7 @@ function MediaEditForm({
         try {
             const updated = await updateMedia(media.id, {
                 alt_text: altText.trim() || null,
+                credit_text: creditText.trim() || null,
                 created_date: createdDate.toISOString(),
                 author_ids: authorIds,
             });
@@ -103,7 +107,7 @@ function MediaEditForm({
             open
             onClose={saving ? undefined : onClose}
             fullWidth
-            maxWidth="sm"
+            maxWidth="md"
         >
             <DialogTitle>Media details</DialogTitle>
             <DialogContent>
@@ -116,6 +120,20 @@ function MediaEditForm({
                     helperText="Describe the image for screen readers and search engines"
                     slotProps={{ htmlInput: { maxLength: 2000 } }}
                 />
+                <Box sx={{ mt: 2, mb: 1 }}>
+                    <Typography
+                        component="div"
+                        variant="body2"
+                        sx={{ fontWeight: 600, mb: 1 }}
+                    >
+                        Credit text
+                    </Typography>
+                    <RichTextEditor
+                        value={creditText}
+                        onChange={setCreditText}
+                        height={240}
+                    />
+                </Box>
                 <DateTimePicker
                     label="Date of creation"
                     value={createdDate}

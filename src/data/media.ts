@@ -22,6 +22,7 @@ export type NewMedia = Omit<
 
 export type MediaMetadata = {
     alt_text?: string | null;
+    credit_text?: string | null;
     created_date?: Date;
 };
 

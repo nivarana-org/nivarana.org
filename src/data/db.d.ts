@@ -42,6 +42,7 @@ export interface Blogs {
     body_text: Generated<string | null>;
     contents: Generated<string | null>;
     created_at: Generated<Date>;
+    footnotes: Generated<string | null>;
     id: Generated<number>;
     image: Generated<string | null>;
     intro: Generated<string | null>;
@@ -79,6 +80,7 @@ export interface Media {
     alt_text: Generated<string | null>;
     created_at: Generated<Date>;
     created_date: Date;
+    credit_text: Generated<string | null>;
     filename: string;
     id: Generated<number>;
     mime_type: Generated<string | null>;

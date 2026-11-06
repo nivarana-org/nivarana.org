@@ -17,6 +17,7 @@ import { toMediaItem } from "../_lib/serialize";
 
 type UpdateBody = {
     alt_text?: unknown;
+    credit_text?: unknown;
     created_date?: unknown;
     author_ids?: unknown;
 };
@@ -119,6 +120,7 @@ export const PATCH = async (
 
     const metadata: {
         alt_text?: string | null;
+        credit_text?: string | null;
         created_date?: Date;
     } = {};
 
@@ -137,6 +139,23 @@ export const PATCH = async (
             );
         }
         metadata.alt_text = altText || null;
+    }
+
+    if ("credit_text" in body) {
+        if (body.credit_text !== null && typeof body.credit_text !== "string") {
+            return NextResponse.json(
+                { error: "credit_text must be a string or null" },
+                { status: 400 },
+            );
+        }
+        const creditText = body.credit_text?.trim() ?? null;
+        if (creditText !== null && creditText.length > 10000) {
+            return NextResponse.json(
+                { error: "credit_text must be 10000 characters or fewer" },
+                { status: 400 },
+            );
+        }
+        metadata.credit_text = creditText || null;
     }
 
     if ("created_date" in body) {

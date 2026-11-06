@@ -21,6 +21,7 @@ export type EditablePost = {
     contents: string | Story;
     image: string | null;
     intro: string | null;
+    footnotes: string | null;
     created_at: Date;
     updated_at: Date;
     layout: PostLayout | null;
@@ -63,6 +64,7 @@ export const getArticleFullWithRelations = (id: number) =>
             "b.contents",
             "b.image",
             "b.intro",
+            "b.footnotes",
             "b.created_at",
             "b.updated_at",
             "b.layout",

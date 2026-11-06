@@ -18,6 +18,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
     const tags = JSON.parse(text("tags") || "[]").map((t: string) => Number(t));
     const category = Number(text("category"));
     const intro = text("intro");
+    const footnotes = text("footnotes");
     const image = text("image");
     const slug = text("slug");
     const status = text("status");
@@ -33,6 +34,7 @@ export const addOrEditPostAction = async (formData: FormData) => {
         tags,
         category,
         intro,
+        footnotes,
         image,
         status,
         published_at: publishedAt ? new Date(publishedAt) : null,

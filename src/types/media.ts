@@ -19,6 +19,7 @@ export type MediaItem = {
     type: MediaType;
     mime_type: string | null;
     alt_text: string | null;
+    credit_text: string | null;
     created_date: string;
     created_at: string;
     updated_at: string;
@@ -28,6 +29,7 @@ export type MediaItem = {
 
 export type MediaMetadataInput = {
     alt_text?: string | null;
+    credit_text?: string | null;
     created_date?: string;
     author_ids?: number[];
 };

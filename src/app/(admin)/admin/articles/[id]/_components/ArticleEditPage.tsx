@@ -22,6 +22,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import type { Moment } from "moment";
 import StoryEditor from "./StoryEditor";
+import RichTextEditor from "@/app/(admin)/admin/_components/RichTextEditor";
 import { useImmerReducer } from "use-immer";
 import { articleEditReducer } from "./article-edit-title-slug-reducer";
 import {
@@ -160,6 +161,7 @@ export default function ArticleEditPage({
         post?.category ? `${post.category.id}` : "",
     );
     const [image, setImage] = useState(post?.image);
+    const [footnotes, setFootnotes] = useState(post?.footnotes || "");
     const [chapters, setChapters] = useState<Chapter[]>(
         ensureChapter(parseStory(post?.contents).chapters),
     );
@@ -261,6 +263,7 @@ export default function ArticleEditPage({
                 const data = new FormData(e.currentTarget);
                 data.append("id", `${post.id}`);
                 data.append("contents", serializeStory(chapters));
+                data.append("footnotes", footnotes);
                 data.append("layout", layout);
                 data.append("authors", authors.join(","));
                 data.append("tags", JSON.stringify(tags));
@@ -449,6 +452,15 @@ export default function ArticleEditPage({
                     chapters={chapters}
                     onChange={handleChaptersChange}
                 />
+
+                <FormControl fullWidth>
+                    <FormLabel className="font-bold">Footnotes</FormLabel>
+                    <RichTextEditor
+                        value={footnotes}
+                        onChange={setFootnotes}
+                        height={300}
+                    />
+                </FormControl>
 
                 <div>
                     <Button
