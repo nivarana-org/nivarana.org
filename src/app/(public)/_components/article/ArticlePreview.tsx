@@ -77,7 +77,7 @@ function ArticlePreview({
 
                     <div className="p-8">
                         <Link href={href}>
-                            <div className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
+                            <div className="block mt-1 text-lg leading-tight font-medium text-black hover:text-shadow-2xs">
                                 {title}
                             </div>
                             <p className="mt-2 text-slate-500">{intro}</p>

@@ -113,7 +113,7 @@ async function LatestArticle({ a }: { a: Article }) {
                     className="block"
                 >
                     <ViewTransition name={`page-title-${a.slug}`}>
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:underline transition-colors duration-200">
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight group-hover:text-black group-hover:text-shadow-black transition-colors duration-200">
                             {a.title}
                         </h3>
                     </ViewTransition>
@@ -167,7 +167,7 @@ async function RestArticles({ a }: { a: Article }) {
                     className="block"
                 >
                     <ViewTransition name={`page-title-${a.slug}`}>
-                        <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-4 group-hover:underline transition-colors duration-200">
+                        <h4 className="text-base font-semibold text-gray-800 leading-snug line-clamp-4 group-hover:text-black group-hover:text-shadow-black transition-colors duration-200">
                             {a.title}
                         </h4>
                     </ViewTransition>
