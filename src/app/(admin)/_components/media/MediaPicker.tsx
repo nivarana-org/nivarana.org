@@ -29,8 +29,16 @@ export default function MediaPicker({
 }: Props) {
     const [open, setOpen] = useState(false);
     const [selected, setSelected] = useState(defaultValue ?? "");
-    const { media, loading, error, reload, replaceMedia, prependMedia } =
-        useMediaLibrary(type, open);
+    const {
+        media,
+        authors,
+        loading,
+        error,
+        reload,
+        replaceMedia,
+        prependMedia,
+        removeMedia,
+    } = useMediaLibrary(type, open);
 
     const selectedMedia = media.find((item) => item.filename === selected);
 
@@ -95,6 +103,7 @@ export default function MediaPicker({
                     <MediaLibrary
                         title="Media library"
                         media={media}
+                        authors={authors}
                         loading={loading}
                         error={error}
                         selectedFilename={selected}
@@ -104,6 +113,13 @@ export default function MediaPicker({
                             select(item);
                         }}
                         onUpdated={replaceMedia}
+                        onDeleted={(item) => {
+                            removeMedia(item.id);
+                            if (item.filename === selected) {
+                                setSelected("");
+                                onChange("");
+                            }
+                        }}
                         accept={ACCEPT_BY_TYPE[type]}
                     />
                 </Box>

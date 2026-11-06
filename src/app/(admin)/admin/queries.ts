@@ -16,6 +16,14 @@ export const getPeopleCount = async (): Promise<number> => {
     return Number(result?.count ?? 0);
 };
 
+export const getMediaCount = async (): Promise<number> => {
+    const result = await db
+        .selectFrom("media")
+        .select((eb) => eb.fn.countAll().as("count"))
+        .executeTakeFirst();
+    return Number(result?.count ?? 0);
+};
+
 export const getTotalViewsCount = async (): Promise<number> => {
     const result = await db
         .selectFrom("blogs")

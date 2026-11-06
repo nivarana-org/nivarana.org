@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { getMedia } from "@/network/api";
-import type { MediaItem, MediaType } from "@/types/media";
+import { getAuthors, getMedia } from "@/network/api";
+import type { MediaAuthorOption, MediaItem, MediaType } from "@/types/media";
 
 export const useMediaLibrary = (type?: MediaType, enabled = true) => {
     const [media, setMedia] = useState<MediaItem[]>([]);
+    const [authors, setAuthors] = useState<MediaAuthorOption[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [version, setVersion] = useState(0);
@@ -18,10 +19,11 @@ export const useMediaLibrary = (type?: MediaType, enabled = true) => {
 
         let active = true;
 
-        getMedia(type)
-            .then((items) => {
+        Promise.all([getMedia(type), getAuthors()])
+            .then(([items, authorOptions]) => {
                 if (!active) return;
                 setMedia(items);
+                setAuthors(authorOptions);
                 setError(null);
             })
             .catch((err: unknown) => {
@@ -57,12 +59,18 @@ export const useMediaLibrary = (type?: MediaType, enabled = true) => {
         setMedia((previous) => [added, ...previous]);
     }, []);
 
+    const removeMedia = useCallback((id: number) => {
+        setMedia((previous) => previous.filter((item) => item.id !== id));
+    }, []);
+
     return {
         media,
+        authors,
         loading,
         error,
         reload,
         replaceMedia,
         prependMedia,
+        removeMedia,
     };
 };

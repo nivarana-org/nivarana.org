@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getMedia } from "@/data/media";
+import { getMediaDetails } from "@/data/media";
 import { isMediaType } from "@/types/media";
 import { getRole } from "@/utils/auth";
 
@@ -25,7 +25,7 @@ export const GET = async (request: Request) => {
     }
 
     try {
-        const media = await getMedia(requestedType ?? undefined);
+        const media = await getMediaDetails(requestedType ?? undefined);
         return NextResponse.json({
             status: true,
             media: media.map(toMediaItem),

@@ -2,6 +2,7 @@ import { clearCache } from "@/app/(admin)/admin/articles/[id]/_components/post";
 import ClearCache from "./_components/ClearCache";
 import {
     getArticlesCount,
+    getMediaCount,
     getPeopleCount,
     getTotalViewsCount,
 } from "./queries";
@@ -35,11 +36,13 @@ function DashboardItem({
 }
 
 export default async function Page() {
-    const [articleCount, peopleCount, viewsCount] = await Promise.all([
-        getArticlesCount(),
-        getPeopleCount(),
-        getTotalViewsCount(),
-    ]);
+    const [articleCount, peopleCount, mediaCount, viewsCount] =
+        await Promise.all([
+            getArticlesCount(),
+            getPeopleCount(),
+            getMediaCount(),
+            getTotalViewsCount(),
+        ]);
 
     return (
         <div className="max-w-(--breakpoint-md) mx-auto">
@@ -53,6 +56,11 @@ export default async function Page() {
                     name="People"
                     link="/admin/people"
                     count={peopleCount}
+                ></DashboardItem>
+                <DashboardItem
+                    name="Media"
+                    link="/admin/media"
+                    count={mediaCount}
                 ></DashboardItem>
                 <div></div>
                 <DashboardItem

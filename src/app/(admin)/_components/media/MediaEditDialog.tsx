@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
     Alert,
+    Box,
     Button,
     Dialog,
     DialogActions,
@@ -15,10 +16,13 @@ import moment from "moment";
 import type { Moment } from "moment";
 
 import { updateMedia } from "@/network/api";
-import type { MediaItem } from "@/types/media";
+import type { MediaAuthorOption, MediaItem } from "@/types/media";
+
+import MediaAuthorSelect from "./MediaAuthorSelect";
 
 type Props = {
     media: MediaItem | null;
+    authors: MediaAuthorOption[];
     open: boolean;
     onClose: () => void;
     onSaved: (media: MediaItem) => void;
@@ -26,6 +30,7 @@ type Props = {
 
 export default function MediaEditDialog({
     media,
+    authors,
     open,
     onClose,
     onSaved,
@@ -38,6 +43,7 @@ export default function MediaEditDialog({
         <MediaEditForm
             key={media.id}
             media={media}
+            authors={authors}
             onClose={onClose}
             onSaved={onSaved}
         />
@@ -46,14 +52,19 @@ export default function MediaEditDialog({
 
 function MediaEditForm({
     media,
+    authors,
     onClose,
     onSaved,
 }: {
     media: MediaItem;
+    authors: MediaAuthorOption[];
     onClose: () => void;
     onSaved: (media: MediaItem) => void;
 }) {
     const [altText, setAltText] = useState(media.alt_text ?? "");
+    const [authorIds, setAuthorIds] = useState<number[]>(
+        media.authors.map((author) => author.id),
+    );
     const [createdDate, setCreatedDate] = useState<Moment | null>(
         moment(media.created_date),
     );
@@ -61,12 +72,18 @@ function MediaEditForm({
     const [error, setError] = useState<string | null>(null);
 
     const save = async () => {
+        if (!createdDate) {
+            setError("Date of creation is required.");
+            return;
+        }
+
         setSaving(true);
         setError(null);
         try {
             const updated = await updateMedia(media.id, {
                 alt_text: altText.trim() || null,
-                created_date: createdDate?.toISOString(),
+                created_date: createdDate.toISOString(),
+                author_ids: authorIds,
             });
             onSaved(updated);
             onClose();
@@ -107,6 +124,14 @@ function MediaEditForm({
                         textField: { fullWidth: true, margin: "normal" },
                     }}
                 />
+                <Box sx={{ mt: 2 }}>
+                    <MediaAuthorSelect
+                        authors={authors}
+                        value={authorIds}
+                        onChange={setAuthorIds}
+                        helperText="Search by name. Frequently credited authors are listed first."
+                    />
+                </Box>
                 <div className="text-xs text-gray-500 break-all">
                     {media.filename}
                 </div>

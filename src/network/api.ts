@@ -1,8 +1,18 @@
-import type { MediaItem, MediaMetadataInput, MediaType } from "@/types/media";
+import type {
+    MediaAuthorOption,
+    MediaItem,
+    MediaMetadataInput,
+    MediaType,
+} from "@/types/media";
 
 type MediaResponse = {
     status: boolean;
     media: MediaItem[];
+};
+
+type AuthorsResponse = {
+    status: boolean;
+    authors: MediaAuthorOption[];
 };
 
 type UploadResponse = {
@@ -31,6 +41,15 @@ export const getMedia = async (type?: MediaType): Promise<MediaItem[]> => {
     }
     const data: MediaResponse = await response.json();
     return data.media;
+};
+
+export const getAuthors = async (): Promise<MediaAuthorOption[]> => {
+    const response = await fetch("/admin/api/authors");
+    if (!response.ok) {
+        throw new Error(await parseError(response));
+    }
+    const data: AuthorsResponse = await response.json();
+    return data.authors;
 };
 
 export const uploadMedia = async (
@@ -66,4 +85,13 @@ export const updateMedia = async (
     }
     const data: { status: boolean; media: MediaItem } = await response.json();
     return data.media;
+};
+
+export const deleteMedia = async (id: number): Promise<void> => {
+    const response = await fetch(`/admin/api/media/${id}`, {
+        method: "DELETE",
+    });
+    if (!response.ok) {
+        throw new Error(await parseError(response));
+    }
 };

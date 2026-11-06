@@ -10,6 +10,7 @@ type Props = {
     selectedFilename?: string | null;
     onSelect?: (media: MediaItem) => void;
     onEdit?: (media: MediaItem) => void;
+    onDelete?: (media: MediaItem) => void;
     emptyMessage?: string;
 };
 
@@ -18,6 +19,7 @@ export default function MediaGrid({
     selectedFilename,
     onSelect,
     onEdit,
+    onDelete,
     emptyMessage = "No media yet.",
 }: Props) {
     if (media.length === 0) {
@@ -35,6 +37,9 @@ export default function MediaGrid({
         >
             {media.map((item) => {
                 const selected = item.filename === selectedFilename;
+                const authorNames = item.authors
+                    .map((author) => author.name)
+                    .join(", ");
                 return (
                     <Box
                         key={item.id}
@@ -89,16 +94,46 @@ export default function MediaGrid({
                         >
                             {item.alt_text || item.filename}
                         </Box>
-                        {onEdit ? (
-                            <Button
-                                size="small"
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    onEdit(item);
+                        {authorNames ? (
+                            <Box
+                                sx={{
+                                    fontSize: 12,
+                                    color: "text.secondary",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
                                 }}
+                                title={authorNames}
                             >
-                                Edit details
-                            </Button>
+                                {authorNames}
+                            </Box>
+                        ) : null}
+                        {onEdit || onDelete ? (
+                            <Box sx={{ display: "flex", gap: 0.5 }}>
+                                {onEdit ? (
+                                    <Button
+                                        size="small"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            onEdit(item);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                ) : null}
+                                {onDelete ? (
+                                    <Button
+                                        size="small"
+                                        color="error"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            onDelete(item);
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                ) : null}
+                            </Box>
                         ) : null}
                     </Box>
                 );

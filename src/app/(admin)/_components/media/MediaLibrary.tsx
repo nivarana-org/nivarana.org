@@ -3,20 +3,23 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 
-import type { MediaItem } from "@/types/media";
+import type { MediaAuthorOption, MediaItem } from "@/types/media";
 
+import MediaDeleteDialog from "./MediaDeleteDialog";
 import MediaEditDialog from "./MediaEditDialog";
 import MediaGrid from "./MediaGrid";
 import MediaUploadButton from "./MediaUploadButton";
 
 type Props = {
     media: MediaItem[];
+    authors: MediaAuthorOption[];
     loading?: boolean;
     error?: string | null;
     selectedFilename?: string | null;
     onSelect?: (media: MediaItem) => void;
     onUploaded: (media: MediaItem) => void;
     onUpdated: (media: MediaItem) => void;
+    onDeleted: (media: MediaItem) => void;
     accept?: string;
     title?: string;
     uploadLabel?: string;
@@ -29,18 +32,21 @@ type Props = {
  */
 export default function MediaLibrary({
     media,
+    authors,
     loading = false,
     error,
     selectedFilename,
     onSelect,
     onUploaded,
     onUpdated,
+    onDeleted,
     accept,
     title,
     uploadLabel = "Upload new media",
     emptyMessage,
 }: Props) {
     const [editing, setEditing] = useState<MediaItem | null>(null);
+    const [deleting, setDeleting] = useState<MediaItem | null>(null);
 
     return (
         <Box
@@ -83,15 +89,23 @@ export default function MediaLibrary({
                         selectedFilename={selectedFilename}
                         onSelect={onSelect}
                         onEdit={(item) => setEditing(item)}
+                        onDelete={(item) => setDeleting(item)}
                         emptyMessage={emptyMessage}
                     />
                 </Box>
             )}
             <MediaEditDialog
                 media={editing}
+                authors={authors}
                 open={Boolean(editing)}
                 onClose={() => setEditing(null)}
                 onSaved={onUpdated}
+            />
+            <MediaDeleteDialog
+                media={deleting}
+                open={Boolean(deleting)}
+                onClose={() => setDeleting(null)}
+                onDeleted={onDeleted}
             />
         </Box>
     );

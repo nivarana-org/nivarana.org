@@ -101,7 +101,7 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json({
             status: true,
-            media: toMediaItem(media),
+            media: toMediaItem({ ...media, authors: [] }),
             filename,
             link: getImageURLFromFileName(filename),
         });

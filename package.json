@@ -11,7 +11,6 @@
     "test": "vitest",
     "addhusky": "npx husky init",
     "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=mysql",
-    "media:import": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/import-media.mjs",
     "prepare": "husky"
   },
   "dependencies": {
