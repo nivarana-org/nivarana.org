@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import * as subscriptionsDb from "./queries";
 import type { SubscriptionStatus } from "@/types/subscription";
+import { sendSystemEmail } from "@/utils/mail";
 
 async function parseRawBody(request: Request): Promise<string> {
     const arrayBuffer = await request.arrayBuffer();
@@ -194,6 +195,24 @@ export async function POST(request: NextRequest) {
                         payment.id,
                         payment.status,
                     );
+                }
+            }
+        } else if (event === "order.paid") {
+            const order = payload.payload.order?.entity;
+            if (order) {
+                const orderId = order.id;
+                const orderLink = `https://dashboard.razorpay.com/app/orders/${orderId}`;
+                const amount = order.amount / 100;
+                const billName = order.customer_details?.billing_address?.name;
+                const shipTo = order.customer_details?.shipping_address?.state;
+                const contact = order.customer_details?.contact;
+                if (billName && shipTo) {
+                    const subject = `New order by ${billName ?? "someone"}`;
+                    const text = `An order has been made by ${billName ?? "someone"} (${contact ?? "no contact"}) for ₹ ${amount} to be shipped to ${shipTo ?? "somewhere"}. You can see it at ${orderLink}`;
+                    sendSystemEmail({ subject, text });
+                } else {
+                    // just subscription renewal.
+                    // can add notification later
                 }
             }
         }
