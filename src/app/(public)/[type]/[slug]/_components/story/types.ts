@@ -36,6 +36,8 @@ export type StoryPost = {
      * the parsed document or the raw JSON string — use `parseStory` to read.
      */
     contents: string | Story;
+    /** HTML footnotes shown at the end of the post. */
+    footnotes: string | null;
     created_at: Date;
     published_at: Date;
     views: number;
@@ -43,5 +45,6 @@ export type StoryPost = {
     category: StoryCategory;
     tags: StoryTag[];
     authors: StoryAuthor[];
+    editors: StoryAuthor[];
     comments_count: number;
 };

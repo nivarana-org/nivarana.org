@@ -15,6 +15,7 @@ import AudioPlayer from "./AudioPlayer";
 import ProgressTracker from "./ProgressTracker";
 import StoryChapter from "./StoryChapter";
 import StoryFooter from "./StoryFooter";
+import StoryFootnotes from "./StoryFootnotes";
 import StoryMeta from "./StoryMeta";
 import type { StoryPost } from "./types";
 
@@ -125,6 +126,7 @@ export default function ContinuousStory({
                                 dropCap={false}
                             />
                         ))}
+                        <StoryFootnotes data={data} />
                         {/* Side */}
                         <aside className="mt-10 border-t border-nivarana-green/20 pt-6 text-sm leading-relaxed text-nivarana-charcoal/80">
                             Follow Nivarana on{" "}

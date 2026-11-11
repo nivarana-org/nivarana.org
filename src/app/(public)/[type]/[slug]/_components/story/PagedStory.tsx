@@ -8,6 +8,7 @@ import ClearChapter from "./ClearChapter";
 import ScrollToTop from "./ScrollToTop";
 import StoryChapter from "./StoryChapter";
 import StoryFooter from "./StoryFooter";
+import StoryFootnotes from "./StoryFootnotes";
 import StoryHero from "./StoryHero";
 import type { StoryPost } from "./types";
 
@@ -67,6 +68,7 @@ export default function PagedStory({
                             bodyClassName="max-w-4xl mx-auto"
                         />
                     ))}
+                    <StoryFootnotes data={data} className="max-w-4xl mx-auto" />
                 </div>
                 <StoryFooter data={data} />
             </div>
@@ -85,6 +87,12 @@ export default function PagedStory({
                         credits={credits}
                         bodyClassName="max-w-4xl mx-auto"
                     />
+                    {total === 1 && (
+                        <StoryFootnotes
+                            data={data}
+                            className="max-w-4xl mx-auto"
+                        />
+                    )}
 
                     <div className="max-w-2xl mx-auto text-4xl text-black mt-8 p-2 flex justify-between">
                         <Link href={{ query: { chapter: "all" } }}>
@@ -119,6 +127,9 @@ export default function PagedStory({
                     credits={credits}
                     bodyClassName="max-w-4xl mx-auto"
                 />
+                {isLast && (
+                    <StoryFootnotes data={data} className="max-w-4xl mx-auto" />
+                )}
                 <ChapterNav chapter={page} total={total} />
             </div>
             <StoryFooter data={data} showBios={isLast} showComments={isLast} />

@@ -137,6 +137,7 @@ const articleData = sql`
     b.slug,
     b.intro,
     b.contents,
+    b.footnotes,
     b.created_at,
     b.published_at,
     b.views,
@@ -164,6 +165,8 @@ export type Post = {
      * document or the raw JSON string — use `parseStory` to read it.
      */
     contents: string | Story;
+    /** HTML footnotes shown at the end of the post. */
+    footnotes: string | null;
     created_at: Date;
     published_at: Date;
     views: number;
@@ -171,6 +174,7 @@ export type Post = {
     category: Category;
     tags: Tag[];
     authors: Author[];
+    editors: Author[];
     comments_count: number;
 };
 
@@ -204,6 +208,7 @@ export const getPost = async ({ id, slug }: { id?: number; slug?: string }) => {
                 AND bc.status = 'accepted'
         ) as comments_count,
         ${authorsFragment} as authors,
+        ${editorsFragment} as editors,
         ${tagsFragment} as tags,
         ${categoryFragment} as category
         FROM blogs b
