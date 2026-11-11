@@ -20,10 +20,11 @@ export const addTag = asAdmin(async (name: string, slug: string) => {
     const result = await db
         .insertInto("tags")
         .values({ name, slug })
-        .executeTakeFirst();
+        .returning("id")
+        .executeTakeFirstOrThrow();
     return {
         status: true as const,
-        data: { id: Number(result.insertId), name },
+        data: { id: Number(result.id), name },
     };
 });
 

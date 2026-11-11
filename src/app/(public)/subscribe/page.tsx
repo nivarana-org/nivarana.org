@@ -4,7 +4,7 @@ import Link from "next/link";
 export default async function Page() {
     const [plans] = await Promise.all([getAllPlans(true)]);
 
-    const visiblePlans = plans.filter((plan) => plan.show_in_ui === 1);
+    const visiblePlans = plans.filter((plan) => plan.show_in_ui === true);
 
     return (
         <div>

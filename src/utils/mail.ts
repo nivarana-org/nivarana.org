@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createTransport } from "nodemailer";
 
 const transporter = createTransport({

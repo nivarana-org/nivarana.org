@@ -2,9 +2,9 @@ import { db } from "@/data/db";
 import {
     authorsFragment,
     categoryFragment,
+    fullTextMatch,
     tagsFragment,
 } from "@/data/queries";
-import { sql, SqlBool } from "kysely";
 
 import {
     MIN_SUGGESTION_LENGTH,
@@ -51,9 +51,7 @@ export const searchArticles = (query: string) =>
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
-        .where(
-            sql<SqlBool>`MATCH(b.title, b.body_text, b.intro) AGAINST (${query})`,
-        )
+        .where(fullTextMatch(query))
         .execute();
 
 const getAuthorSuggestions = (query: string) =>

@@ -41,8 +41,7 @@ export interface UserSubscription {
 }
 
 /**
- * A row of `subscription_payments`, as it comes out of the database. The
- * boolean flags are stored as tinyints there.
+ * A row of `subscription_payments`, as it comes out of the database.
  */
 export type SubscriptionPaymentRow = Selectable<SubscriptionPayments>;
 
@@ -52,7 +51,7 @@ export type SubscriptionPaymentRow = Selectable<SubscriptionPayments>;
 export type WebhookEventRow = Selectable<WebhookEvents>;
 
 /**
- * A payment as the application sees it: the database row with its tinyint
+ * A payment as the application sees it: the database row with its nullable
  * flags and its JSON payload turned back into the types they stand for.
  */
 export type SubscriptionPayment = Omit<

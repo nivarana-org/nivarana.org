@@ -1,4 +1,4 @@
-import { sql, type SqlBool } from "kysely";
+import { sql } from "kysely";
 
 import { asAdmin } from "./authorization";
 import { db } from "./db";
@@ -6,6 +6,7 @@ import { replacePostRelation } from "./post-relations";
 import {
     authorsFragment,
     categoryFragment,
+    fullTextMatch,
     tagsFragment,
     type Category,
 } from "./queries";
@@ -169,9 +170,7 @@ export const searchArticles = (query: string) =>
             tagsFragment.as("tags"),
         ])
         .where("b.status", "=", "PUBLISHED")
-        .where(
-            sql<SqlBool>`MATCH(b.title, b.body_text, b.intro) AGAINST (${query})`,
-        )
+        .where(fullTextMatch(query))
         .execute();
 
 export type RelatedPost = {
@@ -296,12 +295,16 @@ export const addOrEditPost = asAdmin(async (post: Post) => {
         const result = await trx
             .insertInto("blogs")
             .values(values)
-            .onDuplicateKeyUpdate({ ...values, updated_at: timestamp })
-            .executeTakeFirst();
+            .onConflict((oc) =>
+                oc
+                    .column("id")
+                    .doUpdateSet({ ...values, updated_at: timestamp }),
+            )
+            .returning("id")
+            .executeTakeFirstOrThrow();
 
-        // On inserts MySQL hands back the auto-generated id; on updates the
-        // explicit id we upserted on is the reliable source.
-        const postId = Number(post.id) || Number(result.insertId);
+        // RETURNING hands back the row's id on both branches of the upsert.
+        const postId = Number(result.id);
 
         // Replace the post's relations
         await replacePostRelation(postId, "author", authors, trx);

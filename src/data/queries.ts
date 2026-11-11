@@ -1,4 +1,4 @@
-import { sql } from "kysely";
+import { sql, type SqlBool } from "kysely";
 import { db } from "./db";
 import type { PostLayout, Story } from "./story";
 
@@ -91,6 +91,45 @@ export const tagsFragment = sql<Tag[]>`COALESCE(
     ), '[]'::json
 )`;
 
+/**
+ * Full-text search over a post's title, plain-text body and intro, matched
+ * against the `b` alias of `blogs` like the fragments above. A row matches
+ * when it contains at least one of the query's words.
+ *
+ * The `simple` dictionary only splits and lowercases words instead of
+ * applying English stemming and stopwords, so it works for the site's
+ * Sinhala, Tamil and English content alike. The tsvector is computed on the
+ * fly; a GIN index over exactly this expression is what makes it fast.
+ *
+ * The columns are concatenated with `coalesce` and `||` rather than
+ * `concat_ws`, because PostgreSQL marks `concat_ws` STABLE and therefore
+ * refuses it in index expressions. The GIN index must use the identical
+ * expression, or the planner will not match it.
+ */
+export const fullTextMatch = (query: string) => {
+    const words = query
+        .split(/\s+/)
+        .map((word) => word.trim())
+        .filter((word) => word.length > 0);
+
+    // A query without words matches nothing.
+    if (words.length === 0) {
+        return sql<SqlBool>`false`;
+    }
+
+    // One tsquery per word, OR-ed together, so a row matching any single
+    // word is returned. Parenthesised because @@ binds tighter than ||.
+    const tsquery = sql.join(
+        words.map((word) => sql`plainto_tsquery('simple', ${word})`),
+        sql` || `,
+    );
+    const vector = sql`to_tsvector(
+        'simple',
+        coalesce(b.title, '') || ' ' || coalesce(b.body_text, '') || ' ' || coalesce(b.intro, '')
+    )`;
+    return sql<SqlBool>`${vector} @@ (${tsquery})`;
+};
+
 const articleData = sql`
     b.id,
     b.title,
@@ -145,7 +184,7 @@ export type PostPreview = {
     image: string;
     slug: string;
     intro: string;
-    /** The publication date, as the string MySQL puts into JSON. */
+    /** The publication date, as the ISO-8601 string PostgreSQL puts into JSON. */
     published_at: string;
     authors: Author[];
     category: Category;

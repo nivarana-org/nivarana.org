@@ -25,7 +25,7 @@ export default async function ProfilePage() {
 
     const visiblePlans = plans.filter(
         (plan) =>
-            plans.find((p) => p.price === plan.price)?.show_in_ui === 1 ||
+            plans.find((p) => p.price === plan.price)?.show_in_ui === true ||
             (userPlanId &&
                 plans.find(
                     (p) =>

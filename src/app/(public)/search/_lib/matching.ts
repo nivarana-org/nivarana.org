@@ -17,7 +17,7 @@ export const normalizeQuery = (query: string) => query.trim().toLowerCase();
 
 /**
  * Escapes LIKE metacharacters so a user query is matched literally.
- * MySQL treats a backslash as the default LIKE escape character.
+ * PostgreSQL treats a backslash as the default LIKE escape character.
  */
 export const escapeLike = (value: string) =>
     value

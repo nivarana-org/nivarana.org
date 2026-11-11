@@ -186,7 +186,7 @@ Always global, regardless of consumer count:
 
 ### Database
 
-- Query builder: Kysely (type-safe SQL) over `mysql2`
+- Query builder: Kysely (type-safe SQL) over `pg` (PostgreSQL)
 - Schema types: `src/data/db.d.ts`, generated with `kysely-codegen`
 - Connection: `src/data/db.ts` exports the shared `db` instance; import it, do
   not create new pools

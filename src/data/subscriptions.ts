@@ -10,11 +10,9 @@ import type {
 } from "@/types/subscription";
 
 /**
- * The database stores its boolean flags as tinyints, so they are written as
- * 0 and 1 and read back as booleans.
+ * The database stores its boolean flags as true booleans, but leaves them
+ * nullable, so they are normalised to false where they are NULL.
  */
-const toBoolean = (value: number | null) => value === 1;
-
 const toSubscriptionPayment = (
     row: SubscriptionPaymentRow,
 ): SubscriptionPayment => ({
@@ -366,7 +364,7 @@ export interface MembershipPlan {
     price: number;
     name: string;
     features: string[];
-    show_in_ui: number | null;
+    show_in_ui: boolean | null;
     created_at: Date | null;
     updated_at: Date | null;
 }

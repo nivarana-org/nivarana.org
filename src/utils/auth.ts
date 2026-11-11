@@ -1,3 +1,5 @@
+import "server-only";
+
 import { betterAuth } from "better-auth";
 import { customSession } from "better-auth/plugins";
 import { Pool } from "pg";

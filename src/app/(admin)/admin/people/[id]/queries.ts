@@ -32,7 +32,11 @@ export const addOrEditAuthor = asAdmin(
         return db
             .insertInto("authors")
             .values({ ...author, created_at: timestamp, updated_at: timestamp })
-            .onDuplicateKeyUpdate({ ...author, updated_at: timestamp })
+            .onConflict((oc) =>
+                oc
+                    .column("id")
+                    .doUpdateSet({ ...author, updated_at: timestamp }),
+            )
             .execute();
     },
 );

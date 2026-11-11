@@ -27,11 +27,13 @@ export const addOrEditPage = asAdmin(async (page: StaticPage) => {
             created_at: timestamp,
             updated_at: timestamp,
         })
-        .onDuplicateKeyUpdate({
-            slug: page.slug,
-            title: page.title,
-            contents: page.contents,
-            updated_at: timestamp,
-        })
+        .onConflict((oc) =>
+            oc.column("id").doUpdateSet({
+                slug: page.slug,
+                title: page.title,
+                contents: page.contents,
+                updated_at: timestamp,
+            }),
+        )
         .execute();
 });
