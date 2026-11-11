@@ -35,8 +35,15 @@ function Logo() {
     );
 }
 
+type UtilitiesProp = {
+    profile: {
+        name: string | null;
+        subscriber: boolean;
+    } | null;
+};
+
 /** Search, हिंदी and the subscriber link of the utility layer. */
-function DesktopUtilities({ name }: { name: string | null }) {
+function DesktopUtilities({ profile }: UtilitiesProp) {
     return (
         <div
             className={`${styles.utilities} hidden items-center gap-2 lg:flex`}
@@ -45,16 +52,16 @@ function DesktopUtilities({ name }: { name: string | null }) {
             <Link href="/hindi" className={desktopUtilityLink}>
                 हिंदी
             </Link>
-            {name ? (
+            {profile && profile.subscriber ? (
                 <Link
                     href="/profile"
                     className="max-w-40 truncate rounded-md border border-nivarana-charcoal/30 px-4 py-1.5 font-heading transition-colors hover:border-nivarana-blue hover:text-nivarana-blue"
                 >
-                    {name}
+                    {profile.name}
                 </Link>
             ) : (
                 <Link
-                    href="/subscribe"
+                    href={profile ? "/profile#membership" : "/subscribe"}
                     className="rounded-md bg-nivarana-blue px-4 py-1.5 font-heading uppercase text-white shadow-sm transition-opacity hover:opacity-90"
                 >
                     Subscribe
@@ -65,7 +72,7 @@ function DesktopUtilities({ name }: { name: string | null }) {
 }
 
 /** The same utilities, as cards inside the collapsible menu. */
-function MobileUtilities({ name }: { name: string | null }) {
+function MobileUtilities({ profile }: UtilitiesProp) {
     return (
         <ul className="container mx-auto flex flex-col gap-2 px-4 py-3 lg:hidden">
             <li>
@@ -77,13 +84,13 @@ function MobileUtilities({ name }: { name: string | null }) {
                 </Link>
             </li>
             <li>
-                {name ? (
+                {profile && profile.subscriber ? (
                     <Link href="/profile" className={categoryLink}>
-                        {name}
+                        {profile.name}
                     </Link>
                 ) : (
                     <Link
-                        href="/subscribe"
+                        href={profile ? "/profile#membership" : "/subscribe"}
                         className="block rounded-md bg-nivarana-blue px-4 py-2 font-heading uppercase text-white shadow-sm transition-opacity hover:opacity-90"
                     >
                         Subscribe
@@ -111,7 +118,7 @@ function CategoryLinks({ categories }: { categories: Category[] }) {
 }
 
 export default async function Header() {
-    const [categories, subscriberName] = await Promise.all([
+    const [categories, profile] = await Promise.all([
         getCategories(),
         getSubscriberName(),
     ]);
@@ -122,7 +129,7 @@ export default async function Header() {
             <div className="border-b border-nivarana-charcoal/20">
                 <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-2.5">
                     <Logo />
-                    <DesktopUtilities name={subscriberName} />
+                    <DesktopUtilities profile={profile} />
                     <div className="lg:hidden">
                         <input
                             type="checkbox"
@@ -152,7 +159,7 @@ export default async function Header() {
             <MenuCloser>
                 <nav className={styles.menu} aria-label="Main navigation">
                     <div className={styles.menuInner}>
-                        <MobileUtilities name={subscriberName} />
+                        <MobileUtilities profile={profile} />
                         <CategoryLinks categories={categories} />
                     </div>
                 </nav>

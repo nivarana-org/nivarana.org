@@ -11,7 +11,10 @@ export { getTagCloud } from "@/data/tags";
  * The name to greet an active subscriber with in the header, or null for
  * everyone else (signed out, or signed in without an active subscription).
  */
-export const getSubscriberName = async (): Promise<string | null> => {
+export const getSubscriberName = async (): Promise<{
+    name: string | null;
+    subscriber: boolean;
+} | null> => {
     try {
         const session = await auth.api.getSession({
             headers: await headers(),
@@ -21,12 +24,17 @@ export const getSubscriberName = async (): Promise<string | null> => {
             return null;
         }
 
+        const result = {
+            name: session.user.name || session.user.email || null,
+            subscriber: false,
+        };
+
         const subscription = await getActiveSubscriptionByUserId(userId);
         if (!subscription) {
-            return null;
+            return result;
         }
-
-        return session.user.name || session.user.email || null;
+        result.subscriber = true;
+        return result;
     } catch (err) {
         /*
             Never swallow Next.js control-flow errors (dynamic rendering
