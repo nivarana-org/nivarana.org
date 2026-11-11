@@ -9,6 +9,7 @@ import {
     fullTextMatch,
     tagsFragment,
     type Category,
+    type Author,
 } from "./queries";
 import {
     parseStory,
@@ -178,7 +179,9 @@ export type RelatedPost = {
     title: string | null;
     slug: string | null;
     image: string | null;
+    intro: string | null;
     category: Category;
+    authors: Author[];
 };
 
 /**
@@ -203,7 +206,9 @@ export const getRelatedPosts = async (
         b.title,
         b.slug,
         b.image,
-        ${categoryFragment} AS category
+        b.intro,
+        ${categoryFragment} AS category,
+        ${authorsFragment} AS authors
         FROM blogs b
         JOIN (
             SELECT
@@ -238,7 +243,7 @@ export const getRelatedPosts = async (
         WHERE b.status = 'PUBLISHED'
             ${excludePostId ? sql`AND b.id != ${excludePostId}` : sql``}
         ORDER BY matches.score DESC, matches.shared_tags DESC, b.views DESC
-        LIMIT 5
+        LIMIT 6
     ;`.execute(db);
 
     return result.rows;

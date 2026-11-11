@@ -167,9 +167,7 @@ export default function ContinuousStory({
             </div>
             <StoryFooter data={data} />
             <div className="mx-auto w-full max-w-7xl px-5 md:px-6">
-                <div className={`mx-auto w-full ${READING_MEASURE}`}>
-                    <Sidebar post={data} />
-                </div>
+                <Sidebar post={data} />
             </div>
             <ProgressTracker></ProgressTracker>
         </>
