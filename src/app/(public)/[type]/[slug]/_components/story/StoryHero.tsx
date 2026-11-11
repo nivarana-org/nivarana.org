@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
 
-import { getMediaCredit, type MediaCreditMap } from "../../_lib/mediaCredits";
+import { getMediaMeta, type MediaMetaMap } from "../../_lib/mediaMeta";
 import ImageCredit from "../shared/ImageCredit";
 import StoryMeta from "./StoryMeta";
 import type { StoryPost } from "./types";
@@ -12,24 +12,24 @@ import type { StoryPost } from "./types";
  */
 export default function StoryHero({
     data,
-    credits,
+    mediaMeta,
 }: {
     data: StoryPost;
-    credits: MediaCreditMap;
+    mediaMeta: MediaMetaMap;
 }) {
-    const heroCredit = getMediaCredit(credits, data.image);
+    const heroMeta = getMediaMeta(mediaMeta, data.image);
 
     return (
         <div className="h-dvh relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-80 pt-80 mx-auto mt-24">
             <Image
                 src={getImageURLFromFileName(data.image)}
-                alt={data.title}
+                alt={heroMeta?.altText?.trim() || data.title}
                 width={1280}
                 height={900}
                 className="h-full w-full md:max-h-dvh my-auto absolute inset-0 object-cover"
             />
             <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40"></div>
-            <ImageCredit credit={heroCredit} />
+            <ImageCredit meta={heroMeta} />
             <h3 className="z-10 mt-3 text-3xl font-bold text-white">
                 {data.title}
             </h3>

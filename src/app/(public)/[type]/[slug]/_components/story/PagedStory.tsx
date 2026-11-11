@@ -2,7 +2,7 @@ import type { Chapter } from "@/data/story";
 import Link from "next/link";
 import { Button } from "@mui/material";
 
-import type { MediaCreditMap } from "../../_lib/mediaCredits";
+import type { MediaMetaMap } from "../../_lib/mediaMeta";
 import ChapterNav from "./ChapterNav";
 import ClearChapter from "./ClearChapter";
 import ScrollToTop from "./ScrollToTop";
@@ -28,12 +28,12 @@ export default function PagedStory({
     data,
     chapters,
     chapter,
-    credits,
+    mediaMeta,
 }: {
     data: StoryPost;
     chapters: Chapter[];
     chapter: string;
-    credits: MediaCreditMap;
+    mediaMeta: MediaMetaMap;
 }) {
     const singlePage = chapter === "all";
     const total = chapters.length;
@@ -58,13 +58,13 @@ export default function PagedStory({
             <div className="max-w-(--breakpoint-xl) mx-auto">
                 <ClearChapter />
                 <div className="post post-single">
-                    <StoryHero data={data} credits={credits} />
+                    <StoryHero data={data} mediaMeta={mediaMeta} />
                     <div className="mt-6"></div>
                     {chapters.map((c, index) => (
                         <StoryChapter
                             key={index}
                             chapter={c}
-                            credits={credits}
+                            mediaMeta={mediaMeta}
                             bodyClassName="max-w-4xl mx-auto"
                         />
                     ))}
@@ -80,11 +80,11 @@ export default function PagedStory({
             <div className="max-w-(--breakpoint-xl) mx-auto">
                 <ClearChapter />
                 <div className="post post-single">
-                    <StoryHero data={data} credits={credits} />
+                    <StoryHero data={data} mediaMeta={mediaMeta} />
                     <div className="mt-6"></div>
                     <StoryChapter
                         chapter={chapters[0]}
-                        credits={credits}
+                        mediaMeta={mediaMeta}
                         bodyClassName="max-w-4xl mx-auto"
                     />
                     {total === 1 && (
@@ -124,7 +124,7 @@ export default function PagedStory({
                 <StoryChapter
                     key={page}
                     chapter={chapters[page]}
-                    credits={credits}
+                    mediaMeta={mediaMeta}
                     bodyClassName="max-w-4xl mx-auto"
                 />
                 {isLast && (

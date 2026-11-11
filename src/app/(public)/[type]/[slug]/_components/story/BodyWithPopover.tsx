@@ -1,5 +1,5 @@
 import { parseHtml } from "../../_lib/htmlParser";
-import type { MediaCreditMap } from "../../_lib/mediaCredits";
+import type { MediaMetaMap } from "../../_lib/mediaMeta";
 
 /** The opening capital of the article, printed large and sunk into the text. */
 const DROP_CAP_CLASSES = [
@@ -19,12 +19,12 @@ const DROP_CAP_CLASSES = [
  */
 export default function BodyWithPopover({
     body,
-    credits,
+    mediaMeta,
     className = "",
     dropCap = false,
 }: {
     body: string;
-    credits: MediaCreditMap;
+    mediaMeta: MediaMetaMap;
     className?: string;
     /** Turns the first letter of the first paragraph into a drop cap. */
     dropCap?: boolean;
@@ -39,7 +39,7 @@ export default function BodyWithPopover({
                 .filter(Boolean)
                 .join(" ")}
         >
-            {parseHtml(body, credits)}
+            {parseHtml(body, mediaMeta)}
         </div>
     );
 }

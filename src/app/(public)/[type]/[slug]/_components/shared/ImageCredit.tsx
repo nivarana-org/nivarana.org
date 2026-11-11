@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { hasMediaCredit, type MediaCredit } from "../../_lib/mediaCredits";
+import { hasImageCredit, type MediaMeta } from "../../_lib/mediaMeta";
 
 /**
  * A small credit for an image. By default it sits in the bottom-right corner,
@@ -8,18 +8,18 @@ import { hasMediaCredit, type MediaCredit } from "../../_lib/mediaCredits";
  * instead, right-aligned, for layouts that have room for it.
  */
 export default function ImageCredit({
-    credit,
+    meta,
     variant = "overlay",
 }: {
-    credit?: MediaCredit;
+    meta?: MediaMeta;
     variant?: "overlay" | "below";
 }) {
-    if (!hasMediaCredit(credit)) {
+    if (!hasImageCredit(meta)) {
         return null;
     }
 
-    const authors = credit.authors;
-    const creditText = credit.creditText?.trim();
+    const authors = meta.authors;
+    const creditText = meta.creditText?.trim();
 
     const positionClasses =
         variant === "below"

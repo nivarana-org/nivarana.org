@@ -7,16 +7,16 @@ export { updateCommentStatus } from "@/data/comments";
 import { db } from "@/data/db";
 import type { MediaAuthor } from "@/types/media";
 
-import type { MediaCreditMap } from "./_lib/mediaCredits";
+import type { MediaMetaMap } from "./_lib/mediaMeta";
 
 /**
- * Reads the authors and `credit_text` for every media filename used by a
- * story. Credits are keyed by filename so the renderer can look them up from
- * a chapter image or an `<img>` inside a chapter body.
+ * Reads the authors, `credit_text` and `alt_text` for every media filename
+ * used by a story. Metadata is keyed by filename so the renderer can look it
+ * up from a chapter image or an `<img>` inside a chapter body.
  */
-export async function getMediaCreditsByFilenames(
+export async function getMediaMetaByFilenames(
     filenames: string[],
-): Promise<MediaCreditMap> {
+): Promise<MediaMetaMap> {
     const unique = [
         ...new Set(filenames.filter((filename) => filename.length > 0)),
     ];
@@ -27,7 +27,7 @@ export async function getMediaCreditsByFilenames(
 
     const media = await db
         .selectFrom("media")
-        .select(["id", "filename", "credit_text"])
+        .select(["id", "filename", "credit_text", "alt_text"])
         .where("filename", "in", unique)
         .execute();
 
@@ -66,6 +66,7 @@ export async function getMediaCreditsByFilenames(
             {
                 authors: authorsByMedia.get(item.id) ?? [],
                 creditText: item.credit_text,
+                altText: item.alt_text,
             },
         ]),
     );

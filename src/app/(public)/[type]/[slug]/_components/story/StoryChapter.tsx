@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
 import type { Chapter } from "@/data/story";
 
-import { getMediaCredit, type MediaCreditMap } from "../../_lib/mediaCredits";
+import { getMediaMeta, type MediaMetaMap } from "../../_lib/mediaMeta";
 import ImageCredit from "../shared/ImageCredit";
 import BodyWithPopover from "./BodyWithPopover";
 import ZoomableImage from "./ZoomableImage";
@@ -13,38 +13,39 @@ import ZoomableImage from "./ZoomableImage";
  */
 export default function StoryChapter({
     chapter,
-    credits,
+    mediaMeta,
     imageVariant = "zoom",
     bodyClassName = "",
     dropCap = false,
 }: {
     chapter: Chapter;
-    credits: MediaCreditMap;
+    mediaMeta: MediaMetaMap;
     imageVariant?: "zoom" | "inline";
     bodyClassName?: string;
     dropCap?: boolean;
 }) {
     const { title, body, image } = chapter;
-    const credit = getMediaCredit(credits, image);
+    const imageMeta = getMediaMeta(mediaMeta, image);
+    const alt = imageMeta?.altText?.trim() || title || "";
     return (
         <>
             {image ? (
                 imageVariant === "zoom" ? (
                     <ZoomableImage
                         src={getImageURLFromFileName(image)}
-                        alt={title}
-                        credit={<ImageCredit credit={credit} />}
+                        alt={alt}
+                        credit={<ImageCredit meta={imageMeta} />}
                     />
                 ) : (
                     <div className="relative my-6">
                         <Image
                             src={getImageURLFromFileName(image)}
-                            alt={title || ""}
+                            alt={alt}
                             width={2000}
                             height={1414}
                             className="w-full h-auto rounded-lg"
                         />
-                        <ImageCredit credit={credit} />
+                        <ImageCredit meta={imageMeta} />
                     </div>
                 )
             ) : null}
@@ -55,7 +56,7 @@ export default function StoryChapter({
             ) : null}
             <BodyWithPopover
                 body={body}
-                credits={credits}
+                mediaMeta={mediaMeta}
                 className={bodyClassName}
                 dropCap={dropCap}
             />

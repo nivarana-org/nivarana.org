@@ -6,7 +6,7 @@ import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 import type { Chapter } from "@/data/story";
 import Sidebar from "@/app/(public)/_components/sidebar";
 
-import { getMediaCredit, type MediaCreditMap } from "../../_lib/mediaCredits";
+import { getMediaMeta, type MediaMetaMap } from "../../_lib/mediaMeta";
 import { READING_MEASURE } from "../../_lib/layout";
 import styles from "./ContinuousStory.module.css";
 import PageShare from "../blocks/PageShare";
@@ -27,13 +27,13 @@ import type { StoryPost } from "./types";
 export default function ContinuousStory({
     data,
     chapters,
-    credits,
+    mediaMeta,
 }: {
     data: StoryPost;
     chapters: Chapter[];
-    credits: MediaCreditMap;
+    mediaMeta: MediaMetaMap;
 }) {
-    const heroCredit = getMediaCredit(credits, data.image);
+    const heroMeta = getMediaMeta(mediaMeta, data.image);
 
     return (
         <>
@@ -82,8 +82,9 @@ export default function ContinuousStory({
                                                 data.image,
                                             )}
                                             alt={
+                                                heroMeta?.altText?.trim() ||
                                                 "Representative image for " +
-                                                data.title
+                                                    data.title
                                             }
                                             width={2000}
                                             height={1414}
@@ -91,7 +92,7 @@ export default function ContinuousStory({
                                             className="h-auto w-full object-contain md:drop-shadow-2xl"
                                         />
                                         <ImageCredit
-                                            credit={heroCredit}
+                                            meta={heroMeta}
                                             variant="below"
                                         />
                                     </div>
@@ -132,7 +133,7 @@ export default function ContinuousStory({
                             <StoryChapter
                                 key={index}
                                 chapter={chapter}
-                                credits={credits}
+                                mediaMeta={mediaMeta}
                                 imageVariant="inline"
                                 dropCap={false}
                             />

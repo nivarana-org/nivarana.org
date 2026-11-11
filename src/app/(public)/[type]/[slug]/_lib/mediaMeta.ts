@@ -2,13 +2,14 @@ import type { MediaAuthor } from "@/types/media";
 
 import { RELATIVE_IMAGE_PREFIX } from "@/utils/paths";
 
-export type MediaCredit = {
+export type MediaMeta = {
     authors: MediaAuthor[];
     creditText: string | null;
+    altText: string | null;
 };
 
-/** Credits keyed by the media table's `filename` column. */
-export type MediaCreditMap = Record<string, MediaCredit>;
+/** Media metadata keyed by the media table's `filename` column. */
+export type MediaMetaMap = Record<string, MediaMeta>;
 
 const IMAGE_SOURCE_PATTERN =
     /<img\b[^>]*\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi;
@@ -66,16 +67,15 @@ export const imageFilenamesFromHtml = (html: string): string[] => {
     return [...filenames];
 };
 
-export const getMediaCredit = (
-    credits: MediaCreditMap,
+export const getMediaMeta = (
+    mediaMeta: MediaMetaMap,
     source?: string | null,
-): MediaCredit | undefined => {
+): MediaMeta | undefined => {
     const filename = getImageFilenameFromSource(source);
-    return filename ? credits[filename] : undefined;
+    return filename ? mediaMeta[filename] : undefined;
 };
 
-export const hasMediaCredit = (credit?: MediaCredit): credit is MediaCredit =>
+export const hasImageCredit = (meta?: MediaMeta): meta is MediaMeta =>
     Boolean(
-        credit &&
-        (credit.authors.length > 0 || credit.creditText?.trim().length),
+        meta && (meta.authors.length > 0 || meta.creditText?.trim().length),
     );

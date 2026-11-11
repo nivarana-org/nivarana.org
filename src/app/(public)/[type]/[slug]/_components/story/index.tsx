@@ -3,8 +3,8 @@ import { PAGED_LAYOUT, parseStory, resolveLayout } from "@/data/story";
 import {
     getImageFilenameFromSource,
     imageFilenamesFromHtml,
-} from "../../_lib/mediaCredits";
-import { getMediaCreditsByFilenames } from "../../queries";
+} from "../../_lib/mediaMeta";
+import { getMediaMetaByFilenames } from "../../queries";
 import ContinuousStory from "./ContinuousStory";
 import PagedStory from "./PagedStory";
 import type { StoryPost } from "./types";
@@ -39,7 +39,7 @@ export default async function Story({
             filenames.add(filename);
         }
     }
-    const credits = await getMediaCreditsByFilenames([...filenames]);
+    const mediaMeta = await getMediaMetaByFilenames([...filenames]);
 
     if (layout === PAGED_LAYOUT) {
         return (
@@ -47,12 +47,16 @@ export default async function Story({
                 data={data}
                 chapters={chapters}
                 chapter={chapter}
-                credits={credits}
+                mediaMeta={mediaMeta}
             />
         );
     }
 
     return (
-        <ContinuousStory data={data} chapters={chapters} credits={credits} />
+        <ContinuousStory
+            data={data}
+            chapters={chapters}
+            mediaMeta={mediaMeta}
+        />
     );
 }

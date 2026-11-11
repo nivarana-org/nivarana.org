@@ -9,11 +9,7 @@ import { imageConfig } from "@/config/images.mjs";
 import { DfnWithPopover } from "../_components/shared/DfnWithPopover";
 import ImageCredit from "../_components/shared/ImageCredit";
 import { getImageURLFromFileName, RELATIVE_IMAGE_PREFIX } from "@/utils/paths";
-import {
-    getMediaCredit,
-    hasMediaCredit,
-    type MediaCreditMap,
-} from "./mediaCredits";
+import { getMediaMeta, hasImageCredit, type MediaMetaMap } from "./mediaMeta";
 
 function matchHostname(hostname: string, pattern: string): boolean {
     if (pattern.startsWith("**.")) {
@@ -50,7 +46,7 @@ function parseUrl(url: string): string {
 
 export function parseHtml(
     html: string,
-    credits: MediaCreditMap = {},
+    mediaMeta: MediaMetaMap = {},
 ): ReactNode {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const options: any = {
@@ -64,13 +60,14 @@ export function parseHtml(
 
                 const parsedUrl = parseUrl(src);
                 const props = attributesToProps(rest);
-                const credit = getMediaCredit(credits, src);
+                const imageMeta = getMediaMeta(mediaMeta, src);
+                const imageAlt = imageMeta?.altText?.trim() || alt || "";
 
                 if (isImageUrlAllowed(parsedUrl)) {
                     const image = (
                         <Image
                             src={parsedUrl}
-                            alt={alt || "Image"}
+                            alt={imageAlt || "Image"}
                             width={800}
                             height={600}
                             className="max-w-full h-auto"
@@ -78,10 +75,10 @@ export function parseHtml(
                         />
                     );
 
-                    return hasMediaCredit(credit) ? (
+                    return hasImageCredit(imageMeta) ? (
                         <span className="relative inline-block max-w-full">
                             {image}
-                            <ImageCredit credit={credit} />
+                            <ImageCredit meta={imageMeta} />
                         </span>
                     ) : (
                         image
@@ -92,13 +89,13 @@ export function parseHtml(
                 // `next/image` throws for those hosts, so a plain <img> is required.
                 const image = (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={src} alt={alt || ""} {...props} />
+                    <img src={src} alt={imageAlt} {...props} />
                 );
 
-                return hasMediaCredit(credit) ? (
+                return hasImageCredit(imageMeta) ? (
                     <span className="relative inline-block max-w-full">
                         {image}
-                        <ImageCredit credit={credit} />
+                        <ImageCredit meta={imageMeta} />
                     </span>
                 ) : (
                     image
