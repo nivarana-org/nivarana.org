@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "addhusky": "npx husky init",
-    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=mysql",
+    "db:codegen": "kysely-codegen --out-file ./src/data/db.d.ts --env-file=.env.local --dialect=postgres --default-schema=public --numeric-parser=number",
     "prepare": "husky"
   },
   "dependencies": {
@@ -27,9 +27,9 @@
     "kysely": "^0.29.8",
     "moment": "^2.31.0",
     "motion": "^14.9.1",
-    "mysql2": "^3.24.6",
     "next": "16.5.0-canary.42",
     "nodemailer": "^10.3.1",
+    "pg": "^8.23.1",
     "razorpay": "^2.9.8",
     "react": "^19.3.1",
     "react-audio-play": "^1.0.4",
@@ -49,6 +49,7 @@
     "@tailwindcss/postcss": "^4.3.4",
     "@types/node": "^26.6.6",
     "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/react-tagcloud": "^2.3.2",

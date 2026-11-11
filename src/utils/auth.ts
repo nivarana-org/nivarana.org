@@ -1,19 +1,16 @@
-import "server-only";
 import { betterAuth } from "better-auth";
 import { customSession } from "better-auth/plugins";
-import { createPool } from "mysql2/promise";
+import { Pool } from "pg";
 import { headers } from "next/headers";
 import { sendEmail } from "./mail";
 
 export const auth = betterAuth({
-    database: createPool({
+    database: new Pool({
+        database: process.env.DATABASE,
         host: process.env.DB_HOST,
-        port: 3306,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DATABASE,
-        charset: "utf8mb4",
-        connectionLimit: 2,
+        max: 10,
     }),
     plugins: [
         customSession(async ({ user, session }) => {

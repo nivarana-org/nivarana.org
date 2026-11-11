@@ -15,10 +15,7 @@ export type MediaDetails = Media & {
     authors: MediaAuthor[];
 };
 
-export type NewMedia = Omit<
-    Insertable<DB["media"]>,
-    "created_at" | "id" | "updated_at"
->;
+export type NewMedia = Omit<Insertable<DB["media"]>, "id">;
 
 export type MediaMetadata = {
     alt_text?: string | null;
@@ -148,9 +145,10 @@ export const addMedia = asAdmin(async (media: NewMedia) => {
     const result = await db
         .insertInto("media")
         .values(media)
+        .returning("id")
         .executeTakeFirstOrThrow();
 
-    const inserted = await getMediaById(Number(result.insertId));
+    const inserted = await getMediaById(Number(result.id));
     if (!inserted) {
         throw new Error("The media record could not be read after insertion");
     }

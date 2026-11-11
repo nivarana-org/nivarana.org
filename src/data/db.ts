@@ -1,18 +1,15 @@
-import "server-only";
-
 import type { DB } from "./db.d"; // this is the Database interface we defined earlier
-import { createPool } from "mysql2"; // do not use 'mysql2/promises'!
-import { Kysely, MysqlDialect, ParseJSONResultsPlugin } from "kysely";
+import { Pool } from "pg";
+import { Kysely, PostgresDialect, ParseJSONResultsPlugin } from "kysely";
 
-const dialect = new MysqlDialect({
-    pool: createPool({
+const dialect = new PostgresDialect({
+    pool: new Pool({
+        database: process.env.DATABASE,
         host: process.env.DB_HOST,
-        port: 3306,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: process.env.DATABASE,
-        charset: "utf8mb4",
-        connectionLimit: 10,
+        port: 5432,
+        max: 10,
     }),
 });
 

@@ -5,54 +5,71 @@
 
 import type { ColumnType } from "kysely";
 
+export type CommentsStatus = "accepted" | "hidden" | "pending" | "spam";
+
 export type Generated<T> =
     T extends ColumnType<infer S, infer I, infer U>
         ? ColumnType<S, I | undefined, U>
         : ColumnType<T, T | undefined, T>;
 
+export type MediaType = "audio" | "document" | "image";
+
+export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+
+export type UserSubscriptionsStatus =
+    | "active"
+    | "authenticated"
+    | "cancelled"
+    | "completed"
+    | "created"
+    | "expired"
+    | "halted"
+    | "old"
+    | "pending";
+
 export interface Account {
-    accessToken: Generated<string | null>;
-    accessTokenExpiresAt: Generated<Date>;
+    accessToken: string | null;
+    accessTokenExpiresAt: Generated<Timestamp | null>;
     accountId: string;
-    createdAt: Generated<Date>;
+    createdAt: Generated<Timestamp>;
     id: string;
-    idToken: Generated<string | null>;
-    password: Generated<string | null>;
+    idToken: string | null;
+    password: string | null;
     providerId: string;
-    refreshToken: Generated<string | null>;
-    refreshTokenExpiresAt: Generated<Date>;
-    scope: Generated<string | null>;
-    updatedAt: Generated<Date>;
+    refreshToken: string | null;
+    refreshTokenExpiresAt: Timestamp | null;
+    scope: string | null;
+    updatedAt: Timestamp;
     userId: string;
 }
 
 export interface Authors {
-    created_at: Generated<Date>;
-    description: Generated<string | null>;
+    created_at: Timestamp | null;
+    description: string | null;
     email: Generated<string | null>;
     id: Generated<number>;
-    image: Generated<string | null>;
+    image: string | null;
     name: string;
-    slug: Generated<string | null>;
-    title: Generated<string | null>;
-    updated_at: Generated<Date>;
+    slug: string | null;
+    title: string | null;
+    updated_at: Timestamp | null;
 }
 
 export interface Blogs {
-    body_text: Generated<string | null>;
-    contents: Generated<string | null>;
-    created_at: Generated<Date>;
-    footnotes: Generated<string | null>;
+    body_text: string | null;
+    contents: string | null;
+    created_at: Timestamp;
+    footnotes: string | null;
     id: Generated<number>;
     image: Generated<string | null>;
-    intro: Generated<string | null>;
+    intro: string | null;
     language: Generated<string | null>;
     layout: Generated<string | null>;
-    published_at: Generated<Date>;
-    slug: Generated<string | null>;
+    published_at: Timestamp | null;
+    slug: string | null;
     status: Generated<string | null>;
     title: Generated<string | null>;
-    updated_at: Generated<Date>;
+    updated_at: Timestamp | null;
     views: Generated<number>;
 }
 
@@ -68,25 +85,25 @@ export interface Categories {
 export interface Comments {
     blog_id: number;
     contents: string;
-    created_at: Generated<Date | null>;
+    created_at: Timestamp | null;
     id: Generated<number>;
-    parent_id: Generated<number | null>;
-    status: Generated<"accepted" | "hidden" | "pending" | "spam" | null>;
-    updated_at: Generated<Date | null>;
+    parent_id: number | null;
+    status: Generated<CommentsStatus | null>;
+    updated_at: Timestamp | null;
     user_id: string;
 }
 
 export interface Media {
     alt_text: Generated<string | null>;
-    created_at: Generated<Date>;
-    created_date: Date;
-    credit_text: Generated<string | null>;
+    created_at: Timestamp;
+    created_date: Timestamp;
+    credit_text: string | null;
     filename: string;
     id: Generated<number>;
     mime_type: Generated<string | null>;
     original_name: Generated<string | null>;
-    type: Generated<"audio" | "document" | "image">;
-    updated_at: Generated<Date>;
+    type: Generated<MediaType>;
+    updated_at: Timestamp;
 }
 
 export interface MediaRelations {
@@ -97,20 +114,20 @@ export interface MediaRelations {
 }
 
 export interface MembershipPlans {
-    created_at: Generated<Date | null>;
+    created_at: Timestamp | null;
     features: string;
     id: Generated<number>;
     name: string;
     price: number;
     razorpay_plan_id: string;
-    show_in_ui: Generated<number | null>;
-    updated_at: Generated<Date | null>;
+    show_in_ui: Generated<boolean | null>;
+    updated_at: Timestamp | null;
 }
 
 export interface Newsletters {
-    created_at: Generated<Date>;
+    created_at: Timestamp | null;
     id: Generated<number>;
-    updated_at: Generated<Date>;
+    updated_at: Timestamp | null;
     user_email: string;
 }
 
@@ -123,7 +140,7 @@ export interface PostRelations {
 
 export interface PushSubscriptions {
     id: Generated<number>;
-    subscription: Generated<string | null>;
+    subscription: string | null;
 }
 
 export interface Redirects {
@@ -133,34 +150,34 @@ export interface Redirects {
 }
 
 export interface Session {
-    createdAt: Generated<Date>;
-    expiresAt: Generated<Date>;
+    createdAt: Timestamp;
+    expiresAt: Timestamp;
     id: string;
-    ipAddress: Generated<string | null>;
+    ipAddress: string | null;
     token: string;
-    updatedAt: Generated<Date>;
-    userAgent: Generated<string | null>;
+    updatedAt: Timestamp;
+    userAgent: string | null;
     userId: string;
 }
 
 export interface Settings {
     key: Generated<string | null>;
-    value: Generated<string | null>;
+    value: string | null;
 }
 
 export interface StaticPages {
-    contents: Generated<string | null>;
-    created_at: Generated<Date | null>;
+    contents: string | null;
+    created_at: Timestamp | null;
     id: Generated<number>;
     slug: string;
     title: string;
-    updated_at: Generated<Date | null>;
+    updated_at: Timestamp | null;
 }
 
 export interface SubscriptionPayments {
     amount: number;
-    captured: Generated<number | null>;
-    created_at: Generated<Date | null>;
+    captured: Generated<boolean | null>;
+    created_at: Timestamp | null;
     currency: Generated<string | null>;
     id: Generated<number>;
     razorpay_payment_id: string;
@@ -168,7 +185,7 @@ export interface SubscriptionPayments {
     razorpay_subscription_id: string;
     status: string;
     user_subscription_id: number;
-    verified: Generated<number | null>;
+    verified: Generated<boolean | null>;
 }
 
 export interface Tags {
@@ -178,61 +195,50 @@ export interface Tags {
 }
 
 export interface User {
-    createdAt: Generated<Date>;
+    createdAt: Timestamp;
     email: string;
-    emailVerified: number;
+    emailVerified: boolean;
     id: string;
-    image: Generated<string | null>;
+    image: string | null;
     name: string;
-    updatedAt: Generated<Date>;
+    updatedAt: Timestamp;
 }
 
 export interface UserSubscriptions {
     auth_attempts: Generated<number | null>;
-    charge_at: Generated<number | null>;
-    created_at: Generated<Date | null>;
-    current_end: Generated<number | null>;
-    current_start: Generated<number | null>;
+    charge_at: number | null;
+    created_at: Timestamp | null;
+    current_end: number | null;
+    current_start: number | null;
     customer_email: Generated<string | null>;
-    end_at: Generated<number | null>;
+    end_at: number | null;
     id: Generated<number>;
-    paid_count: Generated<number | null>;
+    paid_count: number | null;
     plan_id: string;
     razorpay_subscription_id: string;
-    remaining_count: Generated<number | null>;
-    start_at: Generated<number | null>;
-    status: Generated<
-        | "active"
-        | "authenticated"
-        | "cancelled"
-        | "completed"
-        | "created"
-        | "expired"
-        | "halted"
-        | "old"
-        | "pending"
-        | null
-    >;
-    total_count: Generated<number | null>;
-    updated_at: Generated<Date | null>;
+    remaining_count: number | null;
+    start_at: number | null;
+    status: Generated<UserSubscriptionsStatus | null>;
+    total_count: number | null;
+    updated_at: Timestamp | null;
     user_id: string;
 }
 
 export interface Verification {
-    createdAt: Generated<Date>;
-    expiresAt: Generated<Date>;
+    createdAt: Timestamp;
+    expiresAt: Timestamp;
     id: string;
     identifier: string;
-    updatedAt: Generated<Date>;
+    updatedAt: Timestamp;
     value: string;
 }
 
 export interface WebhookEvents {
-    created_at: Generated<Date | null>;
+    created_at: Timestamp | null;
     event_type: string;
     id: Generated<number>;
     payload: string;
-    processed: Generated<number | null>;
+    processed: Generated<boolean | null>;
     razorpay_event_id: string;
 }
 

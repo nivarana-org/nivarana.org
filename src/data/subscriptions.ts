@@ -20,14 +20,14 @@ const toSubscriptionPayment = (
 ): SubscriptionPayment => ({
     ...row,
     currency: row.currency ?? "INR",
-    captured: toBoolean(row.captured),
-    verified: toBoolean(row.verified),
+    captured: row.captured ?? false,
+    verified: row.verified ?? false,
 });
 
 const toWebhookEvent = (row: WebhookEventRow): WebhookEvent => ({
     ...row,
     payload: row.payload as unknown as object,
-    processed: toBoolean(row.processed),
+    processed: row.processed ?? false,
 });
 
 export async function syncSubscriptionStatus(
@@ -232,9 +232,9 @@ export async function createPayment({
             amount,
             currency: currency || "INR",
             status,
-            captured: 0,
+            captured: false,
             razorpay_signature: razorpaySignature || null,
-            verified: 0,
+            verified: false,
         })
         .execute();
 
@@ -263,7 +263,7 @@ export async function verifyPayment(razorpayPaymentId: string): Promise<void> {
     await db
         .updateTable("subscription_payments")
         .where("razorpay_payment_id", "=", razorpayPaymentId)
-        .set({ verified: 1 })
+        .set({ verified: true })
         .execute();
 }
 
@@ -271,7 +271,7 @@ export async function capturePayment(razorpayPaymentId: string): Promise<void> {
     await db
         .updateTable("subscription_payments")
         .where("razorpay_payment_id", "=", razorpayPaymentId)
-        .set({ captured: 1 })
+        .set({ captured: true })
         .execute();
 }
 
@@ -287,7 +287,7 @@ export async function updatePaymentStatus(
         .where("razorpay_payment_id", "=", razorpayPaymentId)
         .set({
             status,
-            captured: existing.captured || status === "captured" ? 1 : 0,
+            captured: existing.captured || status === "captured",
         })
         .execute();
 }
@@ -325,7 +325,7 @@ export async function createWebhookEvent({
             razorpay_event_id: razorpayEventId,
             event_type: eventType,
             payload: JSON.stringify(payload),
-            processed: 0,
+            processed: false,
         })
         .execute();
 
@@ -344,7 +344,7 @@ export async function markWebhookEventProcessed(
     await db
         .updateTable("webhook_events")
         .where("razorpay_event_id", "=", razorpayEventId)
-        .set({ processed: 1 })
+        .set({ processed: true })
         .execute();
 }
 
@@ -377,7 +377,7 @@ export async function getAllPlans(
     let query = db.selectFrom("membership_plans").selectAll();
 
     if (!includeHidden) {
-        query = query.where("show_in_ui", "=", 1);
+        query = query.where("show_in_ui", "=", true);
     }
 
     const plans = await query.orderBy("price", "asc").execute();

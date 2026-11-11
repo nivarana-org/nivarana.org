@@ -12,8 +12,8 @@ export type Author = {
 
 export const authorsFragment = sql<Author[]>`COALESCE(
     (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
+        SELECT json_agg(
+            json_build_object(
                 'id', a.id,
                 'name', a.name,
                 'email', a.email,
@@ -25,7 +25,7 @@ export const authorsFragment = sql<Author[]>`COALESCE(
         JOIN authors a ON ar.relation_id = a.id
         WHERE ar.post_id = b.id
             AND ar.relation_type = 'author'
-    ), JSON_ARRAY()
+    ), '[]'::json
 )`;
 
 /**
@@ -34,8 +34,8 @@ export const authorsFragment = sql<Author[]>`COALESCE(
  */
 export const editorsFragment = sql<Author[]>`COALESCE(
     (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
+        SELECT json_agg(
+            json_build_object(
                 'id', a.id,
                 'name', a.name,
                 'email', a.email,
@@ -47,7 +47,7 @@ export const editorsFragment = sql<Author[]>`COALESCE(
         JOIN authors a ON er.relation_id = a.id
         WHERE er.post_id = b.id
             AND er.relation_type = 'editor'
-    ), JSON_ARRAY()
+    ), '[]'::json
 )`;
 
 export type Category = {
@@ -57,7 +57,7 @@ export type Category = {
 };
 
 export const categoryFragment = sql<Category>`(
-        SELECT JSON_OBJECT(
+        SELECT json_build_object(
           'id', c.id,
           'name', c.name,
           'slug', c.slug
@@ -77,8 +77,8 @@ export type Tag = {
 
 export const tagsFragment = sql<Tag[]>`COALESCE(
     (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
+        SELECT json_agg(
+            json_build_object(
                 'id', t.id,
                 'name', t.name,
                 'slug', t.slug
@@ -88,7 +88,7 @@ export const tagsFragment = sql<Tag[]>`COALESCE(
         JOIN tags t ON tr.relation_id = t.id
         WHERE tr.post_id = b.id
             AND tr.relation_type = 'tag'
-    ), JSON_ARRAY()
+    ), '[]'::json
 )`;
 
 const articleData = sql`
@@ -217,36 +217,43 @@ async function getCategoriesWithArticles(
         : articleJSONData;
     const limitClause = limit ? sql` LIMIT ${limit}` : sql``;
     const result = await sql<CategoryOverview>`SELECT
-        c.id,
-        c.name,
-        c.slug,
-        COALESCE(
-            (
-                SELECT JSON_ARRAYAGG(
-                    JSON_OBJECT(
-                        ${articleObjectFields}
-                    ) ORDER BY b.published_at DESC${limitClause}
-                )
-                FROM blogs b
-                WHERE b.id IN (
-                    SELECT pr.post_id
-                    FROM post_relations pr
-                    WHERE pr.relation_type = 'category'
-                        AND pr.relation_id = c.id
-                ) AND b.status = 'PUBLISHED'
-            ), JSON_ARRAY()
-        ) AS articles
-    FROM categories c
-    WHERE c.parent_id = 0
-    ORDER BY (
-        SELECT MAX(b2.published_at)
-        FROM blogs b2
-        JOIN post_relations pr2 ON b2.id = pr2.post_id
-        WHERE pr2.relation_type = 'category'
-            AND pr2.relation_id = c.id
-            AND b2.status = 'PUBLISHED'
-    ) DESC
-    ;`.execute(db);
+            c.id,
+            c.name,
+            c.slug,
+            COALESCE(
+                (
+                    SELECT json_agg(
+                        json_build_object(
+                            ${articleObjectFields}
+                        )
+                    )
+                    FROM (
+                        -- PostgreSQL applies the ORDER BY and LIMIT here,
+                        -- BEFORE it passes the rows up to json_agg()
+                        SELECT b.*
+                        FROM blogs b
+                        WHERE b.id IN (
+                            SELECT pr.post_id
+                            FROM post_relations pr
+                            WHERE pr.relation_type = 'category'
+                                AND pr.relation_id = c.id
+                        ) AND b.status = 'PUBLISHED'
+                        ORDER BY b.published_at DESC
+                        ${limitClause}
+                    ) b
+                ), '[]'::json
+            ) AS articles
+        FROM categories c
+        WHERE c.parent_id = 0
+        ORDER BY (
+            SELECT MAX(b2.published_at)
+            FROM blogs b2
+            JOIN post_relations pr2 ON b2.id = pr2.post_id
+            WHERE pr2.relation_type = 'category'
+                AND pr2.relation_id = c.id
+                AND b2.status = 'PUBLISHED'
+        ) DESC
+        ;`.execute(db);
     return result.rows;
 }
 

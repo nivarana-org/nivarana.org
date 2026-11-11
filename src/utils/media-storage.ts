@@ -88,6 +88,8 @@ export const saveMediaBuffer = async ({
             mime_type: mediaType.mime,
             alt_text: altText,
             created_date: createdDate,
+            created_at: new Date(),
+            updated_at: new Date(),
         });
     } catch (error) {
         await unlink(filePath).catch(() => undefined);
