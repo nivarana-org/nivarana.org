@@ -44,7 +44,7 @@ export default function ContinuousStory({
                                 <ViewTransition
                                     name={`category-title-${data.category.slug}`}
                                 >
-                                    <div className="uppercase p-1 text-nivarana-charcoal md:text-xl font-heading">
+                                    <div className="uppercase p-1 text-nivarana-charcoal text-xl font-heading">
                                         <Link
                                             href={`/category/${data.category.slug}`}
                                         >
@@ -55,7 +55,7 @@ export default function ContinuousStory({
                                 <ViewTransition
                                     name={`page-title-${data.slug}`}
                                 >
-                                    <h1 className="text-xl lg:text-3xl xl:text-4xl font-bold">
+                                    <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">
                                         {data.title}
                                     </h1>
                                 </ViewTransition>

@@ -129,7 +129,7 @@ export default function CommentsSection({
     };
 
     const getCommentButtonText = () => {
-        if (initialCount === 0) {
+        if (Number(initialCount) === 0) {
             return isOpen ? "Hide comments" : "Add your comment";
         }
         return isOpen

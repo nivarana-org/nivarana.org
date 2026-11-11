@@ -49,7 +49,7 @@ const RelatedPosts = async ({ tags, excludePostId }: RelatedPostsProps) => {
                                         Written by{" "}
                                         {authors.map((a) => a.name).join(", ")}
                                     </p>
-                                    <p>{intro}</p>
+                                    <p className="hidden md:block">{intro}</p>
                                 </div>
                             </Link>
                         );
