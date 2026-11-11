@@ -1,0 +1,63 @@
+.lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.line {
+    height: 2.5rem;
+    background-color: var(--color-nivarana-green);
+    animation: blink 150ms linear infinite;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: var(--color-nivarana-green);
+    border-radius: 5px;
+    animation: morph 2300ms ease-in-out infinite;
+}
+
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/*
+    2s of motion followed by a 0.3s pause, matching the original
+    scale -> rotate -> scale loop.
+*/
+@keyframes morph {
+    0% {
+        transform: scale(1) rotate(0deg);
+        border-radius: 0%;
+    }
+    17.391% {
+        transform: scale(2) rotate(0deg);
+        border-radius: 0%;
+    }
+    43.478% {
+        transform: scale(2) rotate(180deg);
+        border-radius: 50%;
+    }
+    69.565% {
+        transform: scale(1) rotate(180deg);
+        border-radius: 50%;
+    }
+    86.957%,
+    100% {
+        transform: scale(1) rotate(0deg);
+        border-radius: 0%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .line,
+    .box {
+        animation: none;
+    }
+}

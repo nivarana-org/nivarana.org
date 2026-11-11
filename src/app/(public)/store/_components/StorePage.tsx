@@ -1,7 +1,5 @@
-"use client";
-
-import { motion } from "motion/react";
 import { PosterImageSlider } from "./PosterImageSlider";
+import styles from "./store.module.css";
 import type { StoreData } from "../_lib/types";
 
 interface StorePageProps {
@@ -24,12 +22,7 @@ export function StorePage({ store }: StorePageProps) {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-12">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-center mb-12"
-            >
+            <div className={`text-center mb-12 ${styles.fadeUp}`}>
                 <h1 className="text-4xl font-bold text-nivarana-charcoal mb-4">
                     Nivarana Store
                 </h1>
@@ -38,16 +31,14 @@ export function StorePage({ store }: StorePageProps) {
                     premium matte paper — perfect for your wall, your desk, or
                     as a gift.
                 </p>
-            </motion.div>
+            </div>
 
             <div className="space-y-10">
                 {store.posters.map((poster, index) => (
-                    <motion.article
+                    <article
                         key={poster.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="group rounded-lg shadow-md bg-white overflow-hidden grid grid-cols-1 md:grid-cols-2"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                        className={`group rounded-lg shadow-md bg-white overflow-hidden grid grid-cols-1 md:grid-cols-2 ${styles.fadeUpLarge}`}
                     >
                         <div className="relative aspect-[3/4] md:aspect-auto md:min-h-[420px] overflow-hidden">
                             <PosterImageSlider
@@ -88,7 +79,7 @@ export function StorePage({ store }: StorePageProps) {
                                 )}
                             </div>
                         </div>
-                    </motion.article>
+                    </article>
                 ))}
             </div>
         </div>

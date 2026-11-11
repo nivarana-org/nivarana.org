@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
 
 interface PosterImageSliderProps {
     images: string[];
@@ -10,37 +9,20 @@ interface PosterImageSliderProps {
     className?: string;
 }
 
-const slideVariants = {
-    enter: (direction: number) => ({
-        x: direction > 0 ? "100%" : "-100%",
-    }),
-    center: { x: 0 },
-    exit: (direction: number) => ({
-        x: direction > 0 ? "-100%" : "100%",
-    }),
-};
-
 export function PosterImageSlider({
     images,
     alt,
     className = "",
 }: PosterImageSliderProps) {
-    const [[index, direction], setIndex] = useState([0, 0]);
+    const [index, setIndex] = useState(0);
 
     if (images.length === 0) return null;
 
     const paginate = (newDirection: number) => {
-        setIndex(([current]) => [
-            (current + newDirection + images.length) % images.length,
-            newDirection,
-        ]);
-    };
-
-    const goTo = (target: number) => {
-        setIndex(([current]) => [
-            target,
-            target > current ? 1 : target < current ? -1 : 0,
-        ]);
+        setIndex(
+            (current) =>
+                (current + newDirection + images.length) % images.length,
+        );
     };
 
     const showControls = images.length > 1;
@@ -49,26 +31,25 @@ export function PosterImageSlider({
         <div
             className={`relative h-full w-full overflow-hidden group ${className}`}
         >
-            <AnimatePresence initial={false} custom={direction}>
-                <motion.div
-                    key={index}
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="absolute inset-0"
-                >
-                    <Image
-                        src={images[index]}
-                        alt={`${alt} — photo ${index + 1}`}
-                        fill
-                        className="object-contain transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                </motion.div>
-            </AnimatePresence>
+            <div
+                className="flex h-full transition-transform duration-[400ms] ease-in-out motion-reduce:transition-none"
+                style={{ transform: `translateX(-${index * 100}%)` }}
+            >
+                {images.map((image, i) => (
+                    <div
+                        key={`${image}-${i}`}
+                        className="relative h-full w-full shrink-0"
+                    >
+                        <Image
+                            src={image}
+                            alt={`${alt} — photo ${i + 1}`}
+                            fill
+                            className="object-contain transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                    </div>
+                ))}
+            </div>
 
             {showControls && (
                 <>
@@ -115,7 +96,7 @@ export function PosterImageSlider({
                         {images.map((_, i) => (
                             <button
                                 key={i}
-                                onClick={() => goTo(i)}
+                                onClick={() => setIndex(i)}
                                 aria-label={`Go to photo ${i + 1}`}
                                 className={`h-2 rounded-full transition-all duration-200 cursor-pointer ${
                                     i === index

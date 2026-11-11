@@ -1,0 +1,28 @@
+.fadeUp {
+    animation: fade-up 500ms ease-out both;
+}
+
+.fadeUpLarge {
+    animation: fade-up-large 500ms ease-out both;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@keyframes fade-up-large {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fadeUp,
+    .fadeUpLarge {
+        animation: none;
+    }
+}

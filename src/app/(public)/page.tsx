@@ -2,7 +2,6 @@ import TagCloud from "./_components/tag-cloud";
 import { getArticleSlug, getImageURLFromFileName } from "@/utils/paths";
 import Image from "next/image";
 import Link from "next/link";
-import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
 import { getOverview } from "./queries";
 import AuthorsAndPublishedTime from "./_components/AuthorsAndPublishedTime";
@@ -69,13 +68,9 @@ async function Category({ c }: CategoryProp) {
                     {c.articles.slice(1, 5).map((a) => (
                         <RestArticles key={a.slug} a={a}></RestArticles>
                     ))}
-                    <motion.div
-                        whileHover={{ translateX: -10 }}
-                        whileTap={{ translateX: -10 }}
-                        className="flex flex-row justify-end-safe px-2"
-                    >
+                    <div className="flex flex-row justify-end-safe px-2 transition-transform duration-200 hover:-translate-x-2.5 active:-translate-x-2.5 motion-reduce:transition-none motion-reduce:hover:translate-x-0 motion-reduce:active:translate-x-0">
                         <Link href={`/category/${c.slug}`}>Read More →</Link>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </div>

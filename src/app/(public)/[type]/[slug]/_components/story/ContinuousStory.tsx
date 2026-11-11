@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import * as motion from "motion/react-client";
 import { ViewTransition } from "react";
 
 import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
@@ -8,6 +7,7 @@ import type { Chapter } from "@/data/story";
 import Sidebar from "@/app/(public)/_components/sidebar";
 
 import { READING_MEASURE } from "../../_lib/layout";
+import styles from "./ContinuousStory.module.css";
 import PageShare from "../blocks/PageShare";
 import AudioPlayer from "./AudioPlayer";
 import ProgressTracker from "./ProgressTracker";
@@ -90,21 +90,15 @@ export default function ContinuousStory({
             <div className="mx-auto w-full max-w-7xl mt-5 px-5 md:px-6">
                 <div className="flex justify-center gap-8">
                     <aside className="hidden w-12 shrink-0 lg:block pt-250 pb-125">
-                        <motion.div
-                            className="sticky top-24 flex flex-col items-center gap-3"
-                            initial={{ translateX: "-30px", opacity: 0 }}
-                            whileInView={{
-                                translateX: 0,
-                                translateY: -40,
-                                opacity: 1,
-                            }}
+                        <div
+                            className={`sticky top-24 flex flex-col items-center gap-3 ${styles.shareRail}`}
                         >
                             <PageShare
                                 url={getArticlePublicURL(data)}
                                 media={getImageURLFromFileName(data.image)}
                                 style="vertical"
                             ></PageShare>
-                        </motion.div>
+                        </div>
                     </aside>
                     <article className={`w-full min-w-0 ${READING_MEASURE}`}>
                         <header className="mb-8 border-b border-nivarana-green/20 pb-6">

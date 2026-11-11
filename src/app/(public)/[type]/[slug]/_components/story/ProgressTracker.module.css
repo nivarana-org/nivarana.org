@@ -1,0 +1,37 @@
+.tracker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: var(--color-nivarana-green);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}
+
+/*
+    Scroll-driven progress bar. Browsers without support keep the bar at
+    scaleX(0), so it simply stays hidden instead of showing a full bar.
+*/
+@supports (animation-timeline: scroll()) {
+    .tracker {
+        animation: progress linear both;
+        animation-timeline: scroll(root block);
+    }
+}
+
+@keyframes progress {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tracker {
+        animation: none;
+        transform: scaleX(0);
+    }
+}
