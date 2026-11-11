@@ -5,6 +5,71 @@ export { getRedirect } from "@/data/redirects";
 export { updateCommentStatus } from "@/data/comments";
 
 import { db } from "@/data/db";
+import type { MediaAuthor } from "@/types/media";
+
+import type { MediaCreditMap } from "./_lib/mediaCredits";
+
+/**
+ * Reads the authors and `credit_text` for every media filename used by a
+ * story. Credits are keyed by filename so the renderer can look them up from
+ * a chapter image or an `<img>` inside a chapter body.
+ */
+export async function getMediaCreditsByFilenames(
+    filenames: string[],
+): Promise<MediaCreditMap> {
+    const unique = [
+        ...new Set(filenames.filter((filename) => filename.length > 0)),
+    ];
+
+    if (unique.length === 0) {
+        return {};
+    }
+
+    const media = await db
+        .selectFrom("media")
+        .select(["id", "filename", "credit_text"])
+        .where("filename", "in", unique)
+        .execute();
+
+    if (media.length === 0) {
+        return {};
+    }
+
+    const authorRows = await db
+        .selectFrom("media_relations as mr")
+        .innerJoin("authors as a", "a.id", "mr.relation_id")
+        .select(["mr.media_id", "a.id", "a.name", "a.slug"])
+        .where("mr.relation_type", "=", "author")
+        .where(
+            "mr.media_id",
+            "in",
+            media.map((item) => item.id),
+        )
+        .orderBy("mr.order", "asc")
+        .orderBy("a.name", "asc")
+        .execute();
+
+    const authorsByMedia = new Map<number, MediaAuthor[]>();
+    for (const row of authorRows) {
+        const authors = authorsByMedia.get(row.media_id) ?? [];
+        authors.push({
+            id: row.id,
+            name: row.name,
+            slug: row.slug,
+        });
+        authorsByMedia.set(row.media_id, authors);
+    }
+
+    return Object.fromEntries(
+        media.map((item) => [
+            item.filename,
+            {
+                authors: authorsByMedia.get(item.id) ?? [],
+                creditText: item.credit_text,
+            },
+        ]),
+    );
+}
 
 export type CommentStatus = "pending" | "spam" | "accepted" | "hidden";
 

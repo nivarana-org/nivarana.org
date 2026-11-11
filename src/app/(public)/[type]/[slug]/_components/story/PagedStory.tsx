@@ -2,6 +2,7 @@ import type { Chapter } from "@/data/story";
 import Link from "next/link";
 import { Button } from "@mui/material";
 
+import type { MediaCreditMap } from "../../_lib/mediaCredits";
 import ChapterNav from "./ChapterNav";
 import ClearChapter from "./ClearChapter";
 import ScrollToTop from "./ScrollToTop";
@@ -26,10 +27,12 @@ export default function PagedStory({
     data,
     chapters,
     chapter,
+    credits,
 }: {
     data: StoryPost;
     chapters: Chapter[];
     chapter: string;
+    credits: MediaCreditMap;
 }) {
     const singlePage = chapter === "all";
     const total = chapters.length;
@@ -60,6 +63,7 @@ export default function PagedStory({
                         <StoryChapter
                             key={index}
                             chapter={c}
+                            credits={credits}
                             bodyClassName="max-w-4xl mx-auto"
                         />
                     ))}
@@ -78,6 +82,7 @@ export default function PagedStory({
                     <div className="mt-6"></div>
                     <StoryChapter
                         chapter={chapters[0]}
+                        credits={credits}
                         bodyClassName="max-w-4xl mx-auto"
                     />
 
@@ -111,6 +116,7 @@ export default function PagedStory({
                 <StoryChapter
                     key={page}
                     chapter={chapters[page]}
+                    credits={credits}
                     bodyClassName="max-w-4xl mx-auto"
                 />
                 <ChapterNav chapter={page} total={total} />

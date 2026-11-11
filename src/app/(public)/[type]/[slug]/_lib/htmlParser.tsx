@@ -7,7 +7,13 @@ import Image from "next/image";
 import { type ReactNode } from "react";
 import { imageConfig } from "@/config/images.mjs";
 import { DfnWithPopover } from "../_components/shared/DfnWithPopover";
+import ImageCredit from "../_components/shared/ImageCredit";
 import { getImageURLFromFileName, RELATIVE_IMAGE_PREFIX } from "@/utils/paths";
+import {
+    getMediaCredit,
+    hasMediaCredit,
+    type MediaCreditMap,
+} from "./mediaCredits";
 
 function matchHostname(hostname: string, pattern: string): boolean {
     if (pattern.startsWith("**.")) {
@@ -42,7 +48,10 @@ function parseUrl(url: string): string {
     return url;
 }
 
-export function parseHtml(html: string): ReactNode {
+export function parseHtml(
+    html: string,
+    credits: MediaCreditMap = {},
+): ReactNode {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const options: any = {
         replace(domNode: Element) {
@@ -54,10 +63,11 @@ export function parseHtml(html: string): ReactNode {
                 }
 
                 const parsedUrl = parseUrl(src);
+                const props = attributesToProps(rest);
+                const credit = getMediaCredit(credits, src);
 
                 if (isImageUrlAllowed(parsedUrl)) {
-                    const props = attributesToProps(rest);
-                    return (
+                    const image = (
                         <Image
                             src={parsedUrl}
                             alt={alt || "Image"}
@@ -67,17 +77,31 @@ export function parseHtml(html: string): ReactNode {
                             {...props}
                         />
                     );
+
+                    return hasMediaCredit(credit) ? (
+                        <span className="relative inline-block max-w-full">
+                            {image}
+                            <ImageCredit credit={credit} />
+                        </span>
+                    ) : (
+                        image
+                    );
                 }
 
                 // Fallback for images hosted outside `imageConfig.remotePatterns`.
                 // `next/image` throws for those hosts, so a plain <img> is required.
-                return (
+                const image = (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        src={src}
-                        alt={alt || ""}
-                        {...attributesToProps(rest)}
-                    />
+                    <img src={src} alt={alt || ""} {...props} />
+                );
+
+                return hasMediaCredit(credit) ? (
+                    <span className="relative inline-block max-w-full">
+                        {image}
+                        <ImageCredit credit={credit} />
+                    </span>
+                ) : (
+                    image
                 );
             }
 

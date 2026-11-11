@@ -6,9 +6,11 @@ import { getArticlePublicURL, getImageURLFromFileName } from "@/utils/paths";
 import type { Chapter } from "@/data/story";
 import Sidebar from "@/app/(public)/_components/sidebar";
 
+import { getMediaCredit, type MediaCreditMap } from "../../_lib/mediaCredits";
 import { READING_MEASURE } from "../../_lib/layout";
 import styles from "./ContinuousStory.module.css";
 import PageShare from "../blocks/PageShare";
+import ImageCredit from "../shared/ImageCredit";
 import AudioPlayer from "./AudioPlayer";
 import ProgressTracker from "./ProgressTracker";
 import StoryChapter from "./StoryChapter";
@@ -24,10 +26,14 @@ import type { StoryPost } from "./types";
 export default function ContinuousStory({
     data,
     chapters,
+    credits,
 }: {
     data: StoryPost;
     chapters: Chapter[];
+    credits: MediaCreditMap;
 }) {
+    const heroCredit = getMediaCredit(credits, data.image);
+
     return (
         <>
             {/*
@@ -77,6 +83,7 @@ export default function ContinuousStory({
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-contain md:drop-shadow-2xl"
                                 />
+                                <ImageCredit credit={heroCredit} />
                             </div>
                         </ViewTransition>
                     </div>
@@ -113,6 +120,7 @@ export default function ContinuousStory({
                             <StoryChapter
                                 key={index}
                                 chapter={chapter}
+                                credits={credits}
                                 imageVariant="inline"
                                 dropCap={false}
                             />

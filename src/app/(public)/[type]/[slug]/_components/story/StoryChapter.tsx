@@ -2,6 +2,8 @@ import Image from "next/image";
 import { getImageURLFromFileName } from "@/utils/paths";
 import type { Chapter } from "@/data/story";
 
+import { getMediaCredit, type MediaCreditMap } from "../../_lib/mediaCredits";
+import ImageCredit from "../shared/ImageCredit";
 import BodyWithPopover from "./BodyWithPopover";
 import ZoomableImage from "./ZoomableImage";
 
@@ -11,16 +13,19 @@ import ZoomableImage from "./ZoomableImage";
  */
 export default function StoryChapter({
     chapter,
+    credits,
     imageVariant = "zoom",
     bodyClassName = "",
     dropCap = false,
 }: {
     chapter: Chapter;
+    credits: MediaCreditMap;
     imageVariant?: "zoom" | "inline";
     bodyClassName?: string;
     dropCap?: boolean;
 }) {
     const { title, body, image } = chapter;
+    const credit = getMediaCredit(credits, image);
     return (
         <>
             {image ? (
@@ -28,15 +33,19 @@ export default function StoryChapter({
                     <ZoomableImage
                         src={getImageURLFromFileName(image)}
                         alt={title}
+                        credit={<ImageCredit credit={credit} />}
                     />
                 ) : (
-                    <Image
-                        src={getImageURLFromFileName(image)}
-                        alt={title || ""}
-                        width={2000}
-                        height={1414}
-                        className="w-full h-auto rounded-lg my-6"
-                    />
+                    <div className="relative my-6">
+                        <Image
+                            src={getImageURLFromFileName(image)}
+                            alt={title || ""}
+                            width={2000}
+                            height={1414}
+                            className="w-full h-auto rounded-lg"
+                        />
+                        <ImageCredit credit={credit} />
+                    </div>
                 )
             ) : null}
             {title ? (
@@ -46,6 +55,7 @@ export default function StoryChapter({
             ) : null}
             <BodyWithPopover
                 body={body}
+                credits={credits}
                 className={bodyClassName}
                 dropCap={dropCap}
             />
