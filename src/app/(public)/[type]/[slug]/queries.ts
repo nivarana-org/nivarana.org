@@ -2,8 +2,8 @@ export { getActiveSubscriptionByUserId } from "@/data/subscriptions";
 export { searchArticles } from "@/data/posts";
 export { getArticleBySlug, getPost } from "@/data/queries";
 export { getRedirect } from "@/data/redirects";
+export { updateCommentStatus } from "@/data/comments";
 
-import { asAdmin } from "@/data/authorization";
 import { db } from "@/data/db";
 
 export type CommentStatus = "pending" | "spam" | "accepted" | "hidden";
@@ -125,19 +125,3 @@ export async function getCommentById(id: number): Promise<Comment | null> {
 
     return (comment as Comment) || null;
 }
-
-export const updateCommentStatus = asAdmin(
-    async ({
-        commentId,
-        status,
-    }: {
-        commentId: number;
-        status: CommentStatus;
-    }): Promise<void> => {
-        await db
-            .updateTable("comments")
-            .where("id", "=", commentId)
-            .set({ status })
-            .execute();
-    },
-);

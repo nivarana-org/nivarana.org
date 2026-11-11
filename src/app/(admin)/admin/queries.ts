@@ -1,5 +1,7 @@
 import { db } from "@/data/db";
 
+export { getPendingCommentsCount } from "@/data/comments";
+
 export const getArticlesCount = async (): Promise<number> => {
     const result = await db
         .selectFrom("blogs")
@@ -19,6 +21,14 @@ export const getPeopleCount = async (): Promise<number> => {
 export const getMediaCount = async (): Promise<number> => {
     const result = await db
         .selectFrom("media")
+        .select((eb) => eb.fn.countAll().as("count"))
+        .executeTakeFirst();
+    return Number(result?.count ?? 0);
+};
+
+export const getCommentsCount = async (): Promise<number> => {
+    const result = await db
+        .selectFrom("comments")
         .select((eb) => eb.fn.countAll().as("count"))
         .executeTakeFirst();
     return Number(result?.count ?? 0);
