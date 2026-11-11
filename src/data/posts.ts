@@ -7,6 +7,7 @@ import {
     authorsFragment,
     categoryFragment,
     fullTextMatch,
+    imageAltFragment,
     tagsFragment,
     type Category,
     type Author,
@@ -132,6 +133,7 @@ const getPublishedPostsPaginated = (
                 WHEN b.published_at > b.created_at THEN b.published_at
                 ELSE b.created_at
             END`.as("published_time"),
+            imageAltFragment.as("imageAlt"),
             authorsFragment.as("authors"),
             categoryFragment.as("category"),
             tagsFragment.as("tags"),
@@ -166,6 +168,7 @@ export const searchArticles = (query: string) =>
             "b.created_at",
             "b.updated_at",
             "b.layout",
+            imageAltFragment.as("imageAlt"),
             authorsFragment.as("authors"),
             categoryFragment.as("category"),
             tagsFragment.as("tags"),

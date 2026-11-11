@@ -22,6 +22,8 @@ export type ArticlePreviewProps = {
     title: string | null;
     intro: string | null;
     image: string | null;
+    /** Alt text stored in the media library for the cover image. */
+    imageAlt?: string | null;
     created_at: Date | number | string;
     authors: ArticleAuthor[];
     category?: ArticleCategory;
@@ -35,6 +37,7 @@ function ArticlePreview({
     slug,
     authors,
     image,
+    imageAlt,
     title,
     intro,
     created_at,
@@ -56,7 +59,7 @@ function ArticlePreview({
                     </Link>
                 </div>
             ) : null}
-            <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-4xl mb-3 grow shrink-0 hover:drop-shadow-xl">
+            <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-4xl mb-3 grow hover:drop-shadow-xl">
                 <div className="md:flex">
                     <div className="md:shrink-0">
                         {image ? (
@@ -66,7 +69,7 @@ function ArticlePreview({
                                     height={225}
                                     className="h-48 w-full object-cover md:h-full md:w-80"
                                     src={getImageURLFromFileName(image)}
-                                    alt={title ?? ""}
+                                    alt={imageAlt?.trim() || title || ""}
                                     preload={aboveTheFold}
                                 />
                             </Link>

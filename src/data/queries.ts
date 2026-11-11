@@ -75,6 +75,18 @@ export type Tag = {
     slug: string;
 };
 
+/**
+ * The alt text stored in the media library for a post's cover image. Resolves
+ * to null when the image has no media record, in which case callers fall back
+ * to the post title.
+ */
+export const imageAltFragment = sql<string | null>`(
+    SELECT m.alt_text
+    FROM media m
+    WHERE m.filename = b.image
+    LIMIT 1
+)`;
+
 export const tagsFragment = sql<Tag[]>`COALESCE(
     (
         SELECT json_agg(
@@ -149,6 +161,7 @@ const articleJSONData = sql`
     'slug', b.slug,
     'title', b.title,
     'image', b.image,
+    'imageAlt', ${imageAltFragment},
     'intro', b.intro,
     'published_at', b.published_at
 `;
@@ -188,6 +201,8 @@ export type PostPreview = {
     image: string;
     slug: string;
     intro: string;
+    /** Alt text from the media library for the cover image. */
+    imageAlt: string | null;
     /** The publication date, as the ISO-8601 string PostgreSQL puts into JSON. */
     published_at: string;
     authors: Author[];
@@ -326,6 +341,7 @@ export const getArticlesByRelation = (
             "b.published_at",
             "b.language",
             "b.views",
+            imageAltFragment.as("imageAlt"),
             authorsFragment.as("authors"),
             categoryFragment.as("category"),
             tagsFragment.as("tags"),
