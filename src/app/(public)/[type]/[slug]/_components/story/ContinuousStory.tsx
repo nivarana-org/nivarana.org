@@ -72,19 +72,30 @@ export default function ContinuousStory({
                             </div>
                         </div>
                         <ViewTransition name={`page-lead-image-${data.slug}`}>
-                            <div className="relative aspect-video w-full md:aspect-auto md:w-1/2 md:min-h-110 md:shrink-0 lg:min-h-130 mb-4 md:mb-0">
-                                <Image
-                                    preload={true}
-                                    fetchPriority="high"
-                                    src={getImageURLFromFileName(data.image)}
-                                    alt={
-                                        "Representative image for " + data.title
-                                    }
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    className="object-contain md:drop-shadow-2xl"
-                                />
-                                <ImageCredit credit={heroCredit} />
+                            <div className="flex w-full flex-col md:w-1/2 md:min-h-110 md:shrink-0 lg:min-h-130 mb-4 md:mb-0">
+                                <div className="flex flex-1 items-center justify-center">
+                                    <div className="w-full">
+                                        <Image
+                                            preload={true}
+                                            fetchPriority="high"
+                                            src={getImageURLFromFileName(
+                                                data.image,
+                                            )}
+                                            alt={
+                                                "Representative image for " +
+                                                data.title
+                                            }
+                                            width={2000}
+                                            height={1414}
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            className="h-auto w-full object-contain md:drop-shadow-2xl"
+                                        />
+                                        <ImageCredit
+                                            credit={heroCredit}
+                                            variant="below"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </ViewTransition>
                     </div>
