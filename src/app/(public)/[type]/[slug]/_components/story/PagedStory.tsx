@@ -58,7 +58,7 @@ export default function PagedStory({
             <div className="max-w-(--breakpoint-xl) mx-auto">
                 <ClearChapter />
                 <div className="post post-single">
-                    <StoryHero data={data} />
+                    <StoryHero data={data} credits={credits} />
                     <div className="mt-6"></div>
                     {chapters.map((c, index) => (
                         <StoryChapter
@@ -80,7 +80,7 @@ export default function PagedStory({
             <div className="max-w-(--breakpoint-xl) mx-auto">
                 <ClearChapter />
                 <div className="post post-single">
-                    <StoryHero data={data} />
+                    <StoryHero data={data} credits={credits} />
                     <div className="mt-6"></div>
                     <StoryChapter
                         chapter={chapters[0]}
