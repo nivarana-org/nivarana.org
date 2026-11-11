@@ -1,0 +1,67 @@
+.viewport {
+    overflow: hidden;
+    padding-block: 0.25rem;
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 6%,
+        #000 94%,
+        transparent
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 6%,
+        #000 94%,
+        transparent
+    );
+}
+
+.track {
+    display: flex;
+    width: max-content;
+    animation-name: marquee;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+}
+
+.cloud:hover .track,
+.cloud:focus-within .track {
+    animation-play-state: paused;
+}
+
+.half {
+    display: flex;
+    align-items: center;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .viewport {
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+
+    .track {
+        animation: none;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .half {
+        flex-wrap: wrap;
+    }
+
+    .duplicate {
+        display: none;
+    }
+}
