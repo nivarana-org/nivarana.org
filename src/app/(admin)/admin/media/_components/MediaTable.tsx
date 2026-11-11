@@ -65,11 +65,11 @@ export default function MediaTable({
                 <Table
                     stickyHeader
                     size="small"
-                    sx={{ minWidth: 1420, tableLayout: "fixed" }}
+                    sx={{ minWidth: 1460, tableLayout: "fixed" }}
                 >
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: 250 }}>File</TableCell>
+                            <TableCell sx={{ width: 290 }}>File</TableCell>
                             <TableCell sx={{ width: 280 }}>Alt text</TableCell>
                             <TableCell sx={{ width: 260 }}>
                                 Credit text
@@ -126,6 +126,7 @@ function MediaRow({
     const [creditDialogOpen, setCreditDialogOpen] = useState(false);
     const [savingCredit, setSavingCredit] = useState(false);
     const [creditError, setCreditError] = useState<string | null>(null);
+    const [zoomOpen, setZoomOpen] = useState(false);
 
     const save = async () => {
         if (!createdDate) {
@@ -187,21 +188,47 @@ function MediaRow({
                 <TableCell>
                     <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                         {media.type === "image" ? (
-                            <Image
-                                src={media.url}
-                                alt={media.alt_text || media.filename}
-                                height={55}
-                                width={80}
-                                style={{ objectFit: "contain" }}
-                            />
-                        ) : (
                             <Box
+                                component="button"
+                                type="button"
+                                onClick={() => setZoomOpen(true)}
+                                aria-label={`Open a larger preview of ${
+                                    media.alt_text || media.filename
+                                }`}
                                 sx={{
-                                    width: 80,
-                                    height: 55,
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
+                                    flexShrink: 0,
+                                    p: 0,
+                                    border: 0,
+                                    bgcolor: "transparent",
+                                    cursor: "zoom-in",
+                                    borderRadius: 1,
+                                    "&:focus-visible": {
+                                        outline: "2px solid",
+                                        outlineColor: "primary.main",
+                                        outlineOffset: 2,
+                                    },
+                                }}
+                            >
+                                <Image
+                                    src={media.url}
+                                    alt={media.alt_text || media.filename}
+                                    height={80}
+                                    width={120}
+                                    style={{ objectFit: "contain" }}
+                                />
+                            </Box>
+                        ) : (
+                            <Box
+                                sx={{
+                                    width: 120,
+                                    height: 80,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
                                     fontSize: 11,
                                     color: "text.secondary",
                                 }}
@@ -323,6 +350,32 @@ function MediaRow({
                     ) : null}
                 </TableCell>
             </TableRow>
+            <Dialog
+                open={zoomOpen}
+                onClose={() => setZoomOpen(false)}
+                maxWidth="xl"
+                fullWidth
+                aria-label={`Preview of ${media.alt_text || media.filename}`}
+            >
+                <DialogContent
+                    onClick={() => setZoomOpen(false)}
+                    sx={{
+                        position: "relative",
+                        height: "80vh",
+                        p: 0,
+                        bgcolor: "common.black",
+                        cursor: "zoom-out",
+                    }}
+                >
+                    <Image
+                        src={media.url}
+                        alt={media.alt_text || media.filename}
+                        fill
+                        sizes="100vw"
+                        style={{ objectFit: "contain" }}
+                    />
+                </DialogContent>
+            </Dialog>
             <Dialog
                 open={creditDialogOpen}
                 onClose={
