@@ -1,0 +1,159 @@
+/*
+    All of the header's motion lives here as pure CSS. The mobile menu is a
+    visually hidden checkbox toggled by the hamburger label; :has() on the
+    header carries the checked state to the menu and the hamburger lines, so
+    no JavaScript is needed to open or close it.
+*/
+
+.header {
+    background-color: var(--color-nivarana-white);
+    color: var(--color-nivarana-charcoal);
+}
+
+/* Visually hidden, but still focusable so the menu is keyboard operable. */
+.toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.hamburger {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 2.5rem;
+    height: 2rem;
+    cursor: pointer;
+    animation: rise 300ms ease-out both;
+}
+
+.toggle:focus-visible + .hamburger {
+    border-radius: 0.25rem;
+    outline: 2px solid var(--color-nivarana-blue);
+    outline-offset: 2px;
+}
+
+.line {
+    height: 0.25rem;
+    border-radius: 9999px;
+    background-color: var(--color-nivarana-blue);
+    transition:
+        transform 200ms ease-in-out,
+        opacity 200ms ease-in-out;
+}
+
+/* The three lines morph into an X while the menu is open. */
+.header:has(.toggle:checked) .lineTop {
+    transform: translateY(14px) rotate(45deg);
+}
+
+.header:has(.toggle:checked) .lineMiddle {
+    opacity: 0;
+}
+
+.header:has(.toggle:checked) .lineBottom {
+    transform: translateY(-14px) rotate(-45deg);
+}
+
+/*
+    The collapsible menu. Animating grid-template-rows from 0fr to 1fr gives
+    the old height 0 -> auto animation without JavaScript; `visibility` is
+    transitioned alongside so the collapsed links are not tab-focusable.
+*/
+.menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+        grid-template-rows 300ms ease-in-out,
+        visibility 300ms;
+}
+
+.menuInner {
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition:
+        opacity 300ms ease-in-out,
+        transform 300ms ease-in-out;
+}
+
+.header:has(.toggle:checked) .menu {
+    grid-template-rows: 1fr;
+    visibility: visible;
+}
+
+.header:has(.toggle:checked) .menuInner {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* On large screens the menu is not collapsible; it is the category layer. */
+@media (min-width: 64rem) {
+    .menu {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        transition: none;
+    }
+
+    .menuInner {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Entry animations, replacing the previous framer-motion mount animations. */
+
+.logo {
+    animation: pop-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.utilities {
+    animation: slide-in-right 500ms ease-out 200ms both;
+}
+
+.categories {
+    animation: rise 500ms ease-out 300ms both;
+}
+
+@keyframes pop-in {
+    from {
+        transform: scale(0);
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes rise {
+    from {
+        transform: translateY(-0.75rem);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hamburger,
+    .logo,
+    .utilities,
+    .categories {
+        animation: none;
+    }
+
+    .line,
+    .menu,
+    .menuInner {
+        transition: none;
+    }
+}

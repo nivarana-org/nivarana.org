@@ -1,4 +1,8 @@
-const SearchIcon = () => {
+type Props = {
+    className?: string;
+};
+
+const SearchIcon = ({ className = "h-5 w-5 text-gray-500" }: Props) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +12,7 @@ const SearchIcon = () => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-5 w-5 text-gray-500" // Tailwind classes for small size and color
+            className={className}
         >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
